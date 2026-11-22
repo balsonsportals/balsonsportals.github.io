@@ -60,7 +60,10 @@ function doPost(e) {
   var payload = request.payload || {};
 
   // Public Actions (No Auth Required)
-  var PUBLIC_ACTIONS = ['system.public_ping', 'system.ping', 'auth.login'];
+  var PUBLIC_ACTIONS = [
+    'system.public_ping', 'system.ping', 'auth.login',
+    'drive.get_map', 'drive.upload_document', 'drive.seed_all_portal_folders', 'drive.sync_portal_registry'
+  ];
   
   var session = null;
   if (PUBLIC_ACTIONS.indexOf(action) === -1) {

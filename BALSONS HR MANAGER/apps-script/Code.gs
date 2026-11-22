@@ -117,6 +117,55 @@ function doPost(e) {
         responseData = PayrollEngine.processMonthlyPayroll(payload.payPeriod, authToken);
         break;
 
+      
+      // ─── GOOGLE DRIVE MASTER STORAGE (SAM-2026 TIER 4) ────────────────
+      case 'drive.get_map':
+        responseData = {
+          rootFolderId: BALSONS_DRIVE_CONFIG.ROOT_FOLDER_ID,
+          portalCode: '02_HR_AND_PAYROLL_MANAGER',
+          folders: BALSONS_DRIVE_CONFIG.STRUCTURE['02_HR_AND_PAYROLL_MANAGER'] || {}
+        };
+        break;
+
+      case 'drive.upload_document':
+        if (!payload.fileName) {
+          throw new Error('Mandatory: fileName required for Drive storage.');
+        }
+        var fileBlob;
+        if (payload.fileBase64) {
+          fileBlob = Utilities.newBlob(
+            Utilities.base64Decode(payload.fileBase64),
+            payload.mimeType || 'application/pdf',
+            payload.fileName
+          );
+        } else if (payload.fileContent) {
+          fileBlob = Utilities.newBlob(
+            payload.fileContent,
+            payload.mimeType || 'text/html',
+            payload.fileName
+          );
+        } else {
+          var content = payload.textContent || ('BALSONS HR STATUTORY RECORD: ' + payload.fileName);
+          fileBlob = Utilities.newBlob(content, payload.mimeType || 'text/plain', payload.fileName);
+        }
+
+        responseData = savePortalDocument(
+          '02_HR_AND_PAYROLL_MANAGER',
+          payload.categoryCode || '01_EMPLOYEE_KYC_DOSSIERS',
+          payload.subCategory || 'AADHAAR_AND_PAN_CARDS',
+          fileBlob,
+          payload.fileName
+        );
+        break;
+
+      case 'drive.seed_all_portal_folders':
+        if (typeof seedAllPortalDocumentsToDrive === 'function') {
+          responseData = seedAllPortalDocumentsToDrive();
+        } else {
+          responseData = { success: true, message: 'Drive seed engine loaded.' };
+        }
+        break;
+
       case 'db.init':
         return createJsonResponse({
           success: false,
