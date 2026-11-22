@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+  <!-- BEDS Portal Cover Image: login-gate.jpg -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BALSONS Gate Entry & Site Access Portal </title>
@@ -196,9 +197,14 @@
       z-index: 250;
       padding: 6px;
     }
+    .beds-nav-dropdown:hover .beds-dropdown-menu,
     .beds-nav-dropdown.open .beds-dropdown-menu {
-      display: block;
+      display: block !important;
       animation: dropdownSlide 0.15s ease-out;
+    }
+    .beds-nav-tab, .beds-dropdown-toggle, .beds-dropdown-item {
+      cursor: pointer !important;
+      user-select: none;
     }
     @keyframes dropdownSlide {
       from { opacity: 0; transform: translateY(-4px); }
@@ -749,7 +755,7 @@
     @media print {
       @page {
         size: A4 portrait;
-        margin: 10mm 12mm 10mm 12mm; /* Exact Word Narrow Margins (0.5 inch / 12.7mm) */
+        margin: 8mm 10mm 8mm 10mm;
       }
       * {
         -webkit-print-color-adjust: exact !important;
@@ -764,13 +770,42 @@
         background: #FFFFFF !important;
         color: #102D35 !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif !important;
-        overflow: hidden !important;
       }
-      /* Strict Ancestor Isolation: Hides every element outside the Challan document sheet */
-      body > *:not(main) {
+
+      /* Gate Pass Specific Print Mode */
+      body.print-mode-gatepass > *:not(#printableGatePassContainer) {
         display: none !important;
       }
-      main {
+      body.print-mode-gatepass #printableGatePassContainer {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      body.print-mode-gatepass .gp-print-sheet {
+        box-shadow: none !important;
+        border: 1.5px solid #102D35 !important;
+        border-radius: 0 !important;
+        padding: 10px 14px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 275mm !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
+        page-break-inside: avoid !important;
+        page-break-after: avoid !important;
+        break-inside: avoid !important;
+        break-after: avoid !important;
+      }
+
+      /* Delivery Challan Print Mode (Default fallback when not print-mode-gatepass) */
+      body:not(.print-mode-gatepass) > *:not(main) {
+        display: none !important;
+      }
+      body:not(.print-mode-gatepass) main {
         display: block !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -778,7 +813,7 @@
         max-width: 100% !important;
         border: none !important;
       }
-      main > *:not(#tab-challan) {
+      body:not(.print-mode-gatepass) main > *:not(#tab-challan) {
         display: none !important;
       }
       #tab-challan {
@@ -858,59 +893,119 @@
         font-size: 10.5px !important;
       }
     }
-  </style>
+  
+
+/* =========================================================================
+   BEDS MASTER POP-UP MODAL WINDOW SYSTEM (V1.2)
+   Fixed, Centered Overlay with Blurred Backdrop for All Modal Pop-ups
+   ========================================================================= */
+.beds-modal-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 999999 !important;
+  background: rgba(16, 45, 53, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  display: none;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  animation: bedsFadeInBackdrop 0.25s ease-out;
+}
+
+.beds-modal-backdrop.active,
+.beds-modal-backdrop[style*="display: flex"],
+.beds-modal-backdrop[style*="display:flex"] {
+  display: flex !important;
+}
+
+.beds-modal-backdrop[style*="display: none"],
+.beds-modal-backdrop[style*="display:none"] {
+  display: none !important;
+}
+
+.beds-modal {
+  background: var(--beds-bg-panel, #FFFFFF) !important;
+  color: var(--beds-text-primary, #102a35) !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--beds-border, #CBD5E1) !important;
+  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 151, 178, 0.35) !important;
+  width: 100% !important;
+  max-width: 680px !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  padding: 28px 32px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  margin: auto !important;
+  animation: bedsModalZoomIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+@keyframes bedsModalZoomIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.beds-modal .modal-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  border-bottom: 1.5px solid var(--beds-border, #E2E8F0) !important;
+  padding-bottom: 14px !important;
+  margin-bottom: 18px !important;
+}
+
+.beds-modal .modal-header h3 {
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  color: var(--beds-charcoal-heading, #102D35) !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.beds-modal .modal-cat-btn {
+  padding: 8px 14px !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid var(--beds-border, #CBD5E1) !important;
+  background: var(--beds-bg-page, #F8FAFC) !important;
+  color: var(--beds-text-primary, #102a35) !important;
+}
+
+.beds-modal .modal-cat-btn:hover {
+  border-color: var(--beds-teal-primary, #0097B2) !important;
+  background: rgba(0, 151, 178, 0.08) !important;
+}
+
+.beds-modal .modal-cat-btn.active {
+  border-color: var(--beds-teal-primary, #0097B2) !important;
+  background: rgba(0, 151, 178, 0.15) !important;
+  color: var(--beds-teal-primary, #0097B2) !important;
+  box-shadow: 0 0 0 2px rgba(0, 151, 178, 0.25) !important;
+}
+
+</style>
 </head>
 <body>
 
-<!-- Login Modal -->
-<div id="loginModal" class="modal-backdrop">
-  <!-- Left: cover image -->
-  <div class="login-split-left">
-    <img class="login-cover" src="assets/images/login-gate.jpg" 
-         onerror="this.onerror=null;this.src='assets/images/login-gate.jpg'" alt="Gate Entry & Site Access">
-    <div class="login-cover-overlay"></div>
-    <div class="login-cover-label">
-      <h2>Gate Entry &amp; Site Access Portal</h2>
-      <p>JTRWF PROJECT · Khordha, Odisha</p>
-      <div class="login-motto">"Difficult We Do Easily, Impossible Takes Little Time...!"</div>
-    </div>
-  </div>
-  <!-- Right: login form -->
-  <div class="login-split-right">
-    <div class="login-form-wrap">
-      <div class="login-logo-row">
-        <img src="assets/images/balsons-logo.png" 
-             onerror="this.onerror=null;this.src='https://lh3.googleusercontent.com/d/1HB7sGaQ4f2qq0NNzgBQrSpUe2DJWV4uh'" 
-             alt="BALSONS Logo">
-        <div>
-          <div style="font-size:15px;font-weight:800;color:var(--beds-charcoal-heading);">BALSONS HEAVY LIFT &amp; SHIFT</div>
-          <div style="font-size:10px;color:var(--beds-teal-primary);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Enterprise Platform</div>
-        </div>
-      </div>
-      <h2 class="login-title">Sign In to Gate Entry &amp; Site Access</h2>
-      <p class="login-subtitle">Authorized Personnel Only · JTRWF Site Access</p>
-
-      <div id="loginError" style="display:none;background:var(--beds-status-critical-bg);border:1px solid var(--beds-alert-red);color:var(--beds-alert-red);padding:10px;border-radius:8px;font-size:12px;margin-bottom:14px;"></div>
-
-      <form id="loginForm" onsubmit="handleLoginSubmit(event)">
-        <div class="form-group">
-          <label>Username</label>
-          <input type="text" id="loginUsername" required placeholder="admin | safety.manager | safety.team">
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="loginPassword" required placeholder="••••••••••••">
-        </div>
-        <button type="submit" class="login-btn">Authorize &amp; Sign In</button>
-      </form>
-
-      <div class="login-footer">
-        <span style="font-weight:700; color:var(--beds-charcoal-heading, #102d35);">BALSONS Heavy Lift &amp; Shift</span> · <span style="color:var(--beds-teal-primary, #0097a7);">JTRWF Site Access</span>
-        <div style="margin-top:8px;">BEDS V1.0 · SAM-2026 · JTRWF Site</div>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Legacy Login Modal removed - replaced by BEDS V1.1 Unified Branded Controller -->
 
 <!-- Enterprise Header -->
 <header>
@@ -962,6 +1057,9 @@
   <button class="beds-nav-tab active" data-target="radar" onclick="switchTab('radar')">
     🧭 Command Radar & Muster
   </button>
+  <button class="beds-nav-tab" data-target="documents" onclick="switchTab('documents')">
+    📁 Official Documents &amp; Drive Vault
+  </button>
 
   <!-- Group 2: Material Inward & Challans Dropdown -->
   <div class="beds-nav-dropdown">
@@ -1004,6 +1102,13 @@
         <div class="item-text">
           <strong>Gate Pass Operations (RGP / NRGP)</strong>
           <small>Returnable & non-returnable exit passes</small>
+        </div>
+      </a>
+      <a class="beds-dropdown-item" data-target="issue-gatepass" onclick="switchTab('issue-gatepass')">
+        <span class="item-icon">➕</span>
+        <div class="item-text">
+          <strong>Issue New Gate Pass Studio</strong>
+          <small>Interactive multi-category pass issuer &amp; live preview</small>
         </div>
       </a>
       <a class="beds-dropdown-item" data-target="audit" onclick="switchTab('audit')">
@@ -1051,10 +1156,13 @@
 <div class="beds-mobile-pill-bar">
   <button class="beds-btn beds-btn-sm beds-btn-primary" onclick="switchTab('radar')">🧭 Radar</button>
   <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('gate-dossier-360')" style="color: var(--beds-teal-primary); font-weight: 700;">📄 360° Dossier</button>
-  <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('clearance')">🦺 Security Clearance</button>
-  <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('personnel')">👥 Gate Pass</button>
-  <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('vehicles')">🚛 Vehicles</button>
-  <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('materials')">📦 Materials RGP</button>
+  <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('gate-safety-clearance')">🦺 Security Clearance</button>
+  <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('gatepass')">📄 Gate Pass</button>
+  <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('issue-gatepass')">➕ Issue Pass</button>
+  <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('inward')">🚚 Material Inward</button>
+  <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('challan')">📑 Challan</button>
+  <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('registries')">🗂️ Registries</button>
+  <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="switchTab('documents')">📁 Documents</button>
 </div>
 
 <main>
@@ -1137,6 +1245,338 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       DEDICATED ISSUE NEW GATE PASS STUDIO TAB (PHASE 8 ENHANCEMENT)
+       ========================================================================= -->
+  <section id="tab-issue-gatepass" class="section-view">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h2 style="font-size: 18px; font-weight: 800; color: var(--beds-charcoal-heading); display: flex; align-items: center; gap: 8px;">
+          ➕ Issue New Controlled Gate Pass Studio
+          <span class="status-pill status-success">Multi-Category Statutory Engine</span>
+        </h2>
+        <p style="font-size: 12px; color: var(--beds-text-secondary); margin-top: 2px;">
+          Statutory dispatch clearance for Returnable Materials (RGP), Non-Returnable Disposals (NRGP), Visitor Site Badges &amp; Transport Fleet Movements.
+        </p>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+        <button class="btn btn-secondary btn-sm" onclick="switchTab('gatepass')">
+          📋 Back to Gate Pass Register
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="openCreateGatePassModal()" style="font-weight: 700;">
+          ⚡ Open Pop-up Form
+        </button>
+        <a href="https://drive.google.com/drive/folders/1Q6UA4DOPPKJ-QydctzYktNK0A9xUQ-Pa" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="font-size: 11px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; border-color: var(--beds-teal-primary); color: var(--beds-teal-primary); font-weight: 700;">
+          📁 Gate Pass Drive Vault ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- 2-COLUMN SPLIT STUDIO: FORM (LEFT) + LIVE PREVIEW (RIGHT) -->
+    <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 24px; align-items: flex-start; margin-bottom: 30px;">
+      
+      <!-- LEFT COLUMN: ISSUANCE STUDIO FORM -->
+      <div class="beds-card" style="padding: 20px 24px; border-radius: var(--beds-radius-lg); box-shadow: var(--beds-card-shadow);">
+        
+        <!-- Category Selector Header -->
+        <div style="margin-bottom: 18px;">
+          <label style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--beds-charcoal-heading); display: block; margin-bottom: 8px; letter-spacing: 0.5px;">
+            1. Select Gate Pass Category:
+          </label>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
+            <button type="button" class="btn btn-sm gp-cat-btn active" id="tabCatBtn-RGP" onclick="selectStudioCategory('RGP')" style="border: 2px solid var(--beds-teal-primary); background: rgba(0,151,178,0.12); color: var(--beds-teal-primary); font-weight: 800; padding: 10px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; border-radius: 8px;">
+              <span style="font-size: 18px;">🔄</span>
+              <span>RGP (Returnable)</span>
+            </button>
+            <button type="button" class="btn btn-sm gp-cat-btn" id="tabCatBtn-NRGP" onclick="selectStudioCategory('NRGP')" style="border: 1.5px solid var(--beds-border); background: var(--beds-bg-page); color: var(--beds-text-primary); font-weight: 700; padding: 10px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; border-radius: 8px;">
+              <span style="font-size: 18px;">📦</span>
+              <span>NRGP (Outward)</span>
+            </button>
+            <button type="button" class="btn btn-sm gp-cat-btn" id="tabCatBtn-VISITOR" onclick="selectStudioCategory('VISITOR')" style="border: 1.5px solid var(--beds-border); background: var(--beds-bg-page); color: var(--beds-text-primary); font-weight: 700; padding: 10px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; border-radius: 8px;">
+              <span style="font-size: 18px;">🦺</span>
+              <span>Visitor / Crew</span>
+            </button>
+            <button type="button" class="btn btn-sm gp-cat-btn" id="tabCatBtn-VEHICLE" onclick="selectStudioCategory('VEHICLE')" style="border: 1.5px solid var(--beds-border); background: var(--beds-bg-page); color: var(--beds-text-primary); font-weight: 700; padding: 10px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; border-radius: 8px;">
+              <span style="font-size: 18px;">🚛</span>
+              <span>Vehicle / Fleet</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Scenario Presets -->
+        <div style="background: var(--beds-bg-page); border: 1px dashed var(--beds-border); border-radius: 8px; padding: 10px 14px; margin-bottom: 18px;">
+          <div style="font-size: 10.5px; font-weight: 700; color: var(--beds-text-muted); text-transform: uppercase; margin-bottom: 6px;">
+            ⚡ Quick Presets (Click to Populate):
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary btn-sm" style="font-size: 11px; padding: 4px 10px;" onclick="applyStudioPreset('RGP_JACK')">🔧 100T Hydraulic Jack (RGP)</button>
+            <button type="button" class="btn btn-secondary btn-sm" style="font-size: 11px; padding: 4px 10px;" onclick="applyStudioPreset('NRGP_SCRAP')">♻️ Scrap Metal &amp; Oil Drums (NRGP)</button>
+            <button type="button" class="btn btn-secondary btn-sm" style="font-size: 11px; padding: 4px 10px;" onclick="applyStudioPreset('VISITOR_INSPECT')">👔 Schuler Technical Inspector (Visitor)</button>
+            <button type="button" class="btn btn-secondary btn-sm" style="font-size: 11px; padding: 4px 10px;" onclick="applyStudioPreset('VEHICLE_PULLER')">🚛 Hydraulic Puller &amp; Trailer (Vehicle)</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Studio Form -->
+        <form id="studioGatePassForm" onsubmit="handleStudioGatePassSubmit(event)">
+          <input type="hidden" id="studioCategory" value="RGP">
+
+          <!-- Section A: Pass Metadata -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div class="form-group">
+              <label>Pass ID (Auto-Generated)</label>
+              <input type="text" id="studioPassId" class="beds-input" readonly style="font-family: monospace; font-weight: 700; background: var(--beds-bg-page);" value="RGP-2026-0042">
+            </div>
+            <div class="form-group">
+              <label>Issue Date &amp; Time (IST)</label>
+              <input type="text" id="studioIssueDate" class="beds-input" readonly style="font-family: monospace; background: var(--beds-bg-page);">
+            </div>
+          </div>
+
+          <!-- Section B: Category-Specific Fields (Toggled Dynamically) -->
+          
+          <!-- B1. RGP & NRGP Material Fields -->
+          <div id="studioSection-MATERIAL">
+            <div class="form-group">
+              <label>Item Description &amp; Technical Specifications <strong style="color:var(--beds-alert-red);">*</strong></label>
+              <input type="text" id="studioItemDesc" class="beds-input" placeholder="e.g. 100T Hydraulic Climbing Jack (Double Acting)" oninput="updateStudioPreview()" required>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label>Quantity &amp; Unit <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <input type="text" id="studioQty" class="beds-input" placeholder="e.g. 2 Nos (14.5 MT)" oninput="updateStudioPreview()" required>
+              </div>
+              <div class="form-group">
+                <label>Asset Tag / Serial No / Identification</label>
+                <input type="text" id="studioSerial" class="beds-input" placeholder="e.g. EQ-2026-0001 / BHLS-HJ-100-01" oninput="updateStudioPreview()">
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px;">
+              <div class="form-group">
+                <label>Consignee / Destination Vendor / Buyer <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <input type="text" id="studioConsignee" class="beds-input" placeholder="e.g. Precision Calibrators Kolkata" oninput="updateStudioPreview()" required>
+              </div>
+              <div class="form-group">
+                <label>Carrier Transport / Vehicle No <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <input type="text" id="studioVehicleNo" class="beds-input" placeholder="e.g. OD-02-AX-8910" oninput="validateVehicleInput(this); updateStudioPreview();" required>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label>Purpose of Movement <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <select id="studioPurpose" class="beds-select" onchange="updateStudioPreview()">
+                  <option value="Third Party NABL Calibration & Certification">Third Party NABL Calibration &amp; Certification</option>
+                  <option value="Emergency Workshop Overhaul & Repair">Emergency Workshop Overhaul &amp; Repair</option>
+                  <option value="Rigging Gear Proof-Load Testing & Form-11">Rigging Gear Proof-Load Testing &amp; Form-11</option>
+                  <option value="Scrap Metal & Waste Oil Disposal">Scrap Metal &amp; Waste Oil Disposal</option>
+                  <option value="Return to Supplier / Rental Demobilization">Return to Supplier / Rental Demobilization</option>
+                  <option value="Inter-Bay Machinery Transshipment">Inter-Bay Machinery Transshipment</option>
+                </select>
+              </div>
+              <div class="form-group" id="studioWrapReturnDate">
+                <label><strong style="color: var(--beds-alert-red);">*</strong> Expected Inward Return Date</label>
+                <input type="date" id="studioReturnDate" class="beds-input" onchange="updateStudioPreview()">
+              </div>
+            </div>
+          </div>
+
+          <!-- B2. VISITOR / CONTRACTOR Fields -->
+          <div id="studioSection-VISITOR" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label>Visitor / Contractor Full Name <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <input type="text" id="studioVisName" class="beds-input" placeholder="e.g. Robert Schneider" oninput="updateStudioPreview()">
+              </div>
+              <div class="form-group">
+                <label>Mobile Number <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <input type="tel" id="studioVisPhone" class="beds-input" placeholder="e.g. 9876543210" oninput="validatePhoneInput(this); updateStudioPreview();">
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px;">
+              <div class="form-group">
+                <label>Deputed Company / Vendor Organization <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <input type="text" id="studioVisOrg" class="beds-input" placeholder="e.g. Schuler Group Deutschland / Ferroterro" oninput="updateStudioPreview()">
+              </div>
+              <div class="form-group">
+                <label>Government Photo ID (Masked)</label>
+                <input type="text" id="studioVisId" class="beds-input" placeholder="e.g. Aadhaar •••• 1234 / Passport" oninput="updateStudioPreview()">
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label>BALSONS Officer To Meet <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <input type="text" id="studioVisHost" class="beds-input" placeholder="e.g. Satish Chandra (Project Director)" oninput="updateStudioPreview()">
+              </div>
+              <div class="form-group">
+                <label>Department / Erection Bay <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <select id="studioVisDept" class="beds-select" onchange="updateStudioPreview()">
+                  <option value="Heavy Erection Bay 3 (Press Pit)">Heavy Erection Bay 3 (Press Pit)</option>
+                  <option value="Line Axle Bay 1">Line Axle Bay 1</option>
+                  <option value="Line Wheel Bay 2">Line Wheel Bay 2</option>
+                  <option value="HSE & Site Safety Directorate">HSE &amp; Site Safety Directorate</option>
+                  <option value="Central Commercial & Accounts">Central Commercial &amp; Accounts</option>
+                </select>
+              </div>
+            </div>
+            <div style="background: rgba(0, 151, 178, 0.06); border: 1px solid rgba(0, 151, 178, 0.2); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--beds-teal-primary); margin-bottom: 6px;">
+                🦺 Statutory Gate PPE Issuance &amp; Verification:
+              </div>
+              <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px;">
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                  <input type="checkbox" id="chkVisHelmet" checked onchange="updateStudioPreview()"> Safety Helmet
+                </label>
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                  <input type="checkbox" id="chkVisVest" checked onchange="updateStudioPreview()"> Hi-Vis Vest
+                </label>
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                  <input type="checkbox" id="chkVisShoes" checked onchange="updateStudioPreview()"> Steel-Toe Boots
+                </label>
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                  <input type="checkbox" id="chkVisGlasses" onchange="updateStudioPreview()"> Safety Glasses
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- B3. VEHICLE / FLEET Fields -->
+          <div id="studioSection-VEHICLE" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label>Vehicle Registration Number <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <input type="text" id="studioVehReg" class="beds-input" placeholder="e.g. OD-02-AX-8910" oninput="validateVehicleInput(this); updateStudioPreview();">
+              </div>
+              <div class="form-group">
+                <label>Vehicle Configuration / Machinery Type <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <select id="studioVehType" class="beds-select" onchange="updateStudioPreview()">
+                  <option value="Hydraulic Multi-Axle Modular Trailer (SPMT)">Hydraulic Multi-Axle Modular Trailer (SPMT)</option>
+                  <option value="Low-Bed Heavy Machinery Trailer">Low-Bed Heavy Machinery Trailer</option>
+                  <option value="Mobile Hydraulic Crane (100T-250T)">Mobile Hydraulic Crane (100T-250T)</option>
+                  <option value="Commercial 16-Tonne Transport Truck">Commercial 16-Tonne Transport Truck</option>
+                  <option value="Site Forklift / Yard Tractor">Site Forklift / Yard Tractor</option>
+                </select>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label>Driver Full Name <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <input type="text" id="studioVehDriver" class="beds-input" placeholder="e.g. Manoj Sahoo" oninput="updateStudioPreview()">
+              </div>
+              <div class="form-group">
+                <label>Driver Mobile Number</label>
+                <input type="tel" id="studioVehDriverPhone" class="beds-input" placeholder="e.g. 9876543210" oninput="validatePhoneInput(this); updateStudioPreview();">
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label>Commercial Driving License (DL) No <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <input type="text" id="studioVehDl" class="beds-input" placeholder="e.g. OD-02-2018-0091244" oninput="updateStudioPreview()">
+              </div>
+              <div class="form-group">
+                <label>Transporter / Fleet Agency <strong style="color:var(--beds-alert-red);">*</strong></label>
+                <input type="text" id="studioVehAgency" class="beds-input" placeholder="e.g. Odisha Heavy Haul Logistics Pvt Ltd" oninput="updateStudioPreview()">
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label>Assigned Unloading Bay</label>
+                <select id="studioVehBay" class="beds-select" onchange="updateStudioPreview()">
+                  <option value="Bay-3 Heavy Erection Bay (Schuler Press)">Bay-3 Heavy Erection Bay (Schuler Press)</option>
+                  <option value="Bay-1 Line Axle Bay">Bay-1 Line Axle Bay</option>
+                  <option value="Bay-2 Line Wheel Bay">Bay-2 Line Wheel Bay</option>
+                  <option value="Main Yard Laydown Area">Main Yard Laydown Area</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Fitness / Insurance Validity Expiry</label>
+                <input type="date" id="studioVehFitness" class="beds-input" onchange="updateStudioPreview()">
+              </div>
+            </div>
+
+            <!-- Weighbridge & Statutory Physical Verification Grid -->
+            <div style="background: var(--beds-bg-page); border: 1.5px solid var(--beds-border); border-radius: 8px; padding: 12px 14px; margin-top: 12px; margin-bottom: 12px;">
+              <div style="font-size: 11px; font-weight: 800; color: var(--beds-charcoal-heading); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+                ⚖️ Statutory Weighbridge &amp; Security Clearances
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                <div class="form-group" style="margin-bottom:0;">
+                  <label style="font-size: 10.5px;">Gross Weight (MT)</label>
+                  <input type="number" step="0.01" id="wbGross" class="beds-input" placeholder="e.g. 48.50" oninput="calcWeighbridgeNet(); updateStudioPreview();">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label style="font-size: 10.5px;">Tare Weight (MT)</label>
+                  <input type="number" step="0.01" id="wbTare" class="beds-input" placeholder="e.g. 18.20" oninput="calcWeighbridgeNet(); updateStudioPreview();">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label style="font-size: 10.5px;">Calculated Net (MT)</label>
+                  <input type="text" id="wbNet" class="beds-input" readonly style="background: #e2e8f0; font-weight: 800; color: var(--beds-charcoal-heading);" placeholder="Auto-Calculated">
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 11.5px; border-top: 1px dashed var(--beds-border); padding-top: 8px;">
+                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                  <input type="checkbox" id="chkStatCargo" checked onchange="updateStudioPreview()"> Physical Cargo Inspected
+                </label>
+                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                  <input type="checkbox" id="chkStatSeal" checked onchange="updateStudioPreview()"> Security Seal Intact
+                </label>
+                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                  <input type="checkbox" id="chkStatAlcohol" checked onchange="updateStudioPreview()"> 0.00 BAC Sobriety Verified
+                </label>
+                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                  <input type="checkbox" id="chkStatPpe" checked onchange="updateStudioPreview()"> Driver PPE Verified
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section C: Authorization & Remarks -->
+          <div class="form-group">
+            <label>Security Instructions &amp; Dispatch Remarks</label>
+            <textarea id="studioRemarks" rows="2" class="beds-textarea" placeholder="e.g. Checked by Gate Sentry. Physical serial verified against Form-11 test certificate..." oninput="updateStudioPreview()"></textarea>
+          </div>
+
+          <!-- Form Buttons -->
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--beds-border); flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary" onclick="resetStudioForm()">
+              🔄 Reset
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="exportCurrentStudioGatePassToDrive()" style="font-weight: 700; border-color: var(--beds-teal-primary); color: var(--beds-teal-primary);">
+              ☁️ Export &amp; Upload to Google Drive
+            </button>
+            <button type="submit" class="btn btn-primary" style="font-weight: 800;">
+              💾 Issue &amp; Save Pass
+            </button>
+            <button type="button" class="btn btn-primary" style="background: var(--beds-charcoal-heading); border-color: var(--beds-teal-primary); font-weight: 800;" onclick="handleStudioGatePassSubmit(event, true)">
+              🖨️ Issue &amp; Print Pass
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- RIGHT COLUMN: LIVE INTERACTIVE PASS PREVIEW CARD -->
+      <div style="position: sticky; top: 80px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--beds-text-muted); letter-spacing: 0.5px;">
+            📄 Real-Time Document Live Preview:
+          </span>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="triggerCurrentStudioPrint()" style="font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;">
+            🖨️ Print This Pass
+          </button>
+        </div>
+
+        <!-- Rendered Card Mockup -->
+        <div id="studioLivePreviewWrap" style="background: #FFFFFF; border: 1.5px solid var(--beds-charcoal-heading); border-radius: 6px; padding: 16px; box-shadow: 0 4px 16px rgba(16,45,53,0.1); color: #102D35; font-family: 'Inter', sans-serif;">
+          <!-- Dynamically populated by JS updateStudioPreview() -->
+        </div>
+        
+        <div style="margin-top: 10px; font-size: 11px; color: var(--beds-text-muted); text-align: center;">
+          ⚡ Certified Single-Sheet A4 Statutory Pass • Guaranteed 1-Page Layout
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -1330,6 +1770,9 @@
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
         <button class="btn btn-primary" onclick="printChallan()">
           🖨️ Print / Save as PDF
+        </button>
+        <button class="btn btn-secondary" onclick="exportCurrentChallanToDrive()" style="font-weight: 700; border-color: var(--beds-teal-primary); color: var(--beds-teal-primary);">
+          ☁️ Export &amp; Upload to Google Drive
         </button>
         <button class="btn btn-secondary" onclick="saveChallanRecord()">
           💾 Save to Register
@@ -1797,8 +2240,10 @@
       <div class="table-header">
         <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
           <button class="btn btn-secondary btn-sm" id="btnGpAll" style="font-weight: 700;" onclick="filterGatePassView('ALL')">All Passes</button>
-          <button class="btn btn-secondary btn-sm" id="btnGpRgp" onclick="filterGatePassView('RGP')">Returnable (RGP)</button>
-          <button class="btn btn-secondary btn-sm" id="btnGpNrgp" onclick="filterGatePassView('NRGP')">Non-Returnable (NRGP)</button>
+          <button class="btn btn-secondary btn-sm" id="btnGpRgp" onclick="filterGatePassView('RGP')">🔄 Returnable (RGP)</button>
+          <button class="btn btn-secondary btn-sm" id="btnGpNrgp" onclick="filterGatePassView('NRGP')">📦 Non-Returnable (NRGP)</button>
+          <button class="btn btn-secondary btn-sm" id="btnGpVisitor" onclick="filterGatePassView('VISITOR')">🦺 Visitor &amp; Contractor</button>
+          <button class="btn btn-secondary btn-sm" id="btnGpVehicle" onclick="filterGatePassView('VEHICLE')">🚛 Vehicle Movement</button>
           <button class="btn btn-secondary btn-sm" id="btnGpOverdue" style="color: var(--beds-alert-red); font-weight: 700;" onclick="filterGatePassView('OVERDUE')">🚨 Overdue Alerts</button>
         </div>
         <div style="display: flex; gap: 8px;">
@@ -2198,6 +2643,13 @@
       <!-- Injected dynamically -->
     </div>
   </section>
+
+  <!-- =========================================================================
+       TAB: OFFICIAL DOCUMENTS & GOOGLE DRIVE CLOUD VAULT (PHASE 8 ENHANCEMENT)
+       ========================================================================= -->
+  <section id="tab-documents" class="section-view">
+    <!-- Populated dynamically by BalsonsDocs.renderDocumentsTab() -->
+  </section>
 </main>
 
 <!-- ─── PHASE 3 MODALS: MASTER DATA REGISTRATION ───────────────────── -->
@@ -2465,103 +2917,248 @@
   </div>
 </div>
 
-<!-- Create Gate Pass Modal (RGP / NRGP) -->
+<!-- =========================================================================
+     ENHANCED POP-UP MODAL: ISSUE CONTROLLED GATE PASS (4 CATEGORIES)
+     ========================================================================= -->
 <div id="modalCreateGatePass" class="beds-modal-backdrop" style="display: none;">
-  <div class="beds-modal" style="max-width: 620px;">
-    <div class="modal-header">
+  <div class="beds-modal" style="max-width: 680px; max-height: 92vh; overflow-y: auto;">
+    <div class="modal-header" style="border-bottom: 1.5px solid var(--beds-border); padding-bottom: 12px; margin-bottom: 16px;">
       <div>
-        <h3 style="font-size: 16px; font-weight: 800; color: var(--beds-charcoal-heading);">
-          📄 Controlled Outbound Gate Pass Issuer
+        <h3 style="font-size: 16.5px; font-weight: 800; color: var(--beds-charcoal-heading); display: flex; align-items: center; gap: 8px;">
+          <span>📄</span> Issue New Controlled Gate Pass
+          <span class="status-pill status-info" id="modalCatPill">RGP (Returnable)</span>
         </h3>
-        <p style="font-size: 11px; color: var(--beds-text-secondary); margin: 0;">
-          Issue Returnable (RGP) or Non-Returnable (NRGP) gate clearance.
+        <p style="font-size: 11.5px; color: var(--beds-text-secondary); margin: 2px 0 0;">
+          Statutory dispatch &amp; clearance under JTRWF Site Access Governance.
         </p>
       </div>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="closeCreateGatePassModal()">✕</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="closeCreateGatePassModal()" style="font-weight: 700;">✕</button>
     </div>
 
-    <form id="createGatePassForm" onsubmit="handleCreateGatePassSubmit(event)">
-      <!-- Pass Type Selector -->
-      <div style="margin-bottom: 14px;">
-        <label style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--beds-charcoal-heading); display: block; margin-bottom: 6px;">
-          Gate Pass Classification:
-        </label>
+    <!-- Category Selector Buttons -->
+    <div style="margin-bottom: 14px;">
+      <label style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--beds-charcoal-heading); display: block; margin-bottom: 6px;">
+        Select Pass Classification:
+      </label>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+        <button type="button" class="btn btn-sm modal-cat-btn active" id="modalCatBtn-RGP" onclick="selectModalCategory('RGP')" style="border: 2px solid var(--beds-teal-primary); background: rgba(0,151,178,0.12); color: var(--beds-teal-primary); font-weight: 800; padding: 8px 4px; border-radius: 6px;">
+          🔄 RGP
+        </button>
+        <button type="button" class="btn btn-sm modal-cat-btn" id="modalCatBtn-NRGP" onclick="selectModalCategory('NRGP')" style="border: 1.5px solid var(--beds-border); background: var(--beds-bg-page); color: var(--beds-text-primary); font-weight: 700; padding: 8px 4px; border-radius: 6px;">
+          📦 NRGP
+        </button>
+        <button type="button" class="btn btn-sm modal-cat-btn" id="modalCatBtn-VISITOR" onclick="selectModalCategory('VISITOR')" style="border: 1.5px solid var(--beds-border); background: var(--beds-bg-page); color: var(--beds-text-primary); font-weight: 700; padding: 8px 4px; border-radius: 6px;">
+          🦺 Visitor
+        </button>
+        <button type="button" class="btn btn-sm modal-cat-btn" id="modalCatBtn-VEHICLE" onclick="selectModalCategory('VEHICLE')" style="border: 1.5px solid var(--beds-border); background: var(--beds-bg-page); color: var(--beds-text-primary); font-weight: 700; padding: 8px 4px; border-radius: 6px;">
+          🚛 Vehicle
+        </button>
+      </div>
+    </div>
+
+    <!-- Presets Shortcut Strip -->
+    <div style="background: var(--beds-bg-page); border: 1px dashed var(--beds-border); border-radius: 6px; padding: 8px 12px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
+      <span style="font-size: 10.5px; font-weight: 700; color: var(--beds-text-muted); text-transform: uppercase;">
+        ⚡ Fast Presets:
+      </span>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="modalPresetsContainer">
+        <!-- Rendered based on selected category -->
+      </div>
+    </div>
+
+    <form id="createGatePassForm" onsubmit="handleCreateGatePassModalSubmit(event)">
+      <input type="hidden" id="modalCategory" value="RGP">
+
+      <!-- Form Set 1: Material (RGP / NRGP) -->
+      <div id="modalFormSet-MATERIAL">
+        <div class="form-group">
+          <label>Item Description &amp; Technical Specifications <strong style="color:var(--beds-alert-red);">*</strong></label>
+          <input type="text" id="gpItemDescription" class="beds-input" placeholder="e.g. 100T Hydraulic Climbing Jack (Double Acting)" required>
+        </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <label style="display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--beds-teal-primary); padding: 10px 14px; border-radius: var(--beds-radius-md); cursor: pointer; background: var(--beds-bg-page);">
-            <input type="radio" name="gpTypeRadio" value="RGP" checked onchange="toggleGpTypeFields()">
-            <div>
-              <strong style="color: var(--beds-teal-primary);">RGP (Returnable)</strong>
-              <div style="font-size: 10.5px; color: var(--beds-text-secondary);">Tools, jacks, instruments, calibration</div>
-            </div>
-          </label>
-          <label style="display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--beds-border); padding: 10px 14px; border-radius: var(--beds-radius-md); cursor: pointer; background: var(--beds-bg-page);">
-            <input type="radio" name="gpTypeRadio" value="NRGP" onchange="toggleGpTypeFields()">
-            <div>
-              <strong style="color: var(--beds-charcoal-heading);">NRGP (Non-Returnable)</strong>
-              <div style="font-size: 10.5px; color: var(--beds-text-secondary);">Scrap, discarded oil drums, consumables</div>
-            </div>
-          </label>
+          <div class="form-group">
+            <label>Quantity &amp; Unit <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <input type="text" id="gpQty" class="beds-input" placeholder="e.g. 2 Nos (14.5 MT)" required>
+          </div>
+          <div class="form-group">
+            <label>Equipment Serial / Tag No</label>
+            <input type="text" id="gpSerialNo" class="beds-input" placeholder="e.g. EQ-2026-0001 / BHLS-HJ-100-01">
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px;">
+          <div class="form-group">
+            <label>Consignee / Destination Vendor <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <input type="text" id="gpConsignee" class="beds-input" placeholder="e.g. Precision Calibrators Kolkata" required>
+          </div>
+          <div class="form-group">
+            <label>Transport Vehicle No <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <input type="text" id="gpVehicleNo" class="beds-input" placeholder="e.g. OD-02-AX-8910" required>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label>Purpose of Movement</label>
+            <select id="gpPurpose" class="beds-select">
+              <option value="Third Party NABL Calibration & Certification">Third Party NABL Calibration &amp; Certification</option>
+              <option value="Emergency Workshop Overhaul & Repair">Emergency Workshop Overhaul &amp; Repair</option>
+              <option value="Rigging Gear Proof-Load Testing & Form-11">Rigging Gear Proof-Load Testing &amp; Form-11</option>
+              <option value="Scrap Metal & Waste Oil Disposal">Scrap Metal &amp; Waste Oil Disposal</option>
+              <option value="Return to Supplier / Rental Demobilization">Return to Supplier / Rental Demobilization</option>
+            </select>
+          </div>
+          <div class="form-group" id="gpReturnDateField">
+            <label><strong style="color: var(--beds-alert-red);">*</strong> Expected Return Date</label>
+            <input type="date" id="gpExpectedReturnDate" class="beds-input">
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Set 2: Visitor / Contractor -->
+      <div id="modalFormSet-VISITOR" style="display: none;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label>Visitor / Contractor Name <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <input type="text" id="gpVisName" class="beds-input" placeholder="e.g. Robert Schneider">
+          </div>
+          <div class="form-group">
+            <label>Mobile Number <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <input type="tel" id="gpVisPhone" class="beds-input" placeholder="e.g. 98765 43210">
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px;">
+          <div class="form-group">
+            <label>Organization / Vendor Name <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <input type="text" id="gpVisOrg" class="beds-input" placeholder="e.g. Schuler Group Deutschland">
+          </div>
+          <div class="form-group">
+            <label>Photo ID (Masked)</label>
+            <input type="text" id="gpVisId" class="beds-input" placeholder="e.g. Aadhaar •••• 1234">
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label>BALSONS Host Officer <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <input type="text" id="gpVisHost" class="beds-input" placeholder="e.g. Satish Chandra (Project Director)">
+          </div>
+          <div class="form-group">
+            <label>Assigned Department</label>
+            <select id="gpVisDept" class="beds-select">
+              <option value="Heavy Erection Bay 3 (Press Pit)">Heavy Erection Bay 3 (Press Pit)</option>
+              <option value="Line Axle Bay 1">Line Axle Bay 1</option>
+              <option value="Line Wheel Bay 2">Line Wheel Bay 2</option>
+              <option value="HSE & Site Safety Directorate">HSE &amp; Site Safety Directorate</option>
+            </select>
+          </div>
+        </div>
+        <div style="background: rgba(0, 151, 178, 0.06); border: 1px solid rgba(0, 151, 178, 0.2); border-radius: 6px; padding: 8px 12px; margin-bottom: 12px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--beds-teal-primary); margin-bottom: 4px;">PPE Issued:</div>
+          <div style="display: flex; gap: 12px; font-size: 11.5px;">
+            <label><input type="checkbox" id="mChkHelmet" checked> Helmet</label>
+            <label><input type="checkbox" id="mChkVest" checked> Hi-Vis Vest</label>
+            <label><input type="checkbox" id="mChkShoes" checked> Steel-Toe Shoes</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Set 3: Vehicle Movement -->
+      <div id="modalFormSet-VEHICLE" style="display: none;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label>Vehicle Reg Number <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <input type="text" id="gpVehReg" class="beds-input" placeholder="e.g. OD-02-AX-8910">
+          </div>
+          <div class="form-group">
+            <label>Vehicle Configuration <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <select id="gpVehType" class="beds-select">
+              <option value="Hydraulic Multi-Axle Modular Trailer (SPMT)">Hydraulic Multi-Axle Modular Trailer (SPMT)</option>
+              <option value="Low-Bed Heavy Machinery Trailer">Low-Bed Heavy Machinery Trailer</option>
+              <option value="Mobile Hydraulic Crane (100T-250T)">Mobile Hydraulic Crane (100T-250T)</option>
+              <option value="Commercial 16-Tonne Transport Truck">Commercial 16-Tonne Transport Truck</option>
+            </select>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label>Driver Full Name <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <input type="text" id="gpVehDriver" class="beds-input" placeholder="e.g. Manoj Sahoo">
+          </div>
+          <div class="form-group">
+            <label>Driver DL Number <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <input type="text" id="gpVehDl" class="beds-input" placeholder="e.g. OD-02-2018-0091244">
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px;">
+          <div class="form-group">
+            <label>Transporter / Fleet Owner <strong style="color:var(--beds-alert-red);">*</strong></label>
+            <input type="text" id="gpVehAgency" class="beds-input" placeholder="e.g. Odisha Heavy Haul Logistics">
+          </div>
+          <div class="form-group">
+            <label>Destination Bay</label>
+            <select id="gpVehBay" class="beds-select">
+              <option value="Bay-3 Heavy Erection Bay">Bay-3 Heavy Erection Bay</option>
+              <option value="Bay-1 Line Axle Bay">Bay-1 Line Axle Bay</option>
+              <option value="Bay-2 Line Wheel Bay">Bay-2 Line Wheel Bay</option>
+            </select>
+          </div>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Item Description & Specifications</label>
-        <input type="text" id="gpItemDescription" placeholder="e.g. 100T Hydraulic Climbing Jack (Double Acting)" required>
+        <label>Security Instructions / Condition Notes</label>
+        <textarea id="gpRemarks" rows="2" class="beds-textarea" placeholder="e.g. Verified by Gate Sentry. Physical serial verified against Form-11 test certificate..."></textarea>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-        <div class="form-group">
-          <label>Quantity & Unit</label>
-          <input type="text" id="gpQty" placeholder="e.g. 2 Nos" required>
-        </div>
-        <div class="form-group">
-          <label>Equipment Serial / Tag No (If Any)</label>
-          <input type="text" id="gpSerialNo" placeholder="e.g. EQ-2026-0001 / BHLS-HJ-100-01">
-        </div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px;">
-        <div class="form-group">
-          <label>Consignee / Destination Vendor</label>
-          <input type="text" id="gpConsignee" placeholder="e.g. Precision Calibrators Kolkata" required>
-        </div>
-        <div class="form-group">
-          <label>Transport Vehicle No</label>
-          <input type="text" id="gpVehicleNo" placeholder="e.g. OD-02-AX-8910" required>
-        </div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;" id="gpRgpSpecificRow">
-        <div class="form-group">
-          <label>Purpose of Dispatch</label>
-          <select id="gpPurpose" class="beds-select">
-            <option value="Third Party Calibration & Certification">Third Party Calibration & Certification</option>
-            <option value="Emergency Workshop Repair & Overhaul">Emergency Workshop Repair & Overhaul</option>
-            <option value="Tool Sharpening / Precision Machining">Tool Sharpening / Precision Machining</option>
-            <option value="Scrap / Metal Recycling Disposal">Scrap / Metal Recycling Disposal</option>
-            <option value="Return to Supplier / Rental Demobilization">Return to Supplier / Rental Demobilization</option>
-          </select>
-        </div>
-        <div class="form-group" id="gpReturnDateField">
-          <label><strong style="color: var(--beds-alert-red);">*</strong> Expected Return Date</label>
-          <input type="date" id="gpExpectedReturnDate" class="beds-input">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Special Dispatch Remarks / Condition Notes</label>
-        <textarea id="gpRemarks" rows="2" class="beds-textarea" placeholder="e.g. Outbound for annual NABL calibration. Sent along with original Form-11 test certificate copy..."></textarea>
-      </div>
-
-      <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px;">
+      <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; border-top: 1px solid var(--beds-border); padding-top: 12px; flex-wrap: wrap;">
         <button type="button" class="btn btn-secondary" onclick="closeCreateGatePassModal()">Cancel</button>
         <button type="submit" class="btn btn-primary" style="font-weight: 700;">
-          Issue Gate Pass
+          💾 Issue Pass
+        </button>
+        <button type="button" class="btn btn-primary" style="background: var(--beds-charcoal-heading); border-color: var(--beds-teal-primary); font-weight: 800;" onclick="handleCreateGatePassModalSubmit(event, true)">
+          🖨️ Issue &amp; Print Pass
         </button>
       </div>
     </form>
   </div>
 </div>
+
+<!-- =========================================================================
+     PRINT PREVIEW MODAL & UNIVERSAL GATE PASS PRINT ENGINE
+     ========================================================================= -->
+<div id="modalPrintGatePass" class="beds-modal-backdrop" style="display: none;">
+  <div class="beds-modal" style="max-width: 880px; max-height: 94vh; display: flex; flex-direction: column; padding: 0; overflow: hidden;">
+    <div class="modal-header" style="background: var(--beds-charcoal-heading); color: #FFFFFF; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 20px;">🖨️</span>
+        <div>
+          <h3 style="font-size: 15px; font-weight: 800; color: #FFFFFF; margin: 0;" id="printModalTitle">
+            Official Gate Pass Print Preview (A4 Single Sheet)
+          </h3>
+          <p style="font-size: 11px; color: #94A3B8; margin: 0;">
+            BALSONS Heavy Lift &amp; Shift • JTRWF Khordha Project
+          </p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn btn-primary btn-sm" onclick="executeGatePassPrint()" style="font-weight: 800; background: var(--beds-teal-primary); border-color: var(--beds-teal-primary); display: inline-flex; align-items: center; gap: 6px;">
+          🖨️ Print Document (A4)
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closePrintGatePassModal()" style="color: #FFFFFF; border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.1);">
+          ✕ Close
+        </button>
+      </div>
+    </div>
+    
+    <div class="modal-body" style="padding: 24px; overflow-y: auto; background: #E2E8F0; flex: 1;">
+      <!-- Scaled Document Canvas -->
+      <div id="printSheetCanvas" style="max-width: 780px; margin: 0 auto; background: #FFFFFF; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+        <!-- Injected by renderGatePassPrintDocument() -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HIDDEN PRINT CONTAINER (TARGET FOR window.print()) -->
+<div id="printableGatePassContainer" style="display: none;"></div>
 
 <!-- Acknowledge Return Modal (RGP Close-Out) -->
 <div id="modalAcknowledgeReturn" class="beds-modal-backdrop" style="display: none;">
@@ -2632,9 +3229,20 @@
 <script src="assets/js/dossier-360.js"></script>
 <script src="assets/js/beds-superadmin.js"></script>
   <script src="assets/js/beds-portal-login.js"></script>
+  <script src="assets/js/balsons-docs-manager.js"></script>
   <script src="assets/js/beds-workspace.js"></script>
 <script>
-  function switchTab(tabName) {
+  function switchTab(rawTabName) {
+    let tabName = rawTabName;
+    // Smart alias resolution for error-free tab navigation
+    if (tabName === 'clearance') tabName = 'gate-safety-clearance';
+    else if (tabName === 'vehicles') tabName = 'inward';
+    else if (tabName === 'materials') tabName = 'challan';
+    else if (tabName === 'dossier') tabName = 'gate-dossier-360';
+    else if (tabName === 'pass' || tabName === 'gatepass-register') tabName = 'gatepass';
+    else if (tabName === 'issue' || tabName === 'studio' || tabName === 'new-pass') tabName = 'issue-gatepass';
+    else if (tabName === 'docs' || tabName === 'doc' || tabName === 'vault') tabName = 'documents';
+
     // Direct nav tabs
     document.querySelectorAll('nav button.beds-nav-tab').forEach(b => {
       if (b.getAttribute('data-target') === tabName) b.classList.add('active');
@@ -2661,13 +3269,32 @@
     // Switch section views
     document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
     const targetSec = document.getElementById('tab-' + tabName);
-    if (targetSec) targetSec.classList.add('active');
+    if (targetSec) {
+      targetSec.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      console.warn(`[BEDS Navigation] Target section #tab-${tabName} not found, falling back to #tab-radar`);
+      const radarSec = document.getElementById('tab-radar');
+      if (radarSec) radarSec.classList.add('active');
+    }
 
-    if (tabName === 'gate-safety-clearance') {
-      renderGateSafetyDirectory();
-      verifyGateSecurityClearance('EMP-2026-0001');
-    } else if (tabName === 'gate-dossier-360') {
-      loadGate360DossierPage('EMP-2026-0001');
+    try {
+      if (tabName === 'documents' && window.BalsonsDocs) {
+        window.BalsonsDocs.renderDocumentsTab('tab-documents');
+      }
+    } catch (e) {
+      console.warn('Documents tab render error:', e);
+    }
+
+    try {
+      if (tabName === 'gate-safety-clearance') {
+        renderGateSafetyDirectory();
+        verifyGateSecurityClearance('EMP-2026-0001');
+      } else if (tabName === 'gate-dossier-360') {
+        loadGate360DossierPage('EMP-2026-0001');
+      }
+    } catch (e) {
+      console.warn('Safety tab render error:', e);
     }
   }
 
@@ -2878,49 +3505,44 @@
   const themeBtn = document.getElementById('themeBtn');
   if (themeBtn) themeBtn.textContent = savedTheme === 'light' ? '🌙 Dark' : '☀️ Light';
 
-  // Auto-check session on load
+  // Auto-check session on load & Safe Subsystem Initialization
   window.addEventListener('DOMContentLoaded', () => {
-    if (window.BalsonsSAMAuth) {
-      BalsonsSAMAuth.renderGlobalSuperAdminBar('gate_entry', (newSession) => {
-        window.location.reload();
-      });
-      const samSession = BalsonsSAMAuth.getSession();
-      if (samSession && BalsonsSAMAuth.canAccessPortal('gate_entry')) {
+    try {
+      if (window.BalsonsSAMAuth) {
+        BalsonsSAMAuth.renderGlobalSuperAdminBar('gate_entry', (newSession) => {
+          window.location.reload();
+        });
+        const samSession = BalsonsSAMAuth.getSession();
+        if (samSession && BalsonsSAMAuth.canAccessPortal('gate_entry')) {
+          const loginM = document.getElementById('loginModal');
+          if (loginM) loginM.style.display = 'none';
+          renderUserSession({
+            username: samSession.username,
+            fullName: samSession.fullName,
+            role: samSession.role === 'SUPER_ADMIN' ? 'Owner / Super Admin' : (samSession.roleInfo ? samSession.roleInfo.title : 'Portal User')
+          });
+        } else if (window.BalsonsAuth && BalsonsAuth.isLoggedIn()) {
+          const loginM = document.getElementById('loginModal');
+          if (loginM) loginM.style.display = 'none';
+          renderUserSession(BalsonsAuth.getUser());
+        }
+      } else if (window.BalsonsAuth && BalsonsAuth.isLoggedIn()) {
         const loginM = document.getElementById('loginModal');
         if (loginM) loginM.style.display = 'none';
-        renderUserSession({
-          username: samSession.username,
-          fullName: samSession.fullName,
-          role: samSession.role === 'SUPER_ADMIN' ? 'Owner / Super Admin' : samSession.roleInfo.title
-        });
-      } else if (BalsonsAuth.isLoggedIn()) {
-        document.getElementById('loginModal').style.display = 'none';
         renderUserSession(BalsonsAuth.getUser());
-      } else {
-        document.getElementById('loginModal').style.display = 'flex';
       }
-    } else if (BalsonsAuth.isLoggedIn()) {
-      document.getElementById('loginModal').style.display = 'none';
-      renderUserSession(BalsonsAuth.getUser());
-    } else {
-      document.getElementById('loginModal').style.display = 'flex';
+    } catch (authErr) {
+      console.warn('Legacy auth check handled cleanly via BEDS V1.1 Unified Login:', authErr);
     }
 
-    // Init Challan Creator
-    initChallanCreator();
-    // Init Clearance Engine (Phase 4)
-    initClearanceEngine();
-    // Init Physical Gate Transactions & Pass Center (Phase 5)
-    initGateTransactions();
-    // Init Audit Trail (Phase 6)
-    initAuditTrail();
-
-    // Init Master Registries (Phase 3)
-    initMasterRegistries();
-
-    // Init Smart Dropdown Navigation & Safety Directory
-    initGateDropdowns();
-    renderGateSafetyDirectory();
+    // Safe Subsystem Initializers (Resilient Execution)
+    try { initChallanCreator(); } catch (e) { console.warn('Challan Creator init:', e); }
+    try { initClearanceEngine(); } catch (e) { console.warn('Clearance Engine init:', e); }
+    try { initGateTransactions(); } catch (e) { console.warn('Gate Transactions init:', e); }
+    try { initAuditTrail(); } catch (e) { console.warn('Audit Trail init:', e); }
+    try { initMasterRegistries(); } catch (e) { console.warn('Master Registries init:', e); }
+    try { initGateDropdowns(); } catch (e) { console.warn('Dropdowns init:', e); }
+    try { renderGateSafetyDirectory(); } catch (e) { console.warn('Safety Directory init:', e); }
   });
 
   // ─── MATERIAL CHALLAN CREATOR ENGINE ──────────────────────────────
@@ -4154,70 +4776,115 @@ Bay: ${item.targetArea}`);
     }
   ];
 
+  // ─── PHASE 8 ENHANCED MULTI-CATEGORY GATE PASS DATA MODEL ───
   let gatePassData = [
     {
-      passId: 'RGP-2026-0004',
+      passId: 'GP-RGP-2026-0004',
       passType: 'RGP',
       itemDescription: '100T Hydraulic Climbing Jack (Double Acting)',
       serialNo: 'EQ-2026-0001 / BHLS-HJ-100-01',
-      qty: '2 Nos',
-      consignee: 'Precision Calibrators Kolkata',
+      qty: '2 Nos (14.5 MT)',
+      consignee: 'Precision Calibrators Kolkata Pvt Ltd',
       vehicleNo: 'OD-02-AX-8910',
+      purpose: 'Third Party NABL Calibration & Certification',
       dispatchDate: '2026-11-10',
       expectedReturnDate: '2026-11-17', // Overdue!
       actualReturnDate: '',
       approvalStatus: 'APPROVED',
-      approvedBy: 'BALSONS Project Owner',
+      approvedBy: 'Satish Chandra (Project Director)',
+      preparedBy: 'Bikash Mohapatra (Gate In-Charge)',
       gateStatus: 'DISPATCHED_EXITED',
-      remarks: 'Outbound for NABL load cell & gauge recalibration.'
+      remarks: 'Sent with original Form-11 test certificate copy. Mandatory NABL seal check required upon return.'
     },
     {
-      passId: 'RGP-2026-0005',
+      passId: 'GP-RGP-2026-0005',
       passType: 'RGP',
       itemDescription: 'Multi-Gas Detector 4-Gas Kit (LEL, O2, CO, H2S)',
       serialNo: 'EQ-2026-0018 / GD-04',
       qty: '1 Set',
-      consignee: 'Dräger India Service Center',
+      consignee: 'Dräger India Technical Service Hub',
       vehicleNo: 'OD-02-AX-8910',
+      purpose: 'Sensor Bump Testing & Recalibration',
       dispatchDate: '2026-11-18',
       expectedReturnDate: '2026-11-26',
       actualReturnDate: '',
       approvalStatus: 'APPROVED',
-      approvedBy: 'BALSONS Project Owner',
+      approvedBy: 'Gajendra Rao (HSE Lead)',
+      preparedBy: 'Bikash Mohapatra (Gate In-Charge)',
       gateStatus: 'DISPATCHED_EXITED',
-      remarks: 'Bump testing & sensor calibration.'
+      remarks: 'Calibration for Bay-3 confined space erection operations.'
     },
     {
-      passId: 'NRGP-2026-0019',
+      passId: 'GP-NRGP-2026-0019',
       passType: 'NRGP',
-      itemDescription: 'Empty Hydraulic Oil Drums (Cleaned & De-gassed)',
-      serialNo: 'N/A',
-      qty: '18 Drums',
-      consignee: 'Mahavir Metal & Drum Recyclers',
+      itemDescription: 'Cleaned Scrap Steel Plate Offcuts & Empty De-gassed Drums',
+      serialNo: 'SCRAP-LOT-04',
+      qty: '18 Drums (3.4 MT)',
+      consignee: 'Mahavir Metal & Industrial Recyclers, Cuttack',
       vehicleNo: 'OD-02-N-5512',
+      purpose: 'Approved Scrap Metal Disposal',
       dispatchDate: '2026-11-19',
       expectedReturnDate: 'N/A',
       actualReturnDate: '',
       approvalStatus: 'APPROVED',
-      approvedBy: 'BALSONS Project Owner',
+      approvedBy: 'Gagan Bihari Das (Commercial In-Charge)',
+      preparedBy: 'Ashok Mohanty (Store Supervisor)',
       gateStatus: 'CLEARED_EXITED',
-      remarks: 'Approved scrap metal & barrel disposal under environmental protocol.'
+      remarks: 'Disposal approved under environmental waste protocol. Weighbridge slip attached.'
     },
     {
-      passId: 'RGP-2026-0001',
+      passId: 'GP-VIS-2026-0001',
+      passType: 'VISITOR',
+      itemDescription: 'Visitor: Robert Schneider (Chief Erection Specialist)',
+      serialNo: 'Passport: C7890123 / Masked: •••• 0123',
+      qty: '1 Person',
+      consignee: 'Schuler Group Deutschland GmbH',
+      vehicleNo: 'OD-02-V-1090',
+      purpose: 'Schuler 10000T Railwheel Press Pit Inspection',
+      dispatchDate: '2026-11-22',
+      expectedReturnDate: '2026-11-22 (18:00)',
+      actualReturnDate: '',
+      approvalStatus: 'APPROVED',
+      approvedBy: 'Satish Chandra (Project Director)',
+      preparedBy: 'Pradeep Nayak (Main Gate Sentry)',
+      gateStatus: 'ACTIVE_ON_SITE',
+      remarks: 'Issued Helmet (White), Hi-Vis Vest, Steel-Toe Shoes. Visitor Badge VIS-042.'
+    },
+    {
+      passId: 'GP-VEH-2026-0001',
+      passType: 'VEHICLE',
+      itemDescription: 'Vehicle: Goldhofer Multi-Axle Modular Trailer (SPMT 12-Axle)',
+      serialNo: 'Driver: Manoj Sahoo (DL: OD-02-2018-0091244)',
+      qty: '1 Unit (Axle Set)',
+      consignee: 'Odisha Heavy Haul Logistics Pvt Ltd',
+      vehicleNo: 'OD-02-AX-8910',
+      purpose: 'Heavy Press Bed-Plate Haulage into Bay 3',
+      dispatchDate: '2026-11-22',
+      expectedReturnDate: '2026-11-22 (20:00)',
+      actualReturnDate: '',
+      approvalStatus: 'APPROVED',
+      approvedBy: 'Satish Chandra (Project Director)',
+      preparedBy: 'Bikash Mohapatra (Gate In-Charge)',
+      gateStatus: 'IN_UNLOADING_BAY',
+      remarks: 'Fitness valid till 2027-04. Speed limit 15 km/h strictly enforced.'
+    },
+    {
+      passId: 'GP-RGP-2026-0001',
       passType: 'RGP',
-      itemDescription: 'Laser Shaft Alignment Tool Kit',
+      itemDescription: 'Laser Shaft Alignment Tool Kit (Dual Sensor)',
       serialNo: 'EQ-2026-0009',
       qty: '1 Set',
-      consignee: 'Faro Technologies India',
+      consignee: 'Faro Technologies India Pvt Ltd',
       vehicleNo: 'OD-02-AX-8910',
+      purpose: 'Annual Calibration & Precision Optical Check',
       dispatchDate: '2026-11-01',
       expectedReturnDate: '2026-11-10',
       actualReturnDate: '2026-11-09',
       approvalStatus: 'APPROVED',
-      approvedBy: 'BALSONS Project Owner',
+      approvedBy: 'Satish Chandra (Project Director)',
+      preparedBy: 'Bikash Mohapatra (Gate In-Charge)',
       gateStatus: 'RETURNED_CLOSED',
-      remarks: 'Returned verified in good working order.'
+      remarks: 'Returned in good working order. Calibration certificate archived in Store.'
     }
   ];
 
@@ -4227,247 +4894,554 @@ Bay: ${item.targetArea}`);
     renderInwardView();
     renderGatePassView();
     updateRadarMetrics();
+    initStudioPassDefaults();
   }
 
-  // ─── MATERIAL INWARD FUNCTIONS ───────────────────────────────────────
-  function loadInwardPreset(preset) {
-    if (preset === 'schuler_cyl') {
-      document.getElementById('inwPoNumber').value = 'PO-JTRWF-2026-041';
-      document.getElementById('inwDcNumber').value = 'DC-SCH-' + Math.floor(1000 + Math.random() * 9000);
-      document.getElementById('inwVendorName').value = 'Schuler AG Germany';
-      document.getElementById('inwTransporter').value = 'VRL Heavy Logistics';
-      document.getElementById('inwVehicleNo').value = 'OD-02-AK-9811';
-      document.getElementById('inwDriverInfo').value = 'Manoj Sahoo • 9876543210';
-      document.getElementById('inwItemSummary').value = 'Hydraulic Cylinder Assembly (100T) for Press Pit';
-      document.getElementById('inwQty').value = '2 Nos (14.5 MT)';
-      document.getElementById('inwAllocatedBay').value = 'Main Press Pit (Bay-3)';
-    } else if (preset === 'gantry_rails') {
-      document.getElementById('inwPoNumber').value = 'PO-JTRWF-2026-055';
-      document.getElementById('inwDcNumber').value = 'DC-FER-' + Math.floor(1000 + Math.random() * 9000);
-      document.getElementById('inwVendorName').value = 'Ferroterro Rigging Kolkata';
-      document.getElementById('inwTransporter').value = 'Tata Logistics';
-      document.getElementById('inwVehicleNo').value = 'WB-19-B-7744';
-      document.getElementById('inwDriverInfo').value = 'Pintu Das • 9831122334';
-      document.getElementById('inwItemSummary').value = 'Overhead Gantry Crane Runway Rail Sections';
-      document.getElementById('inwQty').value = '12 Rails (8.2 MT)';
-      document.getElementById('inwAllocatedBay').value = 'Overhead Gantry Runway (Bay-1)';
-    } else if (preset === 'direct_consumables') {
-      document.getElementById('inwPoNumber').value = 'PO-JTRWF-2026-088';
-      document.getElementById('inwDcNumber').value = 'INV-STA-' + Math.floor(1000 + Math.random() * 9000);
-      document.getElementById('inwVendorName').value = 'Stanley Black & Decker';
-      document.getElementById('inwTransporter').value = 'BlueDart Express';
-      document.getElementById('inwVehicleNo').value = 'OD-05-F-1200';
-      document.getElementById('inwDriverInfo').value = 'Rajesh Nayak • 9937012345';
-      document.getElementById('inwItemSummary').value = 'Heavy Rigging Wire Rope Grips & Shackle Bolts';
-      document.getElementById('inwQty').value = '40 Boxes';
-      document.getElementById('inwAllocatedBay').value = 'Central Project Store';
+  // ─── DYNAMIC GATE PASS STUDIO & MODAL CONTROLLERS ───────────────────
+  function initStudioPassDefaults() {
+    const today = new Date();
+    const todayStr = today.toISOString().slice(0, 10);
+    const timeStr = today.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+    
+    const issueDateEl = document.getElementById('studioIssueDate');
+    if (issueDateEl) issueDateEl.value = todayStr + ' ' + timeStr;
+
+    const returnDateEl = document.getElementById('studioReturnDate');
+    if (returnDateEl) {
+      const nextWeek = new Date();
+      nextWeek.setDate(nextWeek.getDate() + 7);
+      returnDateEl.value = nextWeek.toISOString().slice(0, 10);
+    }
+
+    const passIdEl = document.getElementById('studioPassId');
+    if (passIdEl && !passIdEl.value) {
+      passIdEl.value = 'GP-RGP-2026-' + String(Math.floor(1000 + Math.random() * 9000));
+    }
+
+    selectStudioCategory('RGP');
+    renderModalPresets('RGP');
+  }
+
+  function selectStudioCategory(cat) {
+    const hiddenEl = document.getElementById('studioCategory');
+    if (hiddenEl) hiddenEl.value = cat;
+
+    // Update Cat Buttons
+    document.querySelectorAll('.gp-cat-btn').forEach(btn => {
+      btn.classList.remove('active');
+      btn.style.borderColor = 'var(--beds-border)';
+      btn.style.background = 'var(--beds-bg-page)';
+      btn.style.color = 'var(--beds-text-primary)';
+    });
+
+    const activeBtn = document.getElementById('tabCatBtn-' + cat);
+    if (activeBtn) {
+      activeBtn.classList.add('active');
+      activeBtn.style.borderColor = 'var(--beds-teal-primary)';
+      activeBtn.style.background = 'rgba(0,151,178,0.12)';
+      activeBtn.style.color = 'var(--beds-teal-primary)';
+    }
+
+    // Toggle Form Sections
+    const secMat = document.getElementById('studioSection-MATERIAL');
+    const secVis = document.getElementById('studioSection-VISITOR');
+    const secVeh = document.getElementById('studioSection-VEHICLE');
+    const wrapRet = document.getElementById('studioWrapReturnDate');
+
+    if (secMat) secMat.style.display = (cat === 'RGP' || cat === 'NRGP') ? 'block' : 'none';
+    if (secVis) secVis.style.display = (cat === 'VISITOR') ? 'block' : 'none';
+    if (secVeh) secVeh.style.display = (cat === 'VEHICLE') ? 'block' : 'none';
+    if (wrapRet) wrapRet.style.display = (cat === 'RGP') ? 'block' : 'none';
+
+    // Update Pass ID prefix
+    const passIdEl = document.getElementById('studioPassId');
+    if (passIdEl) {
+      passIdEl.value = 'GP-' + cat + '-2026-' + String(Math.floor(1000 + Math.random() * 9000));
+    }
+
+    updateStudioPreview();
+  }
+
+  function selectModalCategory(cat) {
+    const hiddenEl = document.getElementById('modalCategory');
+    if (hiddenEl) hiddenEl.value = cat;
+
+    const pill = document.getElementById('modalCatPill');
+    if (pill) {
+      const titles = {
+        'RGP': 'RGP (Returnable Material)',
+        'NRGP': 'NRGP (Outward Material / Scrap)',
+        'VISITOR': 'Visitor / Contractor Site Access',
+        'VEHICLE': 'Vehicle / Fleet Movement'
+      };
+      pill.textContent = titles[cat] || cat;
+    }
+
+    document.querySelectorAll('.modal-cat-btn').forEach(btn => {
+      btn.classList.remove('active');
+      btn.style.borderColor = 'var(--beds-border)';
+      btn.style.background = 'var(--beds-bg-page)';
+      btn.style.color = 'var(--beds-text-primary)';
+    });
+
+    const activeBtn = document.getElementById('modalCatBtn-' + cat);
+    if (activeBtn) {
+      activeBtn.classList.add('active');
+      activeBtn.style.borderColor = 'var(--beds-teal-primary)';
+      activeBtn.style.background = 'rgba(0,151,178,0.12)';
+      activeBtn.style.color = 'var(--beds-teal-primary)';
+    }
+
+    const secMat = document.getElementById('modalFormSet-MATERIAL');
+    const secVis = document.getElementById('modalFormSet-VISITOR');
+    const secVeh = document.getElementById('modalFormSet-VEHICLE');
+    const retField = document.getElementById('gpReturnDateField');
+
+    if (secMat) secMat.style.display = (cat === 'RGP' || cat === 'NRGP') ? 'block' : 'none';
+    if (secVis) secVis.style.display = (cat === 'VISITOR') ? 'block' : 'none';
+    if (secVeh) secVeh.style.display = (cat === 'VEHICLE') ? 'block' : 'none';
+    if (retField) retField.style.display = (cat === 'RGP') ? 'block' : 'none';
+
+    renderModalPresets(cat);
+  }
+
+  function renderModalPresets(cat) {
+    const container = document.getElementById('modalPresetsContainer');
+    if (!container) return;
+    if (cat === 'RGP') {
+      container.innerHTML = `
+        <button type="button" class="btn btn-secondary btn-sm" style="font-size:10.5px; padding:3px 8px;" onclick="applyModalPreset('RGP_JACK')">⚡ 100T Jack</button>
+        <button type="button" class="btn btn-secondary btn-sm" style="font-size:10.5px; padding:3px 8px;" onclick="applyModalPreset('RGP_LASER')">⚡ Laser Align Kit</button>
+      `;
+    } else if (cat === 'NRGP') {
+      container.innerHTML = `
+        <button type="button" class="btn btn-secondary btn-sm" style="font-size:10.5px; padding:3px 8px;" onclick="applyModalPreset('NRGP_SCRAP')">⚡ Scrap Metal &amp; Drums</button>
+        <button type="button" class="btn btn-secondary btn-sm" style="font-size:10.5px; padding:3px 8px;" onclick="applyModalPreset('NRGP_BOXES')">⚡ Consumables Dispatch</button>
+      `;
+    } else if (cat === 'VISITOR') {
+      container.innerHTML = `
+        <button type="button" class="btn btn-secondary btn-sm" style="font-size:10.5px; padding:3px 8px;" onclick="applyModalPreset('VIS_SCHULER')">⚡ Schuler Inspector</button>
+        <button type="button" class="btn btn-secondary btn-sm" style="font-size:10.5px; padding:3px 8px;" onclick="applyModalPreset('VIS_SAFETY')">⚡ Client HSE Auditor</button>
+      `;
+    } else if (cat === 'VEHICLE') {
+      container.innerHTML = `
+        <button type="button" class="btn btn-secondary btn-sm" style="font-size:10.5px; padding:3px 8px;" onclick="applyModalPreset('VEH_SPMT')">⚡ 12-Axle SPMT Trailer</button>
+        <button type="button" class="btn btn-secondary btn-sm" style="font-size:10.5px; padding:3px 8px;" onclick="applyModalPreset('VEH_CRANE')">⚡ 150T Mobile Crane</button>
+      `;
     }
   }
 
-  async function handleInwardSubmit(event) {
+  function applyStudioPreset(key) {
+    if (key === 'RGP_JACK') {
+      selectStudioCategory('RGP');
+      document.getElementById('studioItemDesc').value = '100T Hydraulic Climbing Jack (Double Acting)';
+      document.getElementById('studioQty').value = '2 Nos (14.5 MT)';
+      document.getElementById('studioSerial').value = 'EQ-2026-0001 / BHLS-HJ-100-01';
+      document.getElementById('studioConsignee').value = 'Precision Calibrators Kolkata Pvt Ltd';
+      document.getElementById('studioVehicleNo').value = 'OD-02-AX-8910';
+      document.getElementById('studioPurpose').value = 'Third Party NABL Calibration & Certification';
+      document.getElementById('studioRemarks').value = 'Annual NABL calibration. Sent along with original Form-11 test certificate copy.';
+    } else if (key === 'NRGP_SCRAP') {
+      selectStudioCategory('NRGP');
+      document.getElementById('studioItemDesc').value = 'Scrap Steel Plate Offcuts & Empty De-gassed Hydraulic Drums';
+      document.getElementById('studioQty').value = '18 Drums (3.4 MT)';
+      document.getElementById('studioSerial').value = 'SCRAP-LOT-04';
+      document.getElementById('studioConsignee').value = 'Mahavir Metal & Industrial Recyclers, Cuttack';
+      document.getElementById('studioVehicleNo').value = 'OD-02-N-5512';
+      document.getElementById('studioPurpose').value = 'Scrap Metal & Waste Oil Disposal';
+      document.getElementById('studioRemarks').value = 'Approved scrap disposal under site environmental protocol. Weighbridge slip attached.';
+    } else if (key === 'VISITOR_INSPECT') {
+      selectStudioCategory('VISITOR');
+      document.getElementById('studioVisName').value = 'Robert Schneider';
+      document.getElementById('studioVisPhone').value = '+91 98765 43210';
+      document.getElementById('studioVisOrg').value = 'Schuler Group Deutschland GmbH';
+      document.getElementById('studioVisId').value = 'Passport •••• 0123';
+      document.getElementById('studioVisHost').value = 'Satish Chandra (Project Director)';
+      document.getElementById('studioVisDept').value = 'Heavy Erection Bay 3 (Press Pit)';
+      document.getElementById('studioRemarks').value = 'Technical alignment inspection for Schuler 10000T Railwheel Press Pit.';
+    } else if (key === 'VEHICLE_PULLER') {
+      selectStudioCategory('VEHICLE');
+      document.getElementById('studioVehReg').value = 'OD-02-AX-8910';
+      document.getElementById('studioVehType').value = 'Hydraulic Multi-Axle Modular Trailer (SPMT)';
+      document.getElementById('studioVehDriver').value = 'Manoj Sahoo';
+      document.getElementById('studioVehDriverPhone').value = '+91 98765 43210';
+      document.getElementById('studioVehDl').value = 'OD-02-2018-0091244';
+      document.getElementById('studioVehAgency').value = 'Odisha Heavy Haul Logistics Pvt Ltd';
+      document.getElementById('studioVehBay').value = 'Bay-3 Heavy Erection Bay (Schuler Press)';
+      document.getElementById('studioRemarks').value = 'Heavy press bed-plate haulage. Maximum speed limit 15 km/h strictly enforced.';
+    }
+    updateStudioPreview();
+  }
+
+  function applyModalPreset(key) {
+    if (key === 'RGP_JACK') {
+      document.getElementById('gpItemDescription').value = '100T Hydraulic Climbing Jack (Double Acting)';
+      document.getElementById('gpQty').value = '2 Nos';
+      document.getElementById('gpSerialNo').value = 'EQ-2026-0001 / BHLS-HJ-100-01';
+      document.getElementById('gpConsignee').value = 'Precision Calibrators Kolkata';
+      document.getElementById('gpVehicleNo').value = 'OD-02-AX-8910';
+      document.getElementById('gpPurpose').value = 'Third Party NABL Calibration & Certification';
+      document.getElementById('gpRemarks').value = 'Annual NABL calibration.';
+    } else if (key === 'RGP_LASER') {
+      document.getElementById('gpItemDescription').value = 'Laser Shaft Alignment Tool Kit (Dual Sensor)';
+      document.getElementById('gpQty').value = '1 Set';
+      document.getElementById('gpSerialNo').value = 'EQ-2026-0009';
+      document.getElementById('gpConsignee').value = 'Faro Technologies India';
+      document.getElementById('gpVehicleNo').value = 'OD-02-AX-8910';
+      document.getElementById('gpPurpose').value = 'Third Party NABL Calibration & Certification';
+      document.getElementById('gpRemarks').value = 'Annual calibration check.';
+    } else if (key === 'NRGP_SCRAP') {
+      document.getElementById('gpItemDescription').value = 'Empty Cleaned Hydraulic Drums & Scrap Steel Plates';
+      document.getElementById('gpQty').value = '18 Drums (3.4 MT)';
+      document.getElementById('gpSerialNo').value = 'SCRAP-04';
+      document.getElementById('gpConsignee').value = 'Mahavir Metal Recyclers Cuttack';
+      document.getElementById('gpVehicleNo').value = 'OD-02-N-5512';
+      document.getElementById('gpPurpose').value = 'Scrap Metal & Waste Oil Disposal';
+      document.getElementById('gpRemarks').value = 'Approved scrap disposal under site HSE protocol.';
+    } else if (key === 'VIS_SCHULER') {
+      document.getElementById('gpVisName').value = 'Robert Schneider';
+      document.getElementById('gpVisPhone').value = '+91 98765 43210';
+      document.getElementById('gpVisOrg').value = 'Schuler Group Deutschland';
+      document.getElementById('gpVisId').value = 'Passport •••• 0123';
+      document.getElementById('gpVisHost').value = 'Satish Chandra (Project Director)';
+      document.getElementById('gpRemarks').value = 'Technical inspection for 10000T Press Pit.';
+    } else if (key === 'VEH_SPMT') {
+      document.getElementById('gpVehReg').value = 'OD-02-AX-8910';
+      document.getElementById('gpVehType').value = 'Hydraulic Multi-Axle Modular Trailer (SPMT)';
+      document.getElementById('gpVehDriver').value = 'Manoj Sahoo';
+      document.getElementById('gpVehDl').value = 'OD-02-2018-0091244';
+      document.getElementById('gpVehAgency').value = 'Odisha Heavy Haul Logistics';
+      document.getElementById('gpRemarks').value = 'Heavy haul transport clearance.';
+    }
+  }
+
+  function resetStudioForm() {
+    document.getElementById('studioGatePassForm').reset();
+    initStudioPassDefaults();
+  }
+
+  // ─── LIVE PREVIEW RENDERING ENGINE ──────────────────────────────────
+  function updateStudioPreview() {
+    const container = document.getElementById('studioLivePreviewWrap');
+    if (!container) return;
+
+    const cat = (document.getElementById('studioCategory') ? document.getElementById('studioCategory').value : 'RGP');
+    const passId = (document.getElementById('studioPassId') ? document.getElementById('studioPassId').value : 'GP-' + cat + '-2026-0001');
+    const issueDate = (document.getElementById('studioIssueDate') ? document.getElementById('studioIssueDate').value : new Date().toISOString().slice(0, 10));
+
+    let bannerBg = '#0097B2';
+    let bannerTitle = 'RETURNABLE MATERIAL GATE PASS (RGP)';
+    let bannerSub = 'Statutory Outward Movement for Plant / Tools Returning to Site';
+
+    if (cat === 'NRGP') {
+      bannerBg = '#102D35';
+      bannerTitle = 'NON-RETURNABLE MATERIAL GATE PASS (NRGP)';
+      bannerSub = 'Permanent Outward Clearance for Scrap / Consumables / Disposal';
+    } else if (cat === 'VISITOR') {
+      bannerBg = '#1E40AF';
+      bannerTitle = 'OFFICIAL VISITOR & CONTRACTOR SITE ACCESS PASS';
+      bannerSub = 'Temporary JTRWF Site Clearance & Personnel Access Authorization';
+    } else if (cat === 'VEHICLE') {
+      bannerBg = '#D97706';
+      bannerTitle = 'VEHICLE & FLEET MOVEMENT CLEARANCE PASS';
+      bannerSub = 'Heavy Haul, SPMT, Mobile Crane & Commercial Transport Clearance';
+    }
+
+    let bodyHtml = '';
+
+    if (cat === 'RGP' || cat === 'NRGP') {
+      const item = (document.getElementById('studioItemDesc') ? document.getElementById('studioItemDesc').value : '') || '100T Hydraulic Climbing Jack (Double Acting)';
+      const qty = (document.getElementById('studioQty') ? document.getElementById('studioQty').value : '') || '2 Nos (14.5 MT)';
+      const serial = (document.getElementById('studioSerial') ? document.getElementById('studioSerial').value : '') || 'EQ-2026-0001';
+      const consignee = (document.getElementById('studioConsignee') ? document.getElementById('studioConsignee').value : '') || 'Precision Calibrators Kolkata';
+      const veh = (document.getElementById('studioVehicleNo') ? document.getElementById('studioVehicleNo').value : '') || 'OD-02-AX-8910';
+      const purpose = (document.getElementById('studioPurpose') ? document.getElementById('studioPurpose').value : '') || 'Third Party NABL Calibration & Certification';
+      const expReturn = (cat === 'RGP' && document.getElementById('studioReturnDate')) ? document.getElementById('studioReturnDate').value : 'N/A (Permanent Outward)';
+
+      bodyHtml = `
+        <table style="width:100%; border-collapse:collapse; font-size:11px; margin-bottom:12px; border:1px solid #CBD5E1;">
+          <tr style="background:#F8FAFC;">
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left; width:28%;">Material Description:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1; font-weight:700;">${escapeHtml(item)}</td>
+          </tr>
+          <tr>
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">Quantity &amp; Serial:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1;"><strong>${escapeHtml(qty)}</strong> &bull; Serial: ${escapeHtml(serial)}</td>
+          </tr>
+          <tr style="background:#F8FAFC;">
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">Consignee / Destination:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1;">${escapeHtml(consignee)}</td>
+          </tr>
+          <tr>
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">Carrier / Vehicle No:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1; font-family:monospace; font-weight:700;">${escapeHtml(veh)}</td>
+          </tr>
+          <tr style="background:#F8FAFC;">
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">Purpose of Movement:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1;">${escapeHtml(purpose)}</td>
+          </tr>
+          <tr>
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">Expected Inward Return:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1; color:${cat === 'RGP' ? 'var(--beds-teal-primary)' : '#64748B'}; font-weight:700;">${escapeHtml(expReturn)}</td>
+          </tr>
+        </table>
+      `;
+    } else if (cat === 'VISITOR') {
+      const name = (document.getElementById('studioVisName') ? document.getElementById('studioVisName').value : '') || 'Robert Schneider';
+      const phone = (document.getElementById('studioVisPhone') ? document.getElementById('studioVisPhone').value : '') || '+91 98765 43210';
+      const org = (document.getElementById('studioVisOrg') ? document.getElementById('studioVisOrg').value : '') || 'Schuler Group Deutschland';
+      const idNum = (document.getElementById('studioVisId') ? document.getElementById('studioVisId').value : '') || 'Passport •••• 0123';
+      const host = (document.getElementById('studioVisHost') ? document.getElementById('studioVisHost').value : '') || 'Satish Chandra (Project Director)';
+      const dept = (document.getElementById('studioVisDept') ? document.getElementById('studioVisDept').value : '') || 'Heavy Erection Bay 3 (Press Pit)';
+
+      bodyHtml = `
+        <table style="width:100%; border-collapse:collapse; font-size:11px; margin-bottom:12px; border:1px solid #CBD5E1;">
+          <tr style="background:#F8FAFC;">
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left; width:28%;">Visitor Full Name:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1; font-weight:700;">${escapeHtml(name)} (${escapeHtml(phone)})</td>
+          </tr>
+          <tr>
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">Organization / Vendor:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1; font-weight:700;">${escapeHtml(org)}</td>
+          </tr>
+          <tr style="background:#F8FAFC;">
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">Photo ID Reference:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1; font-family:monospace;">${escapeHtml(idNum)}</td>
+          </tr>
+          <tr>
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">BALSONS Host Officer:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1;">${escapeHtml(host)} &bull; ${escapeHtml(dept)}</td>
+          </tr>
+          <tr style="background:#F8FAFC;">
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">PPE Clearance Status:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1; color:#10B981; font-weight:700;">✅ Helmet, Hi-Vis Vest &amp; Steel-Toe Shoes Issued</td>
+          </tr>
+        </table>
+      `;
+    } else if (cat === 'VEHICLE') {
+      const vehReg = (document.getElementById('studioVehReg') ? document.getElementById('studioVehReg').value : '') || 'OD-02-AX-8910';
+      const vehType = (document.getElementById('studioVehType') ? document.getElementById('studioVehType').value : '') || 'Hydraulic Multi-Axle Modular Trailer (SPMT)';
+      const driver = (document.getElementById('studioVehDriver') ? document.getElementById('studioVehDriver').value : '') || 'Manoj Sahoo';
+      const dl = (document.getElementById('studioVehDl') ? document.getElementById('studioVehDl').value : '') || 'OD-02-2018-0091244';
+      const agency = (document.getElementById('studioVehAgency') ? document.getElementById('studioVehAgency').value : '') || 'Odisha Heavy Haul Logistics Pvt Ltd';
+      const bay = (document.getElementById('studioVehBay') ? document.getElementById('studioVehBay').value : '') || 'Bay-3 Heavy Erection Bay (Schuler Press)';
+
+      bodyHtml = `
+        <table style="width:100%; border-collapse:collapse; font-size:11px; margin-bottom:12px; border:1px solid #CBD5E1;">
+          <tr style="background:#F8FAFC;">
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left; width:28%;">Vehicle Reg Number:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1; font-family:monospace; font-weight:800; font-size:12px;">${escapeHtml(vehReg)}</td>
+          </tr>
+          <tr>
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">Machinery / Type:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1; font-weight:700;">${escapeHtml(vehType)}</td>
+          </tr>
+          <tr style="background:#F8FAFC;">
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">Driver &amp; Commercial DL:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1;">${escapeHtml(driver)} &bull; DL: ${escapeHtml(dl)}</td>
+          </tr>
+          <tr>
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">Fleet Owner / Agency:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1;">${escapeHtml(agency)}</td>
+          </tr>
+          <tr style="background:#F8FAFC;">
+            <th style="padding:5px 8px; border:1px solid #CBD5E1; text-align:left;">Assigned Unloading Bay:</th>
+            <td style="padding:5px 8px; border:1px solid #CBD5E1; font-weight:700;">${escapeHtml(bay)}</td>
+          </tr>
+        </table>
+      `;
+    }
+
+    container.innerHTML = `
+      <!-- DOCUMENT HEADER -->
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; border-bottom:1.5px solid #102D35; padding-bottom:8px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <img src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='assets/images/LOGO.png'" style="height:32px; width:auto; object-fit:contain;" alt="BALSONS Logo">
+          <div>
+            <div style="font-size:12.5px; font-weight:900; color:#102D35; line-height:1.1;">BALSONS HEAVY LIFT &amp; SHIFT</div>
+            <div style="font-size:9.5px; color:#0097B2; font-weight:700; text-transform:uppercase; letter-spacing:0.4px;">JTRWF Khordha Base &bull; Site Access Security</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:11.5px; font-weight:800; font-family:monospace; color:#102D35;">${passId}</div>
+          <div style="font-size:9.5px; color:#64748B;">${issueDate}</div>
+        </div>
+      </div>
+
+      <!-- CATEGORY BANNER -->
+      <div style="background:${bannerBg}; color:#FFFFFF; padding:6px 10px; border-radius:4px; text-align:center; margin-bottom:10px;">
+        <div style="font-size:11.5px; font-weight:900; letter-spacing:0.5px;">${bannerTitle}</div>
+        <div style="font-size:9px; opacity:0.9; margin-top:1px;">${bannerSub}</div>
+      </div>
+
+      <!-- MAIN DATA -->
+      ${bodyHtml}
+
+      <!-- SIGNATURE BLOCKS -->
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:14px; padding-top:8px; border-top:1px solid #E2E8F0; font-size:9.5px; text-align:center;">
+        <div>
+          <div style="height:24px; border-bottom:1px dashed #94A3B8; margin-bottom:4px;"></div>
+          <strong>Initiator / Store Head</strong>
+        </div>
+        <div>
+          <div style="height:24px; border-bottom:1px dashed #94A3B8; margin-bottom:4px;"></div>
+          <strong>Project Directorate</strong>
+        </div>
+        <div>
+          <div style="height:24px; border-bottom:1px dashed #94A3B8; margin-bottom:4px;"></div>
+          <strong>Gate Sentry Stamp</strong>
+        </div>
+      </div>
+    `;
+  }
+
+  // ─── GATE PASS SUBMISSION HANDLERS ──────────────────────────────────
+  async function handleStudioGatePassSubmit(event, andPrint) {
     if (event) event.preventDefault();
 
-    const po = document.getElementById('inwPoNumber').value.trim();
-    const dc = document.getElementById('inwDcNumber').value.trim();
-    const vendor = document.getElementById('inwVendorName').value.trim();
-    const transporter = document.getElementById('inwTransporter').value.trim();
-    const veh = document.getElementById('inwVehicleNo').value.trim().toUpperCase();
-    const driver = document.getElementById('inwDriverInfo').value.trim();
-    const item = document.getElementById('inwItemSummary').value.trim();
-    const qty = document.getElementById('inwQty').value.trim();
-    const bay = document.getElementById('inwAllocatedBay').value;
-    const gate = document.getElementById('inwGateNo').value;
-
-    const newId = 'IGE-2026-' + String(Math.floor(1000 + Math.random() * 9000));
+    const cat = (document.getElementById('studioCategory') ? document.getElementById('studioCategory').value : 'RGP');
+    const passId = (document.getElementById('studioPassId') ? document.getElementById('studioPassId').value : 'GP-' + cat + '-2026-' + Math.floor(1000 + Math.random() * 9000));
     const nowIso = new Date().toISOString();
+    const todayStr = nowIso.slice(0, 10);
 
-    const newRec = {
-      inwardId: newId,
-      poNumber: po,
-      dcNumber: dc,
-      vendorName: vendor,
-      transporter: transporter,
-      vehicleNo: veh,
-      driverInfo: driver,
-      itemSummary: item,
-      qty: qty,
-      allocatedBay: bay,
-      gateNo: gate,
-      gateInTimestamp: nowIso,
-      receivedBy: (BalsonsAuth.currentUser ? BalsonsAuth.currentUser.fullName : 'Security Guard Gate 1'),
-      status: 'IN_UNLOADING_BAY'
+    let newPass = {
+      passId: passId,
+      passType: cat,
+      dispatchDate: todayStr,
+      approvalStatus: 'APPROVED',
+      approvedBy: (BalsonsAuth.currentUser ? BalsonsAuth.currentUser.fullName : 'Satish Chandra (Project Director)'),
+      preparedBy: (BalsonsAuth.currentUser ? BalsonsAuth.currentUser.fullName : 'Bikash Mohapatra (Gate In-Charge)'),
+      gateStatus: (cat === 'VISITOR' ? 'ACTIVE_ON_SITE' : (cat === 'VEHICLE' ? 'IN_UNLOADING_BAY' : 'DISPATCHED_EXITED')),
+      remarks: (document.getElementById('studioRemarks') ? document.getElementById('studioRemarks').value.trim() : '')
     };
 
-    try {
-      const res = await BalsonsApi.call('transaction.inward.create', {
-        poNumber: po,
-        dcNumber: dc,
-        vendorName: vendor,
-        transporter: transporter,
-        vehicleNo: veh,
-        itemSummary: item,
-        qty: qty,
-        allocatedBay: bay,
-        gateNo: gate
-      });
-      if (res.success && res.data && res.data.inwardId) {
-        newRec.inwardId = res.data.inwardId;
-      }
-    } catch (err) {
-      console.warn('Inward local fallback:', err.message);
+    if (cat === 'RGP' || cat === 'NRGP') {
+      newPass.itemDescription = (document.getElementById('studioItemDesc') ? document.getElementById('studioItemDesc').value.trim() : '');
+      newPass.qty = (document.getElementById('studioQty') ? document.getElementById('studioQty').value.trim() : '1 Nos');
+      newPass.serialNo = (document.getElementById('studioSerial') ? document.getElementById('studioSerial').value.trim() : 'N/A');
+      newPass.consignee = (document.getElementById('studioConsignee') ? document.getElementById('studioConsignee').value.trim() : '');
+      newPass.vehicleNo = (document.getElementById('studioVehicleNo') ? document.getElementById('studioVehicleNo').value.trim().toUpperCase() : '');
+      newPass.purpose = (document.getElementById('studioPurpose') ? document.getElementById('studioPurpose').value : 'Material Movement');
+      newPass.expectedReturnDate = (cat === 'RGP' && document.getElementById('studioReturnDate')) ? document.getElementById('studioReturnDate').value : 'N/A';
+    } else if (cat === 'VISITOR') {
+      const vName = (document.getElementById('studioVisName') ? document.getElementById('studioVisName').value.trim() : 'Visitor');
+      const vOrg = (document.getElementById('studioVisOrg') ? document.getElementById('studioVisOrg').value.trim() : 'External');
+      newPass.itemDescription = 'Visitor: ' + vName + ' (' + vOrg + ')';
+      newPass.qty = '1 Person';
+      newPass.serialNo = (document.getElementById('studioVisId') ? document.getElementById('studioVisId').value.trim() : 'Masked ID');
+      newPass.consignee = vOrg;
+      newPass.vehicleNo = (document.getElementById('studioVisPhone') ? document.getElementById('studioVisPhone').value.trim() : 'N/A');
+      newPass.purpose = 'Official Site Visit & Inspection';
+      newPass.expectedReturnDate = todayStr + ' (Day Pass)';
+    } else if (cat === 'VEHICLE') {
+      const vehReg = (document.getElementById('studioVehReg') ? document.getElementById('studioVehReg').value.trim().toUpperCase() : 'VEHICLE');
+      const vehType = (document.getElementById('studioVehType') ? document.getElementById('studioVehType').value : 'Heavy Transport');
+      newPass.itemDescription = 'Vehicle: ' + vehType + ' (' + vehReg + ')';
+      newPass.qty = '1 Unit';
+      newPass.serialNo = 'Driver: ' + (document.getElementById('studioVehDriver') ? document.getElementById('studioVehDriver').value.trim() : 'N/A');
+      newPass.consignee = (document.getElementById('studioVehAgency') ? document.getElementById('studioVehAgency').value.trim() : 'Transport Agency');
+      newPass.vehicleNo = vehReg;
+      newPass.purpose = 'Heavy Haulage / Site Movement';
+      newPass.expectedReturnDate = todayStr + ' (Exit Expected)';
     }
-
-    inwardData.unshift(newRec);
-    renderInwardView();
-    updateRadarMetrics();
-
-    alert(`✅ Material Inward Gate Entry (IGE) Logged Successfully!
-
-Token: ${newRec.inwardId}
-Vehicle: ${veh}
-Allocated Bay: ${bay}
-Vendor: ${vendor}
-
-Automated dispatch notification sent to Store Lead.`);
-    document.getElementById('inwardForm').reset();
-  }
-
-  async function markInwardStoreAccepted(inwardId) {
-    const item = inwardData.find(x => x.inwardId === inwardId);
-    if (!item) return;
-
-    if (!confirm(`Confirm Store Acceptance for ${inwardId} (${item.itemSummary})?
-
-This confirms unloading is complete and vehicle ${item.vehicleNo} has exited the unloading bay.`)) {
-      return;
-    }
-
-    item.status = 'STORE_ACCEPTED';
 
     try {
-      await BalsonsApi.call('transaction.inward.update_status', {
-        inwardId: inwardId,
-        status: 'STORE_ACCEPTED'
-      });
+      await BalsonsApi.call('transaction.gatepass.create', newPass);
     } catch (err) {
-      console.warn('Update inward local fallback:', err.message);
+      console.warn('Gate pass API fallback:', err.message);
     }
 
-    renderInwardView();
+    gatePassData.unshift(newPass);
+    renderGatePassView();
     updateRadarMetrics();
+
+    if (andPrint) {
+      printGatePass(newPass.passId);
+    } else {
+      alert(`✅ ${cat} Gate Pass Issued Successfully!\n\nPass ID: ${newPass.passId}\nItem / Subject: ${newPass.itemDescription}\n\nLogged to Gate Log and AUDIT_LOG.`);
+      switchTab('gatepass');
+    }
   }
 
-  function renderInwardView(filterStatus, searchQuery) {
-    // 1. Render Active Bay Cards
-    const cardsContainer = document.getElementById('activeInwardCardsContainer');
-    const bayCountEl = document.getElementById('inwBayActiveCount');
-    if (cardsContainer) {
-      cardsContainer.innerHTML = '';
-      const inBays = inwardData.filter(x => x.status === 'IN_UNLOADING_BAY');
-      if (bayCountEl) bayCountEl.textContent = `${inBays.length} Vehicles in Bays`;
+  async function handleCreateGatePassModalSubmit(event, andPrint) {
+    if (event) event.preventDefault();
 
-      if (inBays.length === 0) {
-        cardsContainer.innerHTML = `
-          <div style="text-align: center; padding: 24px; color: var(--beds-text-muted); font-size: 12px; background: var(--beds-bg-page); border-radius: var(--beds-radius-md);">
-            No vehicles currently in unloading bays. All consignments cleared.
-          </div>
-        `;
-      } else {
-        inBays.forEach(b => {
-          const card = document.createElement('div');
-          card.style.cssText = 'background: var(--beds-bg-page); border: 1.5px solid var(--beds-teal-primary); border-radius: var(--beds-radius-md); padding: 12px 14px;';
-          card.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <div>
-                <strong style="font-family: monospace; font-size: 13px; color: var(--beds-teal-primary);">${b.inwardId}</strong>
-                <span class="status-pill status-info" style="font-size: 9.5px; margin-left: 6px;">🚚 ${escapeHtml(b.vehicleNo)}</span>
-              </div>
-              <span class="status-pill status-warning" style="font-size: 9.5px;">UNLOADING IN PROGRESS</span>
-            </div>
-            <div style="font-size: 12px; font-weight: 700; color: var(--beds-charcoal-heading); margin-bottom: 4px;">
-              ${escapeHtml(b.itemSummary)} (${escapeHtml(b.qty)})
-            </div>
-            <div style="font-size: 11px; color: var(--beds-text-secondary); margin-bottom: 8px;">
-              Vendor: <strong>${escapeHtml(b.vendorName)}</strong> • Bay: <span style="color: var(--beds-teal-primary); font-weight: 600;">📍 ${escapeHtml(b.allocatedBay)}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 10.5px; color: var(--beds-text-muted);">In: ${b.gateInTimestamp.replace('T', ' ').slice(11, 16)} hrs</span>
-              <button type="button" class="btn btn-secondary btn-sm" style="font-size: 10.5px; background: var(--beds-status-success-bg); border-color: var(--beds-status-success); color: var(--beds-status-success); font-weight: 700;" onclick="markInwardStoreAccepted('${b.inwardId}')">
-                ✓ Hand Over to Store
-              </button>
-            </div>
-          `;
-          cardsContainer.appendChild(card);
-        });
-      }
+    const cat = (document.getElementById('modalCategory') ? document.getElementById('modalCategory').value : 'RGP');
+    const passId = 'GP-' + cat + '-2026-' + String(Math.floor(1000 + Math.random() * 9000));
+    const nowIso = new Date().toISOString();
+    const todayStr = nowIso.slice(0, 10);
+
+    let newPass = {
+      passId: passId,
+      passType: cat,
+      dispatchDate: todayStr,
+      approvalStatus: 'APPROVED',
+      approvedBy: (BalsonsAuth.currentUser ? BalsonsAuth.currentUser.fullName : 'Satish Chandra (Project Director)'),
+      preparedBy: (BalsonsAuth.currentUser ? BalsonsAuth.currentUser.fullName : 'Bikash Mohapatra (Gate In-Charge)'),
+      gateStatus: (cat === 'VISITOR' ? 'ACTIVE_ON_SITE' : (cat === 'VEHICLE' ? 'IN_UNLOADING_BAY' : 'DISPATCHED_EXITED')),
+      remarks: (document.getElementById('gpRemarks') ? document.getElementById('gpRemarks').value.trim() : '')
+    };
+
+    if (cat === 'RGP' || cat === 'NRGP') {
+      newPass.itemDescription = (document.getElementById('gpItemDescription') ? document.getElementById('gpItemDescription').value.trim() : '');
+      newPass.qty = (document.getElementById('gpQty') ? document.getElementById('gpQty').value.trim() : '1 Nos');
+      newPass.serialNo = (document.getElementById('gpSerialNo') ? document.getElementById('gpSerialNo').value.trim() : 'N/A');
+      newPass.consignee = (document.getElementById('gpConsignee') ? document.getElementById('gpConsignee').value.trim() : '');
+      newPass.vehicleNo = (document.getElementById('gpVehicleNo') ? document.getElementById('gpVehicleNo').value.trim().toUpperCase() : '');
+      newPass.purpose = (document.getElementById('gpPurpose') ? document.getElementById('gpPurpose').value : 'Material Movement');
+      newPass.expectedReturnDate = (cat === 'RGP' && document.getElementById('gpExpectedReturnDate')) ? document.getElementById('gpExpectedReturnDate').value : 'N/A';
+    } else if (cat === 'VISITOR') {
+      const vName = (document.getElementById('gpVisName') ? document.getElementById('gpVisName').value.trim() : 'Visitor');
+      const vOrg = (document.getElementById('gpVisOrg') ? document.getElementById('gpVisOrg').value.trim() : 'External');
+      newPass.itemDescription = 'Visitor: ' + vName + ' (' + vOrg + ')';
+      newPass.qty = '1 Person';
+      newPass.serialNo = (document.getElementById('gpVisId') ? document.getElementById('gpVisId').value.trim() : 'Masked ID');
+      newPass.consignee = vOrg;
+      newPass.vehicleNo = (document.getElementById('gpVisPhone') ? document.getElementById('gpVisPhone').value.trim() : 'N/A');
+      newPass.purpose = 'Official Site Visit';
+      newPass.expectedReturnDate = todayStr + ' (Day Pass)';
+    } else if (cat === 'VEHICLE') {
+      const vehReg = (document.getElementById('gpVehReg') ? document.getElementById('gpVehReg').value.trim().toUpperCase() : 'VEHICLE');
+      const vehType = (document.getElementById('gpVehType') ? document.getElementById('gpVehType').value : 'Commercial Transport');
+      newPass.itemDescription = 'Vehicle: ' + vehType + ' (' + vehReg + ')';
+      newPass.qty = '1 Unit';
+      newPass.serialNo = 'Driver: ' + (document.getElementById('gpVehDriver') ? document.getElementById('gpVehDriver').value.trim() : 'N/A');
+      newPass.consignee = (document.getElementById('gpVehAgency') ? document.getElementById('gpVehAgency').value.trim() : 'Transport');
+      newPass.vehicleNo = vehReg;
+      newPass.purpose = 'Fleet Movement Clearance';
+      newPass.expectedReturnDate = todayStr + ' (Exit Expected)';
     }
 
-    // 2. Render Inward Table
-    const tbody = document.getElementById('inwardTableBody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    filterStatus = filterStatus || (document.getElementById('filterInwStatus') ? document.getElementById('filterInwStatus').value : '');
-    searchQuery = searchQuery || '';
-
-    let list = inwardData;
-    if (filterStatus) list = list.filter(x => x.status === filterStatus);
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      list = list.filter(x =>
-        x.inwardId.toLowerCase().includes(q) ||
-        x.poNumber.toLowerCase().includes(q) ||
-        x.vendorName.toLowerCase().includes(q) ||
-        x.vehicleNo.toLowerCase().includes(q) ||
-        x.itemSummary.toLowerCase().includes(q)
-      );
+    try {
+      await BalsonsApi.call('transaction.gatepass.create', newPass);
+    } catch (err) {
+      console.warn('Gate pass API fallback:', err.message);
     }
 
-    list.forEach(row => {
-      const tr = document.createElement('tr');
-      const isBay = row.status === 'IN_UNLOADING_BAY';
-      tr.innerHTML = `
-        <td><strong style="font-family: monospace;">${row.inwardId}</strong></td>
-        <td><strong>${escapeHtml(row.poNumber)}</strong><br><span style="font-size: 11px; color: var(--beds-text-secondary);">${escapeHtml(row.dcNumber)}</span></td>
-        <td>${escapeHtml(row.vendorName)}<br><span style="font-size: 11px; color: var(--beds-text-secondary);">${escapeHtml(row.transporter)}</span></td>
-        <td><strong style="font-family: monospace;">${escapeHtml(row.vehicleNo)}</strong></td>
-        <td>${escapeHtml(row.itemSummary)}<br><span style="font-size: 11px; color: var(--beds-text-muted); font-weight: 600;">Qty: ${escapeHtml(row.qty)}</span></td>
-        <td><span style="font-size: 11.5px; color: var(--beds-teal-primary); font-weight: 600;">📍 ${escapeHtml(row.allocatedBay)}</span></td>
-        <td style="font-size: 11px; color: var(--beds-text-secondary);">${row.gateInTimestamp.replace('T', ' ').slice(0, 16)}</td>
-        <td>
-          <span class="status-pill ${isBay ? 'status-warning' : 'status-success'}">
-            ${isBay ? 'In Bay' : 'Store Accepted'}
-          </span>
-        </td>
-        <td>
-          ${isBay ? `<button type="button" class="btn btn-secondary btn-sm" onclick="markInwardStoreAccepted('${row.inwardId}')">Accept Store</button>` : `<span style="font-size: 11px; color: var(--beds-text-muted);">GRN Done</span>`}
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
+    gatePassData.unshift(newPass);
+    closeCreateGatePassModal();
+    renderGatePassView();
+    updateRadarMetrics();
+
+    if (andPrint) {
+      printGatePass(newPass.passId);
+    } else {
+      alert(`✅ ${cat} Gate Pass Issued Successfully!\n\nPass ID: ${newPass.passId}\nItem / Subject: ${newPass.itemDescription}\n\nLogged to Gate Log and AUDIT_LOG.`);
+    }
   }
 
-  function filterInwardTable(status) {
-    renderInwardView(status, document.querySelector('input[placeholder="Search IGE / PO / Vendor..."]')?.value || '');
-  }
-
-  function searchInwardTable(query) {
-    renderInwardView(document.getElementById('filterInwStatus')?.value || '', query);
-  }
-
-  // ─── GATE PASS CENTER (RGP / NRGP) FUNCTIONS ─────────────────────────
+  // ─── GATE PASS TABLE RENDERING ──────────────────────────────────────
   function filterGatePassView(type) {
     currentGpFilter = type;
-    document.querySelectorAll('#btnGpAll, #btnGpRgp, #btnGpNrgp, #btnGpOverdue').forEach(b => {
-      b.classList.remove('btn-primary');
-      b.classList.add('btn-secondary');
+    document.querySelectorAll('.table-header button').forEach(b => {
+      if (b.id === 'btnGpAll' && type === 'ALL') b.style.fontWeight = '800';
+      else if (b.id === 'btnGpRgp' && type === 'RGP') b.style.fontWeight = '800';
+      else if (b.id === 'btnGpNrgp' && type === 'NRGP') b.style.fontWeight = '800';
+      else if (b.id === 'btnGpVisitor' && type === 'VISITOR') b.style.fontWeight = '800';
+      else if (b.id === 'btnGpVehicle' && type === 'VEHICLE') b.style.fontWeight = '800';
+      else if (b.id === 'btnGpOverdue' && type === 'OVERDUE') b.style.fontWeight = '800';
+      else b.style.fontWeight = '500';
     });
-
-    if (type === 'ALL') document.getElementById('btnGpAll')?.classList.add('btn-primary');
-    else if (type === 'RGP') document.getElementById('btnGpRgp')?.classList.add('btn-primary');
-    else if (type === 'NRGP') document.getElementById('btnGpNrgp')?.classList.add('btn-primary');
-    else if (type === 'OVERDUE') document.getElementById('btnGpOverdue')?.classList.add('btn-primary');
-
     renderGatePassView();
   }
 
@@ -4478,7 +5452,6 @@ This confirms unloading is complete and vehicle ${item.vehicleNo} has exited the
   function renderGatePassView(searchQuery) {
     const todayStr = new Date().toISOString().slice(0, 10);
 
-    // Calculate KPI values
     let activeRgp = 0;
     let overdueRgp = 0;
     let nrgpCount = 0;
@@ -4488,9 +5461,7 @@ This confirms unloading is complete and vehicle ${item.vehicleNo} has exited the
       if (p.passType === 'RGP') {
         if (p.gateStatus !== 'RETURNED_CLOSED') {
           activeRgp++;
-          if (p.expectedReturnDate && p.expectedReturnDate < todayStr) {
-            overdueRgp++;
-          }
+          if (p.expectedReturnDate && p.expectedReturnDate < todayStr) overdueRgp++;
         } else {
           closedReturns++;
         }
@@ -4513,6 +5484,8 @@ This confirms unloading is complete and vehicle ${item.vehicleNo} has exited the
     let list = gatePassData;
     if (currentGpFilter === 'RGP') list = list.filter(x => x.passType === 'RGP');
     else if (currentGpFilter === 'NRGP') list = list.filter(x => x.passType === 'NRGP');
+    else if (currentGpFilter === 'VISITOR') list = list.filter(x => x.passType === 'VISITOR');
+    else if (currentGpFilter === 'VEHICLE') list = list.filter(x => x.passType === 'VEHICLE');
     else if (currentGpFilter === 'OVERDUE') list = list.filter(x => x.passType === 'RGP' && x.gateStatus !== 'RETURNED_CLOSED' && x.expectedReturnDate && x.expectedReturnDate < todayStr);
 
     if (searchQuery) {
@@ -4520,8 +5493,8 @@ This confirms unloading is complete and vehicle ${item.vehicleNo} has exited the
       list = list.filter(x =>
         x.passId.toLowerCase().includes(q) ||
         x.itemDescription.toLowerCase().includes(q) ||
-        x.consignee.toLowerCase().includes(q) ||
-        x.vehicleNo.toLowerCase().includes(q)
+        (x.consignee && x.consignee.toLowerCase().includes(q)) ||
+        (x.vehicleNo && x.vehicleNo.toLowerCase().includes(q))
       );
     }
 
@@ -4531,231 +5504,291 @@ This confirms unloading is complete and vehicle ${item.vehicleNo} has exited the
       const isClosed = p.gateStatus === 'RETURNED_CLOSED';
       const isOverdue = isRgp && !isClosed && p.expectedReturnDate && p.expectedReturnDate < todayStr;
 
-      let typePill = isRgp ? '<span class="status-pill status-warning">RGP</span>' : '<span class="status-pill status-info">NRGP</span>';
-      let returnCell = isRgp ? `<strong style="font-family: monospace; ${isOverdue ? 'color: var(--beds-alert-red);' : ''}">${p.expectedReturnDate}</strong>` : `<span style="color: var(--beds-text-muted);">N/A (Scrap)</span>`;
+      let typePill = '<span class="status-pill status-info">' + p.passType + '</span>';
+      if (p.passType === 'RGP') typePill = '<span class="status-pill status-warning" style="font-weight:800;">🔄 RGP</span>';
+      else if (p.passType === 'NRGP') typePill = '<span class="status-pill status-info" style="font-weight:800;">📦 NRGP</span>';
+      else if (p.passType === 'VISITOR') typePill = '<span class="status-pill status-success" style="font-weight:800;">🦺 Visitor</span>';
+      else if (p.passType === 'VEHICLE') typePill = '<span class="status-pill status-warning" style="font-weight:800; background:#FEF3C7; color:#92400E;">🚛 Vehicle</span>';
+
+      let returnCell = isRgp ? `<strong style="font-family: monospace; ${isOverdue ? 'color: var(--beds-alert-red);' : ''}">${p.expectedReturnDate}</strong>` : `<span style="color: var(--beds-text-muted);">${escapeHtml(p.expectedReturnDate || 'N/A')}</span>`;
 
       if (isOverdue) {
         returnCell += `<br><span class="status-pill status-critical" style="font-size: 9px; padding: 2px 4px;">🚨 OVERDUE</span>`;
       }
 
       let gateStatusPill = `<span class="status-pill status-info">${escapeHtml(p.gateStatus)}</span>`;
-      if (isClosed) gateStatusPill = `<span class="status-pill status-success">Returned & Closed</span>`;
+      if (isClosed) gateStatusPill = `<span class="status-pill status-success">Returned &amp; Closed</span>`;
       else if (isOverdue) gateStatusPill = `<span class="status-pill status-critical">Overdue Return</span>`;
+      else if (p.gateStatus === 'ACTIVE_ON_SITE') gateStatusPill = `<span class="status-pill status-success">Active on Site</span>`;
+      else if (p.gateStatus === 'IN_UNLOADING_BAY') gateStatusPill = `<span class="status-pill status-warning">In Bay</span>`;
 
-      let actionBtn = '';
+      let actionBtns = `
+        <div style="display: flex; gap: 4px; align-items: center;">
+          <button type="button" class="btn btn-secondary btn-sm" style="font-size: 11px; font-weight:700;" onclick="printGatePass('${p.passId}')" title="Print Statutory Pass">
+            🖨️ Print
+          </button>
+      `;
+
       if (isRgp && !isClosed) {
-        actionBtn = `
-          <button type="button" class="btn btn-secondary btn-sm" style="font-size: 11px; font-weight: 700; background: var(--beds-status-success-bg); border-color: var(--beds-status-success); color: var(--beds-status-success);" onclick="openAcknowledgeReturnModal('${p.passId}')">
+        actionBtns += `
+          <button type="button" class="btn btn-secondary btn-sm" style="font-size: 11px; font-weight: 700; background: var(--beds-status-success-bg); border-color: var(--beds-status-success); color: var(--beds-status-success);" onclick="openAcknowledgeReturnModal('${p.passId}')" title="Reconcile Return">
             🔄 Return
           </button>
         `;
-      } else {
-        actionBtn = `
-          <button type="button" class="btn btn-secondary btn-sm" style="font-size: 11px;" onclick="printGatePassSlip('${p.passId}')">
-            🖨️ Slip
-          </button>
-        `;
       }
+
+      actionBtns += `</div>`;
 
       tr.innerHTML = `
         <td><strong style="font-family: monospace;">${p.passId}</strong></td>
         <td>${typePill}</td>
         <td><strong>${escapeHtml(p.itemDescription)}</strong><br><span style="font-size: 10.5px; color: var(--beds-text-secondary);">${escapeHtml(p.serialNo || '')}</span></td>
         <td class="tabular-nums"><strong>${escapeHtml(p.qty)}</strong></td>
-        <td>${escapeHtml(p.consignee)}</td>
-        <td><span style="font-family: monospace; font-size: 11px;">${escapeHtml(p.vehicleNo)}</span></td>
+        <td>${escapeHtml(p.consignee || 'N/A')}</td>
+        <td><span style="font-family: monospace; font-size: 11px;">${escapeHtml(p.vehicleNo || 'N/A')}</span></td>
         <td style="font-size: 11px;">${p.dispatchDate}</td>
         <td>${returnCell}</td>
         <td><span class="status-pill status-success">Approved</span></td>
         <td>${gateStatusPill}</td>
-        <td>${actionBtn}</td>
+        <td>${actionBtns}</td>
       `;
       tbody.appendChild(tr);
     });
   }
 
-  function openCreateGatePassModal() {
-    document.getElementById('createGatePassForm').reset();
-    toggleGpTypeFields();
-    // Default expected return date to 7 days from now
-    const nextWeek = new Date();
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    document.getElementById('gpExpectedReturnDate').value = nextWeek.toISOString().slice(0, 10);
-    document.getElementById('modalCreateGatePass').style.display = 'flex';
-  }
-
-  function closeCreateGatePassModal() {
-    document.getElementById('modalCreateGatePass').style.display = 'none';
-  }
-
-  function toggleGpTypeFields() {
-    const isRgp = document.querySelector('input[name="gpTypeRadio"]:checked').value === 'RGP';
-    const row = document.getElementById('gpRgpSpecificRow');
-    const retField = document.getElementById('gpReturnDateField');
-    if (isRgp) {
-      if (retField) retField.style.display = 'block';
-      document.getElementById('gpExpectedReturnDate').required = true;
-    } else {
-      if (retField) retField.style.display = 'none';
-      document.getElementById('gpExpectedReturnDate').required = false;
+  // ─── GATE PASS PRINT ENGINE (STATUTORY A4 LAYOUT) ───────────────────
+  function printGatePass(passId) {
+    const pass = gatePassData.find(x => x.passId === passId);
+    if (!pass) {
+      alert('Gate Pass record not found for: ' + passId);
+      return;
     }
+
+    const modalBody = document.getElementById('printSheetCanvas');
+    const printContainer = document.getElementById('printableGatePassContainer');
+    const titleEl = document.getElementById('printModalTitle');
+
+    if (titleEl) {
+      titleEl.textContent = 'Official ' + pass.passType + ' Gate Pass Print Preview • ' + pass.passId;
+    }
+
+    const documentHtml = generateStatutoryPassHtml(pass);
+
+    if (modalBody) modalBody.innerHTML = documentHtml;
+    if (printContainer) printContainer.innerHTML = documentHtml;
+
+    document.getElementById('modalPrintGatePass').style.display = 'flex';
   }
 
-  async function handleCreateGatePassSubmit(event) {
-    if (event) event.preventDefault();
+  function triggerCurrentStudioPrint() {
+    const cat = (document.getElementById('studioCategory') ? document.getElementById('studioCategory').value : 'RGP');
+    const passId = (document.getElementById('studioPassId') ? document.getElementById('studioPassId').value : 'GP-' + cat + '-2026-0001');
+    const issueDate = (document.getElementById('studioIssueDate') ? document.getElementById('studioIssueDate').value : new Date().toISOString().slice(0, 10));
 
-    const passType = document.querySelector('input[name="gpTypeRadio"]:checked').value;
-    const item = document.getElementById('gpItemDescription').value.trim();
-    const qty = document.getElementById('gpQty').value.trim();
-    const serial = document.getElementById('gpSerialNo').value.trim();
-    const consignee = document.getElementById('gpConsignee').value.trim();
-    const veh = document.getElementById('gpVehicleNo').value.trim().toUpperCase();
-    const expDate = passType === 'RGP' ? document.getElementById('gpExpectedReturnDate').value : 'N/A';
-    const remarks = document.getElementById('gpRemarks').value.trim();
-
-    const passId = passType + '-2026-' + String(Math.floor(1000 + Math.random() * 9000));
-    const nowIso = new Date().toISOString();
-
-    const newPass = {
+    let samplePass = {
       passId: passId,
-      passType: passType,
-      itemDescription: item,
-      serialNo: serial,
-      qty: qty,
-      consignee: consignee,
-      vehicleNo: veh,
-      dispatchDate: nowIso.slice(0, 10),
-      expectedReturnDate: expDate,
-      actualReturnDate: '',
+      passType: cat,
+      dispatchDate: issueDate.slice(0, 10),
       approvalStatus: 'APPROVED',
-      approvedBy: (BalsonsAuth.currentUser ? BalsonsAuth.currentUser.fullName : 'BALSONS Project Owner'),
+      approvedBy: (BalsonsAuth.currentUser ? BalsonsAuth.currentUser.fullName : 'Satish Chandra (Project Director)'),
+      preparedBy: (BalsonsAuth.currentUser ? BalsonsAuth.currentUser.fullName : 'Bikash Mohapatra (Gate In-Charge)'),
       gateStatus: 'DISPATCHED_EXITED',
-      remarks: remarks
+      remarks: (document.getElementById('studioRemarks') ? document.getElementById('studioRemarks').value.trim() : '')
     };
 
-    try {
-      const res = await BalsonsApi.call('transaction.gatepass.create', {
-        passType: passType,
-        itemDescription: item,
-        qty: qty,
-        consignee: consignee,
-        vehicleNo: veh,
-        expectedReturnDate: expDate,
-        remarks: remarks
-      });
-      if (res.success && res.data && res.data.passId) {
-        newPass.passId = res.data.passId;
-      }
-    } catch (err) {
-      console.warn('Gate pass local fallback:', err.message);
+    if (cat === 'RGP' || cat === 'NRGP') {
+      samplePass.itemDescription = (document.getElementById('studioItemDesc') ? document.getElementById('studioItemDesc').value.trim() : 'Sample Equipment');
+      samplePass.qty = (document.getElementById('studioQty') ? document.getElementById('studioQty').value.trim() : '1 Nos');
+      samplePass.serialNo = (document.getElementById('studioSerial') ? document.getElementById('studioSerial').value.trim() : 'EQ-2026-SAMPLE');
+      samplePass.consignee = (document.getElementById('studioConsignee') ? document.getElementById('studioConsignee').value.trim() : 'Vendor Destination');
+      samplePass.vehicleNo = (document.getElementById('studioVehicleNo') ? document.getElementById('studioVehicleNo').value.trim().toUpperCase() : 'OD-02-AX-8910');
+      samplePass.purpose = (document.getElementById('studioPurpose') ? document.getElementById('studioPurpose').value : 'Calibration');
+      samplePass.expectedReturnDate = (cat === 'RGP' && document.getElementById('studioReturnDate')) ? document.getElementById('studioReturnDate').value : 'N/A';
+    } else if (cat === 'VISITOR') {
+      samplePass.itemDescription = 'Visitor: ' + (document.getElementById('studioVisName') ? document.getElementById('studioVisName').value.trim() : 'Visitor');
+      samplePass.qty = '1 Person';
+      samplePass.serialNo = (document.getElementById('studioVisId') ? document.getElementById('studioVisId').value.trim() : 'Masked ID');
+      samplePass.consignee = (document.getElementById('studioVisOrg') ? document.getElementById('studioVisOrg').value.trim() : 'Vendor Org');
+      samplePass.vehicleNo = (document.getElementById('studioVisPhone') ? document.getElementById('studioVisPhone').value.trim() : 'N/A');
+      samplePass.purpose = 'Technical Site Visit';
+      samplePass.expectedReturnDate = samplePass.dispatchDate + ' (Day Pass)';
+    } else if (cat === 'VEHICLE') {
+      samplePass.itemDescription = 'Vehicle: ' + (document.getElementById('studioVehType') ? document.getElementById('studioVehType').value : 'Heavy Hauler');
+      samplePass.qty = '1 Unit';
+      samplePass.serialNo = 'Driver: ' + (document.getElementById('studioVehDriver') ? document.getElementById('studioVehDriver').value.trim() : 'N/A');
+      samplePass.consignee = (document.getElementById('studioVehAgency') ? document.getElementById('studioVehAgency').value.trim() : 'Agency');
+      samplePass.vehicleNo = (document.getElementById('studioVehReg') ? document.getElementById('studioVehReg').value.trim().toUpperCase() : 'OD-02-AX-8910');
+      samplePass.purpose = 'Heavy Movement';
+      samplePass.expectedReturnDate = samplePass.dispatchDate;
     }
 
-    gatePassData.unshift(newPass);
-    closeCreateGatePassModal();
-    renderGatePassView();
-    updateRadarMetrics();
+    const modalBody = document.getElementById('printSheetCanvas');
+    const printContainer = document.getElementById('printableGatePassContainer');
+    const docHtml = generateStatutoryPassHtml(samplePass);
 
-    alert(`✅ ${passType} Issued Successfully!
+    if (modalBody) modalBody.innerHTML = docHtml;
+    if (printContainer) printContainer.innerHTML = docHtml;
 
-Pass ID: ${newPass.passId}
-Item: ${item} (${qty})
-Consignee: ${consignee}
-Vehicle: ${veh}
-
-Clearance logged to physical gate log and AUDIT_LOG.`);
+    document.getElementById('modalPrintGatePass').style.display = 'flex';
   }
 
-  function openAcknowledgeReturnModal(passId) {
-    const item = gatePassData.find(x => x.passId === passId);
-    if (!item) return;
-
-    document.getElementById('retPassId').value = item.passId;
-    document.getElementById('retExpectedDate').value = item.expectedReturnDate;
-    document.getElementById('retItemSummary').value = `${item.itemDescription} (${item.qty})`;
-    document.getElementById('retConsignee').value = item.consignee;
-    document.getElementById('retRemarks').value = '';
-
-    document.getElementById('modalAcknowledgeReturn').style.display = 'flex';
+  function executeGatePassPrint() {
+    document.body.classList.add('print-mode-gatepass');
+    window.print();
+    setTimeout(() => {
+      document.body.classList.remove('print-mode-gatepass');
+    }, 1000);
   }
 
-  function closeAcknowledgeReturnModal() {
-    document.getElementById('modalAcknowledgeReturn').style.display = 'none';
+  function closePrintGatePassModal() {
+    document.getElementById('modalPrintGatePass').style.display = 'none';
+    document.body.classList.remove('print-mode-gatepass');
   }
 
-  async function handleAcknowledgeReturnSubmit(event) {
-    if (event) event.preventDefault();
+  function generateStatutoryPassHtml(p) {
+    let catBannerBg = '#0097B2';
+    let catTitle = 'RETURNABLE MATERIAL GATE PASS (RGP)';
+    let catSub = 'Statutory Outward Movement for Equipment / Tools / Rigging / Plant Returning to Site';
 
-    const passId = document.getElementById('retPassId').value;
-    const condition = document.getElementById('retCondition').value;
-    const remarks = document.getElementById('retRemarks').value.trim();
-
-    const item = gatePassData.find(x => x.passId === passId);
-    if (!item) return;
-
-    const todayStr = new Date().toISOString().slice(0, 10);
-    item.actualReturnDate = todayStr;
-    item.gateStatus = 'RETURNED_CLOSED';
-    item.remarks = (item.remarks ? item.remarks + ' | ' : '') + `Return: ${condition}. ${remarks}`;
-
-    try {
-      await BalsonsApi.call('transaction.gatepass.close_return', {
-        passId: passId,
-        conditionNotes: `${condition} - ${remarks}`
-      });
-    } catch (err) {
-      console.warn('Close return local fallback:', err.message);
+    if (p.passType === 'NRGP') {
+      catBannerBg = '#102D35';
+      catTitle = 'NON-RETURNABLE MATERIAL GATE PASS (NRGP)';
+      catSub = 'Permanent Outward Clearance for Scrap / Consumables / Disposal Material';
+    } else if (p.passType === 'VISITOR') {
+      catBannerBg = '#1E40AF';
+      catTitle = 'OFFICIAL VISITOR & CONTRACTOR SITE ACCESS PASS';
+      catSub = 'Temporary JTRWF Site Clearance & Personnel Access Authorization';
+    } else if (p.passType === 'VEHICLE') {
+      catBannerBg = '#D97706';
+      catTitle = 'VEHICLE & FLEET MOVEMENT CLEARANCE PASS';
+      catSub = 'Heavy Haul, SPMT, Mobile Crane & Commercial Transport Clearance';
     }
 
-    closeAcknowledgeReturnModal();
-    renderGatePassView();
-    updateRadarMetrics();
+    return `
+      <div class="gp-print-sheet" style="font-family:'Inter', Arial, sans-serif; padding:18px 24px; background:#FFFFFF; color:#102D35; border:1.5px solid #102D35; box-sizing:border-box;">
+        
+        <!-- HEADER ROW: COMPANY DETAILS & LOGO -->
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #102D35; padding-bottom:12px; margin-bottom:12px;">
+          <div style="display:flex; align-items:center; gap:14px;">
+            <img src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='assets/images/LOGO.png'" style="height:48px; width:auto; object-fit:contain;" alt="BALSONS Logo">
+            <div>
+              <div style="font-size:16px; font-weight:900; color:#102D35; letter-spacing:0.2px;">BALSONS HEAVY LIFT &amp; SHIFT</div>
+              <div style="font-size:10px; color:#0097B2; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; margin-top:2px;">
+                Jupiter Tatravagonka Railwheel Factory (JTRWF) Project Site &bull; Khordha, Odisha
+              </div>
+              <div style="font-size:9.5px; color:#475569; font-style:italic; margin-top:2px;">
+                “Difficult We Do Easily, Impossible Takes Little Time...!”
+              </div>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:10px; font-weight:700; color:#64748B; text-transform:uppercase;">Statutory Pass ID:</div>
+            <div style="font-size:16px; font-weight:900; font-family:monospace; color:#102D35; letter-spacing:0.5px;">${p.passId}</div>
+            <div style="font-size:10px; color:#64748B; margin-top:2px;">Date: ${p.dispatchDate} &bull; Shift: Day/Night</div>
+          </div>
+        </div>
 
-    alert(`✅ Return Reconciled Successfully!
+        <!-- CATEGORY TITLE BANNER -->
+        <div style="background:${catBannerBg}; color:#FFFFFF; padding:8px 14px; text-align:center; border-radius:4px; margin-bottom:14px;">
+          <div style="font-size:13px; font-weight:900; letter-spacing:0.8px;">${catTitle}</div>
+          <div style="font-size:10px; opacity:0.95; margin-top:2px;">${catSub}</div>
+        </div>
 
-Pass ID: ${passId}
-Item: ${item.itemDescription}
-Status: RETURNED_CLOSED
-Receiving Condition: ${condition}
+        <!-- PASS METADATA MATRIX -->
+        <table style="width:100%; border-collapse:collapse; font-size:11px; margin-bottom:14px; border:1.5px solid #102D35;">
+          <tr style="background:#F1F5F9;">
+            <td style="padding:6px 10px; border:1px solid #102D35; width:22%; font-weight:700;">Issue Date &amp; Time:</td>
+            <td style="padding:6px 10px; border:1px solid #102D35; width:28%; font-family:monospace;">${p.dispatchDate} (IST)</td>
+            <td style="padding:6px 10px; border:1px solid #102D35; width:22%; font-weight:700;">Valid / Expected Return:</td>
+            <td style="padding:6px 10px; border:1px solid #102D35; width:28%; font-weight:800; color:${p.passType === 'RGP' ? '#0097B2' : '#102D35'};">${escapeHtml(p.expectedReturnDate || 'N/A')}</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 10px; border:1px solid #102D35; font-weight:700;">Consignee / Destination:</td>
+            <td style="padding:6px 10px; border:1px solid #102D35; font-weight:700;">${escapeHtml(p.consignee || 'BALSONS JTRWF Base')}</td>
+            <td style="padding:6px 10px; border:1px solid #102D35; font-weight:700;">Carrier / Vehicle No:</td>
+            <td style="padding:6px 10px; border:1px solid #102D35; font-family:monospace; font-weight:800;">${escapeHtml(p.vehicleNo || 'N/A')}</td>
+          </tr>
+          <tr style="background:#F1F5F9;">
+            <td style="padding:6px 10px; border:1px solid #102D35; font-weight:700;">Purpose / Movement Reason:</td>
+            <td style="padding:6px 10px; border:1px solid #102D35;" colspan="3">${escapeHtml(p.purpose || 'Statutory Movement Clearance')}</td>
+          </tr>
+        </table>
 
-Inventory updated in BALSONS Store.`);
+        <!-- PARTICULARS / ITEMS TABLE -->
+        <div style="font-size:11px; font-weight:800; text-transform:uppercase; color:#102D35; margin-bottom:6px; display:flex; justify-content:space-between;">
+          <span>Details of Material / Personnel / Vehicle:</span>
+          <span>Security Clearance: <strong style="color:#10B981;">VERIFIED (JGE-PASS)</strong></span>
+        </div>
+        <table style="width:100%; border-collapse:collapse; font-size:11px; margin-bottom:14px; border:1.5px solid #102D35;">
+          <thead>
+            <tr style="background:#0B192C; color:#FFFFFF;">
+              <th style="padding:7px 8px; border:1px solid #102D35; width:8%; text-align:center;">Sl No</th>
+              <th style="padding:7px 10px; border:1px solid #102D35; width:48%; text-align:left;">Description &amp; Technical Specifications</th>
+              <th style="padding:7px 10px; border:1px solid #102D35; width:22%; text-align:center;">Asset Tag / Serial / ID No</th>
+              <th style="padding:7px 10px; border:1px solid #102D35; width:22%; text-align:center;">Quantity / Unit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:8px 8px; border:1px solid #102D35; text-align:center; font-weight:700;">01</td>
+              <td style="padding:8px 10px; border:1px solid #102D35; font-weight:700;">${escapeHtml(p.itemDescription)}</td>
+              <td style="padding:8px 10px; border:1px solid #102D35; text-align:center; font-family:monospace;">${escapeHtml(p.serialNo || 'N/A')}</td>
+              <td style="padding:8px 10px; border:1px solid #102D35; text-align:center; font-weight:800;">${escapeHtml(p.qty)}</td>
+            </tr>
+            <tr style="height:36px; background:#FAFAFA;">
+              <td style="padding:6px 8px; border:1px solid #102D35; text-align:center; color:#94A3B8;">02</td>
+              <td style="padding:6px 10px; border:1px solid #102D35; color:#94A3B8;">*** End of Item Ledger / No Further Entries ***</td>
+              <td style="padding:6px 10px; border:1px solid #102D35; text-align:center; color:#94A3B8;">---</td>
+              <td style="padding:6px 10px; border:1px solid #102D35; text-align:center; color:#94A3B8;">---</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- REMARKS & DECLARATION BOX -->
+        <div style="border:1px solid #CBD5E1; background:#F8FAFC; border-radius:4px; padding:8px 12px; margin-bottom:14px; font-size:10px; line-height:1.45;">
+          <strong>Security Instructions &amp; Remarks:</strong> ${escapeHtml(p.remarks || 'None. Valid for statutory transit through JTRWF Khordha Gate Plaza.')}<br>
+          <span style="font-size:9.5px; color:#64748B;">
+            <strong>Declaration:</strong> I/We hereby certify that the above mentioned items/personnel/vehicle are authorized for movement in strict compliance with the BALSONS Site Safety Manual and JTRWF Gate Regulations. No unlisted or unauthorized goods are carried.
+          </span>
+        </div>
+
+        <!-- 3-TIER SIGNATURE BLOCK -->
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:18px; border-top:1.5px solid #102D35; padding-top:12px; font-size:10.5px;">
+          <div style="text-align:center;">
+            <div style="height:38px; border-bottom:1px dashed #94A3B8; margin-bottom:6px; display:flex; align-items:flex-end; justify-content:center; font-style:italic; font-size:10px; color:#475569;">
+              ${escapeHtml(p.preparedBy || 'Store In-Charge')}
+            </div>
+            <strong>Prepared By</strong><br>
+            <span style="font-size:9.5px; color:#64748B;">Store / Dispatch Sentry</span>
+          </div>
+
+          <div style="text-align:center;">
+            <div style="height:38px; border-bottom:1px dashed #94A3B8; margin-bottom:6px; display:flex; align-items:flex-end; justify-content:center; font-style:italic; font-size:10px; color:#475569;">
+              ${escapeHtml(p.approvedBy || 'Project Directorate')}
+            </div>
+            <strong>Authorized Signatory</strong><br>
+            <span style="font-size:9.5px; color:#64748B;">Project Director / Area Lead</span>
+          </div>
+
+          <div style="text-align:center; border-left:1px dashed #CBD5E1; padding-left:12px;">
+            <div style="height:38px; border:1px dashed #0097B2; background:rgba(0,151,178,0.04); margin-bottom:6px; display:flex; align-items:center; justify-content:center; font-size:9.5px; font-weight:800; color:#0097B2;">
+              [ SENTRY STAMP &bull; OUT / IN ]
+            </div>
+            <strong>Security Gate Plaza</strong><br>
+            <span style="font-size:9.5px; color:#64748B;">Main Gate Sentry Signature</span>
+          </div>
+        </div>
+
+        <!-- FOOTER BAR -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:6px; border-top:1px solid #E2E8F0; font-size:9px; color:#94A3B8;">
+          <div>System Reference: SAM-2026 &bull; Form Standard: BEDS V1.0</div>
+          <div>Page 1 of 1 (Strict A4 Single Sheet Guarantee)</div>
+          <div>Cloud Vault: 1Q6UA4DOPPKJ-QydctzYktNK0A9xUQ-Pa</div>
+        </div>
+
+      </div>
+    `;
   }
-
-  function printGatePassSlip(passId) {
-    const item = gatePassData.find(x => x.passId === passId);
-    if (!item) return;
-    alert(`🖨️ Printing JTRWF Controlled Gate Pass Slip:
-
-Pass ID: ${item.passId} (${item.passType})
-Item: ${item.itemDescription} (${item.qty})
-Consignee: ${item.consignee}
-Vehicle: ${item.vehicleNo}
-Dispatch Date: ${item.dispatchDate}
-Expected Return: ${item.expectedReturnDate}
-Approval: ${item.approvedBy}`);
-  }
-
-  function updateRadarMetrics() {
-    // Sync Command Radar metrics with real active counts
-    const activeVehicles = inwardData.filter(x => x.status === 'IN_UNLOADING_BAY').length;
-    const deliveriesToday = inwardData.length;
-    const todayStr = new Date().toISOString().slice(0, 10);
-    const overdueCount = gatePassData.filter(x => x.passType === 'RGP' && x.gateStatus !== 'RETURNED_CLOSED' && x.expectedReturnDate && x.expectedReturnDate < todayStr).length;
-
-    const radarVehEl = document.getElementById('radarActiveVehicles');
-    if (radarVehEl) radarVehEl.textContent = activeVehicles;
-
-    const radarDelivEl = document.querySelector('.kpi-card:nth-child(3) .kpi-value');
-    if (radarDelivEl) radarDelivEl.textContent = deliveriesToday;
-
-    const radarOverdueEl = document.querySelector('.kpi-card:nth-child(4) .kpi-value');
-    if (radarOverdueEl) {
-      radarOverdueEl.textContent = overdueCount;
-      if (overdueCount > 0) {
-        radarOverdueEl.style.color = 'var(--beds-alert-red)';
-      }
-    }
-  }
-
 
 
   // ─── PHASE 6: AUDIT TRAIL & SYSTEM LEDGER ───
@@ -4924,5 +5957,279 @@ Approval: ${item.approvedBy}`);
 
 </script>
 
+
+<script>
+  // ─── VALIDATION & STATUTORY HELPERS ────────────────────────────────
+  function validateVehicleInput(input) {
+    const val = input.value.trim().toUpperCase();
+    input.value = val;
+    let badge = document.getElementById(input.id + '_badge');
+    if (!badge) {
+      badge = document.createElement('div');
+      badge.id = input.id + '_badge';
+      badge.style.fontSize = '10.5px';
+      badge.style.marginTop = '3px';
+      badge.style.fontWeight = '700';
+      input.parentNode.appendChild(badge);
+    }
+    // Standard Indian vehicle format: e.g. OD-02-AX-8910 or OD02AX8910
+    const rtoRegex = /^[A-Z]{2}[ -]?[0-9]{1,2}[ -]?[A-Z]{1,3}[ -]?[0-9]{4}$/;
+    if (!val) {
+      badge.innerHTML = '';
+    } else if (rtoRegex.test(val)) {
+      badge.style.color = '#10b981';
+      badge.innerHTML = '✔ Valid RTO Registration Format';
+    } else {
+      badge.style.color = '#f59e0b';
+      badge.innerHTML = '⚠️ Expected RTO Format: e.g. OD-02-AX-8910';
+    }
+  }
+
+  function validatePhoneInput(input) {
+    const val = input.value.trim().replace(/[^0-9]/g, '');
+    let badge = document.getElementById(input.id + '_badge');
+    if (!badge) {
+      badge = document.createElement('div');
+      badge.id = input.id + '_badge';
+      badge.style.fontSize = '10.5px';
+      badge.style.marginTop = '3px';
+      badge.style.fontWeight = '700';
+      input.parentNode.appendChild(badge);
+    }
+    if (!val) {
+      badge.innerHTML = '';
+    } else if (/^[6-9]\d{9}$/.test(val)) {
+      badge.style.color = '#10b981';
+      badge.innerHTML = '✔ Valid 10-Digit Mobile Number';
+    } else {
+      badge.style.color = '#ef4444';
+      badge.innerHTML = '❌ Must be a valid 10-digit Indian Mobile Number';
+    }
+  }
+
+  function calcWeighbridgeNet() {
+    const gross = parseFloat(document.getElementById('wbGross')?.value) || 0;
+    const tare = parseFloat(document.getElementById('wbTare')?.value) || 0;
+    const netEl = document.getElementById('wbNet');
+    if (netEl) {
+      const net = Math.max(0, gross - tare).toFixed(2);
+      netEl.value = net + ' MT';
+    }
+  }
+
+  // 1-CLICK EXPORT TO GOOGLE DRIVE HANDLERS
+  function exportCurrentStudioGatePassToDrive() {
+    const cat = document.getElementById('studioCategory')?.value || 'RGP';
+    const passId = document.getElementById('studioPassId')?.value || ('GP-' + cat + '-2026-0042');
+    const itemDesc = document.getElementById('studioItemDesc')?.value || document.getElementById('studioVisName')?.value || document.getElementById('studioVehReg')?.value || 'Statutory Gate Clearance Item';
+    const consignee = document.getElementById('studioConsignee')?.value || document.getElementById('studioVisOrg')?.value || 'JTRWF Site';
+    const vehicle = document.getElementById('studioVehicleNo')?.value || document.getElementById('studioVehReg')?.value || 'OD-02-AX-8910';
+    const remarks = document.getElementById('studioRemarks')?.value || 'Issued via Gate Pass Studio. Physical serial verified against Form-11.';
+
+    if (window.BalsonsDocs) {
+      const doc = window.BalsonsDocs.uploadDocumentToDrive({
+        id: 'DOC-' + passId,
+        refNumber: passId,
+        title: cat + ' Gate Pass - ' + itemDesc,
+        portal: 'gate',
+        category: cat,
+        categoryName: cat + ' Gate Pass',
+        remarks: remarks,
+        metadata: {
+          vehicleNo: vehicle,
+          destination: consignee,
+          itemSummary: itemDesc,
+          purpose: document.getElementById('studioPurpose')?.value || 'Authorized Movement',
+          statutoryChecks: ['Physical Cargo Inspected', 'Security Seal Intact', '0.00 BAC Verified', 'Gate Sentry Passed']
+        }
+      });
+      // Offer in-portal viewing
+      if (confirm('☁️ Gate Pass successfully synced to Google Drive!\n\nPass ID: ' + passId + '\nDrive Vault: ' + doc.driveFolderName + '\n\nWould you like to open the In-Portal Document Viewer now?')) {
+        window.BalsonsDocs.viewDocument(doc.id);
+      }
+    } else {
+      alert('Document Manager engine loading. Please try again.');
+    }
+  }
+
+  function exportCurrentChallanToDrive() {
+    const ref = document.getElementById('chRef')?.value || 'BHLS/JTRWF/2026/014';
+    const vehicle = document.getElementById('chVehicle')?.value || 'OD-02-AX-8910';
+    const type = document.getElementById('chType')?.value || 'RETURNABLE MATERIAL';
+    const cat = type.includes('RETURNABLE') ? 'CHALLAN_OUTWARD' : 'CHALLAN_INWARD';
+
+    if (window.BalsonsDocs) {
+      const doc = window.BalsonsDocs.uploadDocumentToDrive({
+        id: 'DOC-' + ref.replace(/[^A-Za-z0-9]/g, '-'),
+        refNumber: ref,
+        title: 'Delivery Challan (' + type + ') - ' + vehicle,
+        portal: 'gate',
+        category: cat,
+        categoryName: 'Material Delivery Challan',
+        remarks: document.getElementById('chNote')?.value || 'Official job work delivery challan for heavy machinery handling.',
+        metadata: {
+          vehicleNo: vehicle,
+          consignee: 'Jupiter Tatravagonka Railwheel Factory, Khordha',
+          itemSummary: 'Heavy Rigging Gear & Tackle Consignment',
+          statutoryChecks: ['Job Work Note Appended', 'Balsons Official Seal Certified', 'Gate Sentry Passed']
+        }
+      });
+      if (confirm('☁️ Material Delivery Challan successfully synced to Google Drive!\n\nChallan Ref: ' + ref + '\nDrive Vault: ' + doc.driveFolderName + '\n\nWould you like to open the In-Portal Document Viewer now?')) {
+        window.BalsonsDocs.viewDocument(doc.id);
+      }
+    } else {
+      alert('Document Manager engine loading. Please try again.');
+    }
+  }
+
+  // ─── GATE PASS MODAL CONTROLLERS & INWARD PRESETS ───
+  function openCreateGatePassModal() {
+    const modal = document.getElementById('modalCreateGatePass');
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      if (typeof selectModalCategory === 'function') {
+        selectModalCategory('RGP');
+      }
+    }
+  }
+
+  function closeCreateGatePassModal() {
+    const modal = document.getElementById('modalCreateGatePass');
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  function openAcknowledgeReturnModal(passId) {
+    const modal = document.getElementById('modalAcknowledgeReturn');
+    const p = (typeof gatePassData !== 'undefined' && Array.isArray(gatePassData)) ? gatePassData.find(x => x.passId === passId) : null;
+    const retPassId = document.getElementById('retPassId');
+    const retExpectedDate = document.getElementById('retExpectedDate');
+    const retItemDesc = document.getElementById('retItemDesc');
+    const retCondition = document.getElementById('retCondition');
+    const retRemarks = document.getElementById('retRemarks');
+
+    if (retPassId) retPassId.value = passId || 'GP-RGP-2026-0001';
+    if (retExpectedDate) retExpectedDate.value = (p ? p.expectedReturnDate : 'Today (Day Pass)') || 'Today (Day Pass)';
+    if (retItemDesc) retItemDesc.value = (p ? p.itemDescription : 'RGP Material Equipment') || 'RGP Material Equipment';
+    if (retCondition) retCondition.value = 'GOOD';
+    if (retRemarks) retRemarks.value = 'Physically inspected & returned in sound working condition to Central Store.';
+
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('active');
+    }
+  }
+
+  function closeAcknowledgeReturnModal() {
+    const modal = document.getElementById('modalAcknowledgeReturn');
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.remove('active');
+    }
+  }
+
+  async function handleAcknowledgeReturnSubmit(event) {
+    if (event) event.preventDefault();
+    const passId = document.getElementById('retPassId')?.value;
+    if (typeof gatePassData !== 'undefined' && Array.isArray(gatePassData)) {
+      const p = gatePassData.find(x => x.passId === passId);
+      if (p) {
+        p.gateStatus = 'RETURNED_CLOSED';
+        p.actualReturnDate = new Date().toISOString().slice(0, 10);
+        p.returnCondition = document.getElementById('retCondition')?.value || 'GOOD';
+        p.returnRemarks = document.getElementById('retRemarks')?.value || '';
+      }
+    }
+    try {
+      if (window.BalsonsApi) {
+        await BalsonsApi.call('transaction.gatepass.reconcile', { passId: passId, status: 'RETURNED_CLOSED' });
+      }
+    } catch (err) {
+      console.warn('Reconcile API sync:', err.message);
+    }
+    if (typeof renderGatePassView === 'function') renderGatePassView();
+    if (typeof updateRadarMetrics === 'function') updateRadarMetrics();
+    closeAcknowledgeReturnModal();
+    alert(`✔ Returnable Gate Pass [${passId}] successfully reconciled and closed!`);
+  }
+
+  function loadInwardPreset(presetKey) {
+    const presets = {
+      'schuler_cyl': {
+        po: 'PO-JTRWF-2026-088',
+        dc: 'DC-SCH-2026-0412',
+        vendor: 'Schuler Pressen GmbH',
+        transporter: 'Balsons Heavy Haulage Logistics',
+        vehicle: 'OD-02-AX-8910',
+        driver: 'Manoj Das • 9876543210',
+        item: '100T Hydraulic Cylinder Assembly for Wheel Press',
+        qty: '02 Units (18.4 MT)',
+        bay: 'Main Press Pit (Bay-3)'
+      },
+      'gantry_rails': {
+        po: 'PO-JTRWF-2026-095',
+        dc: 'DC-STEEL-9821',
+        vendor: 'Jindal Steel & Power Ltd',
+        transporter: 'VRL Logistics Ltd',
+        vehicle: 'OD-02-BR-4512',
+        driver: 'Suresh Nayak • 9437012345',
+        item: 'Heavy Crane Gantry Rails (CR-100 / 12M Lengths)',
+        qty: '12 Lengths (24.0 MT)',
+        bay: 'Billet Preparation Bay'
+      },
+      'direct_consumables': {
+        po: 'PO-JTRWF-2026-102',
+        dc: 'INV-IND-2026-89',
+        vendor: 'Ferroterro Industrial Supplies',
+        transporter: 'Blue Dart Express',
+        vehicle: 'OD-02-CD-6734',
+        driver: 'Ramesh Sahoo • 9123456780',
+        item: 'Heavy Rigging Slings, Shackles & Synthetic Webbing',
+        qty: '24 Units (1.2 MT)',
+        bay: 'Die & Tooling Storage Vault'
+      }
+    };
+
+    const p = presets[presetKey];
+    if (!p) return;
+
+    if (document.getElementById('inwPoNumber')) document.getElementById('inwPoNumber').value = p.po;
+    if (document.getElementById('inwDcNumber')) document.getElementById('inwDcNumber').value = p.dc;
+    if (document.getElementById('inwVendorName')) document.getElementById('inwVendorName').value = p.vendor;
+    if (document.getElementById('inwTransporter')) document.getElementById('inwTransporter').value = p.transporter;
+    if (document.getElementById('inwVehicleNo')) document.getElementById('inwVehicleNo').value = p.vehicle;
+    if (document.getElementById('inwDriverInfo')) document.getElementById('inwDriverInfo').value = p.driver;
+    if (document.getElementById('inwItemSummary')) document.getElementById('inwItemSummary').value = p.item;
+    if (document.getElementById('inwQty')) document.getElementById('inwQty').value = p.qty;
+    if (document.getElementById('inwAllocatedBay')) document.getElementById('inwAllocatedBay').value = p.bay;
+  }
+
+
+  // Close any modal on backdrop click
+  document.addEventListener('click', (e) => {
+    if (e.target && e.target.classList && e.target.classList.contains('beds-modal-backdrop')) {
+      e.target.style.display = 'none';
+      e.target.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Close any modal on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.beds-modal-backdrop').forEach(m => {
+        m.style.display = 'none';
+        m.classList.remove('active');
+      });
+      document.body.style.overflow = '';
+    }
+  });
+
+</script>
 </body>
 </html>

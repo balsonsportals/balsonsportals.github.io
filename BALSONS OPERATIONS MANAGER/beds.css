@@ -1248,15 +1248,15 @@ table.beds-data-table tr:hover td, table.data-table tr:hover td {
 }
 .beds-login-card {
   width: 100%;
-  max-width: 900px;
+  max-width: 980px;
   background: var(--beds-bg-panel);
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 151, 178, 0.25);
   border: 1px solid var(--beds-border);
   display: flex;
   flex-direction: row;
-  min-height: 520px;
+  min-height: 560px;
   animation: bedsLoginCardIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
   transition: transform 0.4s ease, opacity 0.4s ease, filter 0.4s ease;
 }
@@ -1298,14 +1298,14 @@ table.beds-data-table tr:hover td, table.data-table tr:hover td {
   }
 }
 .beds-login-left {
-  flex: 1 1 50%;
+  flex: 0 0 52%;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   background-color: #102D35;
-  min-height: 520px;
+  min-height: 560px;
 }
 .beds-login-left-img {
   position: absolute;
@@ -1315,20 +1315,9 @@ table.beds-data-table tr:hover td, table.data-table tr:hover td {
   object-fit: cover;
   object-position: center;
   display: block;
-  animation: bedsKenBurns 24s ease-in-out infinite alternate;
-  transform-origin: center center;
-}
-
-@keyframes bedsKenBurns {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.08) translate(-1%, -1%); }
 }
 .beds-login-left-overlay {
-  position: relative;
-  z-index: 2;
-  background: linear-gradient(to top, rgba(16, 45, 53, 0.98) 0%, rgba(16, 45, 53, 0.75) 60%, transparent 100%);
-  padding: 24px 20px 20px;
-  color: #FFFFFF;
+  display: none !important; /* Custom branded poster artworks contain baked-in typography, logos and pill badges */
 }
 .beds-login-portal-title {
   font-size: 22px;
@@ -1599,4 +1588,235 @@ table.beds-data-table tr:hover td, table.data-table tr:hover td {
   pointer-events: none !important;
   margin: 0 !important;
   padding: 0 !important;
+}
+
+/* =========================================================================
+   BEDS IN-PORTAL DOCUMENT VIEWER MODAL & CLOUD VAULT SYSTEM
+   ========================================================================= */
+.beds-doc-viewer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: rgba(16, 45, 53, 0.88);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.beds-doc-viewer-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+.beds-doc-viewer-modal {
+  width: 100%;
+  max-width: 980px;
+  height: 92vh;
+  max-height: 92vh;
+  background: #FFFFFF;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 151, 178, 0.4);
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.beds-doc-viewer-backdrop.active .beds-doc-viewer-modal {
+  transform: translateY(0) scale(1);
+}
+.beds-doc-viewer-header {
+  background: linear-gradient(135deg, #102D35 0%, #1A444E 100%);
+  color: #FFFFFF;
+  padding: 14px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--beds-teal-primary);
+  flex-shrink: 0;
+}
+.beds-doc-viewer-header h3 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.beds-doc-viewer-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+  background: #F8FAFC;
+}
+.beds-doc-viewer-meta-bar {
+  background: #FFFFFF;
+  border: 1px solid var(--beds-border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+}
+.beds-doc-viewer-sheet {
+  background: #FFFFFF;
+  border: 1.5px solid var(--beds-charcoal-heading);
+  border-radius: 6px;
+  padding: 24px;
+  box-shadow: 0 4px 18px rgba(16,45,53,0.08);
+  color: #102D35;
+  font-family: 'Inter', -apple-system, sans-serif;
+  max-width: 820px;
+  margin: 0 auto;
+}
+.beds-doc-viewer-footer {
+  padding: 12px 22px;
+  background: #FFFFFF;
+  border-top: 1px solid var(--beds-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.beds-doc-badge-synced {
+  background: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.beds-doc-badge-pending {
+  background: #FFFBEB;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+
+
+/* =========================================================================
+   BEDS MASTER POP-UP MODAL WINDOW SYSTEM (V1.2)
+   Fixed, Centered Overlay with Blurred Backdrop for All Modal Pop-ups
+   ========================================================================= */
+.beds-modal-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 999999 !important;
+  background: rgba(16, 45, 53, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  display: none;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  animation: bedsFadeInBackdrop 0.25s ease-out;
+}
+
+.beds-modal-backdrop.active,
+.beds-modal-backdrop[style*="display: flex"],
+.beds-modal-backdrop[style*="display:flex"] {
+  display: flex !important;
+}
+
+.beds-modal-backdrop[style*="display: none"],
+.beds-modal-backdrop[style*="display:none"] {
+  display: none !important;
+}
+
+.beds-modal {
+  background: var(--beds-bg-panel, #FFFFFF) !important;
+  color: var(--beds-text-primary, #102a35) !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--beds-border, #CBD5E1) !important;
+  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 151, 178, 0.35) !important;
+  width: 100% !important;
+  max-width: 680px !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  padding: 28px 32px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  margin: auto !important;
+  animation: bedsModalZoomIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+@keyframes bedsModalZoomIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.beds-modal .modal-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  border-bottom: 1.5px solid var(--beds-border, #E2E8F0) !important;
+  padding-bottom: 14px !important;
+  margin-bottom: 18px !important;
+}
+
+.beds-modal .modal-header h3 {
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  color: var(--beds-charcoal-heading, #102D35) !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.beds-modal .modal-cat-btn {
+  padding: 8px 14px !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid var(--beds-border, #CBD5E1) !important;
+  background: var(--beds-bg-page, #F8FAFC) !important;
+  color: var(--beds-text-primary, #102a35) !important;
+}
+
+.beds-modal .modal-cat-btn:hover {
+  border-color: var(--beds-teal-primary, #0097B2) !important;
+  background: rgba(0, 151, 178, 0.08) !important;
+}
+
+.beds-modal .modal-cat-btn.active {
+  border-color: var(--beds-teal-primary, #0097B2) !important;
+  background: rgba(0, 151, 178, 0.15) !important;
+  color: var(--beds-teal-primary, #0097B2) !important;
+  box-shadow: 0 0 0 2px rgba(0, 151, 178, 0.25) !important;
 }

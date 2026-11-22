@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+  <!-- BEDS Portal Cover Image: login-hr.jpg -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BALSONS HR & Payroll Manager • Enterprise Platform</title>
@@ -796,63 +797,7 @@
 </head>
 <body>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="modal-backdrop" style="display: flex;">
-    <div class="login-split-card">
-      <!-- Left: cover image fitted to full side -->
-      <div class="login-split-left">
-        <img class="login-cover" src="assets/images/login-hr.jpg" onerror="this.onerror=null;this.src='assets/images/login-gate.jpg'" alt="HR & Payroll Manager">
-        <div class="login-cover-overlay">
-          <div class="login-cover-label">
-            <h2>HR &amp; Payroll Manager</h2>
-            <p>Enterprise Workforce &amp; Dual-Wage Payroll Platform</p>
-            <div class="login-motto">“Difficult We Do Easily, Impossible Takes Little Time...!”</div>
-          </div>
-        </div>
-      </div>
-      <!-- Right: login form -->
-      <div class="login-split-right">
-        <div class="login-form-wrap" style="width: 100%; max-width: 380px;">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
-            <img src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1HB7sGaQ4f2qq0NNzgBQrSpUe2DJWV4uh'" alt="BALSONS Logo" style="height: 42px; width: auto; object-fit: contain;">
-            <div>
-              <div style="font-size: 15px; font-weight: 800; color: var(--beds-charcoal-heading);">BALSONS HR Workspace</div>
-              <div style="font-size: 10.5px; color: var(--beds-teal-primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Authorized Access Only</div>
-            </div>
-          </div>
-
-          <div id="loginError" style="display: none; background: var(--beds-status-critical-bg); border: 1px solid var(--beds-alert-red); color: var(--beds-alert-red); padding: 10px; border-radius: var(--beds-radius-md); font-size: 12px; margin-bottom: 14px;"></div>
-
-          <form id="loginForm" onsubmit="handleHrLogin(event)">
-            <div class="form-group" style="margin-bottom: 12px;">
-              <label style="font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px;">Username</label>
-              <input type="text" id="loginUsername" required class="beds-input" placeholder="hr.head | pm.jtrwf | super.admin" style="width: 100%; height: 44px; padding: 0 12px; box-sizing: border-box;">
-            </div>
-            <div class="form-group" style="margin-bottom: 16px;">
-              <label style="font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px;">Password</label>
-              <input type="password" id="loginPassword" required class="beds-input" placeholder="••••••••••••" style="width: 100%; height: 44px; padding: 0 12px; box-sizing: border-box;">
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 11px; font-weight: 700; font-size: 13px;">
-              Authenticate &amp; Access HR Portal
-            </button>
-          </form>
-
-          <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--beds-border-subtle);">
-            <div style="font-size: 10.5px; font-weight: 800; color: var(--beds-text-secondary); text-transform: uppercase; margin-bottom: 8px;">Quick Test Roles:</div>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-              <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillHr('hr.head', 'Hr@2026!')">👩‍💼 HR Head</button>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillHr('pm.jtrwf', 'Pm@2026!')">🏗️ Project Mgr</button>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillHr('super.admin', 'Admin@2026!')">👑 Super Admin</button>
-            </div>
-          </div>
-
-          <div style="text-align: center; margin-top: 16px;">
-            <span style="font-weight:700; color:var(--beds-charcoal-heading, #102d35);">BALSONS Heavy Lift &amp; Shift</span> · <span style="color:var(--beds-teal-primary, #0097a7);">JTRWF Site Access</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Legacy Login Modal removed - replaced by BEDS V1.1 Unified Controller -->
 
   <!-- Header -->
   <header>
@@ -2355,6 +2300,7 @@
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/dossier-360.js"></script>
   <script src="assets/js/beds-superadmin.js"></script>
+  <script src="assets/js/balsons-docs-manager.js"></script>
   <script src="assets/js/beds-portal-login.js"></script>
   <script src="assets/js/beds-workspace.js"></script>
   <script>

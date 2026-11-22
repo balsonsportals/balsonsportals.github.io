@@ -44,7 +44,7 @@
       fullName: 'Prashant Muley (Executive Super Administrator)',
       role: 'Super Administrator',
       dept: 'Executive Directorate',
-      password: 'Balsons@2026!',
+      password: 'balsons2026',
       permittedPortals: ['all', 'operations', 'purchase', 'safety', 'hr', 'gate', 'store', 'launcher', 'reports'],
       assignedPortal: 'all',
       isSuperAdmin: true,
@@ -58,7 +58,7 @@
       fullName: 'Satish Chandra (Management Director)',
       role: 'Management / Director',
       dept: 'Project Directorate - JTRWF',
-      password: 'Director@2026',
+      password: 'balsons2026',
       permittedPortals: ['operations', 'purchase', 'store', 'safety'],
       assignedPortal: 'operations',
       isSuperAdmin: false,
@@ -72,7 +72,7 @@
       fullName: 'Dilip Rout (Operations Area Manager)',
       role: 'Operations Area Manager',
       dept: 'Heavy Lifting (Bay 3 / Line Axle)',
-      password: 'Ops@2026',
+      password: 'balsons2026',
       permittedPortals: ['operations'],
       assignedPortal: 'operations',
       isSuperAdmin: false,
@@ -86,7 +86,7 @@
       fullName: 'Sarat Mishra (Machine Shop Area Manager)',
       role: 'Area Manager (Machine Shop)',
       dept: 'Machine Shop Bay (7 Streams)',
-      password: 'Shop@2026',
+      password: 'balsons2026',
       permittedPortals: ['operations'],
       assignedPortal: 'operations',
       isSuperAdmin: false,
@@ -100,7 +100,7 @@
       fullName: 'Gagan Bihari Das (Chief Store In-Charge)',
       role: 'Portal Administrator',
       dept: 'Store & Rigging Inventory',
-      password: 'Store@2026',
+      password: 'balsons2026',
       assignedPortal: 'store',
       permittedPortals: ['store'],
       isSuperAdmin: false,
@@ -114,7 +114,7 @@
       fullName: 'Gajendra Rao (HSE Lead & Safety Steward)',
       role: 'Portal Administrator',
       dept: 'Health, Safety & Environment',
-      password: 'Safety@2026',
+      password: 'balsons2026',
       assignedPortal: 'safety',
       permittedPortals: ['safety'],
       isSuperAdmin: false,
@@ -128,7 +128,7 @@
       fullName: 'Bikash Mohapatra (Gate In-Charge)',
       role: 'Portal Administrator',
       dept: 'Site Security & Turnstile Access',
-      password: 'Gate@2026',
+      password: 'balsons2026',
       assignedPortal: 'gate',
       permittedPortals: ['gate'],
       isSuperAdmin: false,
@@ -142,7 +142,7 @@
       fullName: 'Priyanka Senapati (HR Manager)',
       role: 'Portal Administrator',
       dept: 'Human Resources & Payroll',
-      password: 'HR@2026',
+      password: 'balsons2026',
       assignedPortal: 'hr',
       permittedPortals: ['hr'],
       isSuperAdmin: false,
@@ -156,7 +156,7 @@
       fullName: 'Rohan Sharma (Purchase Lead & Commercial Head)',
       role: 'Portal Administrator',
       dept: 'Commercial Procurement & Contracts',
-      password: 'Purchase@2026',
+      password: 'balsons2026',
       assignedPortal: 'purchase',
       permittedPortals: ['purchase'],
       isSuperAdmin: false,
@@ -170,7 +170,7 @@
       fullName: 'Suresh Verma (Indenter & Erection Engineer)',
       role: 'Indenter / Site Engineer',
       dept: 'Mechanical Erection & Rigging',
-      password: 'Site@2026',
+      password: 'balsons2026',
       assignedPortal: 'purchase',
       permittedPortals: ['purchase', 'operations'],
       isSuperAdmin: false,
@@ -184,7 +184,7 @@
       fullName: 'Ashok Mohanty (HOD Rigging & Heavy Lift)',
       role: 'HOD / Department Head',
       dept: 'Heavy Rigging Department',
-      password: 'Rigging@2026',
+      password: 'balsons2026',
       assignedPortal: 'operations',
       permittedPortals: ['operations'],
       isSuperAdmin: false,
@@ -198,7 +198,7 @@
       fullName: 'Manoj Das (Lead Lifting Supervisor Bay-3)',
       role: 'Manager / Supervisor',
       dept: 'Bay-3 Lifting Operations',
-      password: 'Bay3@2026',
+      password: 'balsons2026',
       assignedPortal: 'operations',
       permittedPortals: ['operations'],
       isSuperAdmin: false,
@@ -212,7 +212,7 @@
       fullName: 'Ramesh Kumar (Senior Certified Rigger)',
       role: 'Employee / General User',
       dept: 'Rigging Crew Bay-3',
-      password: 'Worker@2026',
+      password: 'balsons2026',
       assignedPortal: 'gate',
       permittedPortals: ['gate'],
       isSuperAdmin: false,
@@ -226,7 +226,7 @@
       fullName: 'Client Inspection Auditor (JTRWF / Schuler)',
       role: 'Client Observer / Auditor',
       dept: 'Jupiter Tatravagonka Railwheel / Schuler',
-      password: 'Audit@2026',
+      password: 'balsons2026',
       assignedPortal: 'operations',
       permittedPortals: ['operations', 'reports'],
       isSuperAdmin: false,
@@ -259,9 +259,14 @@
           // Migration check: ensure every user has a password and strip launcher from non-superadmins
           let mutated = false;
           this.users.forEach(u => {
-            if (!u.password) {
+            // Force common enterprise password balsons2026 across all rosters
+            if (!u.password || u.password.includes('@2026') || u.password.includes('@') || u.password === 'Balsons@2026!') {
+              u.password = 'balsons2026';
+              mutated = true;
+            }
+            if (false) {
               const def = DEFAULT_USERS.find(d => d.username === u.username);
-              u.password = def ? def.password : 'Balsons@2026!';
+              u.password = 'balsons2026';
               mutated = true;
             }
             if (!u.assignedPortal) {
