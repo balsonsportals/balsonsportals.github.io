@@ -270,6 +270,36 @@
             from { opacity: 0; transform: translateY(-4px); }
             to { opacity: 1; transform: translateY(0); }
           }
+          .beds-pw-toggle {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 8px;
+            margin-left: 4px;
+            color: var(--beds-text-muted, #64748b);
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            user-select: none;
+            line-height: 1;
+          }
+          .beds-pw-toggle:hover {
+            color: var(--beds-teal-primary, #0097a7);
+            background: rgba(0, 151, 167, 0.08);
+          }
+          .beds-pw-toggle:focus {
+            outline: 2px solid var(--beds-teal-primary, #0097a7);
+            outline-offset: 1px;
+          }
+          .beds-pw-toggle:active {
+            transform: scale(0.92);
+          }
+          .beds-pw-eye-icon {
+            display: block;
+            pointer-events: none;
+          }
         </style>
 
         <div class="beds-login-card">
@@ -330,9 +360,11 @@
                   Password
                 </label>
                 <div class="beds-login-field">
-                  <span class="beds-field-icon">🔒</span>
+                  <span class="beds-field-icon" id="pwFieldIcon">🔒</span>
                   <input type="password" id="loginPassword" placeholder="balsons2026" value="balsons2026" required autocomplete="current-password">
-                  <button type="button" class="beds-pw-toggle" onclick="BalsonsPortalLogin.togglePasswordVisibility()" title="Show/Hide Password">👁</button>
+                  <button type="button" class="beds-pw-toggle" id="bedsTogglePwBtn" onclick="BalsonsPortalLogin.togglePasswordVisibility(this)" title="Show Password" aria-label="Show Password" aria-pressed="false">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="beds-pw-eye-icon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  </button>
                 </div>
               </div>
 
@@ -487,11 +519,31 @@
       }
     },
 
-    togglePasswordVisibility: function() {
+    togglePasswordVisibility: function(triggerBtn) {
       const pwInput = document.getElementById('loginPassword');
-      if (pwInput) {
-        pwInput.type = pwInput.type === 'password' ? 'text' : 'password';
+      if (!pwInput) return;
+
+      const isCurrentlyPassword = (pwInput.type === 'password');
+      pwInput.type = isCurrentlyPassword ? 'text' : 'password';
+
+      const toggleBtn = triggerBtn || document.getElementById('bedsTogglePwBtn') || document.querySelector('.beds-pw-toggle');
+      if (toggleBtn) {
+        toggleBtn.setAttribute('aria-pressed', isCurrentlyPassword ? 'true' : 'false');
+        toggleBtn.setAttribute('title', isCurrentlyPassword ? 'Hide Password' : 'Show Password');
+        toggleBtn.setAttribute('aria-label', isCurrentlyPassword ? 'Hide Password' : 'Show Password');
+
+        const eyeOpenSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="beds-pw-eye-icon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+        const eyeSlashSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="beds-pw-eye-icon"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+
+        toggleBtn.innerHTML = isCurrentlyPassword ? eyeSlashSvg : eyeOpenSvg;
       }
+
+      try {
+        if (document.activeElement === pwInput) {
+          const len = pwInput.value.length;
+          pwInput.setSelectionRange(len, len);
+        }
+      } catch (e) {}
     },
 
     handleForgotPassword: function(e) {
