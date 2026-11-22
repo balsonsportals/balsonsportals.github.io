@@ -463,7 +463,32 @@ const Balsons360Dossier = {
 
   get: function(empId) {
     if (!empId) return WORKFORCE_360_DIRECTORY[0];
-    return WORKFORCE_360_DIRECTORY.find(e => e.empId === empId) || WORKFORCE_360_DIRECTORY[0];
+    let emp = WORKFORCE_360_DIRECTORY.find(e => e.empId === empId);
+    if (!emp && typeof window !== 'undefined' && window.employeesData) {
+      emp = window.employeesData.find(e => e.empId === empId);
+    }
+    if (!emp && typeof localStorage !== 'undefined') {
+      try {
+        const stored = JSON.parse(localStorage.getItem('balsons_hr_employees_v2') || '[]');
+        emp = stored.find(e => e.empId === empId);
+      } catch (e) {}
+    }
+    if (!emp) return WORKFORCE_360_DIRECTORY[0];
+
+    // Check if there is an uploaded photo in localStorage
+    if (typeof localStorage !== 'undefined') {
+      try {
+        const photos = JSON.parse(localStorage.getItem('BALSONS_EMPLOYEE_PHOTOS') || '{}');
+        if (photos[emp.empId]) {
+          return { ...emp, photo: photos[emp.empId] };
+        }
+        if (emp.aadhaar && photos[emp.aadhaar]) {
+          return { ...emp, photo: photos[emp.aadhaar] };
+        }
+      } catch (e) {}
+    }
+
+    return emp;
   },
 
   renderCard: function(empId) {

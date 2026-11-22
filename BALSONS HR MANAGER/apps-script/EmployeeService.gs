@@ -187,6 +187,19 @@ var EmployeeService = {
     var ssId = HR_CONFIG.getSpreadsheetId();
     var regId = 'REG-2026-' + ('0000' + Math.floor(Math.random() * 9000 + 1000)).slice(-4);
     var nowIso = new Date().toISOString();
+    // Ensure photoData is attached as PHOTO document if provided
+    if (payload.photoData) {
+      if (!payload.attachments) payload.attachments = [];
+      var hasPhoto = payload.attachments.some(function(a) { return a.docType === 'PHOTO'; });
+      if (!hasPhoto) {
+        payload.attachments.unshift({
+          docType: 'PHOTO',
+          fileName: 'passport_photo.jpg',
+          mimeType: 'image/jpeg',
+          dataUrl: payload.photoData
+        });
+      }
+    }
     var docsCount = (payload.attachments && payload.attachments.length) ? payload.attachments.length : 0;
 
     var regRow = [

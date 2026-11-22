@@ -52,3 +52,8 @@ desktop.ini
 Desktop.ini
 scratch/
 tests/fixtures/
+*.zip
+*.tar.gz
+*.7z
+*.rar
+balsons portals.zip

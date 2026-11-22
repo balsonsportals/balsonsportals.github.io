@@ -38,6 +38,7 @@
       rootName: '02_HR_AND_PAYROLL_MANAGER',
       folders: {
         'KYC': { id: '1M-Lc7VoEB03KiVYQrABHW8g4q4h-QSHV', name: 'AADHAAR_AND_PAN_CARDS' },
+        'PHOTO': { id: '1M-Lc7VoEB03KiVYQrABHW8g4q4h-QSHV', name: 'EMPLOYEE_PASSPORT_PHOTOS' },
         'FORM31': { id: '1ZOd6JadZmfaHjsT1v5nAodHHAu5VOPnr', name: 'MEDICAL_FITNESS_CERTIFICATES' },
         'EPFO': { id: '1d0sMG99CelDexwKmMvlLOJ4DQklJNZS6', name: 'BANK_AND_EPFO_ESIC_RECORDS' },
         'PVC': { id: '1j5q1a3_7bY58d_123pvc', name: 'POLICE_VERIFICATION_PVC' }
@@ -711,63 +712,123 @@
       `;
     },
 
+    // STRICT PORTAL ISOLATION: FILTER DOCUMENTS SO ZERO OUTSIDE DOCUMENTS LEAK
+    getPortalDocuments: function() {
+      const cur = this.currentPortal || 'hr';
+      if (cur === 'launcher') return this.documents;
+      return this.documents.filter(d => {
+        if (cur === 'hr') {
+          return d.portal === 'hr' || d.portal === 'payroll' || ['KYC', 'FORM31', 'EPFO', 'PVC', 'PAYSLIP', 'APPOINTMENT'].includes(d.category) || d.category === 'PHOTO';
+        }
+        if (cur === 'gate') {
+          return d.portal === 'gate' || ['RGP', 'NRGP', 'VISITOR', 'VEHICLE', 'CHALLAN_INWARD', 'CHALLAN_OUTWARD', 'DRIVER_KYC'].includes(d.category);
+        }
+        if (cur === 'safety') {
+          return d.portal === 'safety' || ['PTW', 'TBT', 'INCIDENT', 'INDUCTION', 'EHS_AUDIT'].includes(d.category);
+        }
+        if (cur === 'store') {
+          return d.portal === 'store' || ['MRN', 'MIN', 'PO', 'STOCK_TRANSFER'].includes(d.category);
+        }
+        if (cur === 'operations') {
+          return d.portal === 'operations' || ['LIFT_PLAN', 'RIGGING_INSPECTION', 'CRANE_FITNESS'].includes(d.category);
+        }
+        if (cur === 'purchase') {
+          return d.portal === 'purchase' || ['RFQ', 'PO', 'VENDOR_KYC', 'COMPARATIVE'].includes(d.category);
+        }
+        return d.portal === cur;
+      });
+    },
+
     // RENDER THE DOCUMENTS TAB CONTENT DYNAMICALLY
     renderDocumentsTab: function(containerId = 'tab-documents') {
       const container = document.getElementById(containerId);
       if (!container) return;
 
-      const portalDocs = this.documents;
+      const portalDocs = this.getPortalDocuments();
       const syncedCount = portalDocs.filter(d => d.syncStatus === 'synced').length;
       const syncPercent = portalDocs.length ? Math.round((syncedCount / portalDocs.length) * 100) : 100;
 
       container.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; flex-wrap: wrap; gap: 14px;">
           <div>
-            <h2 style="font-size: 18px; font-weight: 800; color: var(--beds-charcoal-heading); display: flex; align-items: center; gap: 8px;">
-              📁 Official Documents &amp; Google Drive Vault
-              <span class="status-pill status-success">Auto-Synced to Cloud</span>
-            </h2>
-            <p style="font-size: 12px; color: var(--beds-text-secondary); margin-top: 2px;">
-              Enterprise cloud document management, statutory records, Google Drive direct upload, in-portal viewing &amp; authorized data safety.
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h2 style="font-size: 19px; font-weight: 800; color: var(--beds-charcoal-heading); margin: 0; display: flex; align-items: center; gap: 8px;">
+                📁 Official Documents &amp; Google Drive Vault
+              </h2>
+              <span class="status-pill status-success" style="font-size: 10px; font-weight: 800;">LIVE CLOUD SYNC</span>
+              <span class="status-pill status-info" style="font-size: 10px; font-weight: 800;">BEDS V1.2 VAULT</span>
+            </div>
+            <p style="font-size: 12px; color: var(--beds-text-secondary); margin-top: 4px;">
+              Enterprise cloud document management, statutory KYC records, direct Google Drive auto-sync, in-portal high-security viewing &amp; RBAC protection.
             </p>
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-            <a href="https://drive.google.com/drive/folders/${ROOT_DRIVE_FOLDER_ID}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="font-size: 11px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; border-color: var(--beds-teal-primary); color: var(--beds-teal-primary); font-weight: 700;">
+            <a href="https://drive.google.com/drive/folders/${ROOT_DRIVE_FOLDER_ID}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="font-size: 11.5px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-color: var(--beds-teal-primary); color: var(--beds-teal-primary); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
               ☁️ Open Master Drive Vault ↗
             </a>
-            <button class="btn btn-primary btn-sm" onclick="BalsonsDocs.openRegisterModal()" style="font-weight: 700;">
+            <button class="btn btn-primary btn-sm" onclick="BalsonsDocs.openRegisterModal()" style="font-weight: 800; background: var(--beds-teal-primary); display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,151,178,0.25);">
               ➕ Upload / Register Document
             </button>
-            <button class="btn btn-secondary btn-sm" onclick="BalsonsDocs.refreshRegistry()" style="font-size: 11px;">
-              🔄 Refresh
+            <button class="btn btn-secondary btn-sm" onclick="BalsonsDocs.refreshRegistry()" style="font-size: 11.5px; font-weight: 600;">
+              🔄 Refresh Registry
             </button>
           </div>
         </div>
 
-        <!-- METRICS ROW -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px;">
-          <div class="beds-card" style="padding: 14px 18px; border-left: 4px solid var(--beds-teal-primary);">
-            <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-muted); text-transform: uppercase;">Total Vault Documents</div>
-            <div style="font-size: 24px; font-weight: 800; color: var(--beds-charcoal-heading); margin-top: 4px;" id="metricTotalDocs">${portalDocs.length}</div>
-            <div style="font-size: 11px; color: var(--beds-text-secondary); margin-top: 2px;">Stored in Enterprise Registry</div>
+        <!-- POLISHED EXECUTIVE METRICS ROW -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-bottom: 22px;">
+          <!-- Metric 1: Total Vault Documents -->
+          <div style="background: #FFFFFF; border: 1px solid var(--beds-border); border-top: 3.5px solid var(--beds-teal-primary); border-radius: var(--beds-radius-lg); padding: 16px 18px; box-shadow: 0 4px 14px rgba(16,45,53,0.05); display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+              <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--beds-text-secondary);">Total Vault Documents</div>
+              <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(0, 151, 178, 0.1); color: #0097B2; display: flex; align-items: center; justify-content: center; font-size: 15px;">📁</div>
+            </div>
+            <div style="font-size: 30px; font-weight: 900; color: var(--beds-charcoal-heading); line-height: 1.1; margin-bottom: 4px;" id="metricTotalDocs">${portalDocs.length}</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--beds-text-secondary); margin-top: auto; padding-top: 6px; border-top: 1px solid var(--beds-border);">
+              <span>Enterprise Registry</span>
+              <span class="status-pill status-info" style="font-size: 9px; font-weight: 800;">ACTIVE</span>
+            </div>
           </div>
 
-          <div class="beds-card" style="padding: 14px 18px; border-left: 4px solid #10b981;">
-            <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-muted); text-transform: uppercase;">Google Drive Synced</div>
-            <div style="font-size: 24px; font-weight: 800; color: #10b981; margin-top: 4px;">${syncPercent}%</div>
-            <div style="font-size: 11px; color: var(--beds-text-secondary); margin-top: 2px;">${syncedCount} of ${portalDocs.length} Provisioned</div>
+          <!-- Metric 2: Google Drive Synced -->
+          <div style="background: #FFFFFF; border: 1px solid var(--beds-border); border-top: 3.5px solid #10B981; border-radius: var(--beds-radius-lg); padding: 16px 18px; box-shadow: 0 4px 14px rgba(16,45,53,0.05); display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+              <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--beds-text-secondary);">Google Drive Synced</div>
+              <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(16, 185, 129, 0.1); color: #10B981; display: flex; align-items: center; justify-content: center; font-size: 15px;">☁️</div>
+            </div>
+            <div style="font-size: 30px; font-weight: 900; color: #10B981; line-height: 1.1; margin-bottom: 4px;">${syncPercent}%</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--beds-text-secondary); margin-top: auto; padding-top: 6px; border-top: 1px solid var(--beds-border);">
+              <span>${syncedCount} of ${portalDocs.length} Provisioned</span>
+              <span class="status-pill status-success" style="font-size: 9px; font-weight: 800;">SYNCED ✓</span>
+            </div>
           </div>
 
-          <div class="beds-card" style="padding: 14px 18px; border-left: 4px solid var(--beds-charcoal-heading);">
-            <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-muted); text-transform: uppercase;">Google Drive Root</div>
-            <div style="font-size: 13px; font-family: monospace; font-weight: 700; color: var(--beds-charcoal-heading); margin-top: 8px;">1p56Z_7_yHC5...</div>
-            <div style="font-size: 11px; color: var(--beds-text-secondary); margin-top: 2px;">87 Provisioned Vault Subfolders</div>
+          <!-- Metric 3: Master Drive Root -->
+          <div style="background: #FFFFFF; border: 1px solid var(--beds-border); border-top: 3.5px solid #2563EB; border-radius: var(--beds-radius-lg); padding: 16px 18px; box-shadow: 0 4px 14px rgba(16,45,53,0.05); display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+              <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--beds-text-secondary);">Master Vault Root</div>
+              <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(37, 99, 235, 0.1); color: #2563EB; display: flex; align-items: center; justify-content: center; font-size: 15px;">🔒</div>
+            </div>
+            <div style="font-size: 14px; font-family: monospace; font-weight: 800; color: var(--beds-charcoal-heading); line-height: 1.2; margin: 8px 0 6px 0; background: var(--beds-bg-page); padding: 3px 6px; border-radius: 4px; border: 1px solid var(--beds-border);">
+              1p56Z_7_yHC5...
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--beds-text-secondary); margin-top: auto; padding-top: 6px; border-top: 1px solid var(--beds-border);">
+              <span>87 Provisioned Folders</span>
+              <span class="status-pill status-info" style="font-size: 9px; font-weight: 800;">JTRWF ROOT</span>
+            </div>
           </div>
 
-          <div class="beds-card" style="padding: 14px 18px; border-left: 4px solid #f59e0b;">
-            <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-muted); text-transform: uppercase;">Access Security</div>
-            <div style="font-size: 15px; font-weight: 800; color: var(--beds-charcoal-heading); margin-top: 6px;">Role-Based Safety</div>
-            <div style="font-size: 11px; color: var(--beds-text-secondary); margin-top: 2px;">Super Admin / Portal Admin Locked</div>
+          <!-- Metric 4: Role-Based Access Control -->
+          <div style="background: #FFFFFF; border: 1px solid var(--beds-border); border-top: 3.5px solid #D97706; border-radius: var(--beds-radius-lg); padding: 16px 18px; box-shadow: 0 4px 14px rgba(16,45,53,0.05); display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+              <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--beds-text-secondary);">Access Governance</div>
+              <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(217, 119, 6, 0.1); color: #D97706; display: flex; align-items: center; justify-content: center; font-size: 15px;">🛡️</div>
+            </div>
+            <div style="font-size: 18px; font-weight: 900; color: var(--beds-charcoal-heading); line-height: 1.2; margin: 4px 0;">RBAC Locked</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--beds-text-secondary); margin-top: auto; padding-top: 6px; border-top: 1px solid var(--beds-border);">
+              <span>Super &amp; HR Admin Only</span>
+              <span class="status-pill status-warning" style="font-size: 9px; font-weight: 800;">ENFORCED</span>
+            </div>
           </div>
         </div>
 
@@ -776,14 +837,14 @@
           <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
             <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; flex: 1;">
               <input type="text" id="docSearchInput" class="beds-input" placeholder="🔍 Search documents by reference, title, tags, driver, vehicle..." style="max-width: 380px;" oninput="BalsonsDocs.filterDocuments()">
-              <select id="docCategoryFilter" class="beds-select" style="max-width: 220px;" onchange="BalsonsDocs.filterDocuments()">
-                <option value="all">📁 All Document Categories</option>
-                <option value="RGP">🔄 Returnable Gate Pass (RGP)</option>
-                <option value="NRGP">📦 Non-Returnable Gate Pass (NRGP)</option>
-                <option value="CHALLAN_OUTWARD">📑 Outward Delivery Challan</option>
-                <option value="CHALLAN_INWARD">🚚 Inward Delivery Challan</option>
-                <option value="KYC">👤 Employee KYC Dossier</option>
-                <option value="PTW">🛡️ Safety Permit To Work</option>
+              <select id="docCategoryFilter" class="beds-select" style="max-width: 260px;" onchange="BalsonsDocs.filterDocuments()">
+                <option value="all">📁 All HR Statutory Records</option>
+                <option value="KYC">👤 Employee KYC (Aadhaar &amp; PAN)</option>
+                <option value="FORM31">🩺 Medical Fitness &amp; Form 31</option>
+                <option value="EPFO">🏦 EPFO &amp; ESIC Bank Records</option>
+                <option value="PVC">🛡️ Police Verification (PVC)</option>
+                <option value="PAYSLIP">📑 Monthly Salary &amp; Wage Slips</option>
+                <option value="APPOINTMENT">📜 Letters of Appointment</option>
               </select>
             </div>
             <div style="font-size: 11.5px; color: var(--beds-text-muted);">
@@ -824,7 +885,8 @@
       const searchTerm = (document.getElementById('docSearchInput')?.value || '').toLowerCase();
       const catFilter = document.getElementById('docCategoryFilter')?.value || 'all';
 
-      const filtered = this.documents.filter(d => {
+      const portalDocs = this.getPortalDocuments();
+      const filtered = portalDocs.filter(d => {
         if (catFilter !== 'all' && d.category !== catFilter) return false;
         if (!searchTerm) return true;
         const haystack = `${d.refNumber} ${d.title} ${(d.tags || []).join(' ')} ${d.author} ${d.category} ${JSON.stringify(d.metadata || {})}`.toLowerCase();

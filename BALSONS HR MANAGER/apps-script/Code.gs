@@ -63,10 +63,20 @@ function doPost(e) {
         break;
 
       case 'auth.login':
-        // Test role mapping
+        // Common enterprise authentication (balsons2026)
+        var pass = payload.password || '';
+        if (pass && pass !== 'balsons2026' && pass !== 'Balsons@2026!') {
+          return createJsonResponse({
+            success: false,
+            status: 401,
+            requestId: requestId,
+            action: action,
+            error: { code: 'AUTH_FAILED', message: 'Invalid enterprise password' }
+          });
+        }
         responseData = {
           token: 'HR-TOKEN-' + new Date().getTime(),
-          username: payload.username,
+          username: payload.username || 'admin.hr',
           role: payload.role || 'HR Head',
           fullName: 'Priyanka Senapati'
         };
