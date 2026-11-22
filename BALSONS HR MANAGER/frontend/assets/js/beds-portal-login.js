@@ -62,9 +62,17 @@
       code: 'reports',
       title: 'Central Sync Hub & Reporting Portal',
       sub: 'Enterprise Sync | Cross-Portal Analytics | Audit | JTRWF',
-      image: 'assets/images/login-gate.jpg',
+      image: 'assets/images/login-reports.jpg',
       pills: ['Central Sync', 'Analytics', 'Cross-Portal', 'Audit'],
       allowedRoles: ['Super Administrator', 'Management / Director', 'Portal Administrator']
+    },
+    'document-hub': {
+      code: 'document-hub',
+      title: 'Central Document Hub & Cloud Vault',
+      sub: 'Google Drive Master Storage | 87 Provisioned Vaults',
+      image: 'assets/images/login-document-hub.jpg',
+      pills: ['Google Drive', 'Audit Vaults', '87 Folders', 'Root Storage'],
+      allowedRoles: ['Super Administrator', 'Management / Director', 'Portal Administrator', 'HOD / Department Head', 'Manager / Supervisor']
     },
     'launcher': {
       code: 'launcher',

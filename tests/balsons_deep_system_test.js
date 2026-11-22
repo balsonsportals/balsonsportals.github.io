@@ -42,6 +42,8 @@ runSuite('Suite 1: Visual Assets, Cover Images & CSS Full-Side Alignment', (asse
     { name: 'login-purchase.jpg', minSize: 1000000 },
     { name: 'login-safety.jpg', minSize: 1000000 },
     { name: 'login-store.jpg', minSize: 1000000 },
+    { name: 'login-reports.jpg', minSize: 800000 },
+    { name: 'login-document-hub.jpg', minSize: 800000 },
     { name: 'balsons-logo.png', minSize: 100000 }
   ];
 

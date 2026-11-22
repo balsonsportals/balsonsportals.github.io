@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-22T11:48:17.600Z",
+  "timestamp": "2026-11-22T12:23:14.912Z",
   "environment": "Windows 11 x64 / Node v24.19.0",
   "testSuites": [
     {
       "name": "Suite 1: Visual Assets, Cover Images & CSS Full-Side Alignment",
-      "total": 75,
-      "passed": 75,
+      "total": 91,
+      "passed": 91,
       "failed": 0,
       "tests": [
         {
@@ -37,6 +37,16 @@
           "title": "Root assets/images contains login-store.jpg",
           "status": "PASS",
           "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "Root assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "Root assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
         },
         {
           "title": "Root assets/images contains balsons-logo.png",
@@ -79,6 +89,16 @@
           "details": "Size: 1515822 bytes"
         },
         {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
           "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains balsons-logo.png",
           "status": "PASS",
           "details": "Size: 194271 bytes"
@@ -117,6 +137,16 @@
           "title": "BALSONS HR MANAGER/frontend/assets/images contains login-store.jpg",
           "status": "PASS",
           "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
         },
         {
           "title": "BALSONS HR MANAGER/frontend/assets/images contains balsons-logo.png",
@@ -159,6 +189,16 @@
           "details": "Size: 1515822 bytes"
         },
         {
+          "title": "BALSONS OPERATIONS MANAGER/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
           "title": "BALSONS OPERATIONS MANAGER/assets/images contains balsons-logo.png",
           "status": "PASS",
           "details": "Size: 194271 bytes"
@@ -197,6 +237,16 @@
           "title": "BALSONS PURCHASE MANAGER/assets/images contains login-store.jpg",
           "status": "PASS",
           "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
         },
         {
           "title": "BALSONS PURCHASE MANAGER/assets/images contains balsons-logo.png",
@@ -239,6 +289,16 @@
           "details": "Size: 1515822 bytes"
         },
         {
+          "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
           "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains balsons-logo.png",
           "status": "PASS",
           "details": "Size: 194271 bytes"
@@ -279,6 +339,16 @@
           "details": "Size: 1515822 bytes"
         },
         {
+          "title": "BALSONS STORE MANAGER/frontend/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
           "title": "BALSONS STORE MANAGER/frontend/assets/images contains balsons-logo.png",
           "status": "PASS",
           "details": "Size: 194271 bytes"
@@ -317,6 +387,16 @@
           "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains login-store.jpg",
           "status": "PASS",
           "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
         },
         {
           "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains balsons-logo.png",
