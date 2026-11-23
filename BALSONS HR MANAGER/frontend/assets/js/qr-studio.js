@@ -9,7 +9,7 @@
 
   const BalsonsQrStudio = {
     selectedEmpId: 'EMP-2026-0001',
-    mode: 'SECURITY_PASS', // SECURITY_PASS | VERIFICATION_URL | VCARD | MUSTER_TOKEN | CUSTOM_TEXT
+    mode: 'VERIFICATION_URL', // SECURITY_PASS | VERIFICATION_URL | VCARD | MUSTER_TOKEN | CUSTOM_TEXT
     fgColor: '#102D35',
     bgColor: '#FFFFFF',
     correctLevel: 2, // 0: L (7%), 1: M (15%), 2: Q (25%), 3: H (30%)
@@ -99,7 +99,7 @@
         return `BALSONS:GATE:PASS|ID=${e.empId}|NAME=${e.name}|TRADE=${e.trade || 'Worker'}|DEPT=${e.dept || 'Operations'}|BLOOD=${e.bloodGroup || 'B+'}|EMERGENCY=${em}|VALID=2026-12-31|GATE=AUTH-1-2|MUSTER=READY`;
       } 
       else if (this.mode === 'VERIFICATION_URL') {
-        return `https://balsonsportals.github.io/BALSONS_HR_PORTAL/verify?empId=${encodeURIComponent(e.empId)}&project=PRJ-JTRWF-SCHULER`;
+        return `https://balsonsportals.github.io/verify.html?empId=${encodeURIComponent(e.empId)}`;
       } 
       else if (this.mode === 'VCARD') {
         const em = e.emergency ? e.emergency.split('-').pop().trim() : '+91 98610 99881';
