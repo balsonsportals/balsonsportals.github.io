@@ -668,7 +668,7 @@ const Balsons360Dossier = {
               <select id="modalDossierEmpSelect" class="beds-select" style="font-size: 12px; padding: 5px 8px; font-weight: 700;" onchange="Balsons360Dossier.onSelectChange(this.value)">
                 <!-- Options populated dynamically -->
               </select>
-              <button type="button" class="beds-btn beds-btn-sm beds-btn-primary" style="background: #0097B2; color: #FFFFFF; font-weight: 800; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer;" onclick="window.print()">
+              <button type="button" class="beds-btn beds-btn-sm beds-btn-primary" style="background: #0097B2; color: #FFFFFF; font-weight: 800; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer;" onclick="if(window.print360Dossier){window.print360Dossier(document.getElementById('modalDossierEmpSelect')?document.getElementById('modalDossierEmpSelect').value:'EMP-2026-0001');}else{window.print();}">
                 🖨️ Print Dossier (A4)
               </button>
               <button type="button" class="beds-btn beds-btn-sm beds-btn-secondary" style="padding: 6px 10px; cursor: pointer;" onclick="Balsons360Dossier.closeModal()">

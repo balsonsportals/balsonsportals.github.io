@@ -773,28 +773,30 @@
       flex-wrap: wrap;
     }
 
-    /* Unified BEDS Statutory Print Engine */
-    #balsonsA4PrintCanvas {
+    /* ══════════════════════════════════════════════════════════════════
+       BEDS UNIFIED STATUTORY A4 PRINT ENGINE (EXACT 1-PAGE GUARANTEE)
+       ══════════════════════════════════════════════════════════════════ */
+    #bedsPrintStage {
       display: none;
     }
 
     @media print {
       @page {
         size: A4 portrait;
-        margin: 8mm 10mm 8mm 10mm;
+        margin: 6mm 8mm 6mm 8mm; /* Balanced 6mm top/bottom, 8mm left/right */
       }
 
       *, *:before, *:after {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
         color-adjust: exact !important;
+        box-sizing: border-box !important;
       }
 
       html, body {
-        display: block !important;
         width: 100% !important;
-        min-height: 0 !important;
         height: auto !important;
+        min-height: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
         background: #FFFFFF !important;
@@ -803,233 +805,112 @@
         overflow: visible !important;
       }
 
-      /* Hide all application chrome, navigation, headers, and modals */
-      header, footer, nav, main,
-      #beds-sticky-header-container, .beds-sticky-header-container,
-      .header-controls, .user-pill-wrap, .meta-badge, #themeBtn, #hrLiveSyncBtn,
-      .beds-nav-tabs, .nav-tabs, .section-view,
-      .beds-modal-backdrop, .modal-backdrop,
-      #modalPrintEnrolmentForm, #modalRecordAdvance, #modalEmployeeMasterEdit,
-      #modalRegisterEmployee, #modalIdCard, #modalDossier360,
-      .table-container, .kpi-row, button, input, select {
+      /* STRICTLY PURGE ALL SCREEN ELEMENTS: headers, sidebars, modals, backdrops,
+         floating badges, and dynamically injected workspace overlays.
+         Only #bedsPrintStage is printed. This eliminates blank Page 1 and Page 3 spill! */
+      body > *:not(#bedsPrintStage) {
         display: none !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
         visibility: hidden !important;
+        position: absolute !important;
+        top: -99999px !important;
+        left: -99999px !important;
       }
 
-      /* ─── CASE 1: DIRECT BODY-LEVEL A4 CANVAS PRINT (ENROLMENT DOSSIER) ─── */
-      body.printing-enrolment #balsonsA4PrintCanvas {
+      #bedsPrintStage {
         display: block !important;
         visibility: visible !important;
         position: static !important;
-        width: 190mm !important;
-        min-width: 190mm !important;
-        max-width: 190mm !important;
-        min-height: 260mm !important;
-        max-height: 275mm !important;
-        height: auto !important;
-        box-sizing: border-box !important;
+        width: 194mm !important;
+        max-width: 194mm !important;
+        min-width: 194mm !important;
         margin: 0 auto !important;
-        padding: 4mm 6mm !important;
-        border: 1.5px solid #102D35 !important;
+        padding: 0 !important;
         background: #FFFFFF !important;
-        color: #102D35 !important;
         page-break-after: avoid !important;
         break-after: avoid !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
-        page-break-before: avoid !important;
-        break-before: avoid !important;
         overflow: hidden !important;
-        font-family: Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
       }
 
-      body.printing-enrolment #balsonsA4PrintCanvas * {
+      #bedsPrintStage * {
         visibility: visible !important;
-        box-sizing: border-box !important;
       }
 
-      body.printing-enrolment #balsonsA4PrintCanvas table {
+      /* Base calibrated sheet for all 4 print documents */
+      .beds-print-a4-sheet {
+        width: 194mm !important;
+        max-width: 194mm !important;
+        min-width: 194mm !important;
+        height: 278mm !important;
+        min-height: 275mm !important;
+        max-height: 278mm !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        border: 1.5px solid #102D35 !important;
+        border-radius: 4px !important;
+        padding: 4mm 6mm !important;
+        box-sizing: border-box !important;
+        background: #FFFFFF !important;
+        overflow: hidden !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+
+      /* ─── 1. ENROLMENT FORM A4 CALIBRATION ─── */
+      .enrolment-print-sheet {
+        padding: 4mm 6mm !important;
+      }
+      .enrolment-print-sheet table {
         width: 100% !important;
         border-collapse: collapse !important;
       }
-
-      body.printing-enrolment #balsonsA4PrintCanvas td,
-      body.printing-enrolment #balsonsA4PrintCanvas th {
-        padding: 2px 5px !important;
-        font-size: 8pt !important;
-        line-height: 1.25 !important;
-      }
-
-      body.printing-enrolment #balsonsA4PrintCanvas [style*="font-size: 7.5px"],
-      body.printing-enrolment #balsonsA4PrintCanvas [style*="font-size: 7px"] {
-        font-size: 6.8pt !important;
-        line-height: 1.2 !important;
-      }
-
-      body.printing-enrolment #balsonsA4PrintCanvas [style*="font-size: 8.5px"],
-      body.printing-enrolment #balsonsA4PrintCanvas [style*="font-size: 8px"],
-      body.printing-enrolment #balsonsA4PrintCanvas [style*="font-size: 9px"] {
+      .enrolment-print-sheet td,
+      .enrolment-print-sheet th {
+        padding: 2.2px 5px !important;
         font-size: 8pt !important;
       }
 
-      body.printing-enrolment #balsonsA4PrintCanvas [style*="font-size: 11px"] {
-        font-size: 9.5pt !important;
+      /* ─── 2. SALARY SLIP A4 CALIBRATION ─── */
+      .payslip-print-sheet {
+        padding: 5mm 7mm !important;
+      }
+      .payslip-print-sheet .challan-header {
+        margin-bottom: 4px !important;
+        padding-bottom: 6px !important;
       }
 
-      body.printing-enrolment #balsonsA4PrintCanvas [style*="font-size: 14px"] {
-        font-size: 13pt !important;
+      /* ─── 3. GATE ENTRY ID PASS A4 CALIBRATION ─── */
+      .idcard-print-sheet {
+        padding: 5mm 7mm !important;
+      }
+      .idcard-print-sheet .id-card-badge {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
       }
 
-      body.printing-enrolment #balsonsA4PrintCanvas [style*="padding: 2.5px 6px"],
-      body.printing-enrolment #balsonsA4PrintCanvas [style*="padding: 3px 6px"],
-      body.printing-enrolment #balsonsA4PrintCanvas [style*="padding: 2px 6px"] {
-        padding: 2px 5px !important;
+      /* ─── 4. 360° WORKFORCE DOSSIER A4 CALIBRATION ─── */
+      .dossier-360-print-sheet {
+        padding: 4mm 6mm !important;
       }
-
-      /* ─── CASE 2: SINGLE PAYSLIP (A4 EXACT 1-PAGE) ─── */
-      body.printing-payslip {
-        overflow: visible !important;
-        background: #FFFFFF !important;
-      }
-
-      body.printing-payslip #printablePayslip,
-      body.printing-payslip #printablePayslip * {
-        visibility: visible !important;
-      }
-
-      body.printing-payslip #printablePayslip {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        position: static !important;
-        width: 100% !important;
-        max-width: 190mm !important;
-        min-height: 275mm !important;
-        max-height: 278mm !important;
-        height: 276mm !important;
-        margin: 0 auto !important;
-        padding: 8mm 10mm !important;
-        box-sizing: border-box !important;
-        border: 2px solid #102D35 !important;
-        background: #FFFFFF !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-        overflow: hidden !important;
-        box-shadow: none !important;
-      }
-
-      /* ─── CASE 3: BULK BATCH PAYSLIPS (A4 1-PAGE PER SLIP) ─── */
-      body.printing-bulk-payslips #printableBulkPayslips,
-      body.printing-bulk-payslips #printableBulkPayslips * {
-        visibility: visible !important;
-      }
-
-      body.printing-bulk-payslips #printableBulkPayslips {
-        display: block !important;
-        position: static !important;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-
-      .payslip-page-break {
-        page-break-after: always !important;
-        break-after: page !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        margin: 0 auto !important;
-        padding: 8mm 10mm !important;
-        box-sizing: border-box !important;
-        width: 100% !important;
-        max-width: 190mm !important;
-        height: 276mm !important;
-        min-height: 275mm !important;
-        max-height: 278mm !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        border: 2px solid #102D35 !important;
-        background: #FFFFFF !important;
-      }
-
-      /* ─── CASE 4: ID CARD PASSES (CALIBRATED DUAL-CARD A4 SHEET) ─── */
-      body.printing-idcard {
-        overflow: visible !important;
-        background: #FFFFFF !important;
-      }
-
-      body.printing-idcard #modalIdCardStudio {
-        visibility: visible !important;
-        display: block !important;
-        position: static !important;
-        width: 100% !important;
-        height: auto !important;
-        background: transparent !important;
+      .dossier-360-print-sheet .dossier-360-sheet {
         border: none !important;
         box-shadow: none !important;
         padding: 0 !important;
         margin: 0 !important;
-      }
-
-      body.printing-idcard #modalIdCardStudio .modal-box,
-      body.printing-idcard #modalIdCardStudio .beds-modal {
-        visibility: visible !important;
-        display: block !important;
-        position: static !important;
         width: 100% !important;
         max-width: 100% !important;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-
-      body.printing-idcard #modalIdCardStudio .modal-box > div:first-child,
-      body.printing-idcard #modalIdCardStudio .modal-box > div:nth-child(2),
-      body.printing-idcard #modalIdCardStudio button,
-      body.printing-idcard #modalIdCardStudio select,
-      body.printing-idcard #modalIdCardStudio label {
-        display: none !important;
-        visibility: hidden !important;
-      }
-
-      body.printing-idcard #printableIdCardContainer,
-      body.printing-idcard #printableIdCardContainer * {
-        visibility: visible !important;
-      }
-
-      body.printing-idcard #printableIdCardContainer {
+        height: 100% !important;
         display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        gap: 15mm !important;
-        padding-top: 25mm !important;
-        width: 100% !important;
-        max-width: 190mm !important;
-        margin: 0 auto !important;
-        position: static !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-
-      /* ─── CASE 5: 360° WORKFORCE DOSSIER (A4 EXACT 1-PAGE) ─── */
-      body.printing-dossier-360 #hr-dossier-page-container,
-      body.printing-dossier-360 #hr-dossier-page-container * {
-        visibility: visible !important;
-      }
-
-      body.printing-dossier-360 #hr-dossier-page-container {
-        display: block !important;
-        position: static !important;
-        width: 100% !important;
-        max-width: 190mm !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
       }
     }</style>
 </head>
@@ -3367,13 +3248,174 @@
     }
 
     // ══════════════════════════════════════════════════════════════════
-    // STATUTORY PRINT MODES & ACTIONS
+    // UNIFIED BEDS STATUTORY PRINT ENGINE (A4 EXACT 1-PAGE CONTROLLER)
     // ══════════════════════════════════════════════════════════════════
-    function printPayslip() {
-      document.body.classList.add('printing-payslip');
-      window.print();
-      setTimeout(() => document.body.classList.remove('printing-payslip'), 1000);
+    function getBedsPrintStage() {
+      let stage = document.getElementById('bedsPrintStage');
+      if (!stage) {
+        stage = document.createElement('div');
+        stage.id = 'bedsPrintStage';
+        document.body.appendChild(stage);
+      }
+      return stage;
     }
+
+    function setupPrintCleanup(stage) {
+      const cleanUp = () => {
+        if (stage) stage.innerHTML = '';
+        window.removeEventListener('afterprint', cleanUp);
+      };
+      window.addEventListener('afterprint', cleanUp);
+      setTimeout(cleanUp, 3500);
+    }
+
+    // 1. STATUTORY ENROLMENT FORM (EXACT 1 A4 PAGE)
+    function printEnrolmentForm(empId) {
+      const id = empId || (document.getElementById('enrolEmpSelect') ? document.getElementById('enrolEmpSelect').value : 'EMP-2026-0001');
+      renderEnrolmentForm(id);
+
+      const stage = getBedsPrintStage();
+      const dossierSource = document.getElementById('printableEnrolmentDossier');
+      if (!dossierSource) return;
+
+      stage.innerHTML = `<div class="beds-print-a4-sheet enrolment-print-sheet">${dossierSource.innerHTML}</div>`;
+      setupPrintCleanup(stage);
+      window.print();
+    }
+
+    // 2. OFFICIAL SALARY SLIP (EXACT 1 A4 PAGE)
+    function printPayslip(empId) {
+      const sel = document.getElementById('payslipModalEmpSelect') || document.getElementById('payslipEmpSelect');
+      const id = empId || (sel ? sel.value : 'EMP-2026-0001');
+      const stage = getBedsPrintStage();
+      const payslipHtml = generateOfficialPayslipHtml(id, false);
+
+      stage.innerHTML = `<div class="beds-print-a4-sheet payslip-print-sheet">${payslipHtml}</div>`;
+      setupPrintCleanup(stage);
+      window.print();
+    }
+
+    // 3. GATE ENTRY ID PASS (CR80 DUAL-CARD EXACT 1 A4 PAGE)
+    function printGateIdCard(empId) {
+      const id = empId || (document.getElementById('idCardEmpSelect') ? document.getElementById('idCardEmpSelect').value : 'EMP-2026-0001');
+      renderIdCard(id);
+
+      const frontFace = document.getElementById('idCardFrontFace');
+      const backFace = document.getElementById('idCardBackFace');
+      if (!frontFace || !backFace) return;
+
+      const e = employeesData.find(x => x.empId === id) || employeesData[0];
+      const stage = getBedsPrintStage();
+
+      stage.innerHTML = `
+        <div class="beds-print-a4-sheet idcard-print-sheet">
+          <!-- Corporate Official Header -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0097B2; padding-bottom: 6px; margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <img src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1HB7sGaQ4f2qq0NNzgBQrSpUe2DJWV4uh'" style="height: 38px; object-fit: contain;">
+              <div>
+                <div style="font-size: 15px; font-weight: 900; color: #102D35; letter-spacing: -0.2px;">BALSONS HEAVY LIFT &amp; SHIFT</div>
+                <div style="font-size: 9.5px; font-weight: 800; color: #0097B2; text-transform: uppercase; letter-spacing: 0.5px;">
+                  SITE SECURITY &amp; WORKFORCE ACCESS PASS • CR80 CALIBRATED
+                </div>
+                <div style="font-size: 8px; color: #64748B;">Project: PRJ-JTRWF-SCHULER • Site: Jupiter Tatravagonka Railwheel Factory, Khordha, Odisha</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="background: #102D35; color: #FFFFFF; padding: 2px 8px; font-size: 9px; font-weight: 800; border-radius: 3px; display: inline-block;">
+                OFFICIAL SITE PASS
+              </div>
+              <div style="font-size: 8px; font-family: monospace; color: #64748B; margin-top: 2px;">PASS REF: SP-2026-${e.empId.replace('EMP-2026-', '')}</div>
+            </div>
+          </div>
+
+          <!-- Cutting & Punching Guidelines -->
+          <div style="text-align: center; font-size: 8px; color: #64748B; margin-bottom: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+            ✂ CUT ALONG OUTER GUIDE LINES • FOLD ALONG CENTER SEAM • LANYARD SLOT AT TOP PUNCH NOTCH
+          </div>
+
+          <!-- Centered Badges Pair (Front & Back Faces) -->
+          <div style="display: flex; justify-content: center; align-items: center; gap: 16mm; margin: 4mm auto 8mm auto; padding: 4mm; border: 1px dashed #CBD5E1; border-radius: 6px; background: #F8FAFC;">
+            <div style="box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 10px; overflow: hidden;">
+              ${frontFace.outerHTML}
+            </div>
+            <div style="box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 10px; overflow: hidden;">
+              ${backFace.outerHTML}
+            </div>
+          </div>
+
+          <!-- Security Clearance & Gate Access Matrix -->
+          <div style="background: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 4px; padding: 6px 10px; margin-bottom: 8px; font-size: 8.5px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; border-bottom: 1px solid #CBD5E1; padding-bottom: 3px;">
+              <strong style="color: #102D35; text-transform: uppercase;">Biometric Security &amp; Site Gate Clearance Record:</strong>
+              <span style="font-weight: 800; color: #059669;">● GATE 1 &amp; GATE 2 ACCESS AUTHORIZED</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; color: #334155;">
+              <div><strong>Pass Holder:</strong> ${escapeHtml(e.name)}</div>
+              <div><strong>Worker ID:</strong> ${e.empId}</div>
+              <div><strong>Trade / Skill:</strong> ${escapeHtml(e.trade || 'Worker')}</div>
+              <div><strong>Wage Status:</strong> ${e.wageType === 'MONTHLY' ? 'Monthly Staff' : 'Daily Pay Crew'}</div>
+              <div><strong>Blood Group:</strong> <span style="color: #DC2626; font-weight: 800;">${e.bloodGroup || 'B+'}</span></div>
+              <div><strong>Medical Fitness:</strong> FORM 31 CERTIFIED</div>
+              <div><strong>Police Verification:</strong> RECORDED ✓</div>
+              <div><strong>Validity Period:</strong> NOV 2026 - NOV 2027</div>
+            </div>
+          </div>
+
+          <!-- Mandatory Site Security Rule Notice -->
+          <div style="font-size: 7.5px; color: #52636B; line-height: 1.3; border: 1px dashed #CBD5E1; padding: 4px 8px; background: #FFFFFF; margin-bottom: 8px;">
+            <strong>Mandatory Display Notice:</strong> This Identity Pass remains the property of BALSONS Heavy Lift &amp; Shift. It must be visibly displayed on person at all times within the perimeter of PRJ-JTRWF-SCHULER. Access is non-transferable. Loss of card must be reported immediately to Site Security Command.
+          </div>
+
+          <!-- Issuance Authorization Signatures -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; padding-top: 6px; font-size: 8.5px;">
+            <div style="text-align: left;">
+              <div style="font-weight: 800; color: #102D35; margin-bottom: 18px;">Bearer Signature</div>
+              <div style="border-top: 1px dashed #102D35; width: 140px; padding-top: 2px; font-weight: 700; text-transform: uppercase;">${escapeHtml(e.name)}</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-weight: 800; color: #102D35; margin-bottom: 18px;">Site HR Officer</div>
+              <div style="border-top: 1px dashed #102D35; width: 140px; padding-top: 2px; font-weight: 700;">PRIYANKA SENAPATI</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 800; color: #102D35; margin-bottom: 18px;">Site Security Chief</div>
+              <div style="border-top: 1px dashed #102D35; width: 140px; padding-top: 2px; font-weight: 800; color: #102D35;">CAPT. R. K. SINGH</div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div style="border-top: 1.5px solid #102D35; padding-top: 4px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; font-weight: 700; color: #102D35;">
+            <div>Page | 1 of 1</div>
+            <div style="font-family: 'Brush Script MT', 'Dancing Script', cursive; font-size: 13px; color: #00769E; font-style: italic;">
+              Difficult we do easily impossible takes little time…!
+            </div>
+            <div style="font-size: 8px; color: #64748B;">CR80 Calibrated Pass • PRJ-JTRWF-SCHULER Security Division</div>
+          </div>
+        </div>
+      `;
+
+      setupPrintCleanup(stage);
+      window.print();
+    }
+
+    // 4. 360° WORKFORCE MASTER DOSSIER (EXACT 1 A4 PAGE)
+    function print360Dossier(empId) {
+      const id = empId || (document.getElementById('modalDossierEmpSelect') ? document.getElementById('modalDossierEmpSelect').value : 'EMP-2026-0001');
+      const stage = getBedsPrintStage();
+
+      let cardHtml = '';
+      if (window.Balsons360Dossier && typeof window.Balsons360Dossier.renderCard === 'function') {
+        cardHtml = window.Balsons360Dossier.renderCard(id);
+      } else {
+        const modalContent = document.getElementById('dossier-360-modal-content');
+        if (modalContent) cardHtml = modalContent.innerHTML;
+      }
+
+      stage.innerHTML = `<div class="beds-print-a4-sheet dossier-360-print-sheet">${cardHtml}</div>`;
+      setupPrintCleanup(stage);
+      window.print();
+    }
+    window.print360Dossier = print360Dossier;
 
     function toggleIdCardPrintPreview() {
       const sheet = document.getElementById('idCardPrintPreviewSheet');
@@ -3387,21 +3429,6 @@
         sheet.style.display = 'none';
         if (btn) btn.innerHTML = '👁️ Print Preview';
       }
-    }
-
-    function printGateIdCard() {
-      setIdCardViewMode('dual');
-      document.body.classList.remove('printing-enrolment', 'printing-payslip', 'printing-bulk-payslips');
-      document.body.classList.add('printing-idcard');
-      
-      const onAfterPrint = () => {
-        document.body.classList.remove('printing-idcard');
-        window.removeEventListener('afterprint', onAfterPrint);
-      };
-      window.addEventListener('afterprint', onAfterPrint);
-      
-      window.print();
-      setTimeout(() => document.body.classList.remove('printing-idcard'), 2500);
     }
 
     function toggleEnrolmentPrintPreview() {
@@ -3422,48 +3449,6 @@
         wrapper.style.boxShadow = '';
         if (btn) btn.innerHTML = '👁️ Print Preview';
       }
-    }
-
-    function printEnrolmentForm() {
-      let printCanvas = document.getElementById('balsonsA4PrintCanvas');
-      if (!printCanvas) {
-        printCanvas = document.createElement('div');
-        printCanvas.id = 'balsonsA4PrintCanvas';
-        document.body.appendChild(printCanvas);
-      }
-
-      const dossierSource = document.getElementById('printableEnrolmentDossier');
-      if (dossierSource) {
-        printCanvas.innerHTML = dossierSource.innerHTML;
-      }
-
-      document.body.classList.remove('printing-idcard', 'printing-payslip', 'printing-bulk-payslips', 'printing-dossier-360');
-      document.body.classList.add('printing-enrolment');
-      
-      const onAfterPrint = () => {
-        document.body.classList.remove('printing-enrolment');
-        if (printCanvas) printCanvas.innerHTML = '';
-        window.removeEventListener('afterprint', onAfterPrint);
-      };
-      window.addEventListener('afterprint', onAfterPrint);
-      
-      window.print();
-      setTimeout(() => {
-        document.body.classList.remove('printing-enrolment');
-        if (printCanvas) printCanvas.innerHTML = '';
-      }, 2500);
-    }
-
-    function print360Dossier() {
-      document.body.classList.remove('printing-idcard', 'printing-payslip', 'printing-bulk-payslips', 'printing-enrolment');
-      document.body.classList.add('printing-dossier-360');
-      const onAfterPrint = () => {
-        document.body.classList.remove('printing-dossier-360');
-        window.removeEventListener('afterprint', onAfterPrint);
-      };
-      window.addEventListener('afterprint', onAfterPrint);
-      window.print();
-      setTimeout(() => document.body.classList.remove('printing-dossier-360'), 2500);
     }
 
     // ══════════════════════════════════════════════════════════════════
@@ -3598,7 +3583,33 @@
       const btnAttDaily = document.getElementById('btnAttDaily');
       if (btnAttDaily) btnAttDaily.textContent = `Daily Pay Crew (${dailyCount})`;
 
-      // 3. Project Deployment Table
+      // 3. Payroll and Clearance Counts
+      const btnPayAll = document.getElementById('btnPayAll');
+      if (btnPayAll) btnPayAll.textContent = `All Payroll (${total})`;
+      const btnPayMonthly = document.getElementById('btnPayMonthly');
+      if (btnPayMonthly) btnPayMonthly.textContent = `Monthly (${monthlyCount})`;
+      const btnPayDaily = document.getElementById('btnPayDaily');
+      if (btnPayDaily) btnPayDaily.textContent = `Daily Pay (${dailyCount})`;
+
+            const allButtons = Array.from(document.querySelectorAll('button'));
+      const btnBulkAll = allButtons.find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("printBulkPayslips('ALL')"));
+      if (btnBulkAll) btnBulkAll.textContent = `🖨️ Bulk Print All (${total})`;
+      const btnBulkMonthly = allButtons.find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("printBulkPayslips('MONTHLY')"));
+      if (btnBulkMonthly) btnBulkMonthly.textContent = `📑 Bulk Monthly (${monthlyCount})`;
+
+      const btnClrAll = document.getElementById('btnClrAll');
+      if (btnClrAll) btnClrAll.textContent = `All Personnel (${total})`;
+
+      // Tab 4 Safety Metrics
+      const kpiSafetyCards = document.querySelectorAll('#tab-safety .kpi-card .kpi-value');
+      if (kpiSafetyCards.length >= 4) {
+        kpiSafetyCards[0].textContent = total;
+        kpiSafetyCards[1].textContent = total;
+        kpiSafetyCards[2].textContent = '0';
+        kpiSafetyCards[3].textContent = '100%';
+      }
+
+      // 4. Project Deployment Table
       renderProjectDeploymentTable();
     }
 
@@ -4476,10 +4487,41 @@
       }
     }
 
+    function populatePayslipModalSelect(selectedId) {
+      const sel = document.getElementById('payslipModalEmpSelect');
+      if (!sel) return;
+      sel.innerHTML = '';
+      employeesData.forEach(e => {
+        const opt = document.createElement('option');
+        opt.value = e.empId;
+        opt.textContent = `${e.empId} • ${e.name} [${e.wageType === 'MONTHLY' ? 'MONTHLY' : 'DAILY PAY'}]`;
+        if (e.empId === selectedId) opt.selected = true;
+        sel.appendChild(opt);
+      });
+    }
+
+    function renderPayslipModalContent(empId) {
+      const container = document.getElementById('payslipModalContainer');
+      if (container) {
+        container.innerHTML = generateOfficialPayslipHtml(empId || 'EMP-2026-0001', false);
+      }
+    }
+
+    function openPayslipModal(empId) {
+      const id = empId || 'EMP-2026-0001';
+      populatePayslipModalSelect(id);
+      renderPayslipModalContent(id);
+      const m = document.getElementById('modalPayslipPreview');
+      if (m) m.style.display = 'flex';
+    }
+
+    function closePayslipModal() {
+      const m = document.getElementById('modalPayslipPreview');
+      if (m) m.style.display = 'none';
+    }
+
     function previewPayslip(empId) {
-      switchHrTab('payslips');
-      document.getElementById('payslipEmpSelect').value = empId;
-      loadPayslipPreview(empId);
+      openPayslipModal(empId);
     }
 
     function generateOfficialPayslipHtml(empId, isBulk = false) {
@@ -5723,6 +5765,40 @@
     </div>
   </div>
 
-  <div id="balsonsA4PrintCanvas" style="display: none;"></div>
+  
+  <!-- 5. Official Salary Slip Preview Modal -->
+  <div id="modalPayslipPreview" class="beds-modal-backdrop modal-backdrop" style="display: none;">
+    <div class="beds-modal modal-box" style="width: 920px; max-width: 96vw; max-height: 94vh; overflow-y: auto; overflow-x: hidden; padding: 22px 26px; box-sizing: border-box; background: #FFFFFF; border-radius: var(--beds-radius-lg); box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--beds-teal-primary); padding-bottom: 12px; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 24px;">📑</span>
+          <div>
+            <h3 class="modal-title" style="margin: 0; font-size: 16px; font-weight: 800; color: var(--beds-charcoal-heading);">
+              Official Salary &amp; Wage Disbursal Slip
+            </h3>
+            <div style="font-size: 11px; color: var(--beds-text-secondary);">
+              PRJ-JTRWF-SCHULER • November 2026 Payroll Period • Calibrated Single-Page A4
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <select id="payslipModalEmpSelect" class="beds-select" style="font-size: 12px; padding: 5px 8px; font-weight: 700;" onchange="renderPayslipModalContent(this.value)">
+            <!-- Populated dynamically -->
+          </select>
+          <button type="button" class="btn btn-primary btn-sm" onclick="printPayslip(document.getElementById('payslipModalEmpSelect').value)" style="background: var(--beds-teal-primary); font-weight: 800;">
+            🖨️ Print Salary Slip (A4)
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closePayslipModal()">
+            ✕ Close
+          </button>
+        </div>
+      </div>
+      <div id="payslipModalContainer" class="payslip-sheet" style="border: 1.5px solid #102D35; border-radius: 4px; padding: 18px 22px; background: #FFFFFF;">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <div id="bedsPrintStage" style="display: none;"></div>
 </body>
 </html>
