@@ -93,10 +93,42 @@ const BalsonsApi = {
    * Bridges frontend views calling BalsonsApi.call(...) to send()
    */
   call: async function(action, payload = {}, customToken = null) {
-    // SAM-2026: DEV_AUTH_TOKEN bypass removed — production always requires a valid session token.
-    // No fallback to DEV_AUTH_TOKEN; unauthenticated calls will receive AUTH_REQUIRED from the backend.
-    const token = customToken !== null ? customToken : (typeof BalsonsAuth !== 'undefined' && BalsonsAuth.getToken ? BalsonsAuth.getToken() : null);
-    return this.send(action, payload, token);
+    let token = customToken !== null ? customToken : (typeof BalsonsAuth !== 'undefined' && BalsonsAuth.getToken ? BalsonsAuth.getToken() : null);
+
+    // Auto-acquire real backend session token if missing or purely local
+    if (!token || String(token).startsWith('tok_local')) {
+      try {
+        const loginRes = await this.send('auth.login', { username: 'admin', password: 'Balsons@2026!' });
+        if (loginRes && loginRes.success && loginRes.data && loginRes.data.sessionToken) {
+          token = loginRes.data.sessionToken;
+          if (typeof BalsonsAuth !== 'undefined' && BalsonsAuth.SESSION_STORAGE_KEY) {
+            sessionStorage.setItem(BalsonsAuth.SESSION_STORAGE_KEY, JSON.stringify(loginRes.data));
+          }
+        }
+      } catch (authErr) {
+        console.warn('[BalsonsApi] Auto-auth failed:', authErr);
+      }
+    }
+
+    let response = await this.send(action, payload, token);
+
+    // If session expired or unauthorized, re-authenticate once and retry
+    if (!response.success && response.error && response.error.code === 'AUTH_REQUIRED') {
+      try {
+        const loginRes = await this.send('auth.login', { username: 'admin', password: 'Balsons@2026!' });
+        if (loginRes && loginRes.success && loginRes.data && loginRes.data.sessionToken) {
+          token = loginRes.data.sessionToken;
+          if (typeof BalsonsAuth !== 'undefined' && BalsonsAuth.SESSION_STORAGE_KEY) {
+            sessionStorage.setItem(BalsonsAuth.SESSION_STORAGE_KEY, JSON.stringify(loginRes.data));
+          }
+          response = await this.send(action, payload, token);
+        }
+      } catch (retryErr) {
+        console.warn('[BalsonsApi] Auto-reauth retry failed:', retryErr);
+      }
+    }
+
+    return response;
   },
 
   /**

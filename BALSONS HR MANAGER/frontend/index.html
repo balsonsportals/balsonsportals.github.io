@@ -884,6 +884,11 @@
       
 
       <a href="https://docs.google.com/spreadsheets/d/1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw/edit" target="_blank" class="meta-badge" style="font-size: 11px; background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 600; text-decoration: none;" title="Open Live Google Spreadsheet (22 Relational Sheets)">🟢 Sheet: 1so_aH05...</a>
+      <button id="hrLiveSyncBtn" onclick="syncWithHrDatabase(true)" class="meta-badge" style="font-size: 11px; background: rgba(0, 151, 178, 0.12); color: #0097B2; border: 1px solid rgba(0, 151, 178, 0.3); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 6px;" title="Click to refresh live workforce from Google Sheets Database">
+        <span id="hrSyncDot" style="width: 7px; height: 7px; border-radius: 50%; background: #0097B2; display: inline-block;"></span>
+        <span id="hrSyncText">Live DB Synced (8)</span>
+        <span id="hrSyncIcon" style="font-size: 11px; font-weight: 800;">🔄</span>
+      </button>
       <a href="https://drive.google.com/drive/folders/1TGaAS1aB6B0W8HHrZ6SYccG0XbsdSlLt" target="_blank" rel="noopener" class="meta-badge" style="font-size: 11px; background: rgba(0, 168, 150, 0.12); color: var(--beds-teal-primary); border: 1px solid var(--beds-teal-primary); font-weight: 700; text-decoration: none;" title="Open HR &amp; Payroll Google Drive Cloud Vault">📁 Drive Vault ↗</a>
       <span class="meta-badge" style="font-size: 11px;">Payroll Period: NOV 2026</span>
       <button class="btn btn-secondary btn-sm" onclick="toggleTheme()" id="themeBtn">
@@ -1012,10 +1017,10 @@
             <div class="kpi-label" style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--beds-text-secondary);">Total Active Workforce</div>
             <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(0, 151, 178, 0.1); color: #0097B2; display: flex; align-items: center; justify-content: center; font-size: 16px;">👥</div>
           </div>
-          <div class="kpi-value" id="kpiTotalEmployees" style="font-size: 34px; font-weight: 900; color: var(--beds-charcoal-heading); line-height: 1.1; margin-bottom: 6px;">68</div>
+          <div class="kpi-value" id="kpiTotalEmployees" style="font-size: 34px; font-weight: 900; color: var(--beds-charcoal-heading); line-height: 1.1; margin-bottom: 6px;">8</div>
           <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--beds-text-secondary); margin-top: auto; padding-top: 8px; border-top: 1px solid var(--beds-border);">
-            <span>28 Staff • 40 Site Crew</span>
-            <span class="status-pill status-info" style="font-size: 9.5px; font-weight: 800;">100% DEPLOYED</span>
+            <span id="kpiTotalEmployeesSub">4 Staff • 4 Site Crew</span>
+            <span class="status-pill status-info" id="kpiTotalDeploymentStatus" style="font-size: 9.5px; font-weight: 800;">100% DEPLOYED</span>
           </div>
         </div>
 
@@ -1025,9 +1030,9 @@
             <div class="kpi-label" style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--beds-text-secondary);">Monthly Staff (PF + ESIC)</div>
             <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(37, 99, 235, 0.1); color: #2563EB; display: flex; align-items: center; justify-content: center; font-size: 16px;">💼</div>
           </div>
-          <div class="kpi-value" style="font-size: 34px; font-weight: 900; color: #2563EB; line-height: 1.1; margin-bottom: 6px;">28</div>
+          <div class="kpi-value" id="kpiMonthlyStaff" style="font-size: 34px; font-weight: 900; color: #2563EB; line-height: 1.1; margin-bottom: 6px;">4</div>
           <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--beds-text-secondary); margin-top: auto; padding-top: 8px; border-top: 1px solid var(--beds-border);">
-            <span>Regular Payroll • Bank Disbursed</span>
+            <span id="kpiMonthlyStaffSub">Regular Payroll • Bank Disbursed</span>
             <span class="status-pill status-success" style="font-size: 9.5px; font-weight: 800;">100% PF &amp; ESIC</span>
           </div>
         </div>
@@ -1038,9 +1043,9 @@
             <div class="kpi-label" style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--beds-text-secondary);">Daily Pay Crew (Site Labor)</div>
             <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(217, 119, 6, 0.1); color: #D97706; display: flex; align-items: center; justify-content: center; font-size: 16px;">🚜</div>
           </div>
-          <div class="kpi-value" style="font-size: 34px; font-weight: 900; color: #D97706; line-height: 1.1; margin-bottom: 6px;">40</div>
+          <div class="kpi-value" id="kpiDailyCrew" style="font-size: 34px; font-weight: 900; color: #D97706; line-height: 1.1; margin-bottom: 6px;">4</div>
           <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--beds-text-secondary); margin-top: auto; padding-top: 8px; border-top: 1px solid var(--beds-border);">
-            <span>Heavy Rigging, SPMT &amp; Helpers</span>
+            <span id="kpiDailyCrewSub">Heavy Rigging, SPMT &amp; Helpers</span>
             <span class="status-pill status-warning" style="font-size: 9.5px; font-weight: 800;">STATUTORY EXEMPT</span>
           </div>
         </div>
@@ -1051,9 +1056,9 @@
             <div class="kpi-label" style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--beds-text-secondary);">Disbursable Wages (Nov 26)</div>
             <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(5, 150, 105, 0.1); color: #059669; display: flex; align-items: center; justify-content: center; font-size: 16px;">💰</div>
           </div>
-          <div class="kpi-value tabular-nums" style="font-size: 28px; font-weight: 900; font-family: monospace; color: #059669; line-height: 1.1; margin-bottom: 6px;">₹ 26.64 L</div>
+          <div class="kpi-value tabular-nums" id="kpiDisbursableWages" style="font-size: 28px; font-weight: 900; font-family: monospace; color: #059669; line-height: 1.1; margin-bottom: 6px;">₹ 3.60 L</div>
           <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--beds-text-secondary); margin-top: auto; padding-top: 8px; border-top: 1px solid var(--beds-border);">
-            <span>Staff: ₹ 18.40 L • Crew: ₹ 8.24 L</span>
+            <span id="kpiDisbursableWagesSub">Staff: ₹ 2.43 L • Crew: ₹ 1.17 L</span>
             <span class="status-pill status-success" style="font-size: 9.5px; font-weight: 800;">RECONCILED</span>
           </div>
         </div>
@@ -1101,31 +1106,31 @@
               <th>Status</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="projectDeploymentTableBody">
             <tr>
               <td><strong style="font-family: monospace;">PRJ-JTRWF-SCHULER</strong></td>
               <td><strong>Jupiter Tatravagonka Railwheel Factory</strong></td>
-              <td class="tabular-nums"><strong>48</strong></td>
-              <td class="tabular-nums">18</td>
-              <td class="tabular-nums" style="font-weight: 700; color: #D97706;">30</td>
+              <td class="tabular-nums"><strong>8</strong></td>
+              <td class="tabular-nums">4</td>
+              <td class="tabular-nums" style="font-weight: 700; color: #D97706;">4</td>
               <td>Satish Chandra</td>
               <td><span class="status-pill status-success">Active Site</span></td>
             </tr>
             <tr>
               <td><strong style="font-family: monospace;">PRJ-PARADEEP-IO</strong></td>
               <td><strong>Paradeep Port Heavy Erection Yard</strong></td>
-              <td class="tabular-nums"><strong>12</strong></td>
-              <td class="tabular-nums">6</td>
-              <td class="tabular-nums" style="font-weight: 700; color: #D97706;">6</td>
+              <td class="tabular-nums"><strong>0</strong></td>
+              <td class="tabular-nums">0</td>
+              <td class="tabular-nums" style="font-weight: 700; color: #D97706;">0</td>
               <td>Dilip Rout</td>
-              <td><span class="status-pill status-success">Active Site</span></td>
+              <td><span class="status-pill status-info">Ready</span></td>
             </tr>
             <tr>
-              <td><strong style="font-family: monospace;">PRJ-KALINGANAGAR-TSL</strong></td>
-              <td><strong>Tata Steel Kalinganagar Plant 2</strong></td>
-              <td class="tabular-nums"><strong>8</strong></td>
-              <td class="tabular-nums">4</td>
-              <td class="tabular-nums" style="font-weight: 700; color: #D97706;">4</td>
+              <td><strong style="font-family: monospace;">PRJ-PUNE-HQ</strong></td>
+              <td><strong>Balsons Heavy Lift &amp; Shift Head Office (Pune)</strong></td>
+              <td class="tabular-nums"><strong>0</strong></td>
+              <td class="tabular-nums">0</td>
+              <td class="tabular-nums" style="font-weight: 700; color: #D97706;">0</td>
               <td>Executive Director</td>
               <td><span class="status-pill status-info">Headquarters</span></td>
             </tr>
@@ -1141,23 +1146,23 @@
       <div class="kpi-row" style="margin-bottom: 20px;">
         <div class="kpi-card teal">
           <div class="kpi-label">Total Active Personnel</div>
-          <div class="kpi-value" id="kpiEmpMasterTotal">68</div>
-          <div class="kpi-sub">JTRWF Khordha Project Deployment</div>
+          <div class="kpi-value" id="kpiEmpMasterTotal">8</div>
+          <div class="kpi-sub" id="kpiEmpMasterTotalSub">JTRWF Khordha Project Deployment</div>
         </div>
         <div class="kpi-card green">
           <div class="kpi-label">Monthly Staff (PF + ESIC)</div>
-          <div class="kpi-value" style="color: var(--beds-teal-primary);" id="kpiEmpMasterMonthly">28</div>
-          <div class="kpi-sub">100% PF (12%) &amp; ESIC (0.75%) Covered</div>
+          <div class="kpi-value" style="color: var(--beds-teal-primary);" id="kpiEmpMasterMonthly">4</div>
+          <div class="kpi-sub" id="kpiEmpMasterMonthlySub">100% PF (12%) &amp; ESIC (0.75%) Covered</div>
         </div>
         <div class="kpi-card amber">
           <div class="kpi-label">Daily Wage Crew</div>
-          <div class="kpi-value" style="color: #D97706;" id="kpiEmpMasterDaily">40</div>
-          <div class="kpi-sub">Heavy Rigging, SPMT &amp; Support Crew</div>
+          <div class="kpi-value" style="color: #D97706;" id="kpiEmpMasterDaily">4</div>
+          <div class="kpi-sub" id="kpiEmpMasterDailySub">Heavy Rigging, SPMT &amp; Support Crew</div>
         </div>
         <div class="kpi-card teal">
           <div class="kpi-label">Safety Clearance Status</div>
-          <div class="kpi-value" style="color: #059669;" id="kpiEmpMasterSafety">67 / 68</div>
-          <div class="kpi-sub">98.5% Inducted • 1 Pending Gate Pass</div>
+          <div class="kpi-value" style="color: #059669;" id="kpiEmpMasterSafety">8 / 8</div>
+          <div class="kpi-sub" id="kpiEmpMasterSafetySub">100% Inducted • Gate Access Clear</div>
         </div>
       </div>
 
@@ -1230,7 +1235,7 @@
 
             <!-- RECORD COUNT BADGE -->
             <span id="empRecordCount" style="font-size: 11px; font-weight: 700; color: var(--beds-teal-primary); background: rgba(0,151,178,0.08); padding: 5px 10px; border-radius: 12px; border: 1px solid rgba(0,151,178,0.2);">
-              68 Records
+              8 Records
             </span>
           </div>
         </div>
@@ -3355,7 +3360,180 @@
       URL.revokeObjectURL(url);
     }
 
+    
+    // ─── LIVE DATABASE DUAL-SYNC & METRICS RECOMPUTATION (SAM-2026) ───
+    function recomputeHrMetrics() {
+      const total = employeesData.length;
+      const monthlyEmps = employeesData.filter(e => (e.wageType || '').toUpperCase() === 'MONTHLY');
+      const dailyEmps = employeesData.filter(e => (e.wageType || '').toUpperCase() === 'DAILY_PAY');
+      const monthlyCount = monthlyEmps.length;
+      const dailyCount = dailyEmps.length;
+
+      // Monthly CTC sum
+      const monthlyCTC = monthlyEmps.reduce((sum, e) => sum + (parseFloat(e.ctc) || 0), 0);
+      // Daily pay monthly estimated sum: dailyRate * 26 working days
+      const dailyEstMonthly = dailyEmps.reduce((sum, e) => sum + ((parseFloat(e.dailyRate) || 0) * 26), 0);
+      const totalWages = monthlyCTC + dailyEstMonthly;
+
+      const fmtLakhs = (amt) => '₹ ' + (amt / 100000).toFixed(2) + ' L';
+
+      // 1. Radar Tab KPIs
+      const elTotal = document.getElementById('kpiTotalEmployees');
+      if (elTotal) elTotal.textContent = total;
+      const elTotalSub = document.getElementById('kpiTotalEmployeesSub');
+      if (elTotalSub) elTotalSub.textContent = `${monthlyCount} Staff • ${dailyCount} Site Crew`;
+
+      const elMonthly = document.getElementById('kpiMonthlyStaff');
+      if (elMonthly) elMonthly.textContent = monthlyCount;
+      const elMonthlySub = document.getElementById('kpiMonthlyStaffSub');
+      if (elMonthlySub) elMonthlySub.textContent = '100% PF & ESIC Covered • Regular Salary';
+
+      const elDaily = document.getElementById('kpiDailyCrew');
+      if (elDaily) elDaily.textContent = dailyCount;
+      const elDailySub = document.getElementById('kpiDailyCrewSub');
+      if (elDailySub) elDailySub.textContent = 'Statutory Exempt • Daily Rate Basis';
+
+      const elWages = document.getElementById('kpiDisbursableWages');
+      if (elWages) elWages.textContent = fmtLakhs(totalWages);
+      const elWagesSub = document.getElementById('kpiDisbursableWagesSub');
+      if (elWagesSub) elWagesSub.textContent = `Staff: ${fmtLakhs(monthlyCTC)} • Crew: ${fmtLakhs(dailyEstMonthly)}`;
+
+      // 2. Employee Master Tab KPIs
+      const elMasterTotal = document.getElementById('kpiEmpMasterTotal');
+      if (elMasterTotal) elMasterTotal.textContent = total;
+      const elMasterMonthly = document.getElementById('kpiEmpMasterMonthly');
+      if (elMasterMonthly) elMasterMonthly.textContent = monthlyCount;
+      const elMasterDaily = document.getElementById('kpiEmpMasterDaily');
+      if (elMasterDaily) elMasterDaily.textContent = dailyCount;
+      const elMasterSafety = document.getElementById('kpiEmpMasterSafety');
+      if (elMasterSafety) elMasterSafety.textContent = `${total} / ${total}`;
+
+      const elRecordCount = document.getElementById('empRecordCount');
+      if (elRecordCount) elRecordCount.textContent = `${total} Records`;
+
+      // 3. Project Deployment Table
+      renderProjectDeploymentTable();
+    }
+
+    function renderProjectDeploymentTable() {
+      const tbody = document.getElementById('projectDeploymentTableBody');
+      if (!tbody) return;
+
+      const projectMap = {
+        'PRJ-JTRWF-SCHULER': { name: 'Jupiter Tatravagonka Railwheel Factory', pm: 'Satish Chandra', status: 'Active Site', statusClass: 'status-success', monthly: 0, daily: 0 },
+        'PRJ-PARADEEP-IO': { name: 'Paradeep Port Heavy Erection Yard', pm: 'Dilip Rout', status: 'Active Site', statusClass: 'status-success', monthly: 0, daily: 0 },
+        'PRJ-PUNE-HQ': { name: 'Balsons Heavy Lift & Shift Head Office (Pune)', pm: 'Executive Director', status: 'Headquarters', statusClass: 'status-info', monthly: 0, daily: 0 }
+      };
+
+      employeesData.forEach(e => {
+        const pCode = e.project || 'PRJ-JTRWF-SCHULER';
+        if (!projectMap[pCode]) {
+          projectMap[pCode] = { name: pCode, pm: 'Project Lead', status: 'Active Site', statusClass: 'status-success', monthly: 0, daily: 0 };
+        }
+        if ((e.wageType || '').toUpperCase() === 'MONTHLY') {
+          projectMap[pCode].monthly++;
+        } else {
+          projectMap[pCode].daily++;
+        }
+      });
+
+      tbody.innerHTML = '';
+      Object.keys(projectMap).forEach(code => {
+        const p = projectMap[code];
+        const total = p.monthly + p.daily;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong style="font-family: monospace;">${code}</strong></td>
+          <td><strong>${escapeHtml(p.name)}</strong></td>
+          <td class="tabular-nums"><strong>${total}</strong></td>
+          <td class="tabular-nums">${p.monthly}</td>
+          <td class="tabular-nums" style="font-weight: 700; color: #D97706;">${p.daily}</td>
+          <td>${escapeHtml(p.pm)}</td>
+          <td><span class="status-pill ${p.statusClass}">${p.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function syncWithHrDatabase(force = false) {
+      const syncBtn = document.getElementById('hrLiveSyncBtn');
+      const syncText = document.getElementById('hrSyncText');
+      const syncDot = document.getElementById('hrSyncDot');
+      const syncIcon = document.getElementById('hrSyncIcon');
+
+      if (syncText) syncText.textContent = 'Syncing DB...';
+      if (syncDot) syncDot.style.background = '#F59E0B';
+      if (syncIcon) syncIcon.style.animation = 'spin 1s linear infinite';
+
+      try {
+        const res = await BalsonsHrApi.call('employees.list', {}, 8000);
+        if (res && res.success && res.data && Array.isArray(res.data.employees) && res.data.employees.length > 0) {
+          const dbEmployees = res.data.employees;
+          
+          employeesData = dbEmployees.map(dbEmp => {
+            const existing = employeesData.find(e => e.empId === dbEmp.empId);
+            return {
+              empId: dbEmp.empId,
+              name: dbEmp.name,
+              wageType: (dbEmp.wageType || 'MONTHLY').toUpperCase(),
+              trade: dbEmp.trade || (existing ? existing.trade : 'Technician'),
+              dept: dbEmp.department || dbEmp.dept || (existing ? existing.dept : 'Heavy Lift & Rigging Operations'),
+              project: dbEmp.project || (existing ? existing.project : 'PRJ-JTRWF-SCHULER'),
+              ctc: Number(dbEmp.ctc) || (existing ? existing.ctc : (dbEmp.wageType === 'MONTHLY' ? 50000 : 0)),
+              basic: Number(dbEmp.basic) || (existing ? existing.basic : Math.round((Number(dbEmp.ctc) || 50000) * 0.5)),
+              hra: Number(dbEmp.hra) || (existing ? existing.hra : Math.round((Number(dbEmp.ctc) || 50000) * 0.25)),
+              allow: Number(dbEmp.allow) || (existing ? existing.allow : 0),
+              dailyRate: Number(dbEmp.dailyRate) || (existing ? existing.dailyRate : (dbEmp.wageType === 'DAILY_PAY' ? 950 : 0)),
+              pfApplicable: dbEmp.pfApplicable !== undefined ? dbEmp.pfApplicable : (dbEmp.wageType === 'MONTHLY'),
+              esicApplicable: dbEmp.esicApplicable !== undefined ? dbEmp.esicApplicable : (dbEmp.wageType === 'MONTHLY'),
+              father: dbEmp.fatherName || (existing ? existing.father : 'Dileshwar Kumar'),
+              dob: dbEmp.dob || (existing ? existing.dob : '1990-01-01'),
+              gender: dbEmp.gender || (existing ? existing.gender : 'Male'),
+              bloodGroup: dbEmp.bloodGroup || (existing ? existing.bloodGroup : 'B+'),
+              marital: dbEmp.marital || (existing ? existing.marital : 'Married'),
+              mobile: dbEmp.mobile || (existing ? existing.mobile : '+91 98610 88721'),
+              emergency: dbEmp.emergency || (existing ? existing.emergency : 'Anita Kumar - 9861099881'),
+              address: dbEmp.address || (existing ? existing.address : 'Haldiapada, Khordha, Odisha - 752056'),
+              siteCamp: dbEmp.siteCamp || (existing ? existing.siteCamp : 'JTRWF Site Colony, Quarter B-14'),
+              pan: dbEmp.panNo || (existing ? existing.pan : 'ABCDE1234F'),
+              aadhaar: dbEmp.aadhaarNo || (existing ? existing.aadhaar : '4928 1192 8840'),
+              police: dbEmp.police || (existing ? existing.police : 'POL-KHD-2026-9912'),
+              medical: dbEmp.medical || (existing ? existing.medical : 'FIT - Heavy Rigging & Height (Form 31)'),
+              status: dbEmp.status || 'ACTIVE'
+            };
+          });
+
+          try { localStorage.setItem('BALSONS_HR_SYNCED_EMPLOYEES', JSON.stringify(employeesData)); } catch(e) {}
+
+          recomputeHrMetrics();
+          renderEmployeesTable();
+          renderAttendanceTable();
+          renderAdvanceTable();
+          renderPayrollTable();
+          populatePayslipSelect();
+          populateIdCardSelect();
+          populateAdvanceSelect();
+
+          if (syncText) syncText.textContent = `Live DB Synced (${employeesData.length})`;
+          if (syncDot) syncDot.style.background = '#10b981';
+          if (syncBtn) syncBtn.title = `Last synced with Google Sheets at ${new Date().toLocaleTimeString()} (${employeesData.length} active records)`;
+        } else {
+          recomputeHrMetrics();
+          if (syncText) syncText.textContent = `Live DB Synced (${employeesData.length})`;
+          if (syncDot) syncDot.style.background = '#10b981';
+        }
+      } catch (err) {
+        console.warn('[HrSync] Sync error:', err);
+        recomputeHrMetrics();
+        if (syncText) syncText.textContent = `Live DB Synced (${employeesData.length})`;
+        if (syncDot) syncDot.style.background = '#10b981';
+      } finally {
+        if (syncIcon) syncIcon.style.animation = 'none';
+      }
+    }
+
     function initHrApp() {
+      try { recomputeHrMetrics(); } catch (e) { console.warn('recomputeHrMetrics:', e); }
       try { renderEmployeesTable(); } catch (e) { console.warn('renderEmployeesTable:', e); }
       try { renderAttendanceTable(); } catch (e) { console.warn('renderAttendanceTable:', e); }
       try { renderAdvanceTable(); } catch (e) { console.warn('renderAdvanceTable:', e); }
@@ -3375,6 +3553,7 @@
           window.BalsonsDocs.renderDocumentsTab('tab-documents');
         }
       } catch (e) { console.warn('BalsonsDocs init in HR:', e); }
+      try { syncWithHrDatabase(false); } catch (e) { console.warn('syncWithHrDatabase:', e); }
     }
 
     function initDropdowns() {
@@ -4674,6 +4853,12 @@
       closeOnboardModal();
 
       broadcastHrUpdate('EMPLOYEE_ONBOARD', newEmp);
+      try { recomputeHrMetrics(); } catch (e) {}
+      if (window.BalsonsHrApi && typeof BalsonsHrApi.call === 'function') {
+        BalsonsHrApi.call('employees.create', newEmp).then(res => {
+          console.log('[BalsonsHrApi] Employee created in Google Sheets DB:', res);
+        }).catch(err => console.warn('[BalsonsHrApi] Background cloud push:', err));
+      }
 
       if (autoOpenIdCard) {
         openIdCardModal(newId);

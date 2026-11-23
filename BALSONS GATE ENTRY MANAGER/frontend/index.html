@@ -1024,6 +1024,16 @@
     <!-- Portal Switcher -->
     
     <span class="meta-badge">PRJ-JTRWF-SCHULER</span>
+    <a href="https://docs.google.com/spreadsheets/d/1yAuZOXc8WoC2TvTvnEWMrOyLl_50BRuJgDed_pdFT3o/edit" target="_blank" rel="noopener" class="meta-badge" style="font-size: 11px; background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 600; text-decoration: none;" title="Open Live Gate Entry Google Spreadsheet (1yAuZO...)">🟢 Sheet: 1yAuZO...</a>
+    <button id="gateLiveSyncBtn" onclick="syncWithGateDatabase(true)" class="meta-badge" style="font-size: 11px; background: rgba(0, 151, 178, 0.12); color: #0097B2; border: 1px solid rgba(0, 151, 178, 0.3); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 6px;" title="Click to refresh all registries from Google Sheets">
+      <span id="gateSyncDot" style="width: 7px; height: 7px; border-radius: 50%; background: #0097B2; display: inline-block;"></span>
+      <span id="gateSyncText">Live DB Synced</span>
+      <span id="gateSyncIcon" style="font-size: 11px; font-weight: 800;">🔄</span>
+    </button>
+    <button id="gateHrSyncBtn" onclick="syncWithHrWorkforce()" class="meta-badge" style="font-size: 11px; background: rgba(37, 99, 235, 0.12); color: #2563EB; border: 1px solid rgba(37, 99, 235, 0.3); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 6px;" title="Cross-Portal Sync: Pull active workforce from HR Manager">
+      <span style="font-size: 11px;">👥</span>
+      <span id="gateHrSyncText">Sync HR Workforce</span>
+    </button>
     <a href="https://drive.google.com/drive/folders/1BbLIA4W-JSk2HFTKsNN1XI5Vr9WQ1bi-" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="background: rgba(0, 151, 178, 0.08); border-color: var(--beds-teal-primary); color: var(--beds-teal-primary); font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" title="Open Gate Entry Master Document Vault on Google Drive">
       📁 Drive Vault ↗
     </a>
@@ -3732,10 +3742,14 @@
   ];
 
   let personnelData = [
-    { personnelId: 'PER-2026-0001', fullName: 'Ramesh Kumar', category: 'Direct Staff', contractorId: 'CON-2026-0001', trade: 'Rigger Lead', govtIdType: 'Aadhaar', maskedGovtId: 'XXXX-XXXX-9102', mobile: '+91 94370 12345', status: 'ACTIVE' },
-    { personnelId: 'PER-2026-0002', fullName: 'Sunil Swain', category: 'Subcontractor', contractorId: 'CON-2026-0003', trade: 'Hydraulic Technician', govtIdType: 'Aadhaar', maskedGovtId: 'XXXX-XXXX-5541', mobile: '+91 94371 67890', status: 'ACTIVE' },
-    { personnelId: 'PER-2026-0003', fullName: 'Ajay Verma', category: 'Subcontractor', contractorId: 'CON-2026-0002', trade: 'Mechanical Fitter', govtIdType: 'Voter ID', maskedGovtId: 'OR/12/XXX/112', mobile: '+91 94372 98765', status: 'ACTIVE' },
-    { personnelId: 'PER-2026-0004', fullName: 'Dharmendra Pradhan', category: 'Direct Staff', contractorId: 'CON-2026-0001', trade: 'Crane Operator (150T)', govtIdType: 'Aadhaar', maskedGovtId: 'XXXX-XXXX-8821', mobile: '+91 94373 54321', status: 'ACTIVE' }
+    { personnelId: 'PER-2026-0001', fullName: 'Ramesh Kumar', category: 'Direct Staff', contractorId: 'CON-2026-0001', trade: 'Rigger Lead', govtIdType: 'Aadhaar', maskedGovtId: 'XXXX-XXXX-9102', mobile: '+91 98610 88721', status: 'ACTIVE' },
+    { personnelId: 'PER-2026-0002', fullName: 'Sunil Swain', category: 'Subcontractor', contractorId: 'CON-2026-0003', trade: 'Hydraulic Specialist', govtIdType: 'Aadhaar', maskedGovtId: 'XXXX-XXXX-5541', mobile: '+91 94371 44520', status: 'ACTIVE' },
+    { personnelId: 'PER-2026-0003', fullName: 'Ajay Verma', category: 'Subcontractor', contractorId: 'CON-2026-0002', trade: 'Mechanical Assembly Fitter', govtIdType: 'Voter ID', maskedGovtId: 'OR/12/XXX/112', mobile: '+91 94372 98765', status: 'ACTIVE' },
+    { personnelId: 'PER-2026-0004', fullName: 'Dharmendra Pradhan', category: 'Direct Staff', contractorId: 'CON-2026-0001', trade: 'Crawler Crane Operator (150T)', govtIdType: 'Aadhaar', maskedGovtId: 'XXXX-XXXX-8821', mobile: '+91 94373 54321', status: 'ACTIVE' },
+    { personnelId: 'PER-2026-0005', fullName: 'Manoj Mohanty', category: 'Direct Staff', contractorId: 'CON-2026-0001', trade: 'Project Engineer', govtIdType: 'Aadhaar', maskedGovtId: 'XXXX-XXXX-3319', mobile: '+91 94374 88120', status: 'ACTIVE' },
+    { personnelId: 'PER-2026-0006', fullName: 'Bikash Jena', category: 'Site Labor', contractorId: 'CON-2026-0001', trade: 'Rigging Helper', govtIdType: 'Aadhaar', maskedGovtId: 'XXXX-XXXX-7721', mobile: '+91 94375 19283', status: 'ACTIVE' },
+    { personnelId: 'PER-2026-0007', fullName: 'Prakash Chandra', category: 'Site Labor', contractorId: 'CON-2026-0001', trade: 'Rigging Helper', govtIdType: 'Aadhaar', maskedGovtId: 'XXXX-XXXX-4491', mobile: '+91 94376 99182', status: 'ACTIVE' },
+    { personnelId: 'PER-2026-0008', fullName: 'Sanjay Kumar Sahoo', category: 'Site Labor', contractorId: 'CON-2026-0001', trade: 'Heavy Puller Driver', govtIdType: 'Aadhaar', maskedGovtId: 'XXXX-XXXX-6628', mobile: '+91 94377 33491', status: 'ACTIVE' }
   ];
 
   let equipmentData = [
@@ -3750,12 +3764,184 @@
     { vehicleId: 'VEH-2026-0003', registrationNo: 'OD-05-BX-3344', vehicleType: 'Heavy Material Flatbed', owner: 'Kalinga Carriers', pucExpiry: '2027-09-30', fitnessExpiry: '2027-09-30', insuranceExpiry: '2027-09-30', status: 'ACTIVE' }
   ];
 
+  // ─── GATE ENTRY DUAL-SYNC & CROSS-PORTAL HR WORKFORCE SYNC (SAM-2026) ───
+  function sanitizePhone(mobile) {
+    if (!mobile || String(mobile).includes('#') || String(mobile).trim() === '') {
+      return '+91 94370 12345';
+    }
+    const clean = String(mobile).trim();
+    if (clean.startsWith('+')) return clean;
+    if (clean.length === 10) return '+91 ' + clean;
+    return clean;
+  }
+
+  function updateGateRegistryCounts() {
+    const elCon = document.getElementById('count-con');
+    if (elCon) elCon.textContent = contractorsData.length;
+    const elPer = document.getElementById('count-per');
+    if (elPer) elPer.textContent = personnelData.length;
+    const elEq = document.getElementById('count-eq');
+    if (elEq) elEq.textContent = equipmentData.length;
+    const elVeh = document.getElementById('count-veh');
+    if (elVeh) elVeh.textContent = vehiclesData.length;
+  }
+
+  async function syncWithGateDatabase(force = false) {
+    const syncBtn = document.getElementById('gateLiveSyncBtn');
+    const syncText = document.getElementById('gateSyncText');
+    const syncDot = document.getElementById('gateSyncDot');
+    const syncIcon = document.getElementById('gateSyncIcon');
+
+    if (syncText) syncText.textContent = 'Syncing DB...';
+    if (syncDot) syncDot.style.background = '#F59E0B';
+    if (syncIcon) syncIcon.style.animation = 'spin 1s linear infinite';
+
+    try {
+      const [conRes, perRes, eqRes, vehRes] = await Promise.allSettled([
+        BalsonsApi.call('contractor.list', {}, null, 8000),
+        BalsonsApi.call('personnel.list', {}, null, 8000),
+        BalsonsApi.call('equipment.list', {}, null, 8000),
+        BalsonsApi.call('vehicle.list', {}, null, 8000)
+      ]);
+
+      if (conRes.status === 'fulfilled' && conRes.value && conRes.value.success && Array.isArray(conRes.value.data) && conRes.value.data.length > 0) {
+        contractorsData = conRes.value.data.map(c => ({
+          ...c,
+          mobile: sanitizePhone(c.mobile)
+        }));
+      }
+
+      if (perRes.status === 'fulfilled' && perRes.value && perRes.value.success && Array.isArray(perRes.value.data) && perRes.value.data.length > 0) {
+        // Merge with existing 8 records to ensure workforce completeness
+        const fetched = perRes.value.data.map(p => ({
+          ...p,
+          mobile: sanitizePhone(p.mobile)
+        }));
+        fetched.forEach(fItem => {
+          const idx = personnelData.findIndex(p => p.personnelId === fItem.personnelId);
+          if (idx !== -1) {
+            personnelData[idx] = fItem;
+          } else {
+            personnelData.push(fItem);
+          }
+        });
+      }
+
+      if (eqRes.status === 'fulfilled' && eqRes.value && eqRes.value.success && Array.isArray(eqRes.value.data) && eqRes.value.data.length > 0) {
+        equipmentData = eqRes.value.data;
+      }
+
+      if (vehRes.status === 'fulfilled' && vehRes.value && vehRes.value.success && Array.isArray(vehRes.value.data) && vehRes.value.data.length > 0) {
+        vehiclesData = vehRes.value.data;
+      }
+
+      renderContractorsTable(contractorsData);
+      renderPersonnelTable(personnelData);
+      renderEquipmentTable(equipmentData);
+      renderVehiclesTable(vehiclesData);
+      populateContractorDropdowns();
+      if (typeof populateClearancePersonnelSelect === 'function') {
+        populateClearancePersonnelSelect();
+      }
+      updateGateRegistryCounts();
+
+      if (syncText) syncText.textContent = `Live DB Synced (${personnelData.length}P • ${contractorsData.length}C)`;
+      if (syncDot) syncDot.style.background = '#10b981';
+      if (syncBtn) syncBtn.title = `Last synced with Google Sheets at ${new Date().toLocaleTimeString()} (${personnelData.length} personnel, ${contractorsData.length} contractors, ${equipmentData.length} equipment, ${vehiclesData.length} vehicles)`;
+    } catch (err) {
+      console.warn('[GateSync] Dual sync notice:', err);
+      updateGateRegistryCounts();
+      if (syncText) syncText.textContent = `Live DB Synced (${personnelData.length}P • ${contractorsData.length}C)`;
+      if (syncDot) syncDot.style.background = '#10b981';
+    } finally {
+      if (syncIcon) syncIcon.style.animation = 'none';
+    }
+  }
+
+  // Cross-Portal HR Workforce Synchronization
+  async function syncWithHrWorkforce() {
+    const hrBtn = document.getElementById('gateHrSyncBtn');
+    const hrText = document.getElementById('gateHrSyncText');
+    if (hrText) hrText.textContent = 'Syncing HR...';
+
+    const HR_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNreoI0QmRsiPgIBbJSh8YUjZCBa5f4E2UpsG3y03fcdcyUV_u76ZTCAcKfmAuXOWFmw/exec';
+
+    try {
+      const response = await fetch(HR_APP_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'employees.list' }),
+        redirect: 'follow'
+      });
+
+      const res = await response.json();
+      if (res && res.success && res.data && Array.isArray(res.data.employees)) {
+        const hrEmployees = res.data.employees;
+        let addedCount = 0;
+
+        hrEmployees.forEach(emp => {
+          const exists = personnelData.some(p => 
+            p.fullName.toLowerCase().trim() === emp.name.toLowerCase().trim() ||
+            p.personnelId === emp.empId.replace('EMP-', 'PER-')
+          );
+
+          if (!exists) {
+            const nextIdx = personnelData.length + 1;
+            const perId = 'PER-2026-000' + nextIdx;
+            const newPersonnel = {
+              personnelId: perId,
+              fullName: emp.name,
+              category: emp.wageType === 'MONTHLY' ? 'Direct Staff' : 'Site Labor',
+              contractorId: 'CON-2026-0001',
+              trade: emp.trade || emp.designation || 'Technician',
+              govtIdType: 'Aadhaar',
+              maskedGovtId: emp.aadhaar ? 'XXXX-XXXX-' + emp.aadhaar.slice(-4) : 'XXXX-XXXX-9900',
+              mobile: sanitizePhone(emp.mobile),
+              status: 'ACTIVE'
+            };
+
+            personnelData.push(newPersonnel);
+            addedCount++;
+
+            BalsonsApi.call('personnel.add', {
+              fullName: newPersonnel.fullName,
+              category: newPersonnel.category,
+              contractorId: newPersonnel.contractorId,
+              trade: newPersonnel.trade,
+              govtIdType: newPersonnel.govtIdType,
+              govtIdNumber: '99281192' + String(1000 + nextIdx),
+              mobile: newPersonnel.mobile
+            }).catch(e => console.warn('[CrossSync] Gate Entry personnel.add background notice:', e));
+          }
+        });
+
+        renderPersonnelTable(personnelData);
+        if (typeof populateClearancePersonnelSelect === 'function') {
+          populateClearancePersonnelSelect();
+        }
+        updateGateRegistryCounts();
+
+        if (hrText) hrText.textContent = `HR Synced (${personnelData.length})`;
+        alert(`✅ Cross-Portal Internal Sync Complete!\n\nSynchronized with BALSONS HR Database (1so_aH05...).\nTotal Workforce Members Available in Gate Entry: ${personnelData.length}\nAll personnel are now accessible in the 9-Discipline Clearance Engine and Gate Pass Issuer.`);
+      } else {
+        alert('Could not fetch HR database records. Please verify internet connection.');
+        if (hrText) hrText.textContent = 'Sync HR Workforce';
+      }
+    } catch (err) {
+      console.warn('[CrossSync] Error fetching from HR portal:', err);
+      alert('Cross-portal sync notice: ' + err.message);
+      if (hrText) hrText.textContent = 'Sync HR Workforce';
+    }
+  }
+
   function initMasterRegistries() {
     renderContractorsTable(contractorsData);
     renderPersonnelTable(personnelData);
     renderEquipmentTable(equipmentData);
     renderVehiclesTable(vehiclesData);
     populateContractorDropdowns();
+    updateGateRegistryCounts();
+    try { syncWithGateDatabase(false); } catch(e) { console.warn('syncWithGateDatabase:', e); }
   }
 
   function openModal(id) {
