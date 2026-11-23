@@ -1208,9 +1208,9 @@
           <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
             <span style="font-size: 11px; font-weight: 800; color: var(--beds-charcoal-heading); text-transform: uppercase; margin-right: 4px;">Classification:</span>
             <div class="filter-btn-group" style="display: inline-flex; background: #FFFFFF; padding: 2px; border-radius: var(--beds-radius-md); border: 1px solid var(--beds-border);">
-              <button class="btn btn-primary btn-sm" id="btnEmpAll" onclick="filterEmployeeCategory('ALL')" style="font-size: 11.5px; padding: 4px 10px; border-radius: 4px;">All Workforce (68)</button>
-              <button class="btn btn-secondary btn-sm" id="btnEmpMonthly" onclick="filterEmployeeCategory('MONTHLY')" style="font-size: 11.5px; padding: 4px 10px; border-radius: 4px;">Monthly Staff (28)</button>
-              <button class="btn btn-secondary btn-sm" id="btnEmpDaily" onclick="filterEmployeeCategory('DAILY_PAY')" style="font-size: 11.5px; padding: 4px 10px; border-radius: 4px;">Daily Crew (40)</button>
+              <button class="btn btn-primary btn-sm" id="btnEmpAll" onclick="filterEmployeeCategory('ALL')" style="font-size: 11.5px; padding: 4px 10px; border-radius: 4px;">All Workforce (8)</button>
+              <button class="btn btn-secondary btn-sm" id="btnEmpMonthly" onclick="filterEmployeeCategory('MONTHLY')" style="font-size: 11.5px; padding: 4px 10px; border-radius: 4px;">Monthly Staff (4)</button>
+              <button class="btn btn-secondary btn-sm" id="btnEmpDaily" onclick="filterEmployeeCategory('DAILY_PAY')" style="font-size: 11.5px; padding: 4px 10px; border-radius: 4px;">Daily Crew (4)</button>
             </div>
           </div>
 
@@ -1287,9 +1287,9 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; background: var(--beds-bg-page); padding: 10px 14px; border-radius: var(--beds-radius-md); border: 1px solid var(--beds-border); width: 100%;">
             <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
               <span style="font-size: 11px; font-weight: 800; color: var(--beds-charcoal-heading); text-transform: uppercase;">Muster Filter:</span>
-              <button class="btn btn-primary btn-sm" id="btnAttAll" onclick="filterAttendanceCategory('ALL')">All Workforce (68)</button>
-              <button class="btn btn-secondary btn-sm" id="btnAttMonthly" onclick="filterAttendanceCategory('MONTHLY')">Monthly Staff (28)</button>
-              <button class="btn btn-secondary btn-sm" id="btnAttDaily" onclick="filterAttendanceCategory('DAILY_PAY')">Daily Pay Crew (40)</button>
+              <button class="btn btn-primary btn-sm" id="btnAttAll" onclick="filterAttendanceCategory('ALL')">All Workforce (8)</button>
+              <button class="btn btn-secondary btn-sm" id="btnAttMonthly" onclick="filterAttendanceCategory('MONTHLY')">Monthly Staff (4)</button>
+              <button class="btn btn-secondary btn-sm" id="btnAttDaily" onclick="filterAttendanceCategory('DAILY_PAY')">Daily Pay Crew (4)</button>
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
               <input type="text" id="searchAttendanceInput" class="beds-input" placeholder="🔍 Search worker or trade..." style="font-size: 12px; width: 220px; padding: 4px 8px;" oninput="renderAttendanceTable(this.value)">
@@ -3410,6 +3410,20 @@
 
       const elRecordCount = document.getElementById('empRecordCount');
       if (elRecordCount) elRecordCount.textContent = `${total} Records`;
+
+      const btnEmpAll = document.getElementById('btnEmpAll');
+      if (btnEmpAll) btnEmpAll.textContent = `All Workforce (${total})`;
+      const btnEmpMonthly = document.getElementById('btnEmpMonthly');
+      if (btnEmpMonthly) btnEmpMonthly.textContent = `Monthly Staff (${monthlyCount})`;
+      const btnEmpDaily = document.getElementById('btnEmpDaily');
+      if (btnEmpDaily) btnEmpDaily.textContent = `Daily Crew (${dailyCount})`;
+
+      const btnAttAll = document.getElementById('btnAttAll');
+      if (btnAttAll) btnAttAll.textContent = `All Workforce (${total})`;
+      const btnAttMonthly = document.getElementById('btnAttMonthly');
+      if (btnAttMonthly) btnAttMonthly.textContent = `Monthly Staff (${monthlyCount})`;
+      const btnAttDaily = document.getElementById('btnAttDaily');
+      if (btnAttDaily) btnAttDaily.textContent = `Daily Pay Crew (${dailyCount})`;
 
       // 3. Project Deployment Table
       renderProjectDeploymentTable();
