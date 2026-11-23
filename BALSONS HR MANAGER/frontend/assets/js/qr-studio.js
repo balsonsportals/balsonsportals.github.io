@@ -111,66 +111,39 @@
     },
 
     setMode: function(mode) {
-      this.mode = mode;
-      document.querySelectorAll('.qr-mode-pill').forEach(btn => {
-        if (btn.getAttribute('data-mode') === mode) {
-          btn.classList.add('active');
-          btn.style.background = '#0097B2';
-          btn.style.color = '#FFFFFF';
-        } else {
-          btn.classList.remove('active');
-          btn.style.background = 'var(--beds-bg-page, #F8FAFC)';
-          btn.style.color = 'var(--beds-charcoal-heading, #102D35)';
-        }
-      });
+      this.mode = 'VCARD';
       this.syncPayloadWithSelection();
       this.renderQrCode();
     },
 
     generatePayload: function() {
       const e = this.getEmployee();
+      const primaryMobile = e.mobile || '+91 98610 88721';
+      const hrOfficerName = 'Priyanka Senapati';
+      const hrOfficerPhone = '+91 94371 44520';
+      const trade = e.trade || 'Worker';
+      const blood = e.bloodGroup || 'B+';
+      const empId = e.empId || 'EMP-2026-0001';
 
-      if (this.mode === 'VCARD') {
-        const primaryMobile = e.mobile || '+91 98610 88721';
-        const em = e.emergency ? e.emergency.split('-').pop().trim() : '+91 98610 99881';
-        const hrOfficerName = 'Priyanka Senapati';
-        const hrOfficerPhone = '+91 94371 44520';
-        const trade = e.trade || 'Worker';
-        const blood = e.bloodGroup || 'B+';
+      // Parse Name into Family and Given names for standard vCard N: field
+      const parts = (e.name || 'Worker').trim().split(/\s+/);
+      const givenName = parts[0] || 'Worker';
+      const familyName = parts.slice(1).join(' ') || '';
 
-        // Parse Name into Family and Given names for standard vCard N: field
-        const parts = (e.name || 'Worker').trim().split(/\s+/);
-        const givenName = parts[0] || 'Worker';
-        const familyName = parts.slice(1).join(' ') || '';
-
-        return [
-          'BEGIN:VCARD',
-          'VERSION:3.0',
-          `FN:${e.name}`,
-          `N:${familyName};${givenName};;;`,
-          'ORG:BALSONS HEAVY LIFT & SHIFT - PRJ-JTRWF-SCHULER',
-          `TITLE:${trade} | Employee ID: ${e.empId}`,
-          `TEL;TYPE=CELL,VOICE:${primaryMobile}`,
-          `TEL;TYPE=WORK,VOICE:${hrOfficerPhone}`,
-          `NOTE:Full Name: ${e.name} | Employee ID: ${e.empId} | Blood Group: ${blood} | Primary Mobile: ${primaryMobile} & Site HR Officer (JTRWF Khordha): ${hrOfficerName} (${hrOfficerPhone})`,
-          `URL:https://balsonsportals.github.io/verify.html?empId=${encodeURIComponent(e.empId)}`,
-          'END:VCARD'
-        ].join('\n');
-      }
-      else if (this.mode === 'SECURITY_PASS') {
-        // High-security gate entry verification format
-        const em = e.emergency ? e.emergency.split('-').pop().trim() : '+91 98610 99881';
-        return `BALSONS:GATE:PASS|ID=${e.empId}|NAME=${e.name}|TRADE=${e.trade || 'Worker'}|DEPT=${e.dept || 'Operations'}|BLOOD=${e.bloodGroup || 'B+'}|PRIMARY_MOBILE=${e.mobile || '+91 98610 88721'}|SITE_HR=+919437144520|EMERGENCY=${em}|VALID=2026-12-31|GATE=AUTH-1-2|MUSTER=READY`;
-      } 
-      else if (this.mode === 'VERIFICATION_URL') {
-        return `https://balsonsportals.github.io/verify.html?empId=${encodeURIComponent(e.empId)}`;
-      } 
-      else if (this.mode === 'MUSTER_TOKEN') {
-        return `MUSTER:BHLS-JTRWF:${e.empId}:${new Date().toISOString().slice(0, 10).replace(/-/g, '')}:BIO-AUTH-VERIFIED`;
-      } 
-      else {
-        return this.customPayload || `BALSONS HEAVY LIFT & SHIFT • ${e.empId} • ${e.name}`;
-      }
+      // Strictly enforce Single Official Unified Workforce vCard 3.0 Standard
+      return [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        `FN:${e.name}`,
+        `N:${familyName};${givenName};;;`,
+        'ORG:BALSONS HEAVY LIFT & SHIFT • PRJ-JTRWF project',
+        `TITLE:${trade} | Employee ID: ${empId}`,
+        `TEL;TYPE=CELL,VOICE;X-LABEL="Primary Mobile":${primaryMobile}`,
+        `TEL;TYPE=WORK,VOICE;X-LABEL="Site HR Officer (JTRWF Khordha)":${hrOfficerPhone}`,
+        `NOTE:Full Name: ${e.name} | Employee ID: ${empId} | Blood Group: ${blood} | Primary Mobile: ${primaryMobile} & Site HR Officer (JTRWF Khordha): ${hrOfficerName} (${hrOfficerPhone})`,
+        `URL:https://balsonsportals.github.io/verify.html?empId=${encodeURIComponent(empId)}`,
+        'END:VCARD'
+      ].join('\n');
     },
 
     syncPayloadWithSelection: function() {
@@ -183,12 +156,10 @@
     updatePayloadStats: function(payload) {
       const statEl = document.getElementById('qrPayloadStats');
       if (statEl) {
-        const typeLabel = (this.mode === 'VCARD') ? 'Workforce vCard (Official Profile)' : this.mode.replace('_', ' ');
-        const encLabel = (this.mode === 'VCARD') ? 'UTF-8 Byte (vCard 3.0 Standard)' : 'UTF-8 Byte';
         statEl.innerHTML = `
           <span>Length: <strong>${payload.length} chars</strong></span> • 
-          <span>Encoding: <strong>${encLabel}</strong></span> • 
-          <span>Type: <strong>${typeLabel}</strong></span>
+          <span>Encoding: <strong>UTF-8 Byte (vCard 3.0 Standard)</strong></span> • 
+          <span>Standard: <strong>Unified Workforce vCard (Locked)</strong></span>
         `;
       }
     },
