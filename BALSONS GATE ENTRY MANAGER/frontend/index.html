@@ -3812,19 +3812,10 @@
       }
 
       if (perRes.status === 'fulfilled' && perRes.value && perRes.value.success && Array.isArray(perRes.value.data) && perRes.value.data.length > 0) {
-        // Merge with existing 8 records to ensure workforce completeness
-        const fetched = perRes.value.data.map(p => ({
+        personnelData = perRes.value.data.map(p => ({
           ...p,
           mobile: sanitizePhone(p.mobile)
         }));
-        fetched.forEach(fItem => {
-          const idx = personnelData.findIndex(p => p.personnelId === fItem.personnelId);
-          if (idx !== -1) {
-            personnelData[idx] = fItem;
-          } else {
-            personnelData.push(fItem);
-          }
-        });
       }
 
       if (eqRes.status === 'fulfilled' && eqRes.value && eqRes.value.success && Array.isArray(eqRes.value.data) && eqRes.value.data.length > 0) {
