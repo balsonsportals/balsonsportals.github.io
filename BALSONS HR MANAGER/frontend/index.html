@@ -815,6 +815,13 @@
       }
 
       /* ─── CASE 1: DIRECT BODY-LEVEL A4 CANVAS PRINT (ENROLMENT DOSSIER) ─── */
+      body.printing-enrolment #modalPrintEnrolmentForm,
+      body.printing-enrolment .beds-modal-backdrop,
+      body.printing-enrolment .modal-backdrop {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
       body.printing-enrolment > #balsonsA4PrintCanvas {
         display: flex !important;
         visibility: visible !important;
@@ -823,12 +830,12 @@
         position: static !important;
         width: 100% !important;
         max-width: 190mm !important;
-        height: 276mm !important;
-        min-height: 275mm !important;
-        max-height: 278mm !important;
+        height: 275mm !important;
+        min-height: 270mm !important;
+        max-height: 276mm !important;
         box-sizing: border-box !important;
         margin: 0 auto !important;
-        padding: 5mm 7mm !important;
+        padding: 6mm 8mm !important;
         border: 2px solid #102D35 !important;
         background: #FFFFFF !important;
         color: #102D35 !important;
@@ -853,106 +860,35 @@
 
       body.printing-enrolment > #balsonsA4PrintCanvas td,
       body.printing-enrolment > #balsonsA4PrintCanvas th {
-        padding: 3px 6px !important;
-        font-size: 8.5pt !important;
+        padding: 4px 7px !important;
+        font-size: 9pt !important;
+        line-height: 1.35 !important;
+      }
+
+      body.printing-enrolment > #balsonsA4PrintCanvas [style*="font-size: 7.5px"],
+      body.printing-enrolment > #balsonsA4PrintCanvas [style*="font-size: 7px"] {
+        font-size: 8pt !important;
         line-height: 1.3 !important;
       }
 
-      /* Fallback for in-modal enrolment dossier printing */
-      body.printing-enrolment #modalPrintEnrolmentForm {
-        visibility: visible !important;
-        position: static !important;
-        display: block !important;
-        inset: auto !important;
-        width: 100% !important;
-        height: auto !important;
-        background: transparent !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        overflow: visible !important;
-        box-shadow: none !important;
-        border: none !important;
+      body.printing-enrolment > #balsonsA4PrintCanvas [style*="font-size: 8.5px"],
+      body.printing-enrolment > #balsonsA4PrintCanvas [style*="font-size: 8px"],
+      body.printing-enrolment > #balsonsA4PrintCanvas [style*="font-size: 9px"] {
+        font-size: 9.5pt !important;
       }
 
-      body.printing-enrolment #modalPrintEnrolmentForm .modal-box,
-      body.printing-enrolment #modalPrintEnrolmentForm .beds-modal {
-        visibility: visible !important;
-        position: static !important;
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-        max-height: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        background: transparent !important;
-        overflow: visible !important;
-        box-shadow: none !important;
-        border: none !important;
+      body.printing-enrolment > #balsonsA4PrintCanvas [style*="font-size: 11px"] {
+        font-size: 12pt !important;
       }
 
-      body.printing-enrolment #modalPrintEnrolmentForm .modal-box > div:first-child,
-      body.printing-enrolment #modalPrintEnrolmentForm .modal-box > div:nth-child(2),
-      body.printing-enrolment #modalPrintEnrolmentForm button,
-      body.printing-enrolment #modalPrintEnrolmentForm select,
-      body.printing-enrolment #modalPrintEnrolmentForm label,
-      body.printing-enrolment #modalPrintEnrolmentForm .status-pill {
-        display: none !important;
-        visibility: hidden !important;
+      body.printing-enrolment > #balsonsA4PrintCanvas [style*="font-size: 14px"] {
+        font-size: 16pt !important;
       }
 
-      body.printing-enrolment #printableEnrolmentFormWrapper {
-        visibility: visible !important;
-        position: static !important;
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        overflow: visible !important;
-        background: transparent !important;
-      }
-
-      body.printing-enrolment #printableEnrolmentDossier,
-      body.printing-enrolment #printableEnrolmentDossier * {
-        visibility: visible !important;
-      }
-
-      body.printing-enrolment #printableEnrolmentDossier {
-        position: static !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        width: 100% !important;
-        max-width: 190mm !important;
-        height: 276mm !important;
-        min-height: 275mm !important;
-        max-height: 278mm !important;
-        box-sizing: border-box !important;
-        margin: 0 auto !important;
-        padding: 5mm 7mm !important;
-        border: 2px solid #102D35 !important;
-        background: #FFFFFF !important;
-        color: #102D35 !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-        page-break-before: avoid !important;
-        break-before: avoid !important;
-        overflow: hidden !important;
-      }
-
-      body.printing-enrolment #printableEnrolmentDossier table {
-        width: 100% !important;
-        border-collapse: collapse !important;
-      }
-
-      body.printing-enrolment #printableEnrolmentDossier td,
-      body.printing-enrolment #printableEnrolmentDossier th {
-        padding: 3px 6px !important;
-        font-size: 8.5pt !important;
-        line-height: 1.3 !important;
+      body.printing-enrolment > #balsonsA4PrintCanvas [style*="padding: 2.5px 6px"],
+      body.printing-enrolment > #balsonsA4PrintCanvas [style*="padding: 3px 6px"],
+      body.printing-enrolment > #balsonsA4PrintCanvas [style*="padding: 2px 6px"] {
+        padding: 4px 7px !important;
       }
 
       /* ─── CASE 2: SINGLE PAYSLIP (A4 EXACT 1-PAGE) ─── */
