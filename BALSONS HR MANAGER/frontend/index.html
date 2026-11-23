@@ -1725,33 +1725,40 @@
       <!-- Section Header -->
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 14px;">
         <div>
-          <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <h2 style="font-size: 20px; font-weight: 900; color: var(--beds-charcoal-heading); margin: 0;">
               🔲 Workforce QR Code Studio &amp; Security Pass Engine
             </h2>
             <span class="status-pill status-info" style="font-size: 10px; font-weight: 800;">ISO/IEC 18004</span>
-            <span class="status-pill status-success" style="font-size: 10px; font-weight: 800;">OFFLINE READY</span>
+            <span class="status-pill status-success" style="font-size: 10px; font-weight: 800;">vCard 3.0 STANDARD</span>
+            <span class="status-pill" style="background: #EDE9FE; color: #6D28D9; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 12px;">SMARTPHONE READY</span>
           </div>
           <p style="font-size: 12.5px; color: var(--beds-text-secondary); margin: 4px 0 0 0;">
-            Generate high-resolution dynamic QR codes linked to employee records for CR80 ID cards, gate access scanners, and muster biometric verification.
+            Enterprise dynamic QR generator featuring live smartphone contact simulation, safety helmet stickers, and calibrated CR80 muster badge integration.
           </p>
         </div>
 
         <!-- Global Action Toolbar -->
         <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-          <button type="button" class="btn btn-primary btn-sm" onclick="BalsonsQrStudio.applyToIdCard()" style="background: #0097B2; border-color: #0097B2; font-weight: 800; display: inline-flex; align-items: center; gap: 5px;" title="Embed this QR code directly into employee's CR80 ID Card">
+          <button type="button" class="btn btn-primary btn-sm" onclick="BalsonsQrStudio.applyToIdCard()" style="background: #0097B2; border-color: #0097B2; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(0, 151, 178, 0.25);" title="Embed this QR code directly into employee's CR80 ID Card">
             🪪 Link to ID Card
           </button>
-          <button type="button" class="btn btn-primary btn-sm" onclick="BalsonsQrStudio.printCalibratedIdCard()" style="background: #10B981; border-color: #10B981; font-weight: 800; display: inline-flex; align-items: center; gap: 5px;" title="Print Calibrated 1-Page A4 CR80 Pass with this QR">
-            🖨️ Print Direct to ID Pass
+          <button type="button" class="btn btn-primary btn-sm" onclick="BalsonsQrStudio.printCalibratedIdCard()" style="background: #10B981; border-color: #10B981; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);" title="Print Calibrated 1-Page A4 CR80 Pass with this QR">
+            🖨️ Print Direct Pass
           </button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="BalsonsQrStudio.printBulkQrSheet()" style="font-weight: 800; display: inline-flex; align-items: center; gap: 5px;" title="Print A4 sticker sheet for all 5 workforce members">
-            🖨️ Bulk QR Sheet (All 5)
+          <button type="button" class="btn btn-secondary btn-sm" onclick="BalsonsQrStudio.printHelmetStickers()" style="font-weight: 800; color: #78350F; background: #FEFCE8; border-color: #EAB308; display: inline-flex; align-items: center; gap: 5px;" title="Print A4 Sheet of 12 Safety Helmet &amp; Tool Stickers">
+            ⛑️ Helmet Stickers (A4)
           </button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="BalsonsQrStudio.downloadPng()" style="font-weight: 700;" title="Download 300 DPI PNG">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="BalsonsQrStudio.printBulkQrSheet()" style="font-weight: 800; display: inline-flex; align-items: center; gap: 5px;" title="Print Master Pass Sheet for all workforce members">
+            🖨️ Bulk Sheet
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="BalsonsQrStudio.downloadAllQrsBatch()" style="font-weight: 800; color: #0097B2; border-color: #0097B2; display: inline-flex; align-items: center; gap: 5px;" title="Download high-res PNGs for all 5 employees in one click">
+            📦 Batch All (PNG)
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="BalsonsQrStudio.downloadPng()" style="font-weight: 700;" title="Download High-Resolution PNG">
             ⬇️ PNG
           </button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="BalsonsQrStudio.downloadSvg()" style="font-weight: 700;" title="Download Infinite Vector SVG">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="BalsonsQrStudio.downloadSvg()" style="font-weight: 700;" title="Download Scalable Vector SVG">
             ⬇️ SVG
           </button>
         </div>
@@ -1774,6 +1781,11 @@
             <select id="qrEmpSelect" class="beds-select" style="width: 100%; font-size: 13px; font-weight: 700; height: 38px; border-radius: var(--beds-radius-md);" onchange="BalsonsQrStudio.onEmployeeChange(this.value)">
               <!-- Populated by BalsonsQrStudio.init() -->
             </select>
+            
+            <!-- Live Worker Quick Chip -->
+            <div id="qrTargetEmpChip">
+              <!-- Injected by BalsonsQrStudio.renderTargetEmployeeChip() -->
+            </div>
           </div>
 
           <!-- Card 2: Preset Format & Payload Configuration -->
@@ -1801,11 +1813,18 @@
               </button>
             </div>
 
+            <!-- Payload Header with Copy Button -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label style="font-size: 10.5px; font-weight: 700; color: var(--beds-text-secondary);">
+                Live QR Encoded String:
+              </label>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="BalsonsQrStudio.copyPayloadToClipboard()" style="font-size: 10px; font-weight: 800; padding: 2px 8px; display: inline-flex; align-items: center; gap: 4px;" title="Copy payload to clipboard">
+                📋 Copy String
+              </button>
+            </div>
+
             <!-- Payload Textarea -->
-            <label style="font-size: 10.5px; font-weight: 700; color: var(--beds-text-secondary); margin-bottom: 4px; display: block;">
-              Live QR Encoded String:
-            </label>
-            <textarea id="qrPayloadText" class="beds-input" rows="4" style="width: 100%; font-family: monospace; font-size: 11px; line-height: 1.4; padding: 8px 10px; border-radius: 6px; box-sizing: border-box; resize: vertical;" oninput="BalsonsQrStudio.onPayloadInput(this.value)"></textarea>
+            <textarea id="qrPayloadText" class="beds-input" rows="5" style="width: 100%; font-family: monospace; font-size: 11px; line-height: 1.4; padding: 8px 10px; border-radius: 6px; box-sizing: border-box; resize: vertical;" oninput="BalsonsQrStudio.onPayloadInput(this.value)"></textarea>
 
             <div id="qrPayloadStats" style="display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; color: var(--beds-text-secondary); margin-top: 6px; padding-top: 6px; border-top: 1px solid #E2E8F0;">
               <span>Length: <strong>0 chars</strong></span>
@@ -1816,121 +1835,194 @@
 
           <!-- Card 3: Visual Styling & Security Parameters -->
           <div class="kpi-card" style="background: #FFFFFF; border: 1px solid var(--beds-border); border-radius: var(--beds-radius-lg); padding: 18px 20px; box-shadow: 0 4px 16px rgba(16, 45, 53, 0.05);">
-            <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--beds-charcoal-heading); margin-bottom: 12px;">
+            <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--beds-charcoal-heading); margin-bottom: 14px;">
               🎨 Visual Design &amp; Print Calibration:
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-              <!-- Color Palettes -->
-              <div>
-                <label style="font-size: 10.5px; font-weight: 700; color: var(--beds-text-secondary); margin-bottom: 6px; display: block;">
-                  Primary Matrix Color:
-                </label>
-                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-                  <button type="button" onclick="BalsonsQrStudio.setColor('#102D35')" style="width: 26px; height: 26px; border-radius: 4px; background: #102D35; border: 2px solid #CBD5E1; cursor: pointer;" title="Corporate Teal"></button>
-                  <button type="button" onclick="BalsonsQrStudio.setColor('#0097B2')" style="width: 26px; height: 26px; border-radius: 4px; background: #0097B2; border: 2px solid #CBD5E1; cursor: pointer;" title="Balsons Cyan"></button>
-                  <button type="button" onclick="BalsonsQrStudio.setColor('#000000')" style="width: 26px; height: 26px; border-radius: 4px; background: #000000; border: 2px solid #CBD5E1; cursor: pointer;" title="Industrial Black"></button>
-                  <button type="button" onclick="BalsonsQrStudio.setColor('#E64646')" style="width: 26px; height: 26px; border-radius: 4px; background: #E64646; border: 2px solid #CBD5E1; cursor: pointer;" title="Safety Red"></button>
-                  <button type="button" onclick="BalsonsQrStudio.setColor('#D97706')" style="width: 26px; height: 26px; border-radius: 4px; background: #D97706; border: 2px solid #CBD5E1; cursor: pointer;" title="Amber Gold"></button>
-                  <input type="color" id="qrColorCustom" value="#102D35" onchange="BalsonsQrStudio.setColor(this.value)" style="width: 28px; height: 28px; padding: 0; border: 1px solid #CBD5E1; border-radius: 4px; cursor: pointer;" title="Custom Color Picker">
+            <!-- Color Palette Row -->
+            <div style="margin-bottom: 14px;">
+              <label style="font-size: 10.5px; font-weight: 700; color: var(--beds-text-secondary); display: block; margin-bottom: 6px;">
+                Primary Matrix Color:
+              </label>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <button type="button" onclick="BalsonsQrStudio.setColor('#102D35')" style="width: 24px; height: 24px; border-radius: 4px; background: #102D35; border: 2px solid #CBD5E1; cursor: pointer;" title="Corporate Teal"></button>
+                <button type="button" onclick="BalsonsQrStudio.setColor('#0097B2')" style="width: 24px; height: 24px; border-radius: 4px; background: #0097B2; border: 2px solid #CBD5E1; cursor: pointer;" title="Balsons Cyan"></button>
+                <button type="button" onclick="BalsonsQrStudio.setColor('#000000')" style="width: 24px; height: 24px; border-radius: 4px; background: #000000; border: 2px solid #CBD5E1; cursor: pointer;" title="Industrial Black"></button>
+                <button type="button" onclick="BalsonsQrStudio.setColor('#E64646')" style="width: 24px; height: 24px; border-radius: 4px; background: #E64646; border: 2px solid #CBD5E1; cursor: pointer;" title="Safety Red"></button>
+                <button type="button" onclick="BalsonsQrStudio.setColor('#D97706')" style="width: 24px; height: 24px; border-radius: 4px; background: #D97706; border: 2px solid #CBD5E1; cursor: pointer;" title="Amber Gold"></button>
+                <button type="button" onclick="BalsonsQrStudio.setColor('#059669')" style="width: 24px; height: 24px; border-radius: 4px; background: #059669; border: 2px solid #CBD5E1; cursor: pointer;" title="Emerald Pass"></button>
+                <button type="button" onclick="BalsonsQrStudio.setColor('#EAB308')" style="width: 24px; height: 24px; border-radius: 4px; background: #EAB308; border: 2px solid #CBD5E1; cursor: pointer;" title="Safety Yellow"></button>
+                <div style="display: inline-flex; align-items: center; gap: 4px; margin-left: 4px;">
+                  <span style="font-size: 10px; color: var(--beds-text-secondary);">Custom:</span>
+                  <input type="color" id="qrColorCustom" value="#102D35" onchange="BalsonsQrStudio.setColor(this.value)" style="width: 28px; height: 28px; border: none; border-radius: 4px; cursor: pointer; background: transparent;">
                 </div>
               </div>
+            </div>
 
-              <!-- Error Correction Level -->
+            <!-- Center Corporate Emblem Options -->
+            <div style="margin-bottom: 14px; border-top: 1px solid #F1F5F9; padding-top: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div>
+                  <strong style="font-size: 11px; color: var(--beds-charcoal-heading);">Center Corporate Emblem</strong>
+                  <div style="font-size: 10px; color: var(--beds-text-secondary);">Embeds branding monogram or safety badge with protective clearing margin.</div>
+                </div>
+                <label class="switch" style="margin-bottom: 0;">
+                  <input type="checkbox" id="qrIncludeLogo" checked onchange="BalsonsQrStudio.toggleLogo(this.checked)">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <!-- Emblem Style Pills -->
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-sm qr-logo-btn active" data-logo="MONOGRAM" onclick="BalsonsQrStudio.setLogoType('MONOGRAM')" style="background: #0097B2; color: #FFFFFF; font-size: 10.5px; font-weight: 800; border-radius: 6px; padding: 4px 10px;">
+                  Balsons Monogram "B"
+                </button>
+                <button type="button" class="btn btn-sm qr-logo-btn" data-logo="LOGO" onclick="BalsonsQrStudio.setLogoType('LOGO')" style="background: #F8FAFC; color: #102D35; font-size: 10.5px; font-weight: 700; border-radius: 6px; padding: 4px 10px;">
+                  Corporate Logo
+                </button>
+                <button type="button" class="btn btn-sm qr-logo-btn" data-logo="BLOOD" onclick="BalsonsQrStudio.setLogoType('BLOOD')" style="background: #F8FAFC; color: #102D35; font-size: 10.5px; font-weight: 700; border-radius: 6px; padding: 4px 10px;">
+                  Blood Group 🩸
+                </button>
+                <button type="button" class="btn btn-sm qr-logo-btn" data-logo="SAFETY" onclick="BalsonsQrStudio.setLogoType('SAFETY')" style="background: #F8FAFC; color: #102D35; font-size: 10.5px; font-weight: 700; border-radius: 6px; padding: 4px 10px;">
+                  Safety Shield 🛡️
+                </button>
+              </div>
+            </div>
+
+            <!-- Badge / Sticker Frame Style -->
+            <div style="margin-bottom: 14px; border-top: 1px solid #F1F5F9; padding-top: 12px;">
+              <label style="font-size: 10.5px; font-weight: 700; color: var(--beds-text-secondary); display: block; margin-bottom: 6px;">
+                Badge &amp; Sticker Enclosure Frame:
+              </label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-sm qr-frame-btn active" data-frame="NONE" onclick="BalsonsQrStudio.setFrameStyle('NONE')" style="background: #0097B2; color: #FFFFFF; font-size: 10.5px; font-weight: 800; border-radius: 6px; padding: 4px 10px;">
+                  None (Pure Matrix)
+                </button>
+                <button type="button" class="btn btn-sm qr-frame-btn" data-frame="BADGE" onclick="BalsonsQrStudio.setFrameStyle('BADGE')" style="background: #F8FAFC; color: #102D35; font-size: 10.5px; font-weight: 700; border-radius: 6px; padding: 4px 10px;">
+                  Industrial Site Badge
+                </button>
+                <button type="button" class="btn btn-sm qr-frame-btn" data-frame="HELMET" onclick="BalsonsQrStudio.setFrameStyle('HELMET')" style="background: #F8FAFC; color: #102D35; font-size: 10.5px; font-weight: 700; border-radius: 6px; padding: 4px 10px;">
+                  Safety Helmet Sticker
+                </button>
+                <button type="button" class="btn btn-sm qr-frame-btn" data-frame="EMERGENCY" onclick="BalsonsQrStudio.setFrameStyle('EMERGENCY')" style="background: #F8FAFC; color: #102D35; font-size: 10.5px; font-weight: 700; border-radius: 6px; padding: 4px 10px;">
+                  Medical Emergency Frame
+                </button>
+              </div>
+            </div>
+
+            <!-- Error Correction & Resolution Sliders -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; border-top: 1px solid #F1F5F9; padding-top: 12px;">
               <div>
-                <label style="font-size: 10.5px; font-weight: 700; color: var(--beds-text-secondary); margin-bottom: 6px; display: block;">
+                <label style="font-size: 10.5px; font-weight: 700; color: var(--beds-text-secondary); display: block; margin-bottom: 4px;">
                   Error Correction Level:
                 </label>
-                <select id="qrCorrectLevelSelect" class="beds-select" style="width: 100%; font-size: 11.5px; height: 32px;" onchange="BalsonsQrStudio.setCorrectLevel(this.value)">
+                <select id="qrErrorLevel" class="beds-select" style="width: 100%; font-size: 11px; height: 32px; border-radius: 4px;" onchange="BalsonsQrStudio.setCorrectLevel(this.value)">
                   <option value="0">Level L (7% Recovery)</option>
                   <option value="1">Level M (15% Recovery)</option>
                   <option value="2" selected>Level Q (25% Recovery)</option>
-                  <option value="3">Level H (30% Recovery - Recommended)</option>
+                  <option value="3">Level H (30% Recovery)</option>
                 </select>
               </div>
 
-              <!-- Center Logo Emblem Toggle -->
-              <div style="grid-column: span 2; display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px;">
-                <div>
-                  <strong style="font-size: 12px; color: var(--beds-charcoal-heading);">Center Corporate Branding Emblem</strong>
-                  <div style="font-size: 10.5px; color: var(--beds-text-secondary); margin-top: 1px;">
-                    Embeds official BALSONS monogram in center with protective white clearing margin.
-                  </div>
-                </div>
-                <label style="position: relative; display: inline-block; width: 40px; height: 22px;">
-                  <input type="checkbox" id="qrIncludeLogoCheck" checked onchange="BalsonsQrStudio.toggleLogo(this.checked)" style="opacity: 0; width: 0; height: 0;">
-                  <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #0097B2; border-radius: 22px; transition: 0.2s;" onclick="this.previousElementSibling.checked = !this.previousElementSibling.checked; BalsonsQrStudio.toggleLogo(this.previousElementSibling.checked); event.preventDefault();"></span>
-                </label>
-              </div>
-
-              <!-- Matrix Size Slider -->
-              <div style="grid-column: span 2;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
                   <label style="font-size: 10.5px; font-weight: 700; color: var(--beds-text-secondary);">
-                    Resolution Dimension:
+                    Matrix Dimension:
                   </label>
-                  <span id="qrSizeLabel" style="font-size: 11px; font-weight: 800; font-family: monospace; color: #0097B2;">280 × 280 px</span>
+                  <span id="qrSizeLabel" style="font-size: 10.5px; font-weight: 800; color: #0097B2; font-family: monospace;">
+                    280 × 280 px
+                  </span>
                 </div>
-                <input type="range" id="qrSizeSlider" min="160" max="600" step="20" value="280" style="width: 100%;" oninput="BalsonsQrStudio.setSize(this.value)">
-                <div style="display: flex; justify-content: space-between; font-size: 9.5px; color: #94A3B8; margin-top: 2px;">
-                  <span>160px (Badge Miniature)</span>
-                  <span>280px (CR80 Standard)</span>
-                  <span>600px (High-DPI PVC Print)</span>
-                </div>
+                <input type="range" id="qrSizeRange" min="160" max="600" step="20" value="280" style="width: 100%; accent-color: #0097B2; cursor: pointer;" oninput="BalsonsQrStudio.setSize(this.value)">
               </div>
             </div>
           </div>
         </div>
 
-        <!-- RIGHT COLUMN: LIVE QR PREVIEW & ID CARD LINKAGE STAGE -->
+        <!-- RIGHT COLUMN: MULTI-VIEW PREVIEW STAGE -->
         <div style="display: flex; flex-direction: column; gap: 16px;">
           
-          <!-- Interactive Preview Card -->
+          <!-- Multi-View Interactive Preview Card -->
           <div class="kpi-card" style="background: #FFFFFF; border: 1.5px solid var(--beds-border); border-top: 3.5px solid #10B981; border-radius: var(--beds-radius-lg); padding: 20px; box-shadow: 0 4px 16px rgba(16, 45, 53, 0.05); text-align: center;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-              <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--beds-charcoal-heading);">
-                📷 Live QR Matrix Preview
-              </span>
-              <span class="status-pill status-success" style="font-size: 9.5px; font-weight: 800;">
-                READY TO SCAN
-              </span>
-            </div>
-
-            <!-- Canvas Stage Container -->
-            <div style="display: flex; justify-content: center; align-items: center; padding: 18px; background: #F8FAFC; border: 1.5px dashed #CBD5E1; border-radius: 8px; min-height: 290px; margin-bottom: 16px;">
-              <div id="qrCodeCanvasTarget">
-                <!-- Dynamically generated by BalsonsQrStudio.renderQrCode() -->
-              </div>
-            </div>
-
-            <!-- Direct Verification Simulator Banner -->
-            <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 6px; padding: 10px 14px; text-align: left; margin-bottom: 14px;">
-              <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; color: #065F46; margin-bottom: 2px;">
-                <span>🔒 Security Scanner Verification Status:</span>
-              </div>
-              <div style="font-size: 10.5px; color: #047857; line-height: 1.35;">
-                Payload encoded in standard 8-bit byte mode. Compatible with handheld gate entry scanners, smartphone camera apps, and biometric muster tablets.
-              </div>
-            </div>
-
-            <!-- Action Buttons Row -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-              <button type="button" class="btn btn-primary" onclick="BalsonsQrStudio.applyToIdCard()" style="background: #0097B2; border-color: #0097B2; font-weight: 800; padding: 8px 12px; font-size: 12px;">
-                🪪 Link to CR80 ID Card
+            
+            <!-- 3-Way Subview Switcher Pills -->
+            <div style="display: flex; gap: 4px; margin-bottom: 14px; background: #F1F5F9; padding: 4px; border-radius: 8px;">
+              <button type="button" class="btn btn-sm qr-subview-btn active" id="btnQrViewMatrix" onclick="BalsonsQrStudio.setPreviewTab('MATRIX')" style="flex: 1; font-size: 11px; font-weight: 800; border-radius: 6px; padding: 6px 4px; background: #0097B2; color: #FFFFFF;">
+                🔲 QR Matrix &amp; Frame
               </button>
-              <button type="button" class="btn btn-primary" onclick="BalsonsQrStudio.printCalibratedIdCard()" style="background: #10B981; border-color: #10B981; font-weight: 800; padding: 8px 12px; font-size: 12px;">
-                🖨️ Print CR80 Pass Now
+              <button type="button" class="btn btn-sm qr-subview-btn" id="btnQrViewPhone" onclick="BalsonsQrStudio.setPreviewTab('PHONE')" style="flex: 1; font-size: 11px; font-weight: 700; border-radius: 6px; padding: 6px 4px; background: transparent; color: #475569;">
+                📱 Smartphone Preview
               </button>
+              <button type="button" class="btn btn-sm qr-subview-btn" id="btnQrViewScanner" onclick="BalsonsQrStudio.setPreviewTab('SCANNER')" style="flex: 1; font-size: 11px; font-weight: 700; border-radius: 6px; padding: 6px 4px; background: transparent; color: #475569;">
+                🔍 Security Audit
+              </button>
+            </div>
+
+            <!-- PANE 1: LIVE QR MATRIX & FRAME -->
+            <div id="qrPreviewPaneMatrix">
+              <!-- Outer Frame Container -->
+              <div id="qrFrameContainer" style="display: inline-block; margin: 0 auto 16px auto; transition: all 0.2s ease;">
+                <div id="qrFrameHeader" style="display: none;"></div>
+                
+                <div style="display: flex; justify-content: center; align-items: center; padding: 16px; background: #F8FAFC; border: 1.5px dashed #CBD5E1; border-radius: 8px; min-height: 290px;">
+                  <div id="qrCodeCanvasTarget">
+                    <!-- Dynamically generated by BalsonsQrStudio.renderQrCode() -->
+                  </div>
+                </div>
+
+                <div id="qrFrameFooter" style="display: none;"></div>
+              </div>
+
+              <!-- Direct Verification Simulator Banner -->
+              <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 6px; padding: 10px 14px; text-align: left; margin-bottom: 14px;">
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; color: #065F46; margin-bottom: 2px;">
+                  <span>🔒 Security Scanner Verification Status:</span>
+                </div>
+                <div style="font-size: 10.5px; color: #047857; line-height: 1.35;">
+                  Payload encoded in standard 8-bit byte mode. Compatible with handheld gate entry scanners, smartphone camera apps, and biometric muster tablets.
+                </div>
+              </div>
+
+              <!-- Action Buttons Row -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button type="button" class="btn btn-primary" onclick="BalsonsQrStudio.applyToIdCard()" style="background: #0097B2; border-color: #0097B2; font-weight: 800; padding: 8px 12px; font-size: 12px;">
+                  🪪 Link to CR80 ID Card
+                </button>
+                <button type="button" class="btn btn-primary" onclick="BalsonsQrStudio.printCalibratedIdCard()" style="background: #10B981; border-color: #10B981; font-weight: 800; padding: 8px 12px; font-size: 12px;">
+                  🖨️ Print CR80 Pass Now
+                </button>
+              </div>
+            </div>
+
+            <!-- PANE 2: SMARTPHONE VCARD INTERACTIVE SIMULATOR -->
+            <div id="qrPreviewPanePhone" style="display: none;">
+              <div style="display: flex; justify-content: center;">
+                <!-- Smartphone Outer Bezel -->
+                <div style="width: 320px; background: #0F172A; border-radius: 36px; padding: 12px; box-shadow: 0 20px 45px rgba(15, 23, 42, 0.4); border: 2px solid #334155; position: relative;">
+                  
+                  <!-- Screen Container -->
+                  <div id="qrPhoneSimulatorScreen" style="background: #FFFFFF; border-radius: 26px; overflow: hidden; min-height: 480px; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);">
+                    <!-- Populated by BalsonsQrStudio.renderPhoneSimulator() -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANE 3: SECURITY AUDIT & SCANNER SIMULATOR -->
+            <div id="qrPreviewPaneScanner" style="display: none;">
+              <div id="qrScannerAuditScreen">
+                <!-- Populated by BalsonsQrStudio.renderScannerSimulator() -->
+              </div>
             </div>
           </div>
 
           <!-- Quick Integration Guide & Compliance Card -->
           <div style="background: var(--beds-bg-page); border: 1.5px solid var(--beds-border); border-left: 4px solid #102D35; border-radius: var(--beds-radius-md); padding: 14px 16px; font-size: 11.5px; line-height: 1.45;">
-            <strong style="color: var(--beds-charcoal-heading); font-size: 12px;">📌 CR80 ID Card Integration Protocol:</strong>
+            <strong style="color: var(--beds-charcoal-heading); font-size: 12px;">📌 Enterprise QR &amp; Pass Deployment Protocol:</strong>
             <ul style="margin: 6px 0 0 0; padding-left: 18px; color: var(--beds-text-secondary);">
-              <li>Click <strong>"Link to ID Card"</strong> to store this QR code in the employee's live record.</li>
-              <li>When printing the CR80 Pass (via Print Single Slip or ID Pass button), the system automatically embeds this high-res QR code at exact <strong>8.5 mm × 8.5 mm</strong> badge dimensions.</li>
-              <li>Use <strong>"Bulk QR Sheet"</strong> to print continuous sticker sheets for security cabinets or lamination reels.</li>
+              <li><strong>CR80 PVC Cards:</strong> Click <em>"Link to ID Card"</em> to embed this QR at calibrated <strong>8.5 mm × 8.5 mm</strong> and <strong>20.0 mm × 20.0 mm</strong> dimensions.</li>
+              <li><strong>Hard Hat Stickers:</strong> Click <em>"Helmet Stickers (A4)"</em> to produce an adhesive vinyl sheet of 12 weather-proof safety stickers.</li>
+              <li><strong>Muster Scanner Integration:</strong> Standard vCard 3.0 string permits handheld gate entry scanners to authenticate worker identity and site clearance offline without internet connectivity.</li>
             </ul>
           </div>
         </div>
