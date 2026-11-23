@@ -1,0 +1,6 @@
+[submodule "BALSONS ENTERPRISE LAUNCHER"]
+	path = BALSONS ENTERPRISE LAUNCHER
+	url = https://github.com/balsonsportals/BALSONS_ENTERPRISE_LAUNCHER.git
+[submodule "BALSONS_MOBILE_PORTALS"]
+	path = BALSONS_MOBILE_PORTALS
+	url = https://github.com/balsonsportals/BALSONS_MOBILE_PORTALS.git
