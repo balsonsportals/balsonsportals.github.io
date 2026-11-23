@@ -774,92 +774,333 @@
     }
 
     /* Unified BEDS Statutory Print Engine */
+    #balsonsA4PrintCanvas {
+      display: none;
+    }
+
     @media print {
       @page {
         size: A4 portrait;
-        margin: 8mm 10mm;
+        margin: 8mm 10mm 8mm 10mm;
       }
+
+      *, *:before, *:after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      html, body {
+        width: 100% !important;
+        min-height: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        color: #102D35 !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+        overflow: visible !important;
+      }
+
+      /* Hide everything by default in print mode */
       body * {
         visibility: hidden;
       }
-      
-      /* Print Case 1: ID Card Badge */
-      body.printing-idcard #printableIdCardContainer,
-      body.printing-idcard #printableIdCardContainer * {
-        visibility: visible !important;
-      }
-      body.printing-idcard #printableIdCardContainer {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        display: flex !important;
-        justify-content: center;
-        gap: 15mm;
-        padding-top: 15mm;
+
+      header, footer, nav, #beds-sticky-header-container, .beds-sticky-header-container,
+      .header-controls, .user-pill-wrap, .meta-badge, #themeBtn, #hrLiveSyncBtn,
+      .beds-nav-tabs, .nav-tabs, .section-view:not(.print-active-section),
+      .table-container, .kpi-row, button, input, select {
+        display: none !important;
       }
 
-      /* Print Case 2: Full Filled Enrolment Dossier */
+      /* ─── CASE 1: DIRECT BODY-LEVEL A4 CANVAS PRINT (ENROLMENT DOSSIER) ─── */
+      body.printing-enrolment > #balsonsA4PrintCanvas {
+        display: flex !important;
+        visibility: visible !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        height: 276mm !important;
+        min-height: 275mm !important;
+        max-height: 278mm !important;
+        box-sizing: border-box !important;
+        margin: 0 auto !important;
+        padding: 5mm 7mm !important;
+        border: 2px solid #102D35 !important;
+        background: #FFFFFF !important;
+        color: #102D35 !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-before: avoid !important;
+        break-before: avoid !important;
+        overflow: hidden !important;
+        font-family: Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+      }
+
+      body.printing-enrolment > #balsonsA4PrintCanvas * {
+        visibility: visible !important;
+      }
+
+      body.printing-enrolment > #balsonsA4PrintCanvas table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+      }
+
+      body.printing-enrolment > #balsonsA4PrintCanvas td,
+      body.printing-enrolment > #balsonsA4PrintCanvas th {
+        padding: 3px 6px !important;
+        font-size: 8.5pt !important;
+        line-height: 1.3 !important;
+      }
+
+      /* Fallback for in-modal enrolment dossier printing */
+      body.printing-enrolment #modalPrintEnrolmentForm {
+        visibility: visible !important;
+        position: static !important;
+        display: block !important;
+        inset: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+
+      body.printing-enrolment #modalPrintEnrolmentForm .modal-box,
+      body.printing-enrolment #modalPrintEnrolmentForm .beds-modal {
+        visibility: visible !important;
+        position: static !important;
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+
+      body.printing-enrolment #modalPrintEnrolmentForm .modal-box > div:first-child,
+      body.printing-enrolment #modalPrintEnrolmentForm .modal-box > div:nth-child(2),
+      body.printing-enrolment #modalPrintEnrolmentForm button,
+      body.printing-enrolment #modalPrintEnrolmentForm select,
+      body.printing-enrolment #modalPrintEnrolmentForm label,
+      body.printing-enrolment #modalPrintEnrolmentForm .status-pill {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+      body.printing-enrolment #printableEnrolmentFormWrapper {
+        visibility: visible !important;
+        position: static !important;
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        background: transparent !important;
+      }
+
       body.printing-enrolment #printableEnrolmentDossier,
       body.printing-enrolment #printableEnrolmentDossier * {
         visibility: visible !important;
       }
+
       body.printing-enrolment #printableEnrolmentDossier {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        max-width: 190mm;
-        margin: 0 auto;
+        position: static !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        height: 276mm !important;
+        min-height: 275mm !important;
+        max-height: 278mm !important;
+        box-sizing: border-box !important;
+        margin: 0 auto !important;
+        padding: 5mm 7mm !important;
+        border: 2px solid #102D35 !important;
+        background: #FFFFFF !important;
+        color: #102D35 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        page-break-before: avoid !important;
+        break-before: avoid !important;
+        overflow: hidden !important;
+      }
+
+      body.printing-enrolment #printableEnrolmentDossier table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+      }
+
+      body.printing-enrolment #printableEnrolmentDossier td,
+      body.printing-enrolment #printableEnrolmentDossier th {
+        padding: 3px 6px !important;
+        font-size: 8.5pt !important;
+        line-height: 1.3 !important;
+      }
+
+      /* ─── CASE 2: SINGLE PAYSLIP (A4 EXACT 1-PAGE) ─── */
+      body.printing-payslip {
+        overflow: visible !important;
+        background: #FFFFFF !important;
+      }
+
+      body.printing-payslip #printablePayslip,
+      body.printing-payslip #printablePayslip * {
+        visibility: visible !important;
+      }
+
+      body.printing-payslip #printablePayslip {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        min-height: 275mm !important;
+        max-height: 278mm !important;
+        height: 276mm !important;
+        margin: 0 auto !important;
+        padding: 8mm 10mm !important;
+        box-sizing: border-box !important;
+        border: 2px solid #102D35 !important;
+        background: #FFFFFF !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        overflow: hidden !important;
         box-shadow: none !important;
       }
 
-      /* Print Case 3: Single Payslip */
-      body.printing-payslip #printablePayslip,
-      body.printing-payslip #printablePayslip *,
-      body:not(.printing-idcard):not(.printing-enrolment):not(.printing-bulk-payslips) #printablePayslip,
-      body:not(.printing-idcard):not(.printing-enrolment):not(.printing-bulk-payslips) #printablePayslip * {
-        visibility: visible !important;
-      }
-      body.printing-payslip #printablePayslip,
-      body:not(.printing-idcard):not(.printing-enrolment):not(.printing-bulk-payslips) #printablePayslip {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        border: none;
-        box-shadow: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      /* Print Case 4: Bulk Batch Salary Slips */
+      /* ─── CASE 3: BULK BATCH PAYSLIPS (A4 1-PAGE PER SLIP) ─── */
       body.printing-bulk-payslips #printableBulkPayslips,
       body.printing-bulk-payslips #printableBulkPayslips * {
         visibility: visible !important;
       }
+
       body.printing-bulk-payslips #printableBulkPayslips {
         display: block !important;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
+        position: static !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
+
       .payslip-page-break {
         page-break-after: always !important;
         break-after: page !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
-        margin-bottom: 0 !important;
+        margin: 0 auto !important;
         padding: 8mm 10mm !important;
         box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        height: 276mm !important;
         min-height: 275mm !important;
+        max-height: 278mm !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
+        border: 2px solid #102D35 !important;
+        background: #FFFFFF !important;
       }
-    }
-  </style>
+
+      /* ─── CASE 4: ID CARD PASSES (CALIBRATED DUAL-CARD A4 SHEET) ─── */
+      body.printing-idcard {
+        overflow: visible !important;
+        background: #FFFFFF !important;
+      }
+
+      body.printing-idcard #modalIdCardStudio {
+        visibility: visible !important;
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      body.printing-idcard #modalIdCardStudio .modal-box,
+      body.printing-idcard #modalIdCardStudio .beds-modal {
+        visibility: visible !important;
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      body.printing-idcard #modalIdCardStudio .modal-box > div:first-child,
+      body.printing-idcard #modalIdCardStudio .modal-box > div:nth-child(2),
+      body.printing-idcard #modalIdCardStudio button,
+      body.printing-idcard #modalIdCardStudio select,
+      body.printing-idcard #modalIdCardStudio label {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+      body.printing-idcard #printableIdCardContainer,
+      body.printing-idcard #printableIdCardContainer * {
+        visibility: visible !important;
+      }
+
+      body.printing-idcard #printableIdCardContainer {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 15mm !important;
+        padding-top: 25mm !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        margin: 0 auto !important;
+        position: static !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      /* ─── CASE 5: 360° WORKFORCE DOSSIER (A4 EXACT 1-PAGE) ─── */
+      body.printing-dossier-360 #hr-dossier-page-container,
+      body.printing-dossier-360 #hr-dossier-page-container * {
+        visibility: visible !important;
+      }
+
+      body.printing-dossier-360 #hr-dossier-page-container {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+    }</style>
 </head>
 <body>
 
@@ -1641,7 +1882,7 @@
           <select id="hr-dossier-page-select" class="beds-select" style="font-size: 12px; padding: 6px 10px; font-weight: 700;" onchange="loadHr360DossierPage(this.value)">
             <!-- Options populated dynamically -->
           </select>
-          <button class="btn btn-primary btn-sm" onclick="window.print()">
+          <button class="btn btn-primary btn-sm" onclick="print360Dossier()">
             🖨️ Print Dossier (A4)
           </button>
         </div>
@@ -3280,17 +3521,45 @@
     }
 
     function printEnrolmentForm() {
-      document.body.classList.remove('printing-idcard', 'printing-payslip', 'printing-bulk-payslips');
+      let printCanvas = document.getElementById('balsonsA4PrintCanvas');
+      if (!printCanvas) {
+        printCanvas = document.createElement('div');
+        printCanvas.id = 'balsonsA4PrintCanvas';
+        document.body.appendChild(printCanvas);
+      }
+
+      const dossierSource = document.getElementById('printableEnrolmentDossier');
+      if (dossierSource) {
+        printCanvas.innerHTML = dossierSource.innerHTML;
+      }
+
+      document.body.classList.remove('printing-idcard', 'printing-payslip', 'printing-bulk-payslips', 'printing-dossier-360');
       document.body.classList.add('printing-enrolment');
       
       const onAfterPrint = () => {
         document.body.classList.remove('printing-enrolment');
+        if (printCanvas) printCanvas.innerHTML = '';
         window.removeEventListener('afterprint', onAfterPrint);
       };
       window.addEventListener('afterprint', onAfterPrint);
       
       window.print();
-      setTimeout(() => document.body.classList.remove('printing-enrolment'), 2500);
+      setTimeout(() => {
+        document.body.classList.remove('printing-enrolment');
+        if (printCanvas) printCanvas.innerHTML = '';
+      }, 2500);
+    }
+
+    function print360Dossier() {
+      document.body.classList.remove('printing-idcard', 'printing-payslip', 'printing-bulk-payslips', 'printing-enrolment');
+      document.body.classList.add('printing-dossier-360');
+      const onAfterPrint = () => {
+        document.body.classList.remove('printing-dossier-360');
+        window.removeEventListener('afterprint', onAfterPrint);
+      };
+      window.addEventListener('afterprint', onAfterPrint);
+      window.print();
+      setTimeout(() => document.body.classList.remove('printing-dossier-360'), 2500);
     }
 
     // ══════════════════════════════════════════════════════════════════
@@ -3545,6 +3814,31 @@
         if (syncIcon) syncIcon.style.animation = 'none';
       }
     }
+
+    
+    // Global Print Mode Automator
+    window.addEventListener('beforeprint', () => {
+      const enrolModal = document.getElementById('modalPrintEnrolmentForm');
+      if (enrolModal && enrolModal.style.display !== 'none' && enrolModal.style.display !== '') {
+        let printCanvas = document.getElementById('balsonsA4PrintCanvas');
+        if (!printCanvas) {
+          printCanvas = document.createElement('div');
+          printCanvas.id = 'balsonsA4PrintCanvas';
+          document.body.appendChild(printCanvas);
+        }
+        const dossierSource = document.getElementById('printableEnrolmentDossier');
+        if (dossierSource) {
+          printCanvas.innerHTML = dossierSource.innerHTML;
+        }
+        document.body.classList.add('printing-enrolment');
+      }
+    });
+
+    window.addEventListener('afterprint', () => {
+      const printCanvas = document.getElementById('balsonsA4PrintCanvas');
+      if (printCanvas) printCanvas.innerHTML = '';
+      document.body.classList.remove('printing-enrolment', 'printing-payslip', 'printing-bulk-payslips', 'printing-idcard', 'printing-dossier-360');
+    });
 
     function initHrApp() {
       try { recomputeHrMetrics(); } catch (e) { console.warn('recomputeHrMetrics:', e); }
