@@ -3090,6 +3090,56 @@
         bankEnding: '9904', joining: '2026-02-01', status: 'ACTIVE' 
       }
     ];
+    window.employeesData = employeesData;
+
+    // ─── GUARANTEED INSTANT IN-MEMORY QR GENERATOR (ZERO NETWORK LATENCY) ───
+    function getEmployeeQrDataUrl(empId, size = 240) {
+      const list = window.employeesData || employeesData;
+      const e = list.find(x => x.empId === empId) || list[0];
+      if (e && e.customQrDataUrl && typeof e.customQrDataUrl === 'string' && e.customQrDataUrl.startsWith('data:image/')) {
+        return e.customQrDataUrl;
+      }
+      
+      const verifyUrl = `https://balsonsportals.github.io/verify.html?empId=${encodeURIComponent(e ? e.empId : 'EMP-2026-0001')}`;
+      
+      if (typeof QRCode !== 'undefined') {
+        try {
+          const temp = document.createElement('div');
+          temp.style.position = 'absolute';
+          temp.style.left = '-9999px';
+          temp.style.top = '-9999px';
+          temp.style.visibility = 'hidden';
+          document.body.appendChild(temp);
+          new QRCode(temp, {
+            text: verifyUrl,
+            width: size,
+            height: size,
+            colorDark: '#102D35',
+            colorLight: '#FFFFFF',
+            correctLevel: QRCode.CorrectLevel.Q
+          });
+          const canvas = temp.querySelector('canvas');
+          let dataUrl = null;
+          if (canvas) {
+            dataUrl = canvas.toDataURL('image/png');
+          } else {
+            const img = temp.querySelector('img');
+            if (img && img.src && img.src.startsWith('data:')) {
+              dataUrl = img.src;
+            }
+          }
+          document.body.removeChild(temp);
+          if (dataUrl) {
+            if (e) e.customQrDataUrl = dataUrl;
+            return dataUrl;
+          }
+        } catch (err) {
+          console.warn('In-memory QR generation fallback:', err);
+        }
+      }
+      return '';
+    }
+    window.getEmployeeQrDataUrl = getEmployeeQrDataUrl;
 
     let attendanceData = [
       { empId: 'EMP-2026-0001', name: 'Ramesh Kumar', wageType: 'MONTHLY', trade: 'Rigger Lead', present: 26, wo: 4, pl: 0, payable: 30, otHours: 24 },
@@ -3526,9 +3576,12 @@
     }
 
     // 3. GATE ENTRY ID PASS (CR80 DUAL-CARD EXACT 1 A4 PAGE)
-        function generateOfficialCr80PassHtml(empId) {
-      const e = employeesData.find(x => x.empId === empId) || employeesData[0];
+    function generateOfficialCr80PassHtml(empId) {
+      const e = (window.employeesData || employeesData).find(x => x.empId === empId) || (window.employeesData || employeesData)[0];
       if (!e) return '';
+
+      // Guarantee instant synchronous base64 Data URL for zero network latency print
+      const qrDataUrl = getEmployeeQrDataUrl(e.empId, 240);
 
       const isMonthly = (e.wageType || '').toUpperCase() === 'MONTHLY';
       const tagline = isMonthly ? 'OFFICIAL CORPORATE SITE IDENTITY BADGE' : 'STATUTORY DAILY WAGE SITE IDENTITY BADGE';
@@ -3676,7 +3729,7 @@
                   <!-- Footer: QR Code & Authorized Signatory -->
                   <div style="width: 100%; border-top: 0.75px solid #E2E8F0; padding-top: 1mm; display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
                     <div style="width: 8.5mm; height: 8.5mm; background: #FFFFFF; border: 0.5px solid #CBD5E1; border-radius: 1mm; display: flex; align-items: center; justify-content: center; padding: 0.5mm;">
-                      ${e.customQrDataUrl ? `<img src="${e.customQrDataUrl}" style="width: 100%; height: 100%; object-fit: contain;">` : `<svg width="24" height="24" viewBox="0 0 29 29" shape-rendering="crispEdges">
+                      ${qrDataUrl ? `<img src="${qrDataUrl}" style="width: 100%; height: 100%; object-fit: contain; display: block;" alt="QR">` : `<svg width="24" height="24" viewBox="0 0 29 29" shape-rendering="crispEdges">
                         <path fill="#102D35" d="M0,0 h7 v7 h-7 z M1,1 h5 v5 h-5 z M2,2 h3 v3 h-3 z M8,0 h2 v1 h-2 z M11,0 h1 v1 h-1 z M13,0 h2 v2 h-2 z M16,0 h1 v2 h-1 z M18,0 h1 v1 h-1 z M22,0 h7 v7 h-7 z M23,1 h5 v5 h-5 z M24,2 h3 v3 h-3 z M8,2 h2 v2 h-2 z M11,2 h1 v1 h-1 z M18,2 h1 v1 h-1 z M19,2 h1 v2 h-1 z M8,4 h1 v2 h-1 z M10,4 h2 v1 h-2 z M13,4 h2 v2 h-2 z M16,4 h1 v1 h-1 z M18,4 h1 v1 h-1 z M20,4 h1 v1 h-1 z M0,8 h1 v1 h-1 z M2,8 h2 v1 h-2 z M5,8 h1 v1 h-1 z M8,8 h2 v1 h-2 z M11,8 h3 v1 h-3 z M16,8 h1 v2 h-1 z M18,8 h2 v2 h-2 z M22,8 h1 v1 h-1 z M24,8 h2 v1 h-2 z M27,8 h2 v1 h-2 z M0,10 h1 v2 h-1 z M2,10 h1 v1 h-1 z M4,10 h1 v1 h-1 z M7,10 h2 v1 h-2 z M10,10 h1 v1 h-1 z M12,10 h1 v1 h-1 z M14,10 h1 v2 h-1 z M21,10 h2 v1 h-2 z M24,10 h1 v1 h-1 z M26,10 h3 v1 h-3 z M1,12 h2 v1 h-2 z M4,12 h3 v1 h-3 z M8,12 h1 v2 h-1 z M10,12 h1 v1 h-1 z M12,12 h1 v1 h-1 z M16,12 h2 v1 h-2 z M19,12 h2 v1 h-2 z M22,12 h1 v1 h-1 z M24,12 h2 v1 h-2 z M27,12 h1 v1 h-1 z M0,14 h1 v1 h-1 z M2,14 h1 v1 h-1 z M4,14 h1 v1 h-1 z M6,14 h1 v1 h-1 z M11,14 h2 v1 h-2 z M15,14 h1 v1 h-1 z M17,14 h1 v1 h-1 z M20,14 h1 v1 h-1 z M23,14 h1 v2 h-1 z M26,14 h1 v1 h-1 z M28,14 h1 v1 h-1 z M0,16 h2 v2 h-2 z M3,16 h1 v1 h-1 z M5,16 h2 v1 h-2 z M8,16 h2 v1 h-2 z M11,16 h1 v2 h-1 z M13,16 h2 v1 h-2 z M16,16 h1 v1 h-1 z M18,16 h2 v1 h-2 z M21,16 h1 v1 h-1 z M25,16 h1 v1 h-1 z M27,16 h2 v1 h-2 z M2,18 h2 v1 h-2 z M5,18 h1 v1 h-1 z M7,18 h1 v2 h-1 z M9,18 h2 v1 h-2 z M14,18 h2 v1 h-2 z M17,18 h1 v1 h-1 z M19,18 h1 v1 h-1 z M22,18 h2 v1 h-2 z M25,18 h1 v1 h-1 z M28,18 h1 v1 h-1 z M0,22 h7 v7 h-7 z M1,23 h5 v5 h-5 z M2,24 h3 v3 h-3 z M8,22 h1 v1 h-1 z M10,22 h1 v1 h-1 z M12,22 h2 v2 h-2 z M15,22 h1 v1 h-1 z M17,22 h1 v1 h-1 z M19,22 h1 v1 h-1 z M21,22 h1 v1 h-1 z M24,22 h1 v1 h-1 z M26,22 h2 v1 h-2 z M8,24 h2 v1 h-2 z M11,24 h1 v1 h-1 z M16,24 h1 v1 h-1 z M18,24 h2 v1 h-2 z M21,24 h1 v1 h-1 z M23,24 h1 v1 h-1 z M25,24 h1 v1 h-1 z M27,24 h2 v1 h-2 z M8,26 h1 v2 h-1 z M10,26 h2 v1 h-2 z M13,26 h1 v1 h-1 z M15,26 h3 v1 h-3 z M19,26 h1 v1 h-1 z M21,26 h1 v1 h-1 z M23,26 h2 v1 h-2 z M26,26 h1 v1 h-1 z M28,26 h1 v1 h-1 z"/>
                       </svg>`}
                     </div>
@@ -3719,7 +3772,7 @@
                     
                     <!-- High-Contrast Framed QR Code Stage (20mm x 20mm) -->
                     <div style="display: inline-flex; padding: 1mm; background: #FFFFFF; border: 1px solid #102D35; border-radius: 1.5mm; box-shadow: 0 1px 3px rgba(0,0,0,0.12);">
-                      ${e.customQrDataUrl ? `<img src="${e.customQrDataUrl}" style="width: 20mm; height: 20mm; object-fit: contain; display: block;" alt="Verification QR">` : `<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=102D35&data=${encodeURIComponent('https://balsonsportals.github.io/verify.html?empId=' + e.empId)}" style="width: 20mm; height: 20mm; object-fit: contain; display: block;" onerror="this.src='assets/images/balsons-logo.png'">`}
+                      <img src="${qrDataUrl}" style="width: 20mm; height: 20mm; object-fit: contain; display: block;" alt="Verification QR">
                     </div>
                     
                     <div style="font-size: 3.5pt; font-weight: 800; color: #059669; margin-top: 0.5mm; letter-spacing: 0.2px;">
@@ -5764,7 +5817,13 @@
             document.getElementById('idBackAddress').textContent = e.address || 'At/Po: Haldiapada, Khordha Tahasil, District Khordha, Odisha - 752056';
       const backQr = document.getElementById('idCardBackQrImg');
       if (backQr) {
-        backQr.src = e.customQrDataUrl || `https://api.qrserver.com/v1/create-qr-code/?size=160x160&color=102D35&data=${encodeURIComponent('https://balsonsportals.github.io/verify.html?empId=' + e.empId)}`;
+        const qrDataUrl = getEmployeeQrDataUrl(e.empId, 240);
+        backQr.src = qrDataUrl;
+      }
+      const frontQr = document.getElementById('idCardQrImage');
+      if (frontQr) {
+        const qrDataUrl = getEmployeeQrDataUrl(e.empId, 240);
+        frontQr.src = qrDataUrl;
       }
     }
 

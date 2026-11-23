@@ -291,6 +291,8 @@
       // Update screen ID Card if modal is open
       const idCardQrImg = document.getElementById('idCardQrImage');
       if (idCardQrImg) idCardQrImg.src = qrDataUrl;
+      const idCardBackQr = document.getElementById('idCardBackQrImg');
+      if (idCardBackQr) idCardBackQr.src = qrDataUrl;
 
       // Show toast confirmation
       this.showToast(`✔ QR Code successfully linked to ${e.name} (${e.empId}) ID Pass!`);
@@ -364,12 +366,17 @@
       let cardsHtml = '';
       list.forEach(emp => {
         const em = emp.emergency ? emp.emergency.split('-').pop().trim() : '+91 98610 99881';
-        const pl = `BALSONS:GATE:PASS|ID=${emp.empId}|NAME=${emp.name}|TRADE=${emp.trade || 'Worker'}|BLOOD=${emp.bloodGroup || 'B+'}|EMERGENCY=${em}|VALID=2026-12-31`;
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&color=102D35&data=${encodeURIComponent(pl)}`;
+        let qrUrl = '';
+        if (typeof window.getEmployeeQrDataUrl === 'function') {
+          qrUrl = window.getEmployeeQrDataUrl(emp.empId, 180);
+        } else {
+          const pl = `https://balsonsportals.github.io/verify.html?empId=${encodeURIComponent(emp.empId)}`;
+          qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&color=102D35&data=${encodeURIComponent(pl)}`;
+        }
 
         cardsHtml += `
           <div style="border: 1.5px solid #102D35; border-radius: 4px; padding: 3mm 4mm; background: #FFFFFF; display: flex; align-items: center; gap: 3.5mm; box-sizing: border-box; page-break-inside: avoid;">
-            <img src="${qrUrl}" alt="QR" style="width: 22mm; height: 22mm; border: 1px solid #CBD5E1; border-radius: 2px;">
+            <img src="${qrUrl}" alt="QR" style="width: 22mm; height: 22mm; border: 1px solid #CBD5E1; border-radius: 2px; object-fit: contain;">
             <div style="flex: 1; font-size: 7.5pt; line-height: 1.25; color: #102D35;">
               <div style="font-size: 8pt; font-weight: 900; color: #0097B2;">BALSONS HEAVY LIFT</div>
               <div style="font-size: 9pt; font-weight: 900; text-transform: uppercase;">${emp.name}</div>
