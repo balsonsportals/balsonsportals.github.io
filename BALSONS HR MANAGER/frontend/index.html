@@ -1784,14 +1784,14 @@
 
             <!-- Mode Pills Bar -->
             <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;">
-              <button type="button" class="btn btn-sm qr-mode-pill active" data-mode="SECURITY_PASS" onclick="BalsonsQrStudio.setMode('SECURITY_PASS')" style="background: #0097B2; color: #FFFFFF; font-size: 11px; font-weight: 800; border-radius: 20px; padding: 4px 12px;">
+              <button type="button" class="btn btn-sm qr-mode-pill active" data-mode="VCARD" onclick="BalsonsQrStudio.setMode('VCARD')" style="background: #0097B2; color: #FFFFFF; font-size: 11px; font-weight: 800; border-radius: 20px; padding: 4px 12px;">
+                📇 Workforce vCard (Official Profile)
+              </button>
+              <button type="button" class="btn btn-sm qr-mode-pill" data-mode="SECURITY_PASS" onclick="BalsonsQrStudio.setMode('SECURITY_PASS')" style="background: var(--beds-bg-page, #F8FAFC); color: var(--beds-charcoal-heading, #102D35); font-size: 11px; font-weight: 700; border-radius: 20px; padding: 4px 12px;">
                 🛡️ Security Pass (Gate Muster)
               </button>
               <button type="button" class="btn btn-sm qr-mode-pill" data-mode="VERIFICATION_URL" onclick="BalsonsQrStudio.setMode('VERIFICATION_URL')" style="background: var(--beds-bg-page, #F8FAFC); color: var(--beds-charcoal-heading, #102D35); font-size: 11px; font-weight: 700; border-radius: 20px; padding: 4px 12px;">
                 🌐 Cloud Verify URL
-              </button>
-              <button type="button" class="btn btn-sm qr-mode-pill" data-mode="VCARD" onclick="BalsonsQrStudio.setMode('VCARD')" style="background: var(--beds-bg-page, #F8FAFC); color: var(--beds-charcoal-heading, #102D35); font-size: 11px; font-weight: 700; border-radius: 20px; padding: 4px 12px;">
-                📇 Emergency vCard
               </button>
               <button type="button" class="btn btn-sm qr-mode-pill" data-mode="MUSTER_TOKEN" onclick="BalsonsQrStudio.setMode('MUSTER_TOKEN')" style="background: var(--beds-bg-page, #F8FAFC); color: var(--beds-charcoal-heading, #102D35); font-size: 11px; font-weight: 700; border-radius: 20px; padding: 4px 12px;">
                 ⏱️ Biometric Token
@@ -1809,8 +1809,8 @@
 
             <div id="qrPayloadStats" style="display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; color: var(--beds-text-secondary); margin-top: 6px; padding-top: 6px; border-top: 1px solid #E2E8F0;">
               <span>Length: <strong>0 chars</strong></span>
-              <span>Encoding: <strong>UTF-8 Byte</strong></span>
-              <span>Type: <strong>Security Pass</strong></span>
+              <span>Encoding: <strong>UTF-8 Byte (vCard 3.0 Standard)</strong></span>
+              <span>Type: <strong>Workforce vCard (Official Profile)</strong></span>
             </div>
           </div>
 

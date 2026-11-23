@@ -9,7 +9,7 @@
 
   const BalsonsQrStudio = {
     selectedEmpId: 'EMP-2026-0001',
-    mode: 'VERIFICATION_URL', // SECURITY_PASS | VERIFICATION_URL | VCARD | MUSTER_TOKEN | CUSTOM_TEXT
+    mode: 'VCARD', // VCARD (Default Workforce Profile) | SECURITY_PASS | VERIFICATION_URL | MUSTER_TOKEN | CUSTOM_TEXT
     fgColor: '#102D35',
     bgColor: '#FFFFFF',
     correctLevel: 2, // 0: L (7%), 1: M (15%), 2: Q (25%), 3: H (30%)
@@ -93,28 +93,40 @@
     generatePayload: function() {
       const e = this.getEmployee();
 
-      if (this.mode === 'SECURITY_PASS') {
-        // High-security gate entry verification format
+      if (this.mode === 'VCARD') {
+        const primaryMobile = e.mobile || '+91 98610 88721';
         const em = e.emergency ? e.emergency.split('-').pop().trim() : '+91 98610 99881';
-        return `BALSONS:GATE:PASS|ID=${e.empId}|NAME=${e.name}|TRADE=${e.trade || 'Worker'}|DEPT=${e.dept || 'Operations'}|BLOOD=${e.bloodGroup || 'B+'}|EMERGENCY=${em}|VALID=2026-12-31|GATE=AUTH-1-2|MUSTER=READY`;
-      } 
-      else if (this.mode === 'VERIFICATION_URL') {
-        return `https://balsonsportals.github.io/verify.html?empId=${encodeURIComponent(e.empId)}`;
-      } 
-      else if (this.mode === 'VCARD') {
-        const em = e.emergency ? e.emergency.split('-').pop().trim() : '+91 98610 99881';
+        const hrOfficerName = 'Priyanka Senapati';
+        const hrOfficerPhone = '+91 94371 44520';
+        const trade = e.trade || 'Worker';
+        const blood = e.bloodGroup || 'B+';
+
+        // Parse Name into Family and Given names for standard vCard N: field
+        const parts = (e.name || 'Worker').trim().split(/\s+/);
+        const givenName = parts[0] || 'Worker';
+        const familyName = parts.slice(1).join(' ') || '';
+
         return [
           'BEGIN:VCARD',
           'VERSION:3.0',
           `FN:${e.name}`,
-          'ORG:BALSONS HEAVY LIFT & SHIFT',
-          `TITLE:${e.trade || 'Worker'} - PRJ-JTRWF-SCHULER`,
-          `TEL;TYPE=WORK,VOICE:${e.mobile || '+91 98610 88721'}`,
-          `TEL;TYPE=EMERGENCY,VOICE:${em}`,
-          `NOTE:Emp ID: ${e.empId} | Blood Group: ${e.bloodGroup || 'B+'} | Medical Form 31: Certified | Police Clearance: Recorded`,
-          'URL:https://balsonsportals.github.io',
+          `N:${familyName};${givenName};;;`,
+          'ORG:BALSONS HEAVY LIFT & SHIFT • PRJ-JTRWF-SCHULER',
+          `TITLE:${trade} | Employee ID: ${e.empId}`,
+          `TEL;TYPE=CELL,VOICE;X-LABEL="Primary Mobile":${primaryMobile}`,
+          `TEL;TYPE=WORK,VOICE;X-LABEL="Site HR Officer (JTRWF Khordha)":${hrOfficerPhone}`,
+          `NOTE:Full Name: ${e.name} | Employee ID: ${e.empId} | Blood Group: ${blood} | Primary Mobile: ${primaryMobile} & Site HR Officer (JTRWF Khordha): ${hrOfficerName} (${hrOfficerPhone})`,
+          `URL:https://balsonsportals.github.io/verify.html?empId=${encodeURIComponent(e.empId)}`,
           'END:VCARD'
         ].join('\n');
+      }
+      else if (this.mode === 'SECURITY_PASS') {
+        // High-security gate entry verification format
+        const em = e.emergency ? e.emergency.split('-').pop().trim() : '+91 98610 99881';
+        return `BALSONS:GATE:PASS|ID=${e.empId}|NAME=${e.name}|TRADE=${e.trade || 'Worker'}|DEPT=${e.dept || 'Operations'}|BLOOD=${e.bloodGroup || 'B+'}|PRIMARY_MOBILE=${e.mobile || '+91 98610 88721'}|SITE_HR=+919437144520|EMERGENCY=${em}|VALID=2026-12-31|GATE=AUTH-1-2|MUSTER=READY`;
+      } 
+      else if (this.mode === 'VERIFICATION_URL') {
+        return `https://balsonsportals.github.io/verify.html?empId=${encodeURIComponent(e.empId)}`;
       } 
       else if (this.mode === 'MUSTER_TOKEN') {
         return `MUSTER:BHLS-JTRWF:${e.empId}:${new Date().toISOString().slice(0, 10).replace(/-/g, '')}:BIO-AUTH-VERIFIED`;
@@ -134,10 +146,12 @@
     updatePayloadStats: function(payload) {
       const statEl = document.getElementById('qrPayloadStats');
       if (statEl) {
+        const typeLabel = (this.mode === 'VCARD') ? 'Workforce vCard (Official Profile)' : this.mode.replace('_', ' ');
+        const encLabel = (this.mode === 'VCARD') ? 'UTF-8 Byte (vCard 3.0 Standard)' : 'UTF-8 Byte';
         statEl.innerHTML = `
           <span>Length: <strong>${payload.length} chars</strong></span> • 
-          <span>Encoding: <strong>UTF-8 Byte</strong></span> • 
-          <span>Type: <strong>${this.mode.replace('_', ' ')}</strong></span>
+          <span>Encoding: <strong>${encLabel}</strong></span> • 
+          <span>Type: <strong>${typeLabel}</strong></span>
         `;
       }
     },
