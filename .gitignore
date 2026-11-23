@@ -57,3 +57,6 @@ tests/fixtures/
 *.7z
 *.rar
 balsons portals.zip
+
+# Submodule directory duplicates
+/BALSONS ENTERPRISE LAUNCHER/

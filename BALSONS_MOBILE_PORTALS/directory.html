@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <title>Master Ecosystem Directory & Credentials | BALSONS Mobile</title>
+  <link rel="icon" type="image/png" href="assets/images/balsons-logo.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/balsons-mobile.css">
+  <style>
+    .dir-tab-panel { display: none; }
+    .dir-tab-panel.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. TOP MOBILE HEADER -->
+  <header class="mobile-header">
+    <div class="mobile-header-left">
+      <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:8px;">
+        <img src="assets/images/balsons-logo.png" alt="BALSONS Logo" class="mobile-brand-logo" onerror="this.onerror=null; this.src='../assets/images/balsons-logo.png';">
+        <div class="mobile-header-title">
+          <h1>Directory</h1>
+          <span>Ecosystem & Credentials</span>
+        </div>
+      </a>
+    </div>
+    <div class="mobile-header-right">
+      <button class="btn-header-action" id="activeUserPill" onclick="BalsonsMobileApp.openUserSwitcher()" title="Tap to switch active user session">
+        👤 Admin (2026)
+      </button>
+      <button class="btn-header-action" id="btnMobileTheme" onclick="BalsonsMobileApp.toggleTheme()" title="Toggle Light/Dark Theme">
+        🌙
+      </button>
+      <a href="../index.html" class="btn-header-action btn-desktop-switch" title="Switch to Full Desktop Portal View">
+        💻 Desktop
+      </a>
+    </div>
+  </header>
+
+  <main style="padding:16px; max-width:900px; margin:0 auto; width:100%;">
+    <!-- HERO STATUS BANNER -->
+    <div class="mobile-hero-card" style="background:linear-gradient(135deg, #0b1924 0%, #4c1d95 100%);">
+      <div class="m-hero-top">
+        <div class="m-hero-title">
+          <h2>Master Ecosystem Directory</h2>
+          <p>All 7 Specialized Portals • 14 Authorized Credentials • 6 Relational DBs</p>
+        </div>
+        <span class="m-hero-badge" style="background:#7c3aed;">
+          <span style="width:6px; height:6px; border-radius:50%; background:#c4b5fd; display:inline-block;"></span>
+          SAM-2026 POLICY
+        </span>
+      </div>
+
+      <div class="m-kpi-row">
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">Total Portals</span>
+          <span class="m-kpi-val">7 Portals</span>
+          <span class="m-kpi-sub">Mobile + Desktop</span>
+        </div>
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">Verified Accounts</span>
+          <span class="m-kpi-val">14 Users</span>
+          <span class="m-kpi-sub">Canonical + PIN</span>
+        </div>
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">Dedicated DBs</span>
+          <span class="m-kpi-val">6 Sheets</span>
+          <span class="m-kpi-sub">Clasp Connected</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKSPACE TABS -->
+    <div class="m-filter-pills-scroll" style="margin-bottom:14px;">
+      <button class="m-filter-pill active" onclick="switchDirTab('portals', this)">🌐 All 7 Portals</button>
+      <button class="m-filter-pill" onclick="switchDirTab('creds', this)">🔐 14 User Credentials</button>
+      <button class="m-filter-pill" onclick="switchDirTab('dbs', this)">📊 Database Sheets & APIs</button>
+    </div>
+
+    <!-- 1. PORTALS LIST TAB -->
+    <div id="tab-dir-portals" class="dir-tab-panel active">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>BALSONS Enterprise Portals Directory</h4>
+            <span>Instant Launchers for Field & Desktop Views</span>
+          </div>
+          <span class="tl-badge tl-cyan">7 ACTIVE</span>
+        </div>
+
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>Portal System</th>
+                <th>Discipline</th>
+                <th>Mobile Launch</th>
+                <th>Desktop View</th>
+                <th>Database Sheet</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Operations Manager</strong></td>
+                <td><span class="tl-badge tl-cyan">HEAVY RIGGING</span></td>
+                <td><a href="operations.html" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px;">Mobile ➔</a></td>
+                <td><a href="../BALSONS%20OPERATIONS%20MANAGER/index.html" class="m-btn-action m-btn-secondary" style="padding:4px 8px; font-size:10px;">Desktop ↗</a></td>
+                <td><code style="font-size:10px;">1GeqDDmB...</code></td>
+              </tr>
+              <tr>
+                <td><strong>Purchase Manager</strong></td>
+                <td><span class="tl-badge tl-blue">PROCUREMENT</span></td>
+                <td><a href="purchase.html" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px; background:#0284c7;">Mobile ➔</a></td>
+                <td><a href="../BALSONS%20PURCHASE%20MANAGER/index.html" class="m-btn-action m-btn-secondary" style="padding:4px 8px; font-size:10px;">Desktop ↗</a></td>
+                <td><code style="font-size:10px;">1ANnu4X2...</code></td>
+              </tr>
+              <tr>
+                <td><strong>Store & Tackle Manager</strong></td>
+                <td><span class="tl-badge tl-green">FORM 11 TACKLE</span></td>
+                <td><a href="store.html" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px; background:#059669;">Mobile ➔</a></td>
+                <td><a href="../BALSONS%20STORE%20MANAGER/frontend/index.html" class="m-btn-action m-btn-secondary" style="padding:4px 8px; font-size:10px;">Desktop ↗</a></td>
+                <td><code style="font-size:10px;">1u_ZKvvC...</code></td>
+              </tr>
+              <tr>
+                <td><strong>Safety & Risk Manager</strong></td>
+                <td><span class="tl-badge tl-red">HSE & PTW</span></td>
+                <td><a href="safety.html" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px; background:#dc2626;">Mobile ➔</a></td>
+                <td><a href="../BALSONS%20SAFETY%20MANAGER/index.html" class="m-btn-action m-btn-secondary" style="padding:4px 8px; font-size:10px;">Desktop ↗</a></td>
+                <td><code style="font-size:10px;">1SyOGt6H...</code></td>
+              </tr>
+              <tr>
+                <td><strong>Gate Entry Manager</strong></td>
+                <td><span class="tl-badge tl-yellow">ACCESS & MUSTER</span></td>
+                <td><a href="gate.html" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px; background:#d97706;">Mobile ➔</a></td>
+                <td><a href="../BALSONS%20GATE%20ENTRY%20MANAGER/index.html" class="m-btn-action m-btn-secondary" style="padding:4px 8px; font-size:10px;">Desktop ↗</a></td>
+                <td><code style="font-size:10px;">1yAuZOXc...</code></td>
+              </tr>
+              <tr>
+                <td><strong>Human Resources (HR)</strong></td>
+                <td><span class="tl-badge tl-blue">WORKFORCE KYC</span></td>
+                <td><a href="hr.html" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px; background:#2563eb;">Mobile ➔</a></td>
+                <td><a href="../BALSONS%20HR%20MANAGER/index.html" class="m-btn-action m-btn-secondary" style="padding:4px 8px; font-size:10px;">Desktop ↗</a></td>
+                <td><code style="font-size:10px;">1so_aH05...</code></td>
+              </tr>
+              <tr>
+                <td><strong>Central Enterprise Launcher</strong></td>
+                <td><span class="tl-badge tl-purple">SSO & HUB</span></td>
+                <td><a href="index.html" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px; background:#7c3aed;">Mobile ➔</a></td>
+                <td><a href="../index.html" class="m-btn-action m-btn-secondary" style="padding:4px 8px; font-size:10px;">Desktop ↗</a></td>
+                <td>Federated Sync</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. CREDENTIALS TAB -->
+    <div id="tab-dir-creds" class="dir-tab-panel">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>Authorized User Credentials Register (14 Accounts)</h4>
+            <span>Tap user to switch active session • Global Fallback: balsons@2026</span>
+          </div>
+          <button class="m-btn-action m-btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="BalsonsMobileApp.toggleAllPasswords()">
+            👁️ Toggle Passwords
+          </button>
+        </div>
+
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>Officer / User Name</th>
+                <th>User ID</th>
+                <th>Password</th>
+                <th>PIN</th>
+                <th>Assigned Role & Scope</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Prashant Muley</strong></td>
+                <td><code>superadmin</code> <button onclick="BalsonsMobileApp.copyText('superadmin', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-1" data-plain="Balsons@Super2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-1', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#0097a7; font-weight:800;">2026</code></td>
+                <td><span class="tl-badge tl-cyan">SUPER ADMIN (ALL 7)</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.switchUser('superadmin')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Satish Chandra</strong></td>
+                <td><code>director.mgmt</code> <button onclick="BalsonsMobileApp.copyText('director.mgmt', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-2" data-plain="Balsons@Mgmt2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-2', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#7c3aed; font-weight:800;">1001</code></td>
+                <td><span class="tl-badge tl-purple">PROJECT DIRECTOR</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.switchUser('director.mgmt')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Rohan Sharma</strong></td>
+                <td><code>admin.purch</code> <button onclick="BalsonsMobileApp.copyText('admin.purch', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-3" data-plain="Purch@Admin2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-3', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#0284c7; font-weight:800;">3001</code></td>
+                <td><span class="tl-badge tl-blue">PURCHASE LEAD</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px; background:#0284c7;" onclick="BalsonsMobileApp.switchUser('admin.purch')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Suresh Verma</strong></td>
+                <td><code>indenter.ops</code> <button onclick="BalsonsMobileApp.copyText('indenter.ops', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-4" data-plain="Indent@Ops2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-4', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#0284c7; font-weight:800;">3002</code></td>
+                <td><span class="tl-badge tl-cyan">INDENTER / ENG</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px; background:#0284c7;" onclick="BalsonsMobileApp.switchUser('indenter.ops')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Dilip Rout</strong></td>
+                <td><code>dilip.rout</code> <button onclick="BalsonsMobileApp.copyText('dilip.rout', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-5" data-plain="Ops@Dilip2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-5', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#0097a7; font-weight:800;">1002</code></td>
+                <td><span class="tl-badge tl-cyan">OPS AREA MGR</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.switchUser('dilip.rout')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Sarat Mishra</strong></td>
+                <td><code>sarat.mishra</code> <button onclick="BalsonsMobileApp.copyText('sarat.mishra', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-6" data-plain="Ops@Sarat2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-6', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#0097a7; font-weight:800;">1003</code></td>
+                <td><span class="tl-badge tl-cyan">MACHINE SHOP MGR</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.switchUser('sarat.mishra')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Gagan Bihari Das</strong></td>
+                <td><code>admin.store</code> <button onclick="BalsonsMobileApp.copyText('admin.store', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-7" data-plain="Store@Admin2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-7', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#059669; font-weight:800;">4001</code></td>
+                <td><span class="tl-badge tl-green">STORE ADMIN</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px; background:#059669;" onclick="BalsonsMobileApp.switchUser('admin.store')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Gajendra Rao</strong></td>
+                <td><code>admin.safety</code> <button onclick="BalsonsMobileApp.copyText('admin.safety', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-8" data-plain="Safety@Admin2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-8', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#dc2626; font-weight:800;">3001</code></td>
+                <td><span class="tl-badge tl-red">SAFETY ADMIN</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px; background:#dc2626;" onclick="BalsonsMobileApp.switchUser('admin.safety')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Bikash Mohapatra</strong></td>
+                <td><code>admin.gate</code> <button onclick="BalsonsMobileApp.copyText('admin.gate', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-9" data-plain="Gate@Admin2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-9', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#d97706; font-weight:800;">5001</code></td>
+                <td><span class="tl-badge tl-yellow">GATE ADMIN</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px; background:#d97706;" onclick="BalsonsMobileApp.switchUser('admin.gate')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Priyanka Senapati</strong></td>
+                <td><code>admin.hr</code> <button onclick="BalsonsMobileApp.copyText('admin.hr', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-10" data-plain="HR@Admin2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-10', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#2563eb; font-weight:800;">6001</code></td>
+                <td><span class="tl-badge tl-blue">HR ADMIN</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px; background:#2563eb;" onclick="BalsonsMobileApp.switchUser('admin.hr')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Manoj Das</strong></td>
+                <td><code>manoj.das</code> <button onclick="BalsonsMobileApp.copyText('manoj.das', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-11" data-plain="Rig@Manoj2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-11', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#0097a7; font-weight:800;">1004</code></td>
+                <td><span class="tl-badge tl-cyan">LEAD HEAVY RIGGER</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.switchUser('manoj.das')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Ramesh Kumar</strong></td>
+                <td><code>emp.ramesh</code> <button onclick="BalsonsMobileApp.copyText('emp.ramesh', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-12" data-plain="Rig@Ramesh2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-12', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#059669; font-weight:800;">1005</code></td>
+                <td><span class="tl-badge tl-green">CERTIFIED RIGGER</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px; background:#059669;" onclick="BalsonsMobileApp.switchUser('emp.ramesh')">Sign In</button></td>
+              </tr>
+              <tr>
+                <td><strong>Client Auditor</strong></td>
+                <td><code>client.jtrwf</code> <button onclick="BalsonsMobileApp.copyText('client.jtrwf', this)" style="border:none; background:none; cursor:pointer;">📋</button></td>
+                <td><span class="m-pw-val-text masked" id="m-pw-13" data-plain="Client@JTRWF2026!">••••••••••••••</span> <button onclick="BalsonsMobileApp.toggleSinglePassword('m-pw-13', this)" style="border:none; background:none; cursor:pointer;">👁️</button></td>
+                <td><code style="color:#7c3aed; font-weight:800;">9001</code></td>
+                <td><span class="tl-badge tl-purple">JTRWF / SCHULER AUDIT</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px; background:#7c3aed;" onclick="BalsonsMobileApp.switchUser('client.jtrwf')">Sign In</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. DATABASE SHEETS TAB -->
+    <div id="tab-dir-dbs" class="dir-tab-panel">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>All 6 Relational Google Spreadsheets & Apps Script Gateways</h4>
+            <span>Direct Deep Links to Production Cloud Backends</span>
+          </div>
+          <span class="tl-badge tl-green">6 DATABASES</span>
+        </div>
+
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>Discipline</th>
+                <th>Google Spreadsheet ID</th>
+                <th>Apps Script Clasp ID</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Operations</strong></td>
+                <td><code>1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E</code></td>
+                <td><code>1an3LeD6Ich14qtWZ5GFgJMaa3dYQSboZRwFy9g_gf9zWicPDB9KpFNny</code></td>
+                <td><a href="https://docs.google.com/spreadsheets/d/1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E/edit" target="_blank" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px;">Sheet ↗</a></td>
+              </tr>
+              <tr>
+                <td><strong>Purchase</strong></td>
+                <td><code>1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c</code></td>
+                <td><code>1BPmt-vDa-pBy07quE1wq7FY6kq8VnQJPUNIx1GrlSBD5UO9v3FflrZZN</code></td>
+                <td><a href="https://docs.google.com/spreadsheets/d/1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c/edit" target="_blank" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px; background:#0284c7;">Sheet ↗</a></td>
+              </tr>
+              <tr>
+                <td><strong>Store & Tackle</strong></td>
+                <td><code>1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ</code></td>
+                <td><code>1brrNLzFHk-qNEcP60mQEOsnm9kWnyRQNVx9flj8d5vL_DChuajbD0mN-</code></td>
+                <td><a href="https://docs.google.com/spreadsheets/d/1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ/edit" target="_blank" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px; background:#059669;">Sheet ↗</a></td>
+              </tr>
+              <tr>
+                <td><strong>Safety & Risk</strong></td>
+                <td><code>1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0</code></td>
+                <td><code>1hDeYHxT2oU3G7i5YLPl5D_hzRiAEwpwKgUKsO1P3N0vMuum2e2Unitfj</code></td>
+                <td><a href="https://docs.google.com/spreadsheets/d/1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0/edit" target="_blank" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px; background:#dc2626;">Sheet ↗</a></td>
+              </tr>
+              <tr>
+                <td><strong>Gate Entry</strong></td>
+                <td><code>1yAuZOXc8WoC2TvTvnEWMrOyLl_50BRuJgDed_pdFT3o</code></td>
+                <td><code>1emZvUYjT-hTduELE4lSboVCtndFfGQ8KC2elpQ6Em9TF4RW6d2VF75J-</code></td>
+                <td><a href="https://docs.google.com/spreadsheets/d/1yAuZOXc8WoC2TvTvnEWMrOyLl_50BRuJgDed_pdFT3o/edit" target="_blank" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px; background:#d97706;">Sheet ↗</a></td>
+              </tr>
+              <tr>
+                <td><strong>Human Resources</strong></td>
+                <td><code>1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw</code></td>
+                <td><code>1_I-scIjBfFbJufFCppzT-fCp-cBC-5BKvk4RwS6UTVwno1KFu5MTxKs_</code></td>
+                <td><a href="https://docs.google.com/spreadsheets/d/1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw/edit" target="_blank" class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10px; background:#2563eb;">Sheet ↗</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESKTOP SWITCH CALLOUT -->
+    <div class="switch-desktop-banner">
+      <div class="switch-banner-text">
+        <strong>💻 Need Full Screen Desktop Mode?</strong>
+        <div>Access complete desktop tables and full multi-monitor dashboards.</div>
+      </div>
+      <a href="../balsons-master-ecosystem-directory.html" class="btn-switch-now">Switch to Desktop ↗</a>
+    </div>
+  </main>
+
+  <script>
+    function switchDirTab(tabKey, btnEl) {
+      document.querySelectorAll('.dir-tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.m-filter-pill').forEach(b => b.classList.remove('active'));
+      const target = document.getElementById('tab-dir-' + tabKey);
+      if (target) target.classList.add('active');
+      if (btnEl) btnEl.classList.add('active');
+    }
+  </script>
+
+  <!-- BOTTOM NAVIGATION (SMARTPHONE 1-THUMB & TABLET DOCKED) -->
+  <nav class="mobile-bottom-nav">
+    <a href="index.html" class="nav-item-btn ">
+      <span class="nav-icon">🌐</span>
+      <span class="nav-label">Hub</span>
+    </a>
+    <a href="operations.html" class="nav-item-btn ">
+      <span class="nav-icon">🏗️</span>
+      <span class="nav-label">Ops</span>
+    </a>
+    <a href="purchase.html" class="nav-item-btn ">
+      <span class="nav-icon">🛒</span>
+      <span class="nav-label">Purch</span>
+    </a>
+    <a href="store.html" class="nav-item-btn ">
+      <span class="nav-icon">📦</span>
+      <span class="nav-label">Store</span>
+    </a>
+    <a href="safety.html" class="nav-item-btn ">
+      <span class="nav-icon">🦺</span>
+      <span class="nav-label">Safety</span>
+    </a>
+    <a href="gate.html" class="nav-item-btn ">
+      <span class="nav-icon">🚧</span>
+      <span class="nav-label">Gate</span>
+    </a>
+    <a href="hr.html" class="nav-item-btn ">
+      <span class="nav-icon">👥</span>
+      <span class="nav-label">HR</span>
+    </a>
+    <a href="directory.html" class="nav-item-btn active">
+      <span class="nav-icon">📱</span>
+      <span class="nav-label">More</span>
+    </a>
+  </nav>
+
+  <!-- 360° UNIVERSAL DOSSIER BOTTOM SHEET -->
+  <div id="dossierSheetBackdrop" class="mobile-bottom-sheet-backdrop" onclick="BalsonsMobileApp.closeDossier()"></div>
+  <div id="dossierBottomSheet" class="mobile-bottom-sheet">
+    <div class="sheet-handle-bar" onclick="BalsonsMobileApp.closeDossier()">
+      <div class="sheet-drag-pill"></div>
+    </div>
+    <div class="sheet-header">
+      <div>
+        <h3 id="sheetDossierTitle">360° Dossier</h3>
+        <p id="sheetDossierSub" style="font-size:11px; color:var(--b-text-muted); margin-top:2px;"></p>
+      </div>
+      <button class="btn-sheet-close" onclick="BalsonsMobileApp.closeDossier()">✕</button>
+    </div>
+    <div class="sheet-body" id="sheetPunchlistContainer"></div>
+  </div>
+
+  <!-- USER SWITCHER BOTTOM SHEET -->
+  <div id="credSheetBackdrop" class="mobile-bottom-sheet-backdrop" onclick="BalsonsMobileApp.closeUserSwitcher()"></div>
+  <div id="credBottomSheet" class="mobile-bottom-sheet">
+    <div class="sheet-handle-bar" onclick="BalsonsMobileApp.closeUserSwitcher()">
+      <div class="sheet-drag-pill"></div>
+    </div>
+    <div class="sheet-header">
+      <div>
+        <h3>🔐 Switch Active Authorized Session</h3>
+        <p style="font-size:11px; color:var(--b-text-muted); margin-top:2px;">Select user to authenticate immediately in mobile field mode</p>
+      </div>
+      <button class="btn-sheet-close" onclick="BalsonsMobileApp.closeUserSwitcher()">✕</button>
+    </div>
+    <div class="sheet-body" id="sheetCredContainer"></div>
+  </div>
+
+  <script src="assets/js/balsons-mobile-app.js"></script>
+</body>
+</html>

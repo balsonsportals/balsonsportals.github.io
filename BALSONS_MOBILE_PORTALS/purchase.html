@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <title>Purchase Manager & Sourcing | BALSONS Mobile</title>
+  <link rel="icon" type="image/png" href="assets/images/balsons-logo.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/balsons-mobile.css">
+  <style>
+    .purch-tab-panel { display: none; }
+    .purch-tab-panel.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. TOP MOBILE HEADER -->
+  <header class="mobile-header">
+    <div class="mobile-header-left">
+      <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:8px;">
+        <img src="assets/images/balsons-logo.png" alt="BALSONS Logo" class="mobile-brand-logo" onerror="this.onerror=null; this.src='../assets/images/balsons-logo.png';">
+        <div class="mobile-header-title">
+          <h1>Purchase</h1>
+          <span>Procurement V6.0</span>
+        </div>
+      </a>
+    </div>
+    <div class="mobile-header-right">
+      <button class="btn-header-action" id="activeUserPill" onclick="BalsonsMobileApp.openUserSwitcher()" title="Tap to switch active user session">
+        👤 Admin (2026)
+      </button>
+      <button class="btn-header-action" id="btnMobileTheme" onclick="BalsonsMobileApp.toggleTheme()" title="Toggle Light/Dark Theme">
+        🌙
+      </button>
+      <a href="../index.html" class="btn-header-action btn-desktop-switch" title="Switch to Full Desktop Portal View">
+        💻 Desktop
+      </a>
+    </div>
+  </header>
+
+  <main style="padding:16px; max-width:900px; margin:0 auto; width:100%;">
+    <!-- HERO STATUS BANNER -->
+    <div class="mobile-hero-card" style="background:linear-gradient(135deg, #0b1924 0%, #0369a1 100%);">
+      <div class="m-hero-top">
+        <div class="m-hero-title">
+          <h2>Purchase & Sourcing Manager</h2>
+          <p>Requisitions • RFQs • Landed Cost Matrix • POs • ASN Tracking</p>
+        </div>
+        <span class="m-hero-badge" style="background:#0284c7;">
+          <span style="width:6px; height:6px; border-radius:50%; background:#38bdf8; display:inline-block;"></span>
+          V6.0 BASELINE
+        </span>
+      </div>
+
+      <div class="m-kpi-row">
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">Total Indents</span>
+          <span class="m-kpi-val">₹51.73 L</span>
+          <span class="m-kpi-sub">4 Requisitions</span>
+        </div>
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">Issued POs</span>
+          <span class="m-kpi-val">₹19.54 L</span>
+          <span class="m-kpi-sub">REV-0 / REV-1</span>
+        </div>
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">ASN In-Transit</span>
+          <span class="m-kpi-val">2 Dispatches</span>
+          <span class="m-kpi-sub">Gate Pre-Alerted</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKSPACE SEGMENTED CONTROLS -->
+    <div class="m-filter-pills-scroll" style="margin-bottom:14px;">
+      <button class="m-filter-pill active" onclick="switchPurchTab('prs', this)">📋 PR Register (4)</button>
+      <button class="m-filter-pill" onclick="switchPurchTab('rfqs', this)">📨 RFQs & Sourcing (3)</button>
+      <button class="m-filter-pill" onclick="switchPurchTab('cs', this)">📊 CS Landed Cost</button>
+      <button class="m-filter-pill" onclick="switchPurchTab('pos', this)">📄 Purchase Orders (2)</button>
+      <button class="m-filter-pill" onclick="switchPurchTab('asns', this)">🚚 Delivery ASN (2)</button>
+      <button class="m-filter-pill" onclick="switchPurchTab('vendors', this)">🏢 Approved Vendors (4)</button>
+    </div>
+
+    <!-- 1. PR REGISTER TAB -->
+    <div id="tab-purch-prs" class="purch-tab-panel active">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>Purchase Requisition Register (4-Tier DoA)</h4>
+            <span>Tier 1: ≤₹50k | Tier 2: ≤₹5L | Tier 3: ≤₹25L | Tier 4: >₹25L</span>
+          </div>
+          <span class="tl-badge tl-cyan">DOA ACTIVE</span>
+        </div>
+
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>PR ID</th>
+                <th>Requisition Details</th>
+                <th>Indent Value</th>
+                <th>DoA Authority Tier</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>PR-2026-001</strong></td>
+                <td>High-Tensile Rigging Shackles & Slings<br><small style="color:var(--b-text-muted);">Suresh Verma (Ops)</small></td>
+                <td><strong>₹14,50,000</strong></td>
+                <td><span class="tl-badge tl-purple">Tier 3 (≤₹25L)</span></td>
+                <td id="pr-status-PR-2026-001"><span class="tl-badge tl-green">APPROVED</span></td>
+                <td><button class="m-btn-action m-btn-secondary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.openDossier('PR', 'PR-2026-001')">Dossier</button></td>
+              </tr>
+              <tr>
+                <td><strong>PR-2026-002</strong></td>
+                <td>Calibrated Torque Multipliers (2,500 Nm)<br><small style="color:var(--b-text-muted);">Gagan Bihari Das (Store)</small></td>
+                <td><strong>₹4,85,000</strong></td>
+                <td><span class="tl-badge tl-blue">Tier 2 (≤₹5L)</span></td>
+                <td id="pr-status-PR-2026-002"><span class="tl-badge tl-green">APPROVED</span></td>
+                <td><button class="m-btn-action m-btn-secondary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.openDossier('PR', 'PR-2026-002')">Dossier</button></td>
+              </tr>
+              <tr>
+                <td><strong>PR-2026-003</strong></td>
+                <td>Retractable Fall Arrest Lifelines (50 Nos)<br><small style="color:var(--b-text-muted);">Gajendra Rao (HSE)</small></td>
+                <td><strong>₹38,000</strong></td>
+                <td><span class="tl-badge tl-green">Tier 1 (≤₹50k)</span></td>
+                <td id="pr-status-PR-2026-003"><span class="tl-badge tl-yellow">PENDING</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.approvePR('PR-2026-003')">Approve DoA</button></td>
+              </tr>
+              <tr>
+                <td><strong>PR-2026-004</strong></td>
+                <td>Hydraulic Tandem Equalizer Beam 300T<br><small style="color:var(--b-text-muted);">Dilip Rout (Ops Lead)</small></td>
+                <td><strong>₹32,00,000</strong></td>
+                <td><span class="tl-badge tl-red">Tier 4 (>₹25L)</span></td>
+                <td id="pr-status-PR-2026-004"><span class="tl-badge tl-yellow">SUBMITTED</span></td>
+                <td><button class="m-btn-action m-btn-secondary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.openDossier('PR', 'PR-2026-004')">Dossier</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. RFQ SOURCING TAB -->
+    <div id="tab-purch-rfqs" class="purch-tab-panel">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>Request For Quotation (RFQ) Tender Register</h4>
+            <span>Multi-Vendor Tendering & Technical Specifications</span>
+          </div>
+          <span class="tl-badge tl-blue">3 OPEN</span>
+        </div>
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>RFQ ID</th>
+                <th>PR Ref</th>
+                <th>Title / Description</th>
+                <th>Quotes Recv</th>
+                <th>Deadline</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>RFQ-2026-001</strong></td>
+                <td>PR-2026-001</td>
+                <td>Heavy Grommet Slings 150T SWL</td>
+                <td>3 / 3</td>
+                <td>2026-11-25</td>
+                <td><span class="tl-badge tl-green">CS PREPARED</span></td>
+              </tr>
+              <tr>
+                <td><strong>RFQ-2026-002</strong></td>
+                <td>PR-2026-002</td>
+                <td>Torque Multiplier Kit with NABL Certs</td>
+                <td>3 / 4</td>
+                <td>2026-11-24</td>
+                <td><span class="tl-badge tl-blue">EVALUATING</span></td>
+              </tr>
+              <tr>
+                <td><strong>RFQ-2026-003</strong></td>
+                <td>PR-2026-004</td>
+                <td>300T Tandem Equalizer Spreader Beam</td>
+                <td>2 / 2</td>
+                <td>2026-11-30</td>
+                <td><span class="tl-badge tl-yellow">OPEN</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. CS LANDED COST MATRIX TAB -->
+    <div id="tab-purch-cs" class="purch-tab-panel">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>Comparative Statement (CS) Matrix: RFQ-2026-001</h4>
+            <span>Normalized Landed Cost Comparison (Ex-Works + Freight + GST)</span>
+          </div>
+          <span class="tl-badge tl-green">L1 IDENTIFIED</span>
+        </div>
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Vendor Name</th>
+                <th>Ex-Works</th>
+                <th>Freight & Transit</th>
+                <th>GST (18%)</th>
+                <th>Total Landed Cost</th>
+                <th>Recommendation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background:rgba(16,185,129,0.06);">
+                <td><strong style="color:#059669; font-size:13px;">L1</strong></td>
+                <td><strong>Jindal Heavy Lifting Ltd</strong></td>
+                <td>₹12,00,000</td>
+                <td>₹45,000</td>
+                <td>₹2,24,100</td>
+                <td><strong style="color:#059669;">₹14,69,100</strong></td>
+                <td><span class="tl-badge tl-green">AWARD PO</span></td>
+              </tr>
+              <tr>
+                <td><strong style="color:#2563eb; font-size:13px;">L2</strong></td>
+                <td>Texmaco Infrastructure Co</td>
+                <td>₹12,80,000</td>
+                <td>₹50,000</td>
+                <td>₹2,39,400</td>
+                <td>₹15,69,400</td>
+                <td><span class="tl-badge tl-blue">+₹1,00,300 (+6.8%)</span></td>
+              </tr>
+              <tr>
+                <td><strong style="color:#dc2626; font-size:13px;">L3</strong></td>
+                <td>L&T Heavy Engineering</td>
+                <td>₹14,00,000</td>
+                <td>₹60,000</td>
+                <td>₹2,62,800</td>
+                <td>₹17,22,800</td>
+                <td><span class="tl-badge tl-red">+₹2,53,700 (+17.2%)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. PURCHASE ORDERS TAB -->
+    <div id="tab-purch-pos" class="purch-tab-panel">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>Purchase Order Register & Immutable Revisions</h4>
+            <span>Binding Procurement Contracts & Milestones</span>
+          </div>
+          <span class="tl-badge tl-green">2 ACTIVE</span>
+        </div>
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>PO Number</th>
+                <th>Vendor</th>
+                <th>Landed Value</th>
+                <th>Revision</th>
+                <th>Delivery Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>PO-2026-001</strong></td>
+                <td>Jindal Heavy Lifting Ltd</td>
+                <td><strong>₹14,69,100</strong></td>
+                <td><span class="tl-badge tl-cyan">REV-0</span></td>
+                <td>2026-12-05</td>
+                <td><span class="tl-badge tl-green">ISSUED</span></td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.openDossier('PO', 'PO-2026-001')">View PO 📄</button></td>
+              </tr>
+              <tr>
+                <td><strong>PO-2026-002</strong></td>
+                <td>Stahlwille Industrial Tools</td>
+                <td><strong>₹4,85,000</strong></td>
+                <td><span class="tl-badge tl-cyan">REV-0</span></td>
+                <td>2026-11-28</td>
+                <td><span class="tl-badge tl-blue">IN PROCESS</span></td>
+                <td><button class="m-btn-action m-btn-secondary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.openDossier('PO', 'PO-2026-002')">View PO 📄</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. DELIVERY ASN TAB -->
+    <div id="tab-purch-asns" class="purch-tab-panel">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>Advance Shipping Notice (ASN) & Store Handshake</h4>
+            <span>Transit Dispatch Tracking & Gate Receiving Pre-Alerts</span>
+          </div>
+          <span class="tl-badge tl-blue">IN-TRANSIT</span>
+        </div>
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>ASN Ref</th>
+                <th>PO Ref</th>
+                <th>Carrier / Truck</th>
+                <th>Consignment</th>
+                <th>ETA Destination</th>
+                <th>Gate Handshake</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ASN-2026-001</strong></td>
+                <td>PO-2026-001</td>
+                <td>VRL Logistics<br><small style="color:var(--b-text-muted);">OD-02-AK-9844</small></td>
+                <td>150T Grommet Slings (4 Sets)</td>
+                <td><strong>2026-11-24 14:00</strong></td>
+                <td><span class="tl-badge tl-yellow">IN_TRANSIT</span></td>
+              </tr>
+              <tr>
+                <td><strong>ASN-2026-002</strong></td>
+                <td>PO-2026-002</td>
+                <td>Blue Dart Surface<br><small style="color:var(--b-text-muted);">OD-05-BX-1120</small></td>
+                <td>Torque Multiplier Kit</td>
+                <td><strong>2026-11-23 11:30</strong></td>
+                <td><span class="tl-badge tl-green">GATE_PRE_ALERT</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. VENDOR DIRECTORY TAB -->
+    <div id="tab-purch-vendors" class="purch-tab-panel">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>Approved Supplier & Contractor Directory</h4>
+            <span>MSME Category, GST Compliance & Performance Ratings</span>
+          </div>
+          <span class="tl-badge tl-green">4 VENDORS</span>
+        </div>
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>Vendor Name</th>
+                <th>Supply Category</th>
+                <th>Rating</th>
+                <th>MSME Class</th>
+                <th>GSTIN</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Jindal Heavy Lifting Ltd</strong></td>
+                <td>Slings & Rigging Tackle</td>
+                <td><span class="tl-badge tl-green">A (Approved)</span></td>
+                <td>Large</td>
+                <td><code>21AAACJ1234F1Z1</code></td>
+                <td>Bhubaneswar</td>
+              </tr>
+              <tr>
+                <td><strong>Stahlwille Industrial Tools</strong></td>
+                <td>Torque & Calibration</td>
+                <td><span class="tl-badge tl-green">A (OEM)</span></td>
+                <td>Medium</td>
+                <td><code>27AABCS5542G1ZP</code></td>
+                <td>Mumbai</td>
+              </tr>
+              <tr>
+                <td><strong>Texmaco Infrastructure Co</strong></td>
+                <td>Structural Fabrication</td>
+                <td><span class="tl-badge tl-blue">B (Qualified)</span></td>
+                <td>Large</td>
+                <td><code>19AAACT9876E1Z5</code></td>
+                <td>Kolkata</td>
+              </tr>
+              <tr>
+                <td><strong>SKF India Bearings</strong></td>
+                <td>Precision Spindles</td>
+                <td><span class="tl-badge tl-green">A (OEM)</span></td>
+                <td>Large</td>
+                <td><code>27AAACS1122M1ZK</code></td>
+                <td>Pune</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TELEMETRY & DUAL-SYNC LINK -->
+    <div class="m-card" style="background:rgba(2,132,199,0.05); border:1px solid #0284c7;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <strong style="font-size:12px; color:var(--b-text-primary);">📊 Purchase Database Sheet:</strong>
+          <div style="font-family:var(--b-font-mono); font-size:11px; color:#0284c7;">1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c</div>
+        </div>
+        <a href="https://docs.google.com/spreadsheets/d/1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c/edit" target="_blank" class="m-btn-action m-btn-primary" style="background:#0284c7; padding:4px 10px; font-size:11px;">
+          Open Sheet ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- DESKTOP SWITCH CALLOUT -->
+    <div class="switch-desktop-banner">
+      <div class="switch-banner-text">
+        <strong>💻 Need Full Screen Desktop Mode?</strong>
+        <div>Switch to high-density desktop dashboards with multi-window layouts.</div>
+      </div>
+      <a href="../BALSONS%20PURCHASE%20MANAGER/index.html" class="btn-switch-now">Switch to Desktop ↗</a>
+    </div>
+  </main>
+
+  <script>
+    function switchPurchTab(tabKey, btnEl) {
+      document.querySelectorAll('.purch-tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.m-filter-pill').forEach(b => b.classList.remove('active'));
+      const target = document.getElementById('tab-purch-' + tabKey);
+      if (target) target.classList.add('active');
+      if (btnEl) btnEl.classList.add('active');
+    }
+  </script>
+
+  <!-- BOTTOM NAVIGATION (SMARTPHONE 1-THUMB & TABLET DOCKED) -->
+  <nav class="mobile-bottom-nav">
+    <a href="index.html" class="nav-item-btn ">
+      <span class="nav-icon">🌐</span>
+      <span class="nav-label">Hub</span>
+    </a>
+    <a href="operations.html" class="nav-item-btn ">
+      <span class="nav-icon">🏗️</span>
+      <span class="nav-label">Ops</span>
+    </a>
+    <a href="purchase.html" class="nav-item-btn active">
+      <span class="nav-icon">🛒</span>
+      <span class="nav-label">Purch</span>
+    </a>
+    <a href="store.html" class="nav-item-btn ">
+      <span class="nav-icon">📦</span>
+      <span class="nav-label">Store</span>
+    </a>
+    <a href="safety.html" class="nav-item-btn ">
+      <span class="nav-icon">🦺</span>
+      <span class="nav-label">Safety</span>
+    </a>
+    <a href="gate.html" class="nav-item-btn ">
+      <span class="nav-icon">🚧</span>
+      <span class="nav-label">Gate</span>
+    </a>
+    <a href="hr.html" class="nav-item-btn ">
+      <span class="nav-icon">👥</span>
+      <span class="nav-label">HR</span>
+    </a>
+    <a href="directory.html" class="nav-item-btn ">
+      <span class="nav-icon">📱</span>
+      <span class="nav-label">More</span>
+    </a>
+  </nav>
+
+  <!-- 360° UNIVERSAL DOSSIER BOTTOM SHEET -->
+  <div id="dossierSheetBackdrop" class="mobile-bottom-sheet-backdrop" onclick="BalsonsMobileApp.closeDossier()"></div>
+  <div id="dossierBottomSheet" class="mobile-bottom-sheet">
+    <div class="sheet-handle-bar" onclick="BalsonsMobileApp.closeDossier()">
+      <div class="sheet-drag-pill"></div>
+    </div>
+    <div class="sheet-header">
+      <div>
+        <h3 id="sheetDossierTitle">360° Dossier</h3>
+        <p id="sheetDossierSub" style="font-size:11px; color:var(--b-text-muted); margin-top:2px;"></p>
+      </div>
+      <button class="btn-sheet-close" onclick="BalsonsMobileApp.closeDossier()">✕</button>
+    </div>
+    <div class="sheet-body" id="sheetPunchlistContainer"></div>
+  </div>
+
+  <!-- USER SWITCHER BOTTOM SHEET -->
+  <div id="credSheetBackdrop" class="mobile-bottom-sheet-backdrop" onclick="BalsonsMobileApp.closeUserSwitcher()"></div>
+  <div id="credBottomSheet" class="mobile-bottom-sheet">
+    <div class="sheet-handle-bar" onclick="BalsonsMobileApp.closeUserSwitcher()">
+      <div class="sheet-drag-pill"></div>
+    </div>
+    <div class="sheet-header">
+      <div>
+        <h3>🔐 Switch Active Authorized Session</h3>
+        <p style="font-size:11px; color:var(--b-text-muted); margin-top:2px;">Select user to authenticate immediately in mobile field mode</p>
+      </div>
+      <button class="btn-sheet-close" onclick="BalsonsMobileApp.closeUserSwitcher()">✕</button>
+    </div>
+    <div class="sheet-body" id="sheetCredContainer"></div>
+  </div>
+
+  <script src="assets/js/balsons-mobile-app.js"></script>
+</body>
+</html>

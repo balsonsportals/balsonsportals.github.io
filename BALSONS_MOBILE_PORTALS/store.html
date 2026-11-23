@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <title>Store & Tackle Manager | BALSONS Mobile</title>
+  <link rel="icon" type="image/png" href="assets/images/balsons-logo.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/balsons-mobile.css">
+  <style>
+    .store-tab-panel { display: none; }
+    .store-tab-panel.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. TOP MOBILE HEADER -->
+  <header class="mobile-header">
+    <div class="mobile-header-left">
+      <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:8px;">
+        <img src="assets/images/balsons-logo.png" alt="BALSONS Logo" class="mobile-brand-logo" onerror="this.onerror=null; this.src='../assets/images/balsons-logo.png';">
+        <div class="mobile-header-title">
+          <h1>Store</h1>
+          <span>Form 11 Tackle V3.2</span>
+        </div>
+      </a>
+    </div>
+    <div class="mobile-header-right">
+      <button class="btn-header-action" id="activeUserPill" onclick="BalsonsMobileApp.openUserSwitcher()" title="Tap to switch active user session">
+        👤 Admin (2026)
+      </button>
+      <button class="btn-header-action" id="btnMobileTheme" onclick="BalsonsMobileApp.toggleTheme()" title="Toggle Light/Dark Theme">
+        🌙
+      </button>
+      <a href="../index.html" class="btn-header-action btn-desktop-switch" title="Switch to Full Desktop Portal View">
+        💻 Desktop
+      </a>
+    </div>
+  </header>
+
+  <main style="padding:16px; max-width:900px; margin:0 auto; width:100%;">
+    <!-- HERO STATUS BANNER -->
+    <div class="mobile-hero-card" style="background:linear-gradient(135deg, #0b1924 0%, #065f46 100%);">
+      <div class="m-hero-top">
+        <div class="m-hero-title">
+          <h2>Store & Tackle Inventory</h2>
+          <p>Form 11 Lifting Certificates • Calibrated Tools • English/Odia</p>
+        </div>
+        <span class="m-hero-badge" style="background:#059669;">
+          <span style="width:6px; height:6px; border-radius:50%; background:#34d399; display:inline-block;"></span>
+          FORM 11 VERIFIED
+        </span>
+      </div>
+
+      <div class="m-kpi-row">
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">Total Tackle</span>
+          <span class="m-kpi-val">128 Items</span>
+          <span class="m-kpi-sub">Slings & Shackles</span>
+        </div>
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">Valid Form 11</span>
+          <span class="m-kpi-val">124 Valid</span>
+          <span class="m-kpi-sub">TPI Certified</span>
+        </div>
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">Quarantined</span>
+          <span class="m-kpi-val" style="color:#ef4444;">1 Expired</span>
+          <span class="m-kpi-sub">Red Tagged</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKSPACE TABS -->
+    <div class="m-filter-pills-scroll" style="margin-bottom:14px;">
+      <button class="m-filter-pill active" onclick="switchStoreTab('tackles', this)">🪝 Form 11 Tackle (5)</button>
+      <button class="m-filter-pill" onclick="switchStoreTab('calib', this)">🔧 Calibrated Tools (3)</button>
+      <button class="m-filter-pill" onclick="switchStoreTab('issues', this)">📋 Issue / Return Log (3)</button>
+      <button class="m-filter-pill" onclick="switchStoreTab('rgp', this)">📦 Returnable Gate Passes</button>
+    </div>
+
+    <!-- 1. FORM 11 TACKLE TAB -->
+    <div id="tab-store-tackles" class="store-tab-panel active">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>Form 11 Lifting Tackle & Gear Ledger</h4>
+            <span>Statutory TPI Inspection Dates & Safe Working Load (SWL)</span>
+          </div>
+          <span class="tl-badge tl-green">4 VALID • 1 QUARANTINE</span>
+        </div>
+
+        <!-- FILTER CHIPS FOR TACKLE -->
+        <div class="m-filter-pills-scroll" id="storeFilterBar" style="margin-bottom:10px;">
+          <button class="m-filter-pill active" onclick="BalsonsMobileApp.filterStoreTackles('ALL', this)">All (5)</button>
+          <button class="m-filter-pill" onclick="BalsonsMobileApp.filterStoreTackles('VALID', this)">Valid (3)</button>
+          <button class="m-filter-pill" onclick="BalsonsMobileApp.filterStoreTackles('EXPIRING_SOON', this)">Expiring Soon (1)</button>
+          <button class="m-filter-pill" onclick="BalsonsMobileApp.filterStoreTackles('EXPIRED_QUARANTINE', this)">Quarantined (1)</button>
+        </div>
+
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>Tackle ID</th>
+                <th>Description & Location</th>
+                <th>SWL Capacity</th>
+                <th>TPI Certificate</th>
+                <th>Valid Until</th>
+                <th>Status (English / ଓଡ଼ିଆ)</th>
+              </tr>
+            </thead>
+            <tbody id="storeTacklesTbody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. CALIBRATED TOOLS TAB -->
+    <div id="tab-store-calib" class="store-tab-panel">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>Precision Calibrated Tools & Alignment Kits</h4>
+            <span>NABL Accredited Calibration Certifications</span>
+          </div>
+          <span class="tl-badge tl-blue">CALIBRATED</span>
+        </div>
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>Tool ID</th>
+                <th>Equipment Name</th>
+                <th>NABL Cert</th>
+                <th>Calibration Due</th>
+                <th>Current Custodian</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>TOOL-CAL-01</strong></td>
+                <td>Norbar 1,500 Nm Digital Multiplier</td>
+                <td><code>NABL/CAL/2026/441</code></td>
+                <td>2027-02-14</td>
+                <td>Dilip Rout</td>
+                <td><span class="tl-badge tl-green">VALID</span></td>
+              </tr>
+              <tr>
+                <td><strong>TOOL-CAL-02</strong></td>
+                <td>Leica Laser Tracker AT-403</td>
+                <td><code>LEICA/NABL/8890</code></td>
+                <td>2026-11-19</td>
+                <td>Site Lab</td>
+                <td><span class="tl-badge tl-yellow">RECALIBRATION</span></td>
+              </tr>
+              <tr>
+                <td><strong>TOOL-CAL-03</strong></td>
+                <td>Stahlwille 800 Nm Click Torque Wrench</td>
+                <td><code>NABL/CAL/2026/512</code></td>
+                <td>2027-04-09</td>
+                <td>Manoj Das</td>
+                <td><span class="tl-badge tl-green">VALID</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. ISSUE & RETURN TAB -->
+    <div id="tab-store-issues" class="store-tab-panel">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>Daily Tool & Tackle Custody Ledger</h4>
+            <span>Active Sign-Outs to Certified Rigging Crew</span>
+          </div>
+          <span class="tl-badge tl-green">2 ACTIVE</span>
+        </div>
+        <div class="m-table-wrap">
+          <table class="m-table">
+            <thead>
+              <tr>
+                <th>Issue ID</th>
+                <th>Tackle / Tool</th>
+                <th>Issued To</th>
+                <th>Timestamp</th>
+                <th>Work Package</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ISS-001</strong></td>
+                <td>STR-TK-001 (100T Sling)</td>
+                <td>Manoj Das (Lead Rigger)</td>
+                <td>2026-11-21 07:30</td>
+                <td>WP-AXLE-01</td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.returnToolCustody('ISS-001')">Return Tool</button></td>
+              </tr>
+              <tr>
+                <td><strong>ISS-002</strong></td>
+                <td>TOOL-CAL-01 (Torque Multiplier)</td>
+                <td>Ramesh Kumar (Rigger)</td>
+                <td>2026-11-21 08:15</td>
+                <td>WP-WHEEL-01</td>
+                <td><button class="m-btn-action m-btn-primary" style="padding:4px 8px; font-size:10.5px;" onclick="BalsonsMobileApp.returnToolCustody('ISS-002')">Return Tool</button></td>
+              </tr>
+              <tr>
+                <td><strong>ISS-003</strong></td>
+                <td>STR-TK-002 (55T Shackle)</td>
+                <td>Dilip Rout (Area Mgr)</td>
+                <td>2026-11-20 09:00</td>
+                <td>WP-MS-02</td>
+                <td><span class="tl-badge tl-green">RETURNED & STORED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. RETURNABLE GATE PASSES TAB -->
+    <div id="tab-store-rgp" class="store-tab-panel">
+      <div class="m-card">
+        <div class="m-card-header">
+          <div class="m-card-header-title">
+            <h4>Returnable Gate Passes (RGP)</h4>
+            <span>Tackle & Equipment Outward for External Testing</span>
+          </div>
+          <span class="tl-badge tl-purple">RGP ACTIVE</span>
+        </div>
+        <p style="font-size:12px; color:var(--b-text-secondary); margin-bottom:10px;">
+          RGP-2026-018: Leica Laser Tracker dispatched for NABL recalibration at Kolkata Metrology Lab. Expected return: 2026-11-26.
+        </p>
+      </div>
+    </div>
+
+    <!-- TELEMETRY & DUAL-SYNC LINK -->
+    <div class="m-card" style="background:rgba(5,150,105,0.05); border:1px solid #059669;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <strong style="font-size:12px; color:var(--b-text-primary);">📊 Store Database Sheet:</strong>
+          <div style="font-family:var(--b-font-mono); font-size:11px; color:#059669;">1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ</div>
+        </div>
+        <a href="https://docs.google.com/spreadsheets/d/1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ/edit" target="_blank" class="m-btn-action m-btn-primary" style="background:#059669; padding:4px 10px; font-size:11px;">
+          Open Sheet ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- DESKTOP SWITCH CALLOUT -->
+    <div class="switch-desktop-banner">
+      <div class="switch-banner-text">
+        <strong>💻 Need Full Screen Desktop Mode?</strong>
+        <div>Switch to high-density desktop dashboards with multi-window layouts.</div>
+      </div>
+      <a href="../BALSONS%20STORE%20MANAGER/frontend/index.html" class="btn-switch-now">Switch to Desktop ↗</a>
+    </div>
+  </main>
+
+  <script>
+    function switchStoreTab(tabKey, btnEl) {
+      document.querySelectorAll('.store-tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.m-filter-pill').forEach(b => b.classList.remove('active'));
+      const target = document.getElementById('tab-store-' + tabKey);
+      if (target) target.classList.add('active');
+      if (btnEl) btnEl.classList.add('active');
+    }
+  </script>
+
+  <!-- BOTTOM NAVIGATION (SMARTPHONE 1-THUMB & TABLET DOCKED) -->
+  <nav class="mobile-bottom-nav">
+    <a href="index.html" class="nav-item-btn ">
+      <span class="nav-icon">🌐</span>
+      <span class="nav-label">Hub</span>
+    </a>
+    <a href="operations.html" class="nav-item-btn ">
+      <span class="nav-icon">🏗️</span>
+      <span class="nav-label">Ops</span>
+    </a>
+    <a href="purchase.html" class="nav-item-btn ">
+      <span class="nav-icon">🛒</span>
+      <span class="nav-label">Purch</span>
+    </a>
+    <a href="store.html" class="nav-item-btn active">
+      <span class="nav-icon">📦</span>
+      <span class="nav-label">Store</span>
+    </a>
+    <a href="safety.html" class="nav-item-btn ">
+      <span class="nav-icon">🦺</span>
+      <span class="nav-label">Safety</span>
+    </a>
+    <a href="gate.html" class="nav-item-btn ">
+      <span class="nav-icon">🚧</span>
+      <span class="nav-label">Gate</span>
+    </a>
+    <a href="hr.html" class="nav-item-btn ">
+      <span class="nav-icon">👥</span>
+      <span class="nav-label">HR</span>
+    </a>
+    <a href="directory.html" class="nav-item-btn ">
+      <span class="nav-icon">📱</span>
+      <span class="nav-label">More</span>
+    </a>
+  </nav>
+
+  <!-- 360° UNIVERSAL DOSSIER BOTTOM SHEET -->
+  <div id="dossierSheetBackdrop" class="mobile-bottom-sheet-backdrop" onclick="BalsonsMobileApp.closeDossier()"></div>
+  <div id="dossierBottomSheet" class="mobile-bottom-sheet">
+    <div class="sheet-handle-bar" onclick="BalsonsMobileApp.closeDossier()">
+      <div class="sheet-drag-pill"></div>
+    </div>
+    <div class="sheet-header">
+      <div>
+        <h3 id="sheetDossierTitle">360° Dossier</h3>
+        <p id="sheetDossierSub" style="font-size:11px; color:var(--b-text-muted); margin-top:2px;"></p>
+      </div>
+      <button class="btn-sheet-close" onclick="BalsonsMobileApp.closeDossier()">✕</button>
+    </div>
+    <div class="sheet-body" id="sheetPunchlistContainer"></div>
+  </div>
+
+  <!-- USER SWITCHER BOTTOM SHEET -->
+  <div id="credSheetBackdrop" class="mobile-bottom-sheet-backdrop" onclick="BalsonsMobileApp.closeUserSwitcher()"></div>
+  <div id="credBottomSheet" class="mobile-bottom-sheet">
+    <div class="sheet-handle-bar" onclick="BalsonsMobileApp.closeUserSwitcher()">
+      <div class="sheet-drag-pill"></div>
+    </div>
+    <div class="sheet-header">
+      <div>
+        <h3>🔐 Switch Active Authorized Session</h3>
+        <p style="font-size:11px; color:var(--b-text-muted); margin-top:2px;">Select user to authenticate immediately in mobile field mode</p>
+      </div>
+      <button class="btn-sheet-close" onclick="BalsonsMobileApp.closeUserSwitcher()">✕</button>
+    </div>
+    <div class="sheet-body" id="sheetCredContainer"></div>
+  </div>
+
+  <script src="assets/js/balsons-mobile-app.js"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <title>Operations & Heavy Rigging Manager | BALSONS Mobile</title>
+  <link rel="icon" type="image/png" href="assets/images/balsons-logo.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/balsons-mobile.css">
+</head>
+<body>
+
+  <!-- 1. TOP MOBILE HEADER -->
+  <header class="mobile-header">
+    <div class="mobile-header-left">
+      <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:8px;">
+        <img src="assets/images/balsons-logo.png" alt="BALSONS Logo" class="mobile-brand-logo" onerror="this.onerror=null; this.src='../assets/images/balsons-logo.png';">
+        <div class="mobile-header-title">
+          <h1>Operations</h1>
+          <span>Heavy Rigging V7.2</span>
+        </div>
+      </a>
+    </div>
+    <div class="mobile-header-right">
+      <button class="btn-header-action" id="activeUserPill" onclick="BalsonsMobileApp.openUserSwitcher()" title="Tap to switch active user session">
+        👤 Admin (2026)
+      </button>
+      <button class="btn-header-action" id="btnMobileTheme" onclick="BalsonsMobileApp.toggleTheme()" title="Toggle Light/Dark Theme">
+        🌙
+      </button>
+      <a href="../index.html" class="btn-header-action btn-desktop-switch" title="Switch to Full Desktop Portal View">
+        💻 Desktop
+      </a>
+    </div>
+  </header>
+
+  <main style="padding:16px; max-width:900px; margin:0 auto; width:100%;">
+    <!-- HERO STATUS BANNER -->
+    <div class="mobile-hero-card">
+      <div class="m-hero-top">
+        <div class="m-hero-title">
+          <h2>Operations & Heavy Rigging</h2>
+          <p>3 Areas • 2,531.5 MT Erection • 2,132 Man-Days</p>
+        </div>
+        <span class="m-hero-badge">
+          <span style="width:6px; height:6px; border-radius:50%; background:#10b981; display:inline-block;"></span>
+          LIVE OPS V7.2
+        </span>
+      </div>
+
+      <div class="m-kpi-row">
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">Line Axle</span>
+          <span class="m-kpi-val">890.5 MT</span>
+          <span class="m-kpi-sub">717 Man-Days</span>
+        </div>
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">Line Wheel</span>
+          <span class="m-kpi-val">1,145 MT</span>
+          <span class="m-kpi-sub">1,075 Man-Days</span>
+        </div>
+        <div class="m-kpi-item">
+          <span class="m-kpi-lbl">Machine Shop</span>
+          <span class="m-kpi-val">496 MT</span>
+          <span class="m-kpi-sub">7 Workstreams</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AREA SWITCHER SEGMENTED CONTROL -->
+    <div class="mobile-segment-tabs" id="opsAreaPills" style="margin-bottom:14px;">
+      <button class="segment-pill-btn active" onclick="BalsonsMobileApp.setArea('LINE-AXLE', this)">
+        <span>🏗️</span> Line Axle (890.5 MT)
+      </button>
+      <button class="segment-pill-btn" onclick="BalsonsMobileApp.setArea('LINE-WHEEL', this)">
+        <span>⚙️</span> Line Wheel (1,145 MT)
+      </button>
+      <button class="segment-pill-btn" onclick="BalsonsMobileApp.setArea('AREA-MACHINE-SHOP-AXLE', this)">
+        <span>🏭</span> Machine Shop (7 Streams)
+      </button>
+    </div>
+
+    <!-- WORK PACKAGES LIST (RENDERED DYNAMICALLY) -->
+    <div id="opsPackageListContainer"></div>
+
+    <!-- HEAVY MACHINERY & TANDEM CRANE FLEET -->
+    <div class="m-card">
+      <div class="m-card-header">
+        <div class="m-card-header-title">
+          <h4>Heavy Lifting Crane Fleet & SPMT Modules</h4>
+          <span>Demag 600T, Liebherr 400T & Goldhofer 12-Axle</span>
+        </div>
+        <span class="tl-badge tl-green">ALL VERIFIED</span>
+      </div>
+      <div class="m-table-wrap">
+        <table class="m-table">
+          <thead>
+            <tr>
+              <th>Equipment Model</th>
+              <th>Capacity</th>
+              <th>Type</th>
+              <th>Current Zone</th>
+              <th>Form 11 TPI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Demag CC-2800</strong></td>
+              <td>600.0 MT</td>
+              <td>Crawler Crane</td>
+              <td>Line Axle Bay 1</td>
+              <td><span class="tl-badge tl-green">VALID</span></td>
+            </tr>
+            <tr>
+              <td><strong>Liebherr LTM-1400</strong></td>
+              <td>400.0 MT</td>
+              <td>All-Terrain Mobile</td>
+              <td>Line Wheel Pit</td>
+              <td><span class="tl-badge tl-green">VALID</span></td>
+            </tr>
+            <tr>
+              <td><strong>Goldhofer PST/SL-E</strong></td>
+              <td>12-Axle (480T)</td>
+              <td>SPMT Modular</td>
+              <td>Yard Transport</td>
+              <td><span class="tl-badge tl-green">VALID</span></td>
+            </tr>
+            <tr>
+              <td><strong>Krupp KMK-5100</strong></td>
+              <td>100.0 MT</td>
+              <td>Telescopic</td>
+              <td>Bay 2 Overhead</td>
+              <td><span class="tl-badge tl-green">VALID</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TELEMETRY & DUAL-SYNC LINK -->
+    <div class="m-card" style="background:rgba(0,151,167,0.05); border:1px solid var(--b-cyan-primary);">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <strong style="font-size:12px; color:var(--b-text-primary);">📊 Operations Database Sheet:</strong>
+          <div style="font-family:var(--b-font-mono); font-size:11px; color:var(--b-cyan-primary);">1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E</div>
+        </div>
+        <a href="https://docs.google.com/spreadsheets/d/1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E/edit" target="_blank" class="m-btn-action m-btn-primary" style="padding:4px 10px; font-size:11px;">
+          Open Sheet ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- DESKTOP SWITCH CALLOUT -->
+    <div class="switch-desktop-banner">
+      <div class="switch-banner-text">
+        <strong>💻 Need Full Screen Desktop Mode?</strong>
+        <div>Switch to high-density desktop dashboards with multi-window layouts.</div>
+      </div>
+      <a href="../BALSONS%20OPERATIONS%20MANAGER/index.html" class="btn-switch-now">Switch to Desktop ↗</a>
+    </div>
+  </main>
+
+  <!-- BOTTOM NAVIGATION (SMARTPHONE 1-THUMB & TABLET DOCKED) -->
+  <nav class="mobile-bottom-nav">
+    <a href="index.html" class="nav-item-btn ">
+      <span class="nav-icon">🌐</span>
+      <span class="nav-label">Hub</span>
+    </a>
+    <a href="operations.html" class="nav-item-btn active">
+      <span class="nav-icon">🏗️</span>
+      <span class="nav-label">Ops</span>
+    </a>
+    <a href="purchase.html" class="nav-item-btn ">
+      <span class="nav-icon">🛒</span>
+      <span class="nav-label">Purch</span>
+    </a>
+    <a href="store.html" class="nav-item-btn ">
+      <span class="nav-icon">📦</span>
+      <span class="nav-label">Store</span>
+    </a>
+    <a href="safety.html" class="nav-item-btn ">
+      <span class="nav-icon">🦺</span>
+      <span class="nav-label">Safety</span>
+    </a>
+    <a href="gate.html" class="nav-item-btn ">
+      <span class="nav-icon">🚧</span>
+      <span class="nav-label">Gate</span>
+    </a>
+    <a href="hr.html" class="nav-item-btn ">
+      <span class="nav-icon">👥</span>
+      <span class="nav-label">HR</span>
+    </a>
+    <a href="directory.html" class="nav-item-btn ">
+      <span class="nav-icon">📱</span>
+      <span class="nav-label">More</span>
+    </a>
+  </nav>
+
+  <!-- 360° UNIVERSAL DOSSIER BOTTOM SHEET -->
+  <div id="dossierSheetBackdrop" class="mobile-bottom-sheet-backdrop" onclick="BalsonsMobileApp.closeDossier()"></div>
+  <div id="dossierBottomSheet" class="mobile-bottom-sheet">
+    <div class="sheet-handle-bar" onclick="BalsonsMobileApp.closeDossier()">
+      <div class="sheet-drag-pill"></div>
+    </div>
+    <div class="sheet-header">
+      <div>
+        <h3 id="sheetDossierTitle">360° Dossier</h3>
+        <p id="sheetDossierSub" style="font-size:11px; color:var(--b-text-muted); margin-top:2px;"></p>
+      </div>
+      <button class="btn-sheet-close" onclick="BalsonsMobileApp.closeDossier()">✕</button>
+    </div>
+    <div class="sheet-body" id="sheetPunchlistContainer"></div>
+  </div>
+
+  <!-- USER SWITCHER BOTTOM SHEET -->
+  <div id="credSheetBackdrop" class="mobile-bottom-sheet-backdrop" onclick="BalsonsMobileApp.closeUserSwitcher()"></div>
+  <div id="credBottomSheet" class="mobile-bottom-sheet">
+    <div class="sheet-handle-bar" onclick="BalsonsMobileApp.closeUserSwitcher()">
+      <div class="sheet-drag-pill"></div>
+    </div>
+    <div class="sheet-header">
+      <div>
+        <h3>🔐 Switch Active Authorized Session</h3>
+        <p style="font-size:11px; color:var(--b-text-muted); margin-top:2px;">Select user to authenticate immediately in mobile field mode</p>
+      </div>
+      <button class="btn-sheet-close" onclick="BalsonsMobileApp.closeUserSwitcher()">✕</button>
+    </div>
+    <div class="sheet-body" id="sheetCredContainer"></div>
+  </div>
+
+  <script src="assets/js/balsons-mobile-app.js"></script>
+</body>
+</html>
