@@ -62,7 +62,7 @@ function doPost(e) {
   // Public Actions (No Auth Required)
   var PUBLIC_ACTIONS = [
     'system.public_ping', 'system.ping', 'auth.login',
-    'drive.get_map', 'drive.upload_document', 'drive.seed_all_portal_folders', 'drive.sync_portal_registry'
+    'drive.get_map', 'drive.upload_document', 'drive.seed_all_portal_folders', 'drive.sync_portal_registry', 'contractor.list', 'personnel.list', 'equipment.list', 'vehicle.list'
   ];
   
   var session = null;
