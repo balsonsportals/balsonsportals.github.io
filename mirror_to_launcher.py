@@ -32,11 +32,13 @@ files_to_mirror = [
     # Purchase Manager
     ("BALSONS PURCHASE MANAGER/index.html", "BALSONS ENTERPRISE LAUNCHER/BALSONS PURCHASE MANAGER/index.html"),
     ("BALSONS PURCHASE MANAGER/assets/js/purchase-app.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS PURCHASE MANAGER/assets/js/purchase-app.js"),
+    ("BALSONS PURCHASE MANAGER/assets/js/qrcode.min.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS PURCHASE MANAGER/assets/js/qrcode.min.js"),
     ("BALSONS PURCHASE MANAGER/assets/js/beds-workspace.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS PURCHASE MANAGER/assets/js/beds-workspace.js"),
 
     # Operations Manager
     ("BALSONS OPERATIONS MANAGER/index.html", "BALSONS ENTERPRISE LAUNCHER/BALSONS OPERATIONS MANAGER/index.html"),
     ("BALSONS OPERATIONS MANAGER/assets/js/operations-app.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS OPERATIONS MANAGER/assets/js/operations-app.js"),
+    ("BALSONS OPERATIONS MANAGER/assets/js/qrcode.min.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS OPERATIONS MANAGER/assets/js/qrcode.min.js"),
     ("BALSONS OPERATIONS MANAGER/assets/js/beds-workspace.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS OPERATIONS MANAGER/assets/js/beds-workspace.js"),
 
     # Central beds-workspace

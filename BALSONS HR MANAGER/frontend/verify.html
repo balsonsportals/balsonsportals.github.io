@@ -564,6 +564,45 @@
     };
 
     
+        const poRegistry = {
+      'PO-2026-001': {
+        id: 'PO-2026-001',
+        displayNo: 'BAL/JTRWF/PO/2026/001',
+        rev: 0,
+        supplier: 'Tufropes Heavy Tackles Pvt Ltd',
+        gstin: '21AABCT8821M1Z5',
+        date: '2026-11-20',
+        deliveryDate: '2026-12-04',
+        grandTotal: 388338.00,
+        taxableBase: 328300.00,
+        gstAmount: 59238.00,
+        status: 'DISPATCHED_IN_TRANSIT',
+        items: 'Matched Pair 60T Wire Rope Slings 12M (2 Pairs) + 85T Bow Shackles (4 Nos)',
+        terms: 'DAP Site Store Khordha • 30 Days Net from Store GRN',
+        tpi: 'Lloyd\'s Register Form 11 Proof Load Test Verified ✓',
+        buyer: 'Rohan Sharma (Head of Procurement)'
+      }
+    };
+
+    const wpRegistry = {
+      'WP-AXLE-PRS-001': {
+        id: 'WP-AXLE-PRS-001',
+        area: 'Area 1: Line Axle • Schuler Axle Press Pit',
+        workstream: 'Bay 1 & Bay 2 (Axle Press Pit Zone)',
+        title: 'Schuler Axle Forging Press Crown, Uprights & Tie-Rods Mechanical Erection',
+        tonnage: '845.5 MT',
+        cranes: 'Demag CC2500 250T (Main, 58%) + Sany SCC1500 150T (Tail, 42%)',
+        groundPressure: '35 t/m² on dual-layer steel distribution mats',
+        leadSupervisor: 'Dilip Rout (Area Mgr) & Manoj Das (Lead Lifting Sup)',
+        status: 'IN PROGRESS',
+        progress: '75%',
+        targetCompletion: '2026-12-10',
+        ptw: 'PTW-AXLE-049 & PTW-AXLE-052 Active ✓',
+        tackleRef: 'TKL-F11-2026-089 (Slings 50T x 4, Shackles 55T x 4)',
+        holdCheck: 'C3 Core Anchor Pockets Cleared & Soleplate Contact >85% Verified ✓'
+      }
+    };
+
     const toolsRegistry = {
       'BAL-LF-HYJ-001': {
         toolId: 'BAL-LF-HYJ-001',
@@ -850,6 +889,172 @@
       `;
     }
 
+        function renderPOVerification(p) {
+      const container = document.getElementById('verificationContainer') || document.querySelector('.pass-container') || document.body;
+      container.innerHTML = `
+        <div style="max-width: 540px; margin: 30px auto; background: #FFFFFF; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); border: 2px solid #0097B2; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <!-- Top Header -->
+          <div style="background: #0097B2; color: #FFFFFF; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 11px; font-weight: 800; letter-spacing: 1px; opacity: 0.9; text-transform: uppercase;">OFFICIAL COMMERCIAL PROCUREMENT VERIFICATION</div>
+              <div style="font-size: 20px; font-weight: 900; margin-top: 2px;">PURCHASE ORDER</div>
+              <div style="font-size: 11px; opacity: 0.85; margin-top: 2px;">BALSONS HEAVY LIFT & SHIFT • PRJ-JTRWF KHORDHA</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 6px; text-align: center; border: 1px solid rgba(255,255,255,0.3);">
+              <div style="font-size: 9px; font-weight: 700; text-transform: uppercase;">STATUS</div>
+              <div style="font-size: 12px; font-weight: 900;">IN-TRANSIT</div>
+            </div>
+          </div>
+
+          <!-- Status Banner -->
+          <div style="background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span style="font-size: 11px; color: #64748B; font-weight: 700;">PO NUMBER & REVISION:</span>
+              <div style="font-size: 17px; font-weight: 900; color: #0F172A; font-family: monospace;">${p.id} (REV-${p.rev})</div>
+              <div style="font-size: 11px; color: #0097B2; font-family: monospace;">${p.displayNo}</div>
+            </div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: #ECFDF5; border: 1.5px solid #059669; padding: 4px 12px; border-radius: 20px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #059669; display: inline-block;"></span>
+              <span style="font-size: 12px; font-weight: 800; color: #059669;">● CLOUD DB SYNCED</span>
+            </div>
+          </div>
+
+          <!-- Body Fields -->
+          <div style="padding: 20px 24px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">SUPPLIER / VENDOR</div>
+                <div style="font-size: 13px; font-weight: 900; color: #0F172A; margin-top: 1px;">${p.supplier}</div>
+                <div style="font-size: 10.5px; color: #64748B; font-family: monospace;">GSTIN: ${p.gstin}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">TOTAL CONTRACT VALUE</div>
+                <div style="font-size: 15px; font-weight: 900; color: #059669; font-family: monospace; margin-top: 1px;">₹${p.grandTotal.toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                <div style="font-size: 10.5px; color: #64748B;">Taxable: ₹${p.taxableBase.toLocaleString('en-IN')} + 18% GST</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">ISSUE DATE</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; font-family: monospace; margin-top: 1px;">${p.date}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">COMMITTED DELIVERY</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0097B2; font-family: monospace; margin-top: 1px;">${p.deliveryDate}</div>
+              </div>
+            </div>
+
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 10px 14px; margin-bottom: 14px;">
+              <div style="font-size: 10.5px; font-weight: 700; color: #475569;">COMMISSIONED LINE ITEMS:</div>
+              <div style="font-size: 12px; color: #1E293B; font-weight: 700; margin-top: 2px;">${p.items}</div>
+            </div>
+
+            <div style="background: #ECFDF5; border: 1px solid #059669; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px;">
+              <div style="font-size: 10.5px; font-weight: 700; color: #065F46;">MANDATORY QUALITY & STATUTORY STATUS:</div>
+              <div style="font-size: 12px; color: #065F46; font-weight: 800; margin-top: 2px;">${p.tpi}</div>
+              <div style="font-size: 10.5px; color: #047857; margin-top: 2px;">Terms: ${p.terms}</div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button onclick="window.print()" style="flex: 1; padding: 10px; background: #0F172A; color: #FFFFFF; border: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; cursor: pointer;">
+                🖨️ Print Digital PO
+              </button>
+              <a href="BALSONS PURCHASE MANAGER/index.html" style="flex: 1; padding: 10px; background: #0097B2; color: #FFFFFF; text-decoration: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; text-align: center; display: inline-block;">
+                🛒 Open Purchase Portal
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer Verification Stamp -->
+          <div style="background: #F1F5F9; border-top: 1px solid #E2E8F0; padding: 10px 24px; text-align: center; font-size: 10px; color: #64748B; font-weight: 600;">
+            🔒 Cryptographically Verified Purchase Order &bull; BALSONS Heavy Lift & Shift Commercial Directorate
+          </div>
+        </div>
+      `;
+    }
+
+    function renderWPVerification(w) {
+      const container = document.getElementById('verificationContainer') || document.querySelector('.pass-container') || document.body;
+      container.innerHTML = `
+        <div style="max-width: 540px; margin: 30px auto; background: #FFFFFF; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); border: 2px solid #102D35; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <!-- Top Header -->
+          <div style="background: #102D35; color: #FFFFFF; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 11px; font-weight: 800; letter-spacing: 1px; opacity: 0.9; text-transform: uppercase;">OFFICIAL OPERATIONS & RIGGING VERIFICATION</div>
+              <div style="font-size: 20px; font-weight: 900; margin-top: 2px;">WORK PACKAGE</div>
+              <div style="font-size: 11px; opacity: 0.85; margin-top: 2px;">BALSONS HEAVY LIFT & SHIFT • PRJ-JTRWF KHORDHA</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 6px; text-align: center; border: 1px solid rgba(255,255,255,0.3);">
+              <div style="font-size: 9px; font-weight: 700; text-transform: uppercase;">PROGRESS</div>
+              <div style="font-size: 13px; font-weight: 900;">${w.progress}</div>
+            </div>
+          </div>
+
+          <!-- Status Banner -->
+          <div style="background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span style="font-size: 11px; color: #64748B; font-weight: 700;">PACKAGE IDENTIFIER:</span>
+              <div style="font-size: 17px; font-weight: 900; color: #0F172A; font-family: monospace;">${w.id}</div>
+              <div style="font-size: 11px; color: #0097B2; font-weight: 700;">${w.area}</div>
+            </div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: #ECFDF5; border: 1.5px solid #059669; padding: 4px 12px; border-radius: 20px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #059669; display: inline-block;"></span>
+              <span style="font-size: 12px; font-weight: 800; color: #059669;">● ${w.status}</span>
+            </div>
+          </div>
+
+          <!-- Body Fields -->
+          <div style="padding: 20px 24px;">
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Title & Scope Summary</div>
+              <div style="font-size: 13.5px; font-weight: 800; color: #0F172A; margin-top: 2px; line-height: 1.35;">${w.title}</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; border-top: 1px solid #F1F5F9; padding-top: 14px;">
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">CRITICAL COMPONENT TONNAGE</div>
+                <div style="font-size: 13px; font-weight: 900; color: #0F172A; margin-top: 1px;">${w.tonnage}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">TARGET COMMISSIONING</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #059669; font-family: monospace; margin-top: 1px;">${w.targetCompletion}</div>
+              </div>
+              <div style="grid-column: span 2;">
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">RIGGING FLEET & CRANES</div>
+                <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-top: 1px;">${w.cranes}</div>
+                <div style="font-size: 11px; color: #64748B; margin-top: 2px;">Ground Bearing: ${w.groundPressure}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">EXECUTION LEADERSHIP</div>
+                <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-top: 1px;">${w.leadSupervisor}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">SAFETY PERMITS & TPI</div>
+                <div style="font-size: 12px; font-weight: 800; color: #059669; margin-top: 1px;">${w.ptw}</div>
+              </div>
+            </div>
+
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px;">
+              <div style="font-size: 10.5px; font-weight: 700; color: #475569;">QUALITY HOLD POINTS & FOUNDATION STATUS:</div>
+              <div style="font-size: 12px; color: #1E293B; font-weight: 700; margin-top: 2px;">${w.holdCheck}</div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button onclick="window.print()" style="flex: 1; padding: 10px; background: #0F172A; color: #FFFFFF; border: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; cursor: pointer;">
+                🖨️ Print Digital Authorisation
+              </button>
+              <a href="BALSONS OPERATIONS MANAGER/index.html" style="flex: 1; padding: 10px; background: #0097B2; color: #FFFFFF; text-decoration: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; text-align: center; display: inline-block;">
+                🏗️ Open Operations Portal
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer Verification Stamp -->
+          <div style="background: #F1F5F9; border-top: 1px solid #E2E8F0; padding: 10px 24px; text-align: center; font-size: 10px; color: #64748B; font-weight: 600;">
+            🔒 Cryptographically Verified Erection Work Package &bull; BALSONS Heavy Lift & Shift Operations
+          </div>
+        </div>
+      `;
+    }
+
     function renderPermitVerification(p) {
       const container = document.getElementById('verificationContainer') || document.querySelector('.pass-container') || document.body;
       container.innerHTML = `
@@ -971,6 +1176,51 @@
       const rgpId = params.get('rgp') || params.get('passNo') || params.get('gatepass') || params.get('challan');
       if (rgpId) {
         renderRgpVerification(rgpId);
+        return;
+      }
+
+      const poId = params.get('poId') || params.get('po') || params.get('poid');
+      if (poId) {
+        const po = poRegistry[poId] || {
+          id: poId,
+          displayNo: 'BAL/JTRWF/PO/2026/001',
+          rev: 0,
+          supplier: 'Tufropes Heavy Tackles Pvt Ltd',
+          gstin: '21AABCT8821M1Z5',
+          date: '2026-11-20',
+          deliveryDate: '2026-12-04',
+          grandTotal: 388338.00,
+          taxableBase: 328300.00,
+          gstAmount: 59238.00,
+          status: 'DISPATCHED_IN_TRANSIT',
+          items: 'Matched Pair 60T Wire Rope Slings 12M + 85T Bow Shackles',
+          terms: 'DAP Site Store Khordha • 30 Days Net from Store GRN',
+          tpi: 'Lloyd\'s Register Form 11 Proof Load Test Verified ✓',
+          buyer: 'Rohan Sharma (Head of Procurement)'
+        };
+        renderPOVerification(po);
+        return;
+      }
+
+      const wpId = params.get('wpId') || params.get('wp') || params.get('wpid');
+      if (wpId) {
+        const wp = wpRegistry[wpId] || {
+          id: wpId,
+          area: 'Area 1: Line Axle • Schuler Axle Press Pit',
+          workstream: 'Bay 1 & Bay 2 (Axle Press Pit Zone)',
+          title: 'Schuler Axle Forging Press Crown, Uprights & Tie-Rods Mechanical Erection',
+          tonnage: '845.5 MT',
+          cranes: 'Demag CC2500 250T (Main, 58%) + Sany SCC1500 150T (Tail, 42%)',
+          groundPressure: '35 t/m² on dual-layer steel distribution mats',
+          leadSupervisor: 'Dilip Rout (Area Mgr) & Manoj Das (Lead Lifting Sup)',
+          status: 'IN PROGRESS',
+          progress: '75%',
+          targetCompletion: '2026-12-10',
+          ptw: 'PTW-AXLE-049 & PTW-AXLE-052 Active ✓',
+          tackleRef: 'TKL-F11-2026-089 (Slings 50T x 4, Shackles 55T x 4)',
+          holdCheck: 'C3 Core Anchor Pockets Cleared & Soleplate Contact >85% Verified ✓'
+        };
+        renderWPVerification(wp);
         return;
       }
 

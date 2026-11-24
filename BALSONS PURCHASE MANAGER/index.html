@@ -71,6 +71,56 @@
       visibility: hidden !important;
     }
 
+    /* =========================================================================
+       CALIBRATED A4 PORTRAIT PRINT STYLES (STRICT 1-PAGE ZERO SPILL)
+       ========================================================================= */
+    #beds-purchase-print-stage {
+      display: none;
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 8mm 8mm;
+      }
+      html, body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        font-size: 10pt;
+      }
+      .purch-header, nav, .purch-footer, .purch-tab-bar, .kpi-row,
+      .purch-table-controls, .purch-modal-overlay, button, .btn-act-primary, .btn-act-secondary,
+      .no-print, input, select, textarea, .filter-toolbar-row, .beds-enterprise-topbar {
+        display: none !important;
+      }
+      body.beds-printing-mode header,
+      body.beds-printing-mode nav,
+      body.beds-printing-mode section,
+      body.beds-printing-mode main,
+      body.beds-printing-mode .purch-main,
+      body.beds-printing-mode .purch-hero-ribbon,
+      body.beds-printing-mode .purch-content-area,
+      body.beds-printing-mode .purch-modal-overlay,
+      body.beds-printing-mode footer,
+      body.beds-printing-mode .beds-enterprise-topbar {
+        display: none !important;
+      }
+      body.beds-printing-mode #beds-purchase-print-stage {
+        display: block !important;
+        visibility: visible !important;
+        width: 190mm !important;
+        max-width: 190mm !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+      }
+      body.beds-printing-mode #beds-purchase-print-stage * {
+        visibility: visible !important;
+      }
+    }
+
     /* TOP HEADER */
     header.purch-header {
       background: var(--beds-bg-panel);
@@ -716,6 +766,8 @@
   </style>
 </head>
 <body>
+  <!-- DEDICATED CALIBRATED A4 PRINT STAGE -->
+  <div id="beds-purchase-print-stage"></div>
 
   <!-- 1. TOP EXECUTIVE HEADER -->
   <header class="purch-header">
@@ -885,7 +937,7 @@
               Frozen technical requirements, multi-vendor tenders, and quotation bid register.
             </p>
           </div>
-          <button class="btn-act-primary" onclick="alert('Select an approved PR to float a new RFQ sourcing event.')">
+          <button class="btn-act-primary" onclick="BalsonsPurchaseApp.showToast('Select an approved PR to float a new RFQ sourcing event.', 'info')">
             <span>➕</span> Float RFQ Sourcing
           </button>
         </div>
@@ -964,7 +1016,7 @@
               Immutable contracts generated strictly from approved awards. Controlled amendments require REV-1 audit trails.
             </p>
           </div>
-          <button class="btn-act-primary" onclick="alert('POs are issued directly from approved Comparative Statements (CS).')">
+          <button class="btn-act-primary" onclick="BalsonsPurchaseApp.showToast('POs are issued directly from approved Comparative Statements (CS).', 'info')">
             <span>➕</span> Generate PO Contract
           </button>
         </div>
@@ -1326,6 +1378,7 @@
   <script src="assets/js/beds-portal-login.js"></script>
   <script src="assets/js/balsons-docs-manager.js"></script>
   <script src="assets/js/beds-workspace.js"></script>
+  <script src="assets/js/qrcode.min.js"></script>
   <script src="assets/js/purchase-app.js"></script>
   <script>
     // Header Dropdowns Outside-Click Handler (User Profile Pill)

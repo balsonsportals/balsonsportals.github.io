@@ -682,37 +682,51 @@
       font-weight: 700;
     }
 
-    /* PRINT STYLES FOR DOSSIER */
+    /* =========================================================================
+       CALIBRATED A4 PORTRAIT PRINT STYLES (STRICT 1-PAGE ZERO SPILL)
+       ========================================================================= */
+    #beds-operations-print-stage {
+      display: none;
+    }
+
     @media print {
-      body * {
-        visibility: hidden !important;
+      @page {
+        size: A4 portrait;
+        margin: 8mm 8mm;
       }
-      #modal-dossier-360,
-      #modal-dossier-360 * {
-        visibility: visible !important;
-      }
-      #modal-dossier-360 {
-        position: absolute !important;
-        left: 0 !important;
-        top: 0 !important;
-        width: 100% !important;
-        height: auto !important;
-        background: #ffffff !important;
-        padding: 0 !important;
+      html, body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
         margin: 0 !important;
-      }
-      .dossier-modal-card {
-        box-shadow: none !important;
-        border: 1px solid #000000 !important;
-        max-width: 100% !important;
+        padding: 0 !important;
         width: 100% !important;
+        font-size: 10pt;
       }
-      .ops-modal-close,
-      .btn-super-act,
-      .tabs-nav-bar,
-      header.exec-header,
-      .dossier-tabs-nav {
+      .exec-header, nav, .ops-footer, .tabs-nav-bar, .ops-modal-overlay,
+      button, .btn-super-act, .beds-btn, .filter-toolbar-row, .beds-enterprise-topbar,
+      .kpi-row, .kpi-card, .tab-pane {
         display: none !important;
+      }
+      body.beds-printing-mode header,
+      body.beds-printing-mode nav,
+      body.beds-printing-mode main,
+      body.beds-printing-mode section,
+      body.beds-printing-mode .tab-pane,
+      body.beds-printing-mode .ops-modal-overlay,
+      body.beds-printing-mode footer,
+      body.beds-printing-mode .beds-enterprise-topbar {
+        display: none !important;
+      }
+      body.beds-printing-mode #beds-operations-print-stage {
+        display: block !important;
+        visibility: visible !important;
+        width: 190mm !important;
+        max-width: 190mm !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+      }
+      body.beds-printing-mode #beds-operations-print-stage * {
+        visibility: visible !important;
       }
     }
 
@@ -1102,6 +1116,8 @@
   </style>
 </head>
 <body>
+  <!-- DEDICATED CALIBRATED A4 PRINT STAGE -->
+  <div id="beds-operations-print-stage"></div>
 
   <!-- 1. MASTER EXECUTIVE HEADER -->
   <header class="exec-header">
@@ -2371,6 +2387,7 @@
   <script src="assets/js/balsons-docs-manager.js"></script>
   <script src="assets/js/beds-portal-login.js"></script>
   <script src="assets/js/beds-workspace.js"></script>
+  <script src="assets/js/qrcode.min.js"></script>
   <script src="assets/js/operations-app.js"></script>
 
   <script>
