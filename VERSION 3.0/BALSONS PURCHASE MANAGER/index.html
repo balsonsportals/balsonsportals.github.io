@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BALSONS Purchase Manager • Commercial Procurement & Vendor Control | JTRWF</title>
+  <link rel="icon" type="image/png" href="assets/images/balsons-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="beds.css">
+
+  <style>
+    /* =========================================================================
+       BEDS V1.0 PURCHASE MANAGER SPECIFIC STYLING
+       Strict Black Text in Light Mode, Strict White in Dark Mode
+       ========================================================================= */
+    :root {
+      --super-navy: #0b1924;
+      --super-cyan: #0097a7;
+      --super-cyan-glow: rgba(0, 151, 167, 0.35);
+      --super-bg: #f8fafc;
+      --super-border: #cbd5e1;
+      --super-shadow: 0 4px 20px rgba(16, 42, 53, 0.08);
+
+      --beds-bg-base: #f0f4f8;
+      --beds-bg-panel: #ffffff;
+      --beds-text-primary: #0f172a;
+      --beds-text-secondary: #475569;
+      --beds-text-muted: #64748b;
+      --beds-teal-primary: #0097a7;
+      --beds-charcoal-heading: #102a35;
+      --beds-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --beds-font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="dark"] {
+      --super-navy: #04090e;
+      --super-cyan: #26c6da;
+      --super-cyan-glow: rgba(38, 198, 218, 0.4);
+      --super-bg: #0c1822;
+      --super-border: #1a3042;
+      --super-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+
+      --beds-bg-base: #0a1219;
+      --beds-bg-panel: #101d27;
+      --beds-text-primary: #f8fafc;
+      --beds-text-secondary: #cbd5e1;
+      --beds-text-muted: #94a3b8;
+      --beds-teal-primary: #26c6da;
+      --beds-charcoal-heading: #f1f5f9;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--beds-font-sans);
+      background-color: var(--beds-bg-base);
+      color: var(--beds-text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* ZERO SIMULATOR INTRUSIONS */
+    .simulator-bar, .dev-banner, #beds-dev-sim, .beds-simulator-panel {
+      display: none !important;
+      visibility: hidden !important;
+    }
+
+    /* =========================================================================
+       CALIBRATED A4 PORTRAIT PRINT STYLES (STRICT 1-PAGE ZERO SPILL)
+       ========================================================================= */
+    #beds-purchase-print-stage {
+      display: none;
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 8mm 8mm;
+      }
+      html, body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        font-size: 10pt;
+      }
+      .purch-header, nav, .purch-footer, .purch-tab-bar, .kpi-row,
+      .purch-table-controls, .purch-modal-overlay, button, .btn-act-primary, .btn-act-secondary,
+      .no-print, input, select, textarea, .filter-toolbar-row, .beds-enterprise-topbar {
+        display: none !important;
+      }
+      body.beds-printing-mode header,
+      body.beds-printing-mode nav,
+      body.beds-printing-mode section,
+      body.beds-printing-mode main,
+      body.beds-printing-mode .purch-main,
+      body.beds-printing-mode .purch-hero-ribbon,
+      body.beds-printing-mode .purch-content-area,
+      body.beds-printing-mode .purch-modal-overlay,
+      body.beds-printing-mode footer,
+      body.beds-printing-mode .beds-enterprise-topbar {
+        display: none !important;
+      }
+      body.beds-printing-mode #beds-purchase-print-stage {
+        display: block !important;
+        visibility: visible !important;
+        width: 190mm !important;
+        max-width: 190mm !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+      }
+      body.beds-printing-mode #beds-purchase-print-stage * {
+        visibility: visible !important;
+      }
+    }
+
+    /* TOP HEADER */
+    header.purch-header {
+      background: var(--beds-bg-panel);
+      border-bottom: 1px solid var(--super-border);
+      padding: 12px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--super-shadow);
+    }
+    .purch-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .purch-brand img {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+    .brand-titles h1 {
+      font-size: 15.5px;
+      font-weight: 900;
+      color: var(--beds-charcoal-heading);
+      margin: 0;
+      line-height: 1.2;
+    }
+    .brand-titles p {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--super-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 1px 0 0 0;
+    }
+    .brand-slogan {
+      font-size: 10.5px;
+      font-style: italic;
+      color: rgb(223, 35, 14);
+      font-weight: 700;
+    }
+    .purch-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--beds-text-secondary);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .badge-pill:hover {
+      border-color: var(--super-cyan);
+      color: var(--super-cyan);
+    }
+    .badge-live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      animation: pulseDot 2s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    }
+
+    /* HERO KPI RIBBON */
+    .purch-hero-ribbon {
+      background: linear-gradient(135deg, #0b1924 0%, #102a35 55%, #004d5a 100%);
+      color: #ffffff;
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .hero-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .hero-title h2 {
+      font-size: 21px;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-title p {
+      font-size: 13px;
+      color: #94a3b8;
+      margin: 5px 0 0 0;
+      max-width: 860px;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-hero-act {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-hero-act:hover {
+      background: #0097a7;
+      border-color: #0097a7;
+      transform: translateY(-1px);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .kpi-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 14px 16px;
+      backdrop-filter: blur(6px);
+      transition: all 0.2s ease;
+    }
+    .kpi-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--super-cyan);
+      transform: translateY(-2px);
+    }
+    .kpi-lbl {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .kpi-val {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+      font-family: var(--beds-font-mono);
+      line-height: 1.1;
+      margin-bottom: 2px;
+    }
+    .kpi-sub {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    /* MAIN CONTAINER & WORKSPACE TABS */
+    main.purch-main {
+      padding: 24px 32px;
+      flex: 1;
+      max-width: 1680px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* BEDS V1.0 STRICT TAB STYLING RULE */
+    .purch-tabs-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--super-border);
+      padding-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .purch-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      background: var(--beds-bg-panel);
+      border: 1px solid var(--super-border);
+      color: #000000 !important; /* STRICTLY BLACK IN LIGHT MODE (BEDS STANDARD) */
+      transition: all 0.2s ease;
+    }
+    [data-theme="dark"] .purch-tab-btn {
+      color: #ffffff !important; /* STRICTLY WHITE IN DARK MODE (BEDS STANDARD) */
+      background: #112230;
+      border-color: #1a3042;
+    }
+    .purch-tab-btn:hover {
+      border-color: var(--super-cyan);
+      background: rgba(0, 151, 167, 0.08);
+      transform: translateY(-1px);
+    }
+    .purch-tab-btn.active {
+      background: var(--super-cyan) !important;
+      border-color: var(--super-cyan);
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px var(--super-cyan-glow);
+    }
+    .purch-tab-btn .tab-count {
+      background: rgba(0, 0, 0, 0.09);
+      color: inherit;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 9999px;
+    }
+    .purch-tab-btn.active .tab-count {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff !important;
+    }
+
+    .purch-pane {
+      display: none;
+      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .purch-pane.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CARD PANELS & TABLES */
+    .panel-card {
+      background: var(--beds-bg-panel);
+      border: 1px solid var(--super-border);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: var(--super-shadow);
+      margin-bottom: 24px;
+    }
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--super-border);
+      padding-bottom: 12px;
+    }
+    .panel-head h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+    table.beds-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: left;
+    }
+    table.beds-table th {
+      background: var(--super-bg);
+      color: var(--beds-text-secondary);
+      font-weight: 800;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--super-border);
+      text-transform: uppercase;
+      font-size: 10.5px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    table.beds-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--super-border);
+      color: var(--beds-text-primary);
+      vertical-align: middle;
+    }
+    table.beds-table tr:hover td {
+      background: rgba(0, 151, 167, 0.03);
+    }
+
+    /* TAG CHIPS */
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .tag-cyan { background: rgba(0, 151, 167, 0.12); color: #0097a7; border: 1px solid rgba(0, 151, 167, 0.25); }
+    .tag-green { background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25); }
+    .tag-amber { background: rgba(217, 119, 6, 0.12); color: #d97706; border: 1px solid rgba(217, 119, 6, 0.25); }
+    .tag-red { background: rgba(220, 38, 38, 0.12); color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.25); }
+    .tag-purple { background: rgba(124, 58, 237, 0.12); color: #7c3aed; border: 1px solid rgba(124, 58, 237, 0.25); }
+
+    /* ACTION BUTTONS */
+    .btn-act-primary {
+      background: var(--super-cyan);
+      color: #ffffff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px var(--super-cyan-glow);
+    }
+    .btn-act-primary:hover {
+      background: #008394;
+      transform: translateY(-1px);
+    }
+    .btn-act-secondary {
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      color: var(--beds-text-primary);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-act-secondary:hover {
+      border-color: var(--super-cyan);
+      color: var(--super-cyan);
+    }
+
+    /* MODAL OVERLAY */
+    .purch-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .purch-modal-card {
+      background: var(--beds-bg-panel);
+      border: 1px solid var(--super-border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 800px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .purch-modal-head {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--super-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .purch-modal-head h4 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading);
+    }
+    .purch-modal-close {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--beds-text-muted);
+    }
+    .purch-modal-body {
+      padding: 20px 22px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* FORM STYLES */
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--beds-text-secondary);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--super-border);
+      border-radius: 6px;
+      background: var(--super-bg);
+      color: var(--beds-text-primary);
+      font-size: 12.5px;
+      font-family: inherit;
+      outline: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--super-cyan);
+      box-shadow: 0 0 0 2px var(--super-cyan-glow);
+    }
+
+    /* ═══ BEDS V1.0 SPLIT-SCREEN LOGIN ══════════════════════════════ */
+    .login-split-card {
+      width: 100%;
+      max-width: 940px;
+      background: var(--beds-bg-panel, #ffffff);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 151, 178, 0.25);
+      border: 1px solid var(--super-border, #e2e8f0);
+      display: flex;
+      flex-direction: row;
+      min-height: 540px;
+      animation: superFadeIn 0.2s ease-out both;
+    }
+    .login-split-left {
+      flex: 0 0 50%;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background-color: #102D35;
+      min-height: 540px;
+    }
+    .login-split-left img.login-cover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .login-split-left .login-cover-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      background: linear-gradient(to top, rgba(16,45,53,0.96) 0%, rgba(16,45,53,0.6) 55%, rgba(16,45,53,0.0) 100%);
+      padding: 34px 28px 26px;
+      color: #fff;
+    }
+    .login-split-left .login-cover-label h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 4px 0;
+      line-height: 1.2;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .login-split-left .login-cover-label p {
+      font-size: 11px;
+      color: var(--beds-teal-primary, #0097b2);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 0;
+    }
+    .login-split-left .login-cover-label .login-motto {
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+      font-style: italic;
+      margin-top: 6px;
+    }
+    .login-split-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 36px 42px;
+      background: var(--beds-bg-panel, #ffffff);
+      overflow-y: auto;
+    }
+    @media (max-width: 768px) {
+      .login-split-card { flex-direction: column; max-width: 95%; }
+      .login-split-left { min-height: 200px; flex: none; }
+      .login-split-right { padding: 24px 18px; }
+    }
+
+    /* ═══ USER PILL DROPDOWN ════════════════════════════════════════ */
+    .user-pill-wrap { position: relative; display: inline-block; }
+    .user-pill { cursor: pointer; user-select: none; }
+    .user-pill-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 220px;
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border, #e2e8f0);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(16,45,53,0.18);
+      z-index: 500;
+      padding: 6px;
+      animation: dropdownSlide 0.15s ease-out;
+    }
+    .user-pill-wrap.open .user-pill-menu { display: block; }
+    .user-pill-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--beds-text-primary, #102d35);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .user-pill-menu-item:hover { background: rgba(0,151,178,0.08); }
+    .user-pill-menu-divider { height: 1px; background: var(--super-border, #e2e8f0); margin: 4px 0; }
+    .user-pill-menu-item.danger { color: #dc2626; }
+    .user-pill-menu-item.danger:hover { background: rgba(220,38,38,0.08); }
+
+    /* ═══ PORTAL SWITCHER DROPDOWN ══════════════════════════════════ */
+    .portal-switcher-wrap { position: relative; display: inline-block; }
+    .portal-switcher-btn {
+      background: var(--super-bg, #f8fafc);
+      border: 1px solid var(--super-border, #e2e8f0);
+      color: var(--beds-text-primary, #102d35);
+      padding: 5px 11px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: inherit;
+    }
+    .portal-switcher-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 230px;
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border, #e2e8f0);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(16,45,53,0.18);
+      z-index: 500;
+      padding: 6px;
+      animation: dropdownSlide 0.15s ease-out;
+    }
+    .portal-switcher-wrap.open .portal-switcher-menu { display: block; }
+    .portal-switcher-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--beds-text-primary, #102d35);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .portal-switcher-item:hover { background: rgba(0,151,178,0.08); }
+    .portal-switcher-item.current { background: rgba(0,151,178,0.12); border-left: 3px solid #0097b2; }
+
+    /* KPI Card & Table Standards */
+    .purch-kpi-card:hover, .card-panel:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(16,45,53,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    /* FOOTER */
+    footer.purch-footer {
+      background: var(--beds-bg-panel);
+      border-top: 1px solid var(--super-border);
+      padding: 20px 32px;
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--beds-text-secondary);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- DEDICATED CALIBRATED A4 PRINT STAGE -->
+  <div id="beds-purchase-print-stage"></div>
+
+  <!-- 1. TOP EXECUTIVE HEADER -->
+  <header class="purch-header">
+    <div class="purch-brand">
+      <img src="assets/images/balsons-logo.png" alt="BALSONS Logo" onerror="this.onerror=null; this.src='../assets/images/balsons-logo.png';">
+      <div class="brand-titles">
+        <h1>BALSONS HEAVY LIFT & SHIFT</h1>
+        <p>Purchase Manager • Commercial Procurement & Vendor Control</p>
+        <div class="brand-slogan">“Difficult We Do Easily, Impossible Takes Little Time...!”</div>
+      </div>
+    </div>
+    <div class="purch-controls">
+      <!-- Sync Status Badge -->
+      <span class="badge-pill" id="syncStatusBadge">
+        <span class="badge-live-dot"></span> Cloud DB Synced
+      </span>
+
+      <!-- User Pill Wrap with Dropdown -->
+      <div class="user-pill-wrap" id="userPillWrap">
+        <button class="badge-pill user-pill" id="activeUserBadge" onclick="document.getElementById('userPillWrap').classList.toggle('open')">
+          👤 User: admin.purchase (4001) <span style="font-size:10px; margin-left:2px;">▾</span>
+        </button>
+        <div class="user-pill-menu">
+          <div class="user-pill-menu-item">👤 <strong id="menuUserFullName">Gagan Bihari Das</strong></div>
+          <div class="user-pill-menu-item" style="font-size: 11px; color: var(--beds-teal-primary); font-weight: 700;">Purchase Portal User</div>
+          <div class="user-pill-menu-divider"></div>
+          <div class="user-pill-menu-item danger" onclick="BalsonsPurchaseApp.openLoginModal()">🔓 Sign Out / Re-auth</div>
+        </div>
+      </div>
+
+      <button class="badge-pill" id="themeBtn" onclick="toggleTheme()" title="Toggle Theme">
+        🌙 Dark
+      </button>
+      <a href="../mobile/purchase.html" class="badge-pill" style="background: rgba(2, 132, 199, 0.12); border-color: #0284c7; color: #0284c7; font-weight: 800; text-decoration: none;" title="Switch to Mobile & Tablet Optimized View">
+        📱 Mobile View
+      </a>
+      <a href="../index.html" class="badge-pill">
+        🚀 Launcher
+      </a>
+    </div>
+  </header>
+
+  <!-- 2. EXECUTIVE HERO & KPI STATS -->
+  <section class="purch-hero-ribbon">
+    <div class="hero-top-row">
+      <div class="hero-title">
+        <h2><span>📑</span> Commercial Procurement, Sourcing & Purchase Order Control</h2>
+        <p>
+          Governs end-to-end purchasing lifecycle for Jupiter Tatravagonka Railwheel Factory (JTRWF). Strictly enforces PR-Line traceability, multi-vendor comparative statement (CS) normalization, DoA 4-eye approvals, and Store Manager delivery handshakes.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <button class="btn-hero-act" onclick="BalsonsPurchaseApp.openNewPRModal()">
+          <span>➕</span> Raise PR Demand
+        </button>
+        <button class="btn-hero-act" onclick="BalsonsPurchaseApp.triggerCloudSync()">
+          <span>⚡</span> Sync Cloud DB
+        </button>
+        <a href="https://docs.google.com/spreadsheets/d/1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c/edit" target="_blank" class="btn-hero-act">
+          <span>📊</span> Dedicated Sheet ↗
+        </a>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-lbl">Active Requisitions</div>
+        <div class="kpi-val" id="kpiPRCount">3 Active</div>
+        <div class="kpi-sub">100% PR-Line Traceable</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-lbl">Open RFQ Sourcing</div>
+        <div class="kpi-val" id="kpiRFQCount">2 Events</div>
+        <div class="kpi-sub">Multi-Vendor Inquiries</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-lbl">Committed PO Value</div>
+        <div class="kpi-val" id="kpiPOValue">₹3.88 L</div>
+        <div class="kpi-sub">Binding Legal Contracts</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-lbl">Store Delivery Alerts</div>
+        <div class="kpi-val" id="kpiASNCount">1 In-Transit</div>
+        <div class="kpi-sub">Pre-Inward Handshake</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-lbl">Form 11 Tackle Rate</div>
+        <div class="kpi-val" style="color: #10b981;">100% Pass</div>
+        <div class="kpi-sub">TPI Certified Equipment</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. MAIN WORKSPACES -->
+  <main class="purch-main">
+
+    <!-- MASTER WORKSPACE TABS (BEDS V1.0 STRICT COLOR ENFORCEMENT) -->
+    <div class="purch-tabs-bar">
+      <button class="purch-tab-btn active" id="tab-btn-prs" onclick="BalsonsPurchaseApp.switchTab('prs')">
+        <span>📋</span> Purchase Requisitions (PR) <span class="tab-count" id="badgeCountPR">3</span>
+      </button>
+      <button class="purch-tab-btn" id="tab-btn-rfqs" onclick="BalsonsPurchaseApp.switchTab('rfqs')">
+        <span>🌐</span> Sourcing RFQs & Bids <span class="tab-count" id="badgeCountRFQ">2</span>
+      </button>
+      <button class="purch-tab-btn" id="tab-btn-cs" onclick="BalsonsPurchaseApp.switchTab('cs')">
+        <span>⚖️</span> Comparative Statement (CS) <span class="tab-count" id="badgeCountCS">1</span>
+      </button>
+      <button class="purch-tab-btn" id="tab-btn-pos" onclick="BalsonsPurchaseApp.switchTab('pos')">
+        <span>📑</span> Purchase Orders (PO) <span class="tab-count" id="badgeCountPO">1</span>
+      </button>
+      <button class="purch-tab-btn" id="tab-btn-asn" onclick="BalsonsPurchaseApp.switchTab('asn')">
+        <span>🚚</span> Delivery & Store Handshake <span class="tab-count" id="badgeCountASN">1</span>
+      </button>
+      <button class="purch-tab-btn" id="tab-btn-vendors" onclick="BalsonsPurchaseApp.switchTab('vendors')">
+        <span>🏢</span> Supplier Master <span class="tab-count" id="badgeCountVendors">5</span>
+      </button>
+      <button class="purch-tab-btn" id="tab-btn-dossier" onclick="Balsons360Dossier.openModal()" style="font-weight: 800; color: #0097B2;" title="Open 360° Workforce Dossiers"><span>🌐</span> 360° Dossiers</button>
+      <button class="purch-tab-btn" id="tab-btn-docs" onclick="BalsonsPurchaseApp.switchTab('docs')">
+        <span>📁</span> Documents &amp; Drive Vault <span class="tab-count" id="badgeCountDocs">Drive</span>
+      </button>
+    </div>
+
+    <!-- =======================================================================
+         PANE 1: PURCHASE REQUISITIONS (PR) REGISTER
+         ======================================================================= -->
+    <div id="pane-prs" class="purch-pane active">
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h3><span>📋</span> Purchase Requisitions (PR) Master Register</h3>
+            <p style="font-size:12px; color:var(--beds-text-muted); margin-top:2px;">
+              Direct demand ingestion from Site Execution & Store replenishment. PR Line ID is the immutable traceability spine.
+            </p>
+          </div>
+          <button class="btn-act-primary" onclick="BalsonsPurchaseApp.openNewPRModal()">
+            <span>➕</span> Raise PR Demand
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>PR Number</th>
+                <th>Request Date</th>
+                <th>Indenter / Department</th>
+                <th>Work Description & Purpose</th>
+                <th>Line Items</th>
+                <th>Est. Value (₹)</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="prTableBody">
+              <!-- Rendered by BalsonsPurchaseApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+         PANE 2: RFQ SOURCING & QUOTATION CAPTURE
+         ======================================================================= -->
+    <div id="pane-rfqs" class="purch-pane">
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h3><span>🌐</span> Request For Quotation (RFQ) & Supplier Sourcing</h3>
+            <p style="font-size:12px; color:var(--beds-text-muted); margin-top:2px;">
+              Frozen technical requirements, multi-vendor tenders, and quotation bid register.
+            </p>
+          </div>
+          <button class="btn-act-primary" onclick="BalsonsPurchaseApp.showToast('Select an approved PR to float a new RFQ sourcing event.', 'info')">
+            <span>➕</span> Float RFQ Sourcing
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>RFQ Number</th>
+                <th>PR Reference</th>
+                <th>Issue Date</th>
+                <th>Submission Due</th>
+                <th>Sourcing Strategy</th>
+                <th>Invited Suppliers</th>
+                <th>Bids Recv</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="rfqTableBody">
+              <!-- Rendered by BalsonsPurchaseApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+         PANE 3: COMPARATIVE STATEMENT (CS) & LANDED COST NORMALIZATION
+         ======================================================================= -->
+    <div id="pane-cs" class="purch-pane">
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h3><span>⚖️</span> Multi-Vendor Commercial Comparative Statement (CS) Matrix</h3>
+            <p style="font-size:12px; color:var(--beds-text-muted); margin-top:2px;">
+              Landed cost normalization formula: (Base - Discount) + Freight + P&F + GST (18%) + Insurance. L1 Lowest Landed Cost automatically ranked.
+            </p>
+          </div>
+          <span class="tag-chip tag-green">DOA TIER 2 GOVERNED</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>CS ID</th>
+                <th>RFQ Reference</th>
+                <th>Evaluation Date</th>
+                <th>Evaluator</th>
+                <th>L1 Bidder (Lowest Landed)</th>
+                <th>L1 Landed (₹)</th>
+                <th>L2 Bidder (₹)</th>
+                <th>Corporate Savings</th>
+                <th>DoA Approval</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="csTableBody">
+              <!-- Rendered by BalsonsPurchaseApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+         PANE 4: PURCHASE ORDER (PO) MANAGEMENT & CONTRACTS
+         ======================================================================= -->
+    <div id="pane-pos" class="purch-pane">
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h3><span>📑</span> Binding Purchase Orders (PO) & Revision Registry</h3>
+            <p style="font-size:12px; color:var(--beds-text-muted); margin-top:2px;">
+              Immutable contracts generated strictly from approved awards. Controlled amendments require REV-1 audit trails.
+            </p>
+          </div>
+          <button class="btn-act-primary" onclick="BalsonsPurchaseApp.showToast('POs are issued directly from approved Comparative Statements (CS).', 'info')">
+            <span>➕</span> Generate PO Contract
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>PO Number & Rev</th>
+                <th>Supplier Name</th>
+                <th>Issue Date</th>
+                <th>Delivery Schedule</th>
+                <th>Taxable Base (₹)</th>
+                <th>GST (₹)</th>
+                <th>Grand Total (₹)</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="poTableBody">
+              <!-- Rendered by BalsonsPurchaseApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+         PANE 5: DELIVERY TRACKING & STORE HANDSHAKE
+         ======================================================================= -->
+    <div id="pane-asn" class="purch-pane">
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h3><span>🚚</span> Supplier Advance Shipping Notice (ASN) & Store Handshake</h3>
+            <p style="font-size:12px; color:var(--beds-text-muted); margin-top:2px;">
+              Pre-inward delivery intimation transmitted to Gate Entry and Store Manager for physical inspection and Form 11 clearance.
+            </p>
+          </div>
+          <button class="btn-act-primary" onclick="BalsonsPurchaseApp.openNewASNModal()">
+            <span>➕</span> Log Supplier ASN
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>ASN ID</th>
+                <th>PO Reference</th>
+                <th>Supplier</th>
+                <th>Transporter</th>
+                <th>LR / Docket No</th>
+                <th>Vehicle Reg No</th>
+                <th>Expected Date</th>
+                <th>Gate Alert</th>
+                <th>Delivery State</th>
+              </tr>
+            </thead>
+            <tbody id="asnTableBody">
+              <!-- Rendered by BalsonsPurchaseApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+         PANE 6: APPROVED SUPPLIER MASTER DIRECTORY
+         ======================================================================= -->
+    <div id="pane-vendors" class="purch-pane">
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h3><span>🏢</span> Approved Vendor Master & Performance Scorecard</h3>
+            <p style="font-size:12px; color:var(--beds-text-muted); margin-top:2px;">
+              Statutory verification (GSTIN, PAN, MSME), bank mandates, and evidence-based delivery scorecards.
+            </p>
+          </div>
+          <span class="tag-chip tag-green">5 Verified Vendors</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Vendor ID & Name</th>
+                <th>Trade Category</th>
+                <th>GSTIN / PAN</th>
+                <th>Contact Person & Phone</th>
+                <th>Default Payment Terms</th>
+                <th>Rating</th>
+                <th>TPI Tackle Accredited</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="vendorTableBody">
+              <!-- Rendered by BalsonsPurchaseApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  
+    <!-- =======================================================================
+         PANE 7: OFFICIAL DOCUMENTS & GOOGLE DRIVE VAULT
+         ======================================================================= -->
+    <div id="pane-docs" class="purch-pane">
+      <div id="tab-documents"></div>
+    </div>
+  </main>
+
+  <!-- 4. MODALS -->
+
+  <!-- MODAL 1: RAISE NEW PR WIZARD -->
+  <div id="modal-new-pr" class="purch-modal-overlay">
+    <div class="purch-modal-card">
+      <div class="purch-modal-head">
+        <h4>📋 Raise Purchase Requisition (PR)</h4>
+        <button class="purch-modal-close" onclick="BalsonsPurchaseApp.closeNewPRModal()">✕</button>
+      </div>
+      <div class="purch-modal-body">
+        <form onsubmit="BalsonsPurchaseApp.handlePRSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Requesting Department</label>
+              <select id="prFormDept" required>
+                <option value="Heavy Lifting & Erection">Heavy Lifting & Erection (Area 1 / 2)</option>
+                <option value="Machine Shop Bay">Machine Shop Bay (Area 3 - 7 Streams)</option>
+                <option value="Store & Tackle Maintenance">Store & Tackle Maintenance</option>
+                <option value="Site Safety & HSE">Site Safety & HSE</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Cost Center / Work Package</label>
+              <input type="text" id="prFormCostCenter" placeholder="e.g. CC-LINE-AXLE-01" required value="CC-LINE-AXLE-01">
+            </div>
+            <div class="form-group">
+              <label>Priority</label>
+              <select id="prFormPriority">
+                <option value="NORMAL">Normal (14 Days)</option>
+                <option value="HIGH" selected>High (7 Days)</option>
+                <option value="EMERGENCY">Emergency (48 Hours)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Need-By Date</label>
+              <input type="date" id="prFormNeedBy" required>
+            </div>
+            <div class="form-group">
+              <label>Delivery Location</label>
+              <input type="text" id="prFormLocation" value="Central Site Store, JTRWF Plant, Khordha" required>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:14px;">
+            <label>Business Purpose & Technical Justification</label>
+            <textarea id="prFormJustification" rows="2" placeholder="Explain engineering necessity and installation timeline..." required></textarea>
+          </div>
+
+          <div style="background:var(--super-bg); border:1px solid var(--super-border); padding:12px; border-radius:8px; margin-bottom:14px;">
+            <div style="font-size:12px; font-weight:800; margin-bottom:8px; color:var(--beds-charcoal-heading);">Line Item Demand (PR-Line Traceability Spine)</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Item Description</label>
+                <input type="text" id="prFormItemDesc" placeholder="e.g. Matched Wire Rope Slings 60T 12M" required>
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select id="prFormCategory">
+                  <option value="RIGGING_TACKLE">Heavy Rigging Tackle</option>
+                  <option value="HYDRAULIC_PARTS">Hydraulic & Tooling</option>
+                  <option value="CONSUMABLES">Industrial Consumables</option>
+                  <option value="INSTRUMENTATION">Optical / Laser Instrumentation</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" step="0.001" id="prFormQty" required value="2">
+              </div>
+              <div class="form-group">
+                <label>UOM</label>
+                <select id="prFormUOM">
+                  <option value="PAIR">PAIR</option>
+                  <option value="NOS">NOS</option>
+                  <option value="SET">SET</option>
+                  <option value="MTR">MTR</option>
+                  <option value="MT">MT</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Est. Total Rate (₹)</label>
+                <input type="number" step="0.01" id="prFormEstRate" required value="250000">
+              </div>
+            </div>
+            <div class="form-group">
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                <input type="checkbox" id="prFormForm11" checked style="width:auto;">
+                <span>Mandatory Form 11 Lifting Tackle TPI Certificate Required</span>
+              </label>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:10px;">
+            <button type="button" class="btn-act-secondary" onclick="BalsonsPurchaseApp.closeNewPRModal()">Cancel</button>
+            <button type="submit" class="btn-act-primary">Submit PR Demand ➔</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: 360° PROCUREMENT DOSSIER -->
+  <div id="modal-dossier-360" class="purch-modal-overlay">
+    <div class="purch-modal-card" style="max-width: 900px;">
+      <div class="purch-modal-head">
+        <h4>🔍 360° Procurement Traceability Dossier</h4>
+        <button class="purch-modal-close" onclick="BalsonsPurchaseApp.closeDossierModal()">✕</button>
+      </div>
+      <div class="purch-modal-body" id="dossierModalBody">
+        <!-- Rendered by BalsonsPurchaseApp.openDossier() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: VIEW OFFICIAL PO CONTRACT PDF -->
+  <div id="modal-view-po" class="purch-modal-overlay">
+    <div class="purch-modal-card" style="max-width: 860px;">
+      <div class="purch-modal-head">
+        <h4>📄 Official Purchase Order Contract Document</h4>
+        <button class="purch-modal-close" onclick="BalsonsPurchaseApp.closePOModal()">✕</button>
+      </div>
+      <div class="purch-modal-body" id="poModalBody">
+        <!-- Rendered by BalsonsPurchaseApp.viewPOContract() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: LOG SUPPLIER ASN -->
+  <div id="modal-new-asn" class="purch-modal-overlay">
+    <div class="purch-modal-card" style="max-width: 580px;">
+      <div class="purch-modal-head">
+        <h4>🚚 Log Advance Shipping Notice (ASN)</h4>
+        <button class="purch-modal-close" onclick="BalsonsPurchaseApp.closeNewASNModal()">✕</button>
+      </div>
+      <div class="purch-modal-body">
+        <form onsubmit="BalsonsPurchaseApp.handleASNSubmit(event)">
+          <div class="form-group" style="margin-bottom:12px;">
+            <label>Select Purchase Order</label>
+            <select id="asnPoSelect" required>
+              <option value="PO-2026-001">PO-2026-001 - Tufropes Heavy Tackles (₹3,88,338)</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Transporter Name</label>
+              <input type="text" id="asnTransporter" required value="V-Trans Logistics">
+            </div>
+            <div class="form-group">
+              <label>LR / Docket Number</label>
+              <input type="text" id="asnDocket" required value="LR-998214">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Vehicle Registration Number</label>
+              <input type="text" id="asnVehicle" required value="OD-02-AX-8941">
+            </div>
+            <div class="form-group">
+              <label>Expected Arrival Date</label>
+              <input type="date" id="asnArrivalDate" required>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
+            <button type="button" class="btn-act-secondary" onclick="BalsonsPurchaseApp.closeNewASNModal()">Cancel</button>
+            <button type="submit" class="btn-act-primary">Transmit ASN to Gate & Store ➔</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: ROLE LOGIN SWITCHER (Full-Height Split Screen) -->
+  <div id="modal-login" class="purch-modal-overlay">
+    <div class="login-split-card" style="max-width: 940px;">
+      <!-- Left: Cover image fitted to full side -->
+      <div class="login-split-left">
+        <img class="login-cover" src="assets/images/login-purchase.jpg" onerror="this.onerror=null;this.src='../assets/images/login-purchase.jpg'" alt="Purchase Manager">
+        <div class="login-cover-overlay">
+          <div class="login-cover-label">
+            <h2>Purchase &amp; Procurement</h2>
+            <p>JTRWF Khordha · Commercial Sourcing &amp; PO Control</p>
+            <div class="login-motto">“Difficult We Do Easily, Impossible Takes Little Time...!”</div>
+          </div>
+        </div>
+      </div>
+      <!-- Right: Login form -->
+      <div class="login-split-right">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='../assets/images/balsons-logo.png'" alt="BALSONS Logo" style="height: 38px; width: auto; object-fit: contain;">
+            <div>
+              <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: var(--beds-charcoal-heading, #102d35);">BALSONS Purchase</h3>
+              <div style="font-size: 10.5px; color: var(--beds-teal-primary, #0097b2); font-weight: 700; text-transform: uppercase;">PRJ-JTRWF-SCHULER</div>
+            </div>
+          </div>
+          <button class="purch-modal-close" onclick="BalsonsPurchaseApp.closeLoginModal()">✕</button>
+        </div>
+
+        <div style="background: rgba(0, 151, 178, 0.08); padding: 8px 14px; border-radius: 6px; font-size: 11px; color: var(--beds-teal-primary, #0097b2); font-weight: 700; margin-bottom: 16px;">
+          🔐 Select Authorized Procurement Session
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="btn-act-secondary" style="justify-content:flex-start; padding:10px 14px;" onclick="BalsonsPurchaseApp.switchUserSession('admin.purch')">
+            🛒 <strong>Rohan Sharma</strong> (Purchase Lead &amp; Commercial Head - 3001)
+          </button>
+          <button class="btn-act-secondary" style="justify-content:flex-start; padding:10px 14px;" onclick="BalsonsPurchaseApp.switchUserSession('indenter.ops')">
+            📝 <strong>Suresh Verma</strong> (Indenter &amp; Erection Engineer - 3002)
+          </button>
+          <button class="btn-act-secondary" style="justify-content:flex-start; padding:10px 14px;" onclick="BalsonsPurchaseApp.switchUserSession('superadmin')">
+            👑 <strong>Prashant Muley</strong> (Executive Super Administrator - 2026)
+          </button>
+          <button class="btn-act-secondary" style="justify-content:flex-start; padding:10px 14px;" onclick="BalsonsPurchaseApp.switchUserSession('director.mgmt')">
+            🏛️ <strong>Satish Chandra</strong> (Project Director / DoA Approver - 1001)
+          </button>
+          <button class="btn-act-secondary" style="justify-content:flex-start; padding:10px 14px;" onclick="BalsonsPurchaseApp.switchUserSession('admin.purchase')">
+            📦 <strong>Gagan Bihari Das</strong> (Store &amp; Inventory Liaison - 4001)
+          </button>
+          <button class="btn-act-secondary" style="justify-content:flex-start; padding:10px 14px;" onclick="BalsonsPurchaseApp.switchUserSession('dilip.rout')">
+            🏗️ <strong>Dilip Rout</strong> (Operations Area Manager - Indenter - 1002)
+          </button>
+          <button class="btn-act-secondary" style="justify-content:flex-start; padding:10px 14px;" onclick="BalsonsPurchaseApp.switchUserSession('sarat.mishra')">
+            ⚙️ <strong>Sarat Mishra</strong> (Machine Shop Area Manager - 1003)
+          </button>
+          <button class="btn-act-secondary" style="justify-content:flex-start; padding:10px 14px;" onclick="BalsonsPurchaseApp.switchUserSession('client.jtrwf')">
+            🔍 <strong>Client Auditor</strong> (JTRWF / Schuler Read-Only - 9001)
+          </button>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--super-border, #e2e8f0); font-size: 11px;">
+          <span style="font-weight:700; color:var(--beds-charcoal-heading, #102d35);">BALSONS Heavy Lift &amp; Shift</span> · <span style="color:var(--beds-teal-primary, #0097a7);">JTRWF Commercial Access</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ENTERPRISE FOOTER -->
+  <footer class="purch-footer">
+    <div><strong>BALSONS Heavy Lift & Shift</strong> • Commercial Procurement & Vendor Control Portal</div>
+    <div style="font-style: italic; color: rgb(223, 35, 14); font-weight: 700; margin-top: 4px;">
+      “Difficult We Do Easily, Impossible Takes Little Time...!”
+    </div>
+    <div style="font-size: 11px; color: var(--beds-text-muted); margin-top: 4px;">
+      Jupiter Tatravagonka Railwheel Factory (JTRWF) • Governed by BAL-PROC-E2E-006 • SAM-2026 / BEDS V1.0 • Dual-Sync Cloud Sheet: <code>1ANnu4X2...</code>
+    </div>
+  </footer>
+
+  <script src="assets/js/balsons-sam-auth.js"></script>
+  <script src="assets/js/dossier-360.js"></script>
+  <script src="assets/js/beds-superadmin.js"></script>
+  <script src="assets/js/beds-portal-login.js"></script>
+  <script src="assets/js/balsons-docs-manager.js"></script>
+  <script src="assets/js/beds-workspace.js"></script>
+  <script src="assets/js/qrcode.min.js"></script>
+  <script src="assets/js/purchase-app.js"></script>
+  <script>
+    // Header Dropdowns Outside-Click Handler (User Profile Pill)
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#userPillWrap')) {
+        var u = document.getElementById('userPillWrap');
+        if (u) u.classList.remove('open');
+      }
+    });
+  </script>
+  <!-- Unified BEDS Statutory Print Stage -->
+  <div id="bedsPrintStage" style="display: none;"></div>
+</body>
+</html>

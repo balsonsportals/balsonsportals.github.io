@@ -1,0 +1,2460 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BALSONS Operations Manager • Heavy Erection & Lift Execution (V7.2)</title>
+  <link rel="icon" type="image/png" href="assets/images/balsons-logo.png">
+
+  <!-- Inter & JetBrains Mono Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="beds.css">
+  <style>
+    /* STRICT SUPPRESSION OF DEVELOPER SIMULATOR BARS */
+    #sam-global-topbar,
+    .sam-gov-bar,
+    .sam-gov-policy,
+    #beds-enterprise-topbar,
+    .beds-enterprise-topbar {
+      display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      pointer-events: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    :root {
+      --super-navy: #0d1e27;
+      --super-teal: #102a35;
+      --super-teal-light: #163847;
+      --super-cyan: #0097a7;
+      --super-cyan-glow: rgba(0, 151, 167, 0.35);
+      --super-gold: #d97706;
+      --super-gold-light: #fef3c7;
+      --super-border: #e2e8f0;
+      --super-bg: #f8fafc;
+      --super-card: #ffffff;
+      --super-shadow: 0 4px 20px rgba(16, 42, 53, 0.06);
+      --beds-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --beds-font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="dark"] {
+      --super-navy: #060e13;
+      --super-teal: #08161c;
+      --super-teal-light: #0d222b;
+      --super-cyan: #00b4d8;
+      --super-cyan-glow: rgba(0, 180, 216, 0.35);
+      --super-gold: #fbbf24;
+      --super-gold-light: rgba(251, 191, 36, 0.15);
+      --super-border: #1e3a45;
+      --super-bg: #071015;
+      --super-card: #0d222b;
+      --super-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    body {
+      background-color: var(--super-bg);
+      color: var(--beds-text-primary, #1e293b);
+      margin: 0;
+      font-family: var(--beds-font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* KEYFRAME ANIMATIONS */
+    @keyframes superFadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes ribbonEntrance {
+      from { opacity: 0; transform: translateY(-12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    }
+
+    /* 1. MASTER EXECUTIVE HEADER */
+    header.exec-header {
+      background: var(--beds-bg-panel, #ffffff);
+      border-bottom: 1px solid var(--super-border);
+      padding: 10px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--super-shadow);
+      animation: superFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .header-brand img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+      transition: transform 0.25s ease;
+    }
+    .header-brand:hover img {
+      transform: scale(1.04);
+    }
+    .brand-text h1 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading, #102a35);
+      margin: 0;
+      line-height: 1.2;
+      letter-spacing: -0.2px;
+    }
+    .brand-text p {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--super-cyan);
+      margin: 1px 0 0 0;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .brand-slogan {
+      font-size: 10.5px;
+      font-style: italic;
+      color: rgb(223, 35, 14);
+      margin-top: 2px;
+      font-weight: 600;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--beds-text-secondary, #475569);
+      transition: all 0.2s ease;
+    }
+    .badge-pill:hover {
+      border-color: var(--super-cyan);
+      transform: translateY(-1px);
+    }
+    .online-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+    .btn-action-pill {
+      background: rgba(0, 151, 167, 0.08);
+      border: 1px solid var(--super-cyan);
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--super-cyan);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-action-pill:hover {
+      background: var(--super-cyan);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px var(--super-cyan-glow);
+    }
+    .user-session-chip {
+      background: rgba(16, 42, 53, 0.04);
+      border: 1px solid var(--super-border);
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* 2. EXECUTIVE OPERATIONS SUPER VIEW RIBBON */
+    .super-view-ribbon {
+      background: linear-gradient(135deg, var(--super-navy) 0%, var(--super-teal) 60%, var(--super-teal-light) 100%);
+      color: #ffffff;
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--super-border);
+      animation: ribbonEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .super-view-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .super-view-title h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.3px;
+    }
+    .super-view-title p {
+      font-size: 12.5px;
+      color: #94a3b8;
+      margin: 4px 0 0 0;
+    }
+    .super-view-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-super-act {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-super-act:hover {
+      background: #0097a7;
+      border-color: #0097a7;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0, 151, 167, 0.4);
+    }
+    .super-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .super-stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 16px 18px;
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
+    }
+    .super-stat-card:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: var(--super-cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+    .stat-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-value {
+      font-size: 26px;
+      font-weight: 900;
+      color: #ffffff;
+      font-family: var(--beds-font-mono);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .stat-sub {
+      font-size: 11.5px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 3. NAVIGATION TABS BAR (LOCKED BEDS STANDARD: BLACK IN LIGHT, WHITE IN DARK) */
+    nav.tabs-nav-bar {
+      background: var(--beds-bg-panel, #ffffff);
+      border-bottom: 2px solid var(--super-cyan);
+      padding: 8px 28px;
+      position: sticky;
+      top: 58px;
+      z-index: 90;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+    .tabs-container {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      overflow-x: auto;
+      scrollbar-width: none;
+      white-space: nowrap;
+    }
+    .tabs-container::-webkit-scrollbar {
+      display: none;
+    }
+    .nav-tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: #000000 !important; /* STRICTLY BLACK IN LIGHT MODE (USER LOCKED) */
+      padding: 8px 14px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s ease;
+    }
+    .nav-tab-btn:hover:not(.active) {
+      background: rgba(0, 151, 167, 0.08);
+      color: #000000 !important;
+      border-color: rgba(0, 151, 167, 0.2);
+    }
+    .nav-tab-btn.active {
+      background: var(--super-cyan, #0097a7) !important;
+      color: #ffffff !important;
+      font-weight: 800;
+      box-shadow: 0 2px 8px rgba(0, 151, 167, 0.35);
+    }
+
+    /* Tab colors in Dark Mode */
+    [data-theme="dark"] nav.tabs-nav-bar {
+      background: var(--beds-bg-panel);
+    }
+    [data-theme="dark"] .nav-tab-btn {
+      color: #ffffff !important; /* STRICTLY WHITE IN DARK MODE (USER LOCKED) */
+    }
+    [data-theme="dark"] .nav-tab-btn:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff !important;
+    }
+    [data-theme="dark"] .nav-tab-btn.active {
+      background: var(--super-cyan) !important;
+      color: #ffffff !important;
+    }
+
+    /* 4. MAIN PORTAL CONTENT & CARDS */
+    main.portal-main {
+      padding: 24px 28px;
+      flex: 1;
+      max-width: 1680px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .tab-pane {
+      display: none;
+      animation: superFadeIn 0.3s ease-out both;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    .card-panel {
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 24px;
+      box-shadow: var(--super-shadow);
+      transition: border-color 0.2s ease;
+    }
+    .card-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 1px solid var(--super-border);
+      padding-bottom: 12px;
+    }
+    .card-panel-header h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading, #102a35);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* AREA WORKSPACE ENHANCEMENTS */
+    .area-hero-banner {
+      background: linear-gradient(135deg, rgba(16, 42, 53, 0.95) 0%, rgba(13, 30, 39, 0.98) 100%);
+      border: 1px solid var(--super-border);
+      border-radius: 12px;
+      padding: 22px 26px;
+      margin-bottom: 22px;
+      color: #ffffff;
+      box-shadow: var(--super-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .area-hero-banner::after {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, var(--super-cyan-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .area-hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .area-title-group h3 {
+      font-size: 18px;
+      font-weight: 800;
+      margin: 0;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.2px;
+    }
+    .area-title-group p {
+      font-size: 12.5px;
+      color: #94a3b8;
+      margin: 4px 0 0 0;
+    }
+    .area-action-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .area-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .area-kpi-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 12px 14px;
+      backdrop-filter: blur(4px);
+    }
+    .area-kpi-card .kpi-lbl {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .area-kpi-card .kpi-val {
+      font-size: 20px;
+      font-weight: 900;
+      color: #ffffff;
+      font-family: var(--beds-font-mono);
+      line-height: 1.1;
+    }
+    .area-kpi-card .kpi-sub {
+      font-size: 11px;
+      color: #cbd5e1;
+      margin-top: 2px;
+    }
+
+    /* WORKSTREAM SUB-PILL BAR */
+    .stream-filter-bar {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
+    }
+    .stream-pill-btn {
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      color: var(--beds-text-secondary);
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .stream-pill-btn:hover {
+      border-color: var(--super-cyan);
+      color: var(--super-cyan);
+    }
+    .stream-pill-btn.active {
+      background: var(--super-cyan);
+      border-color: var(--super-cyan);
+      color: #ffffff !important;
+      box-shadow: 0 2px 8px var(--super-cyan-glow);
+    }
+
+    /* 360° DOSSIER MODAL STYLES */
+    .dossier-modal-card {
+      max-width: 960px !important;
+      width: 95% !important;
+      max-height: 94vh !important;
+      display: flex;
+      flex-direction: column;
+    }
+    .dossier-header-bar {
+      background: linear-gradient(135deg, #0d1e27 0%, #102a35 100%);
+      color: #ffffff;
+      padding: 16px 24px;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--super-cyan);
+    }
+    .dossier-header-title h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dossier-header-title p {
+      margin: 3px 0 0 0;
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
+    .dossier-tabs-nav {
+      display: flex;
+      background: var(--super-bg);
+      border-bottom: 1px solid var(--super-border);
+      padding: 0 16px;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .dossier-tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--beds-text-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .dossier-tab-btn:hover {
+      color: var(--super-cyan);
+    }
+    .dossier-tab-btn.active {
+      color: var(--super-cyan);
+      border-bottom-color: var(--super-cyan);
+      font-weight: 800;
+    }
+    .dossier-content-body {
+      padding: 22px 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .dossier-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .dossier-spec-card {
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+    .dossier-spec-card .lbl {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--beds-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+    .dossier-spec-card .val {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--beds-charcoal-heading);
+    }
+
+    /* PUNCHLIST CHECKLIST ITEMS */
+    .punchlist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--beds-bg-panel);
+      border: 1px solid var(--super-border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .punchlist-item:hover {
+      border-color: var(--super-cyan);
+      background: rgba(0, 151, 167, 0.02);
+    }
+    .punchlist-item.verified {
+      background: rgba(16, 185, 129, 0.05);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    .punchlist-item input[type="checkbox"] {
+      margin-top: 3px;
+      width: 17px;
+      height: 17px;
+      cursor: pointer;
+      accent-color: #0097a7;
+    }
+    .punchlist-text {
+      flex: 1;
+    }
+    .punchlist-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--beds-charcoal-heading);
+      margin-bottom: 2px;
+    }
+    .punchlist-sub {
+      font-size: 11.5px;
+      color: var(--beds-text-secondary);
+    }
+    .punchlist-meter-box {
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+    }
+    .punchlist-meter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* =========================================================================
+       CALIBRATED A4 PORTRAIT PRINT STYLES (STRICT 1-PAGE ZERO SPILL)
+       ========================================================================= */
+    #beds-operations-print-stage {
+      display: none;
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 8mm 8mm;
+      }
+      html, body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        font-size: 10pt;
+      }
+      .exec-header, nav, .ops-footer, .tabs-nav-bar, .ops-modal-overlay,
+      button, .btn-super-act, .beds-btn, .filter-toolbar-row, .beds-enterprise-topbar,
+      .kpi-row, .kpi-card, .tab-pane {
+        display: none !important;
+      }
+      body.beds-printing-mode header,
+      body.beds-printing-mode nav,
+      body.beds-printing-mode main,
+      body.beds-printing-mode section,
+      body.beds-printing-mode .tab-pane,
+      body.beds-printing-mode .ops-modal-overlay,
+      body.beds-printing-mode footer,
+      body.beds-printing-mode .beds-enterprise-topbar {
+        display: none !important;
+      }
+      body.beds-printing-mode #beds-operations-print-stage {
+        display: block !important;
+        visibility: visible !important;
+        width: 190mm !important;
+        max-width: 190mm !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+      }
+      body.beds-printing-mode #beds-operations-print-stage * {
+        visibility: visible !important;
+      }
+    }
+
+    /* Toolbar Filter Row */
+    .filter-toolbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      background: var(--super-bg);
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--super-border);
+    }
+    .filter-search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--beds-bg-panel);
+      border: 1px solid var(--super-border);
+      border-radius: 6px;
+      padding: 6px 12px;
+      flex: 1;
+      min-width: 240px;
+      max-width: 380px;
+    }
+    .filter-search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-size: 12.5px;
+      color: var(--beds-text-primary);
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--super-border);
+    }
+    table.beds-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      background: var(--beds-bg-panel);
+    }
+    table.beds-table th {
+      background: var(--super-bg);
+      color: var(--beds-charcoal-heading);
+      padding: 10px 14px;
+      font-weight: 700;
+      text-align: left;
+      border-bottom: 1px solid var(--super-border);
+      white-space: nowrap;
+    }
+    table.beds-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--super-border);
+      color: var(--beds-text-primary);
+      vertical-align: middle;
+    }
+    table.beds-table tr:hover td {
+      background: rgba(0, 151, 167, 0.03);
+    }
+
+    /* Tag Chips */
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .tag-cyan { background: rgba(0, 151, 167, 0.1); color: #0097a7; }
+    .tag-green { background: rgba(16, 185, 129, 0.1); color: #059669; }
+    .tag-amber { background: rgba(245, 158, 11, 0.1); color: #d97706; }
+    .tag-red { background: rgba(220, 38, 38, 0.1); color: #dc2626; }
+    .tag-purple { background: rgba(124, 58, 237, 0.1); color: #7c3aed; }
+
+    /* Modals */
+    .ops-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 30, 39, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .ops-modal-card {
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border);
+      border-radius: 12px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      animation: superFadeIn 0.2s ease-out both;
+    }
+    .ops-modal-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--super-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--super-bg);
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+    .ops-modal-header h4 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading);
+    }
+    .ops-modal-close {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: #94a3b8;
+    }
+    .ops-modal-close:hover { color: #dc2626; }
+
+    /* ═══ BEDS V1.0 SPLIT-SCREEN LOGIN ══════════════════════════════ */
+    .login-split-card {
+      width: 100%;
+      max-width: 940px;
+      background: var(--beds-bg-panel, #ffffff);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 151, 178, 0.25);
+      border: 1px solid var(--super-border, #e2e8f0);
+      display: flex;
+      flex-direction: row;
+      min-height: 540px;
+      animation: superFadeIn 0.2s ease-out both;
+    }
+    .login-split-left {
+      flex: 0 0 50%;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background-color: #102D35;
+      min-height: 540px;
+    }
+    .login-split-left img.login-cover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .login-split-left .login-cover-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      background: linear-gradient(to top, rgba(16,45,53,0.96) 0%, rgba(16,45,53,0.6) 55%, rgba(16,45,53,0.0) 100%);
+      padding: 34px 28px 26px;
+      color: #fff;
+    }
+    .login-split-left .login-cover-label h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 4px 0;
+      line-height: 1.2;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .login-split-left .login-cover-label p {
+      font-size: 11px;
+      color: var(--beds-teal-primary, #0097b2);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 0;
+    }
+    .login-split-left .login-cover-label .login-motto {
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+      font-style: italic;
+      margin-top: 6px;
+    }
+    .login-split-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 36px 42px;
+      background: var(--beds-bg-panel, #ffffff);
+      overflow-y: auto;
+    }
+    @media (max-width: 768px) {
+      .login-split-card { flex-direction: column; max-width: 95%; }
+      .login-split-left { min-height: 200px; flex: none; }
+      .login-split-right { padding: 24px 18px; }
+    }
+
+    /* ═══ USER PILL DROPDOWN ════════════════════════════════════════ */
+    .user-pill-wrap { position: relative; display: inline-block; }
+    .user-pill { cursor: pointer; user-select: none; }
+    .user-pill-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 220px;
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border, #e2e8f0);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(16,45,53,0.18);
+      z-index: 500;
+      padding: 6px;
+      animation: dropdownSlide 0.15s ease-out;
+    }
+    .user-pill-wrap.open .user-pill-menu { display: block; }
+    .user-pill-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--beds-text-primary, #102d35);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .user-pill-menu-item:hover { background: rgba(0,151,178,0.08); }
+    .user-pill-menu-divider { height: 1px; background: var(--super-border, #e2e8f0); margin: 4px 0; }
+    .user-pill-menu-item.danger { color: #dc2626; }
+    .user-pill-menu-item.danger:hover { background: rgba(220,38,38,0.08); }
+
+    /* ═══ PORTAL SWITCHER DROPDOWN ══════════════════════════════════ */
+    .portal-switcher-wrap { position: relative; display: inline-block; }
+    .portal-switcher-btn {
+      background: var(--super-bg, #f8fafc);
+      border: 1px solid var(--super-border, #e2e8f0);
+      color: var(--beds-text-primary, #102d35);
+      padding: 5px 11px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: inherit;
+    }
+    .portal-switcher-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 230px;
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border, #e2e8f0);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(16,45,53,0.18);
+      z-index: 500;
+      padding: 6px;
+      animation: dropdownSlide 0.15s ease-out;
+    }
+    .portal-switcher-wrap.open .portal-switcher-menu { display: block; }
+    .portal-switcher-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--beds-text-primary, #102d35);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .portal-switcher-item:hover { background: rgba(0,151,178,0.08); }
+    .portal-switcher-item.current { background: rgba(0,151,178,0.12); border-left: 3px solid #0097b2; }
+
+    /* KPI Card & Table Standards */
+    .super-stat-card:hover, .area-kpi-card:hover, .card-panel:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(16,45,53,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .ops-modal-body {
+      padding: 22px;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--beds-text-secondary);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 13px;
+      border: 1px solid var(--super-border);
+      border-radius: 6px;
+      background: var(--beds-bg-panel);
+      color: var(--beds-text-primary);
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--super-cyan);
+      box-shadow: 0 0 0 2px var(--super-cyan-glow);
+    }
+
+    /* Floating Toast Notification */
+    .ops-toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .ops-toast {
+      background: #102a35;
+      color: #ffffff;
+      border: 1px solid #0097a7;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 280px;
+      max-width: 420px;
+      animation: superFadeIn 0.25s ease-out;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .ops-toast.fade-out {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    .ops-toast-success { border-color: #10b981; }
+    .ops-toast-warning { border-color: #f59e0b; }
+    .ops-toast-info { border-color: #0097a7; }
+
+    /* Footer */
+    footer.portal-footer {
+      background: var(--beds-bg-panel);
+      border-top: 1px solid var(--super-border);
+      padding: 20px 28px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--beds-text-muted);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- DEDICATED CALIBRATED A4 PRINT STAGE -->
+  <div id="beds-operations-print-stage"></div>
+
+  <!-- 1. MASTER EXECUTIVE HEADER -->
+  <header class="exec-header">
+    <div class="header-brand">
+      <img src="assets/images/balsons-logo.png" alt="BALSONS Logo">
+      <div class="brand-text">
+        <h1>BALSONS HEAVY LIFT & SHIFT</h1>
+        <p>Operations & Heavy Rigging Execution Manager</p>
+        <div class="brand-slogan">“Difficult We Do Easily, Impossible Takes Little Time...!”</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="badge-pill">
+        📍 JTRWF PROJECT • Khordha, Odisha
+      </span>
+      <span class="badge-pill" id="headerSyncPill" onclick="BalsonsOpsApp.openSyncModal()" style="cursor: pointer; background: rgba(16, 185, 129, 0.1); border-color: #10b981; color: #047857;" title="Click to View Real-time Google Sheet Dual Sync Telemetry">
+        <span class="online-indicator" id="headerSyncIndicator"></span>
+        <span id="headerSyncPillText">Sync: 1GeqDDmB... (Online)</span>
+      </span>
+      <a href="https://docs.google.com/spreadsheets/d/1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E/edit" target="_blank" class="badge-pill" style="background: rgba(16, 185, 129, 0.1); border-color: #10b981; color: #047857; text-decoration: none; font-weight: 700;" title="Open Dedicated Operations Google Sheets Database: 1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E">
+        <span>Sheet ↗</span>
+      </a>
+      <a href="https://script.google.com/d/1an3LeD6Ich14qtWZ5GFgJMaa3dYQSboZRwFy9g_gf9zWicPDB9KpFNny/edit" target="_blank" class="badge-pill" style="background: rgba(0, 151, 167, 0.1); border-color: #0097a7; color: #0097a7; text-decoration: none; font-weight: 700;" title="Google Apps Script Backend API: 1an3LeD6Ich14qtWZ5GFgJMaa3dYQSboZRwFy9g_gf9zWicPDB9KpFNny">
+        <span>API ↗</span>
+      </a>
+      <!-- Portal Switcher Dropdown -->
+      
+
+      <button class="badge-pill" id="themeBtn" onclick="toggleTheme()" style="cursor: pointer;" title="Toggle Light/Dark Theme">
+        🌙 Dark
+      </button>
+      <a href="../mobile/operations.html" class="badge-pill" style="background: rgba(0, 151, 167, 0.12); border-color: #0097a7; color: #0097a7; font-weight: 800; text-decoration: none;" title="Switch to Mobile & Tablet Optimized View">
+        📱 Mobile View
+      </a>
+
+      <!-- User Pill Wrap with Dropdown -->
+      <div class="user-pill-wrap" id="userPillWrap">
+        <div id="headerUserBadge" class="user-session-chip user-pill" onclick="document.getElementById('userPillWrap').classList.toggle('open')" title="Click to Switch Role">
+          👤 <strong>Dilip Rout</strong> · Operations Area Manager <span style="font-size:10px; margin-left:2px;">▾</span>
+        </div>
+        <div class="user-pill-menu">
+          <div class="user-pill-menu-item">👤 <span id="menuUserFullName">Dilip Rout (Ops Lead)</span></div>
+          <div class="user-pill-menu-divider"></div>
+          <div class="user-pill-menu-item" onclick="BalsonsOpsApp.openLoginModal()">🔄 Switch Role</div>
+          <div class="user-pill-menu-divider"></div>
+          </div>
+      </div>
+
+      
+    </div>
+  </header>
+
+  <!-- 2. EXECUTIVE OPERATIONS SUPER VIEW RIBBON -->
+  <section class="super-view-ribbon">
+    <div class="super-view-header">
+      <div class="super-view-title">
+        <h2><span>⚡</span> Executive Operations Super View</h2>
+        <p>Jupiter Tatravagonka Railwheel Factory (JTRWF) • Schuler Forging & Axle Machining Heavy Erection</p>
+      </div>
+      <div class="super-view-actions">
+        <button class="btn-super-act" onclick="BalsonsOpsApp.openCreateWpModal()">
+          ➕ Create WP
+        </button>
+        <button class="btn-super-act" onclick="BalsonsOpsApp.openNewShiftModal()">
+          📝 Shift Handover
+        </button>
+        <button class="btn-super-act" onclick="BalsonsOpsApp.openRaiseHoldModal()">
+          ⚠️ Raise Hold
+        </button>
+        <button class="btn-super-act" onclick="BalsonsOpsApp.openSyncModal()">
+          🔄 Dual Sync
+        </button>
+        <button class="btn-super-act" onclick="BalsonsOpsApp.exportOperationalData()">
+          💾 Backup JSON
+        </button>
+      </div>
+    </div>
+
+    <div class="super-stats-grid">
+      <div class="super-stat-card">
+        <div class="stat-label"><span>🏗️</span> Heavy Lift Progress</div>
+        <div class="stat-value" id="statErectionProgress">68.5%</div>
+        <div class="stat-sub">Axle 75.0% · Wheel 60.0% · MS 69.2%</div>
+      </div>
+      <div class="super-stat-card">
+        <div class="stat-label"><span>📋</span> Active Work Packages</div>
+        <div class="stat-value" id="statActiveWp">12 Active</div>
+        <div class="stat-sub">8-State Lifecycle Enforced</div>
+      </div>
+      <div class="super-stat-card">
+        <div class="stat-label"><span>👥</span> Operations Manpower</div>
+        <div class="stat-value" id="statCrewCount">16 Deployed</div>
+        <div class="stat-sub">100% Form 11 & TPI Qualified</div>
+      </div>
+      <div class="super-stat-card">
+        <div class="stat-label"><span>🚧</span> Managed Site Holds</div>
+        <div class="stat-value" id="statActiveHolds" style="color: #fbbf24;">4 Active</div>
+        <div class="stat-sub">0 Safety Incidents · PTWs Cleared</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. NAVIGATION TABS BAR (LOCKED BEDS STANDARD: BLACK IN LIGHT, WHITE IN DARK) -->
+  <nav class="tabs-nav-bar" id="master-nav-tabs">
+    <div class="tabs-container">
+      <button class="nav-tab-btn active" onclick="switchTab('tab-axle', this)">
+        🏗️ Area 1: Line Axle (717 MD)
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('tab-wheel', this)">
+        ⚙️ Area 2: Line Wheel (1,075 MD)
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('tab-machine-shop', this)">
+        🏭 Area 3: Machine Shop Bay (7 Streams)
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('tab-work-packages', this)">
+        📋 Master Work Packages (12 Active)
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('tab-shift-logbook', this)">
+        📝 Daily Shift Logbook (6 Logs)
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('tab-manpower', this)">
+        👥 Manpower Roster (16 Crew)
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('tab-reconciliation', this)">
+        ⚖️ SOW Reconciliation (31 Units)
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('tab-holds', this)">
+        ⚠️ Site Holds & Bottlenecks (4 Active)
+      </button>
+      <button class="nav-tab-btn" id="tab-btn-dossier" onclick="Balsons360Dossier.openModal()" style="font-weight: 800; color: #0097B2;" title="Open 360° Workforce Dossiers">🌐 360° Dossiers</button>
+      <button class="nav-tab-btn" id="tab-btn-documents" onclick="switchTab('tab-documents', this)">
+        📁 Documents &amp; Drive Vault
+      </button>
+    </div>
+  </nav>
+
+  <!-- 4. TAB PANES -->
+  <main class="portal-main">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: AREA 1 - LINE AXLE WORKSPACE        -->
+    <!-- ========================================== -->
+    <div id="tab-axle" class="tab-pane active">
+      <!-- Area Hero Banner -->
+      <div class="area-hero-banner" style="border-left: 5px solid #2563eb;">
+        <div class="area-hero-top">
+          <div class="area-title-group">
+            <h3><span>🏗️</span> Area 1: Line Axle • Schuler Axle Forging Press Cell</h3>
+            <p>Jupiter Tatravagonka Railwheel Factory (JTRWF) • Bay 1 & Bay 2 Heavy Erection Zone</p>
+          </div>
+          <div class="area-action-bar">
+            <button class="btn-super-act" onclick="BalsonsOpsApp.open360Dossier('AREA', 'LINE-AXLE')" title="Open 360° Comprehensive Area Executive Dossier">
+              👁️ Area 1 360° Dossier
+            </button>
+            <button class="btn-super-act" onclick="BalsonsOpsApp.openCreateWpModalForArea('LINE-AXLE')">
+              ➕ New WP in Line Axle
+            </button>
+            <button class="btn-super-act" onclick="BalsonsOpsApp.openNewShiftModalForArea('LINE-AXLE')">
+              📝 Log Axle Shift
+            </button>
+            <button class="btn-super-act" onclick="BalsonsOpsApp.openRaiseHoldModalForArea('LINE-AXLE')">
+              ⚠️ Report Axle Bottleneck
+            </button>
+          </div>
+        </div>
+
+        <div class="area-kpi-grid">
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Target Man-Days</div>
+            <div class="kpi-val">717 MD</div>
+            <div class="kpi-sub">6,453 Planned Hours</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Machinery Tonnage</div>
+            <div class="kpi-val">890.50 MT</div>
+            <div class="kpi-sub">Schuler Press + Pullers</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Erection Progress</div>
+            <div class="kpi-val" id="axleStatProgress" style="color:#60a5fa;">75.0%</div>
+            <div class="kpi-sub">Rough Levelling Verified</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Active Work Packages</div>
+            <div class="kpi-val" id="axleStatActiveWp">3 Packages</div>
+            <div class="kpi-sub">8-State Governed</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Assigned Heavy Cranes</div>
+            <div class="kpi-val" style="font-size:14px; line-height:1.3; font-weight:800;">Demag 250T + Sany 150T</div>
+            <div class="kpi-sub">Tandem Lift Cell Active</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Managed Site Holds</div>
+            <div class="kpi-val" id="axleStatHolds" style="color:#fbbf24;">1 Active</div>
+            <div class="kpi-sub">Pocket Hole Depth C3</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Line Axle Work Packages Table -->
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>📋 Line Axle Work Packages & Execution Status</h3>
+          <button class="btn-action-pill" onclick="BalsonsOpsApp.openCreateWpModalForArea('LINE-AXLE')">
+            ➕ Create Package in Line Axle
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Package ID</th>
+                <th>Title & Asset Scope</th>
+                <th>Workstream</th>
+                <th>Supervisor</th>
+                <th>Measurable Progress</th>
+                <th>Lifecycle State</th>
+                <th>360° & Actions</th>
+              </tr>
+            </thead>
+            <tbody id="axleWpTableBody">
+              <!-- Rendered dynamically by BalsonsOpsApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Line Axle Machinery & Equipment Registry -->
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>🏗️ Line Axle Heavy Machinery & Asset Register</h3>
+          <span class="tag-chip tag-cyan">Schuler AG Germany Baseline</span>
+        </div>
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Asset Code</th>
+                <th>Machine & Envelope Description</th>
+                <th>OEM Maker</th>
+                <th>Weight (MT)</th>
+                <th>Civil Foundation & Alignment Status</th>
+                <th>Erection State</th>
+                <th>360° Specs</th>
+              </tr>
+            </thead>
+            <tbody id="axleAssetTableBody">
+              <!-- Rendered dynamically by BalsonsOpsApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: AREA 2 - LINE WHEEL WORKSPACE       -->
+    <!-- ========================================== -->
+    <div id="tab-wheel" class="tab-pane">
+      <!-- Area Hero Banner -->
+      <div class="area-hero-banner" style="border-left: 5px solid #059669;">
+        <div class="area-hero-top">
+          <div class="area-title-group">
+            <h3><span>⚙️</span> Area 2: Line Wheel • Schuler Wheel Forging Press & Furnace</h3>
+            <p>Jupiter Tatravagonka Railwheel Factory (JTRWF) • Bay 3 & Bay 4 Heavy Forging & Heat Treatment Zone</p>
+          </div>
+          <div class="area-action-bar">
+            <button class="btn-super-act" onclick="BalsonsOpsApp.open360Dossier('AREA', 'LINE-WHEEL')" title="Open 360° Comprehensive Area Executive Dossier">
+              👁️ Area 2 360° Dossier
+            </button>
+            <button class="btn-super-act" onclick="BalsonsOpsApp.openCreateWpModalForArea('LINE-WHEEL')">
+              ➕ New WP in Line Wheel
+            </button>
+            <button class="btn-super-act" onclick="BalsonsOpsApp.openNewShiftModalForArea('LINE-WHEEL')">
+              📝 Log Wheel Shift
+            </button>
+            <button class="btn-super-act" onclick="BalsonsOpsApp.openRaiseHoldModalForArea('LINE-WHEEL')">
+              ⚠️ Report Wheel Bottleneck
+            </button>
+          </div>
+        </div>
+
+        <div class="area-kpi-grid">
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Target Man-Days</div>
+            <div class="kpi-val">1,075 MD</div>
+            <div class="kpi-sub">9,675 Planned Hours</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Machinery Tonnage</div>
+            <div class="kpi-val">1,145.00 MT</div>
+            <div class="kpi-sub">8,000T Frame + Furnace</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Erection Progress</div>
+            <div class="kpi-val" id="wheelStatProgress" style="color:#34d399;">60.0%</div>
+            <div class="kpi-sub">Baseplate Anchored</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Active Work Packages</div>
+            <div class="kpi-val" id="wheelStatActiveWp">3 Packages</div>
+            <div class="kpi-sub">8-State Governed</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Assigned Cranes</div>
+            <div class="kpi-val" style="font-size:14px; line-height:1.3; font-weight:800;">Demag 250T + Sany 150T</div>
+            <div class="kpi-sub">42m Main Boom + Hydra 20T</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Managed Site Holds</div>
+            <div class="kpi-val" id="wheelStatHolds" style="color:#fbbf24;">1 Active</div>
+            <div class="kpi-sub">Pedestal 7-Day Cure Report</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Line Wheel Work Packages Table -->
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>📋 Line Wheel Work Packages & Erection Status</h3>
+          <button class="btn-action-pill" onclick="BalsonsOpsApp.openCreateWpModalForArea('LINE-WHEEL')">
+            ➕ Create Package in Line Wheel
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Package ID</th>
+                <th>Title & Asset Scope</th>
+                <th>Workstream</th>
+                <th>Supervisor</th>
+                <th>Measurable Progress</th>
+                <th>Lifecycle State</th>
+                <th>360° & Actions</th>
+              </tr>
+            </thead>
+            <tbody id="wheelWpTableBody">
+              <!-- Rendered dynamically by BalsonsOpsApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Line Wheel Machinery & Equipment Registry -->
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>⚙️ Line Wheel Heavy Machinery & Press Assets</h3>
+          <span class="tag-chip tag-green">Schuler / Tenova / LOI Italimpianti</span>
+        </div>
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Asset Code</th>
+                <th>Machine & Envelope Description</th>
+                <th>OEM Maker</th>
+                <th>Weight (MT)</th>
+                <th>Civil Foundation & Alignment Status</th>
+                <th>Erection State</th>
+                <th>360° Specs</th>
+              </tr>
+            </thead>
+            <tbody id="wheelAssetTableBody">
+              <!-- Rendered dynamically by BalsonsOpsApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: AREA 3 - MACHINE SHOP BAY WORKSPACE -->
+    <!-- ========================================== -->
+    <div id="tab-machine-shop" class="tab-pane">
+      <!-- Area Hero Banner -->
+      <div class="area-hero-banner" style="border-left: 5px solid #7c3aed;">
+        <div class="area-hero-top">
+          <div class="area-title-group">
+            <h3><span>🏭</span> Area 3: Machine Shop Bay • Complete Axle Machining Line</h3>
+            <p>Jupiter Tatravagonka Railwheel Factory (JTRWF) • 7 Governed Workstreams & Multi-OEM Integrity</p>
+          </div>
+          <div class="area-action-bar">
+            <button class="btn-super-act" onclick="BalsonsOpsApp.open360Dossier('AREA', 'AREA-MACHINE-SHOP-AXLE')" title="Open 360° Comprehensive Area Executive Dossier">
+              👁️ Area 3 360° Dossier
+            </button>
+            <button class="btn-super-act" onclick="BalsonsOpsApp.openCreateWpModalForArea('AREA-MACHINE-SHOP-AXLE')">
+              ➕ New WP in Machine Shop
+            </button>
+            <button class="btn-super-act" onclick="BalsonsOpsApp.openNewShiftModalForArea('AREA-MACHINE-SHOP-AXLE')">
+              📝 Log Machine Shop Shift
+            </button>
+            <button class="btn-super-act" onclick="BalsonsOpsApp.openRaiseHoldModalForArea('AREA-MACHINE-SHOP-AXLE')">
+              ⚠️ Report Machine Shop Hold
+            </button>
+          </div>
+        </div>
+
+        <div class="area-kpi-grid">
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Target Man-Days</div>
+            <div class="kpi-val">1,220 MD</div>
+            <div class="kpi-sub">10,980 Planned Hours</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Machinery Tonnage</div>
+            <div class="kpi-val">496.00 MT</div>
+            <div class="kpi-sub">7 Workstreams Covered</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Erection Progress</div>
+            <div class="kpi-val" id="msStatProgress" style="color:#a78bfa;">69.2%</div>
+            <div class="kpi-sub">Lathes & Gantries Staged</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Active Work Packages</div>
+            <div class="kpi-val" id="msStatActiveWp">6 Packages</div>
+            <div class="kpi-sub">8-State Governed</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Assigned Overhead Cranes</div>
+            <div class="kpi-val" style="font-size:14px; line-height:1.3; font-weight:800;">Bay Crane 30T + 15T</div>
+            <div class="kpi-sub">Air Skates 40T + Mobile Gantry 20T</div>
+          </div>
+          <div class="area-kpi-card">
+            <div class="kpi-lbl">Managed Site Holds</div>
+            <div class="kpi-val" id="msStatHolds" style="color:#10b981;">0 Blockers</div>
+            <div class="kpi-sub">1 Resolved (MS-OEM-PENDING)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 Workstreams Filter Toolbar -->
+      <div class="stream-filter-bar">
+        <button class="stream-pill-btn active" onclick="BalsonsOpsApp.filterMsWorkstream('ALL', this)">
+          🌐 All 7 Streams (6 WPs)
+        </button>
+        <button class="stream-pill-btn" onclick="BalsonsOpsApp.filterMsWorkstream('MS-FFG', this)">
+          ⚙️ MS-FFG Lathes (OP20/30)
+        </button>
+        <button class="stream-pill-btn" onclick="BalsonsOpsApp.filterMsWorkstream('MS-MAG', this)">
+          🔍 MS-MAG NDT (UT & MPI)
+        </button>
+        <button class="stream-pill-btn" onclick="BalsonsOpsApp.filterMsWorkstream('MS-GER', this)">
+          💎 MS-GER Grinders (CPT-3000)
+        </button>
+        <button class="stream-pill-btn" onclick="BalsonsOpsApp.filterMsWorkstream('MS-PARI-GANTRY', this)">
+          🏗️ MS-PARI-GANTRY (5 Heads GH01-05)
+        </button>
+        <button class="stream-pill-btn" onclick="BalsonsOpsApp.filterMsWorkstream('MS-AUTO-TRANSFER', this)">
+          ⚡ MS-AUTO Shuttles (OP05/75/105)
+        </button>
+        <button class="stream-pill-btn" onclick="BalsonsOpsApp.filterMsWorkstream('MS-AUX', this)">
+          💧 MS-AUX Utilities & Coolant
+        </button>
+        <button class="stream-pill-btn" onclick="BalsonsOpsApp.filterMsWorkstream('MS-OEM-PENDING', this)">
+          📦 MS-OEM-PENDING (Queue)
+        </button>
+      </div>
+
+      <!-- Machine Shop Work Packages Table -->
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>📋 Machine Shop Work Packages (Filtered by Workstream)</h3>
+          <button class="btn-action-pill" onclick="BalsonsOpsApp.openCreateWpModalForArea('AREA-MACHINE-SHOP-AXLE')">
+            ➕ Create Package in Machine Shop
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Package ID</th>
+                <th>Title & Asset Scope</th>
+                <th>Workstream</th>
+                <th>Supervisor</th>
+                <th>Measurable Progress</th>
+                <th>Lifecycle State</th>
+                <th>360° & Actions</th>
+              </tr>
+            </thead>
+            <tbody id="msWpTableBody">
+              <!-- Rendered dynamically by BalsonsOpsApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Machine Shop Machinery & Equipment Registry -->
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>🏭 Axle Machining Bay Machinery & Asset Register</h3>
+          <span class="tag-chip tag-purple">Multi-OEM Controlled Attribution</span>
+        </div>
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Asset Code</th>
+                <th>Machine & Envelope Description</th>
+                <th>OEM Maker</th>
+                <th>Weight (MT)</th>
+                <th>Civil Foundation & Alignment Status</th>
+                <th>Erection State</th>
+                <th>360° Specs</th>
+              </tr>
+            </thead>
+            <tbody id="msAssetTableBody">
+              <!-- Rendered dynamically by BalsonsOpsApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: MASTER WORK PACKAGES (ALL AREAS)    -->
+    <!-- ========================================== -->
+    <div id="tab-work-packages" class="tab-pane">
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>📋 8-State Master Work Packages Lifecycle Engine (All Workspaces)</h3>
+          <button class="btn-action-pill" onclick="BalsonsOpsApp.openCreateWpModal()">
+            ➕ Create Work Package
+          </button>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="filter-toolbar-row">
+          <div class="filter-search-box">
+            <span>🔍</span>
+            <input type="text" id="wpSearchInput" placeholder="Search by ID, title, asset, supervisor..." oninput="BalsonsOpsApp.filterWorkPackages()">
+          </div>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <select id="wpWorkspaceFilter" class="form-control" style="width:auto; padding:6px 10px;" onchange="BalsonsOpsApp.filterWorkPackages()">
+              <option value="ALL">All Workspaces (12)</option>
+              <option value="LINE-AXLE">Line Axle (3)</option>
+              <option value="LINE-WHEEL">Line Wheel (3)</option>
+              <option value="AREA-MACHINE-SHOP-AXLE">Machine Shop Bay (6)</option>
+            </select>
+            <select id="wpStateFilter" class="form-control" style="width:auto; padding:6px 10px;" onchange="BalsonsOpsApp.filterWorkPackages()">
+              <option value="ALL">All Lifecycle States</option>
+              <option value="In progress">In progress</option>
+              <option value="Mobilized">Mobilized</option>
+              <option value="Planned">Planned</option>
+              <option value="Scope verified">Scope verified</option>
+              <option value="Ready for planning">Ready for planning</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Package ID</th>
+                <th>Workspace / Stream</th>
+                <th>Title & Asset Scope</th>
+                <th>Supervisor</th>
+                <th>Measurable Progress</th>
+                <th>Lifecycle State</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="wpTableBody">
+              <!-- Populated by BalsonsOpsApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: DAILY SHIFT LOGBOOK                 -->
+    <!-- ========================================== -->
+    <div id="tab-shift-logbook" class="tab-pane">
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>📝 Daily Shift Execution Logbook & Handover</h3>
+          <button class="btn-action-pill" onclick="BalsonsOpsApp.openNewShiftModal()">
+            📝 Record Shift Handover
+          </button>
+        </div>
+        <p style="font-size: 13px; color: var(--beds-text-secondary); margin-bottom: 16px;">
+          Shift log records dual-shift execution (Shift A / Shift B), tandem crane coordination, Store Form 11 tackle compliance, and Safety PTW active permit status:
+        </p>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Log Ref ID</th>
+                <th>Date & Shift</th>
+                <th>Area / Stream</th>
+                <th>Supervisor & Crew</th>
+                <th>Milestones & Crane Config</th>
+                <th>Handover Critical Notes</th>
+              </tr>
+            </thead>
+            <tbody id="shiftLogsBody">
+              <!-- Populated by BalsonsOpsApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 6: MANPOWER ROSTER (8 STAGES)          -->
+    <!-- ========================================== -->
+    <div id="tab-manpower" class="tab-pane">
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>👥 Manpower Allocation & 8-Stage Lifecycle Model</h3>
+          <span class="tag-chip tag-cyan">16 Active Certified Personnel</span>
+        </div>
+        <p style="font-size: 13px; color: var(--beds-text-secondary); margin-bottom: 16px;">
+          Personnel transition through 8 governed stages: <code>REQUIRED ➔ AVAILABLE ➔ QUALIFIED ➔ CLEARED ➔ ALLOCATED ➔ MOBILIZED ➔ DEPLOYED ➔ RELEASED</code>. Click <strong>Cycle State</strong> to simulate lifecycle transition:
+        </p>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Badge No</th>
+                <th>Full Name</th>
+                <th>Designation</th>
+                <th>Trade</th>
+                <th>Medical Fitness</th>
+                <th>TPI Cert</th>
+                <th>Form 11</th>
+                <th>Lifecycle State</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="manpowerTableBody">
+              <!-- Populated by BalsonsOpsApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 7: QUANTITY RECONCILIATION             -->
+    <!-- ========================================== -->
+    <div id="tab-reconciliation" class="tab-pane">
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>⚖️ Statement of Work (SOW) & Asset Register Reconciliation</h3>
+          <span class="tag-chip tag-green">Excel Master Read-Only Assurance</span>
+        </div>
+        <p style="font-size: 13px; color: var(--beds-text-secondary); margin-bottom: 16px;">
+          Reconciles 30 RFQ Station Entries against 31 Commercial SOW Scheduled Units, 1,927.314 MT indicative weight, and exactly 5 physical overhead gantries:
+        </p>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Equipment Description</th>
+                <th>SOW Qty</th>
+                <th>RFQ Station Ref</th>
+                <th>Weight (MT)</th>
+                <th>Workspace</th>
+                <th>Discrepancy Category</th>
+                <th>Resolution Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1</strong></td>
+                <td>Schuler Axle Forging Press Cell Complete</td>
+                <td>1</td>
+                <td><code>STN-AXLE-PRS-01</code></td>
+                <td><strong style="color:var(--beds-teal-primary);">845.50 MT</strong></td>
+                <td>LINE-AXLE</td>
+                <td><span class="tag-chip tag-green">MATCHED</span></td>
+                <td><span class="tag-chip tag-green">APPROVED</span></td>
+              </tr>
+              <tr>
+                <td><strong>2</strong></td>
+                <td>Axle Hydraulic Tie-Rod Tensioning System</td>
+                <td>1</td>
+                <td><code>STN-AXLE-HYD-01</code></td>
+                <td><strong style="color:var(--beds-teal-primary);">45.00 MT</strong></td>
+                <td>LINE-AXLE</td>
+                <td><span class="tag-chip tag-green">MATCHED</span></td>
+                <td><span class="tag-chip tag-green">APPROVED</span></td>
+              </tr>
+              <tr>
+                <td><strong>3</strong></td>
+                <td>Schuler Wheel Forging Press Monobloc & Cylinders</td>
+                <td>1</td>
+                <td><code>STN-WHEEL-PRS-01</code></td>
+                <td><strong style="color:var(--beds-teal-primary);">830.00 MT</strong></td>
+                <td>LINE-WHEEL</td>
+                <td><span class="tag-chip tag-green">MATCHED</span></td>
+                <td><span class="tag-chip tag-green">APPROVED</span></td>
+              </tr>
+              <tr>
+                <td><strong>4</strong></td>
+                <td>Rotary Hearth Furnace Casing Segments Assembly</td>
+                <td>1</td>
+                <td><code>STN-WHEEL-FRN-01</code></td>
+                <td><strong style="color:var(--beds-teal-primary);">280.00 MT</strong></td>
+                <td>LINE-WHEEL</td>
+                <td><span class="tag-chip tag-amber">WEIGHT_VARIATION</span></td>
+                <td><span class="tag-chip tag-amber">CLAIM_SUBMITTED</span></td>
+              </tr>
+              <tr>
+                <td><strong>5</strong></td>
+                <td>Wheel High-Speed Manipulator & Rails</td>
+                <td>1</td>
+                <td><code>STN-WHEEL-MAN-01</code></td>
+                <td><strong style="color:var(--beds-teal-primary);">35.00 MT</strong></td>
+                <td>LINE-WHEEL</td>
+                <td><span class="tag-chip tag-green">MATCHED</span></td>
+                <td><span class="tag-chip tag-green">APPROVED</span></td>
+              </tr>
+              <tr>
+                <td><strong>6</strong></td>
+                <td>VDF Boehringer OP20 Rough Turning Lathes</td>
+                <td>4</td>
+                <td><code>STN-MS-FFG-OP20</code></td>
+                <td><strong style="color:var(--beds-teal-primary);">114.00 MT</strong></td>
+                <td>MACHINE-SHOP</td>
+                <td><span class="tag-chip tag-green">MATCHED</span></td>
+                <td><span class="tag-chip tag-green">APPROVED</span></td>
+              </tr>
+              <tr>
+                <td><strong>7</strong></td>
+                <td>VDF Boehringer OP30 Finish Turning Lathes</td>
+                <td>4</td>
+                <td><code>STN-MS-FFG-OP30</code></td>
+                <td><strong style="color:var(--beds-teal-primary);">114.00 MT</strong></td>
+                <td>MACHINE-SHOP</td>
+                <td><span class="tag-chip tag-green">MATCHED</span></td>
+                <td><span class="tag-chip tag-green">APPROVED</span></td>
+              </tr>
+              <tr>
+                <td><strong>8</strong></td>
+                <td>GER CPT-3000 CNC Precision Grinders (SN 25/2050, 51)</td>
+                <td>2</td>
+                <td><code>STN-MS-GER-01/02</code></td>
+                <td><strong style="color:var(--beds-teal-primary);">64.00 MT</strong></td>
+                <td>MACHINE-SHOP</td>
+                <td><span class="tag-chip tag-green">MATCHED</span></td>
+                <td><span class="tag-chip tag-green">APPROVED</span></td>
+              </tr>
+              <tr>
+                <td><strong>9</strong></td>
+                <td>PARI Automated Overhead Gantry Heads (GH01-GH05)</td>
+                <td>5</td>
+                <td><code>STN-MS-GANTRY-ALL</code></td>
+                <td><strong style="color:var(--beds-teal-primary);">90.00 MT</strong></td>
+                <td>MACHINE-SHOP</td>
+                <td><span class="tag-chip tag-purple">RFQ_DISCREPANCY</span></td>
+                <td><span class="tag-chip tag-purple">5 HEADS RECONCILED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 8: HOLDS & DISCREPANCIES               -->
+    <!-- ========================================== -->
+    <div id="tab-holds" class="tab-pane">
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>⚠️ Site Holds, Engineering Bottlenecks & Discrepancies</h3>
+          <button class="btn-action-pill" onclick="BalsonsOpsApp.openRaiseHoldModal()">
+            ⚠️ Raise Site Hold
+          </button>
+        </div>
+        <p style="font-size: 13px; color: var(--beds-text-secondary); margin-bottom: 16px;">
+          Managed bottlenecks impacting mechanical progress. Every hold requires an identified root cause, responsible party, and scheduled resolution target:
+        </p>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Hold ID</th>
+                <th>Workspace / Asset</th>
+                <th>Category</th>
+                <th>Description & Root Cause</th>
+                <th>Responsible Party</th>
+                <th>Action & Target Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="holdsTableBody">
+              <!-- Populated by BalsonsOpsApp -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  
+    <!-- ========================================== -->
+    <!-- TAB 9: DOCUMENTS & GOOGLE DRIVE VAULT      -->
+    <!-- ========================================== -->
+    <div id="tab-documents" class="tab-pane">
+      <!-- Populated dynamically by BalsonsDocs.renderDocumentsTab('tab-documents') -->
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- 5. INTERACTIVE MODALS                      -->
+  <!-- ========================================== -->
+
+  <!-- MODAL: 360° UNIVERSAL COMPREHENSIVE DOSSIER -->
+  <div id="modal-dossier-360" class="ops-modal-overlay">
+    <div class="ops-modal-card dossier-modal-card">
+      <div class="dossier-header-bar">
+        <div class="dossier-header-title">
+          <h3 id="dossierMainTitle"><span>📋</span> 360° Comprehensive Execution Dossier</h3>
+          <p id="dossierSubTitle">Jupiter Tatravagonka Railwheel Factory (JTRWF) • Official Controlled Record</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button type="button" class="btn-super-act" onclick="window.print()" title="Print / Save A4 Dossier">
+            🖨️ Print A4
+          </button>
+          <button class="ops-modal-close" style="color:#ffffff;" onclick="BalsonsOpsApp.close360Dossier()">✕</button>
+        </div>
+      </div>
+
+      <!-- Dossier Internal Navigation Tabs -->
+      <div class="dossier-tabs-nav" id="dossierTabsNav">
+        <button class="dossier-tab-btn active" onclick="BalsonsOpsApp.switchDossierTab('tab-dos-scope', this)">
+          📋 Scope & SOW
+        </button>
+        <button class="dossier-tab-btn" onclick="BalsonsOpsApp.switchDossierTab('tab-dos-rigging', this)">
+          🏗️ Tandem Rigging & Cranes
+        </button>
+        <button class="dossier-tab-btn" onclick="BalsonsOpsApp.switchDossierTab('tab-dos-safety', this)">
+          🛡️ Safety & PTW Clearances
+        </button>
+        <button class="dossier-tab-btn" onclick="BalsonsOpsApp.switchDossierTab('tab-dos-crew', this)">
+          👥 Deployed Crew & Trades
+        </button>
+        <button class="dossier-tab-btn" onclick="BalsonsOpsApp.switchDossierTab('tab-dos-punchlist', this)">
+          ✅ Mechanical Punchlist
+        </button>
+        <button class="dossier-tab-btn" onclick="BalsonsOpsApp.switchDossierTab('tab-dos-audit', this)">
+          📜 Audit & Shift Logs
+        </button>
+      </div>
+
+      <!-- Dossier Body Container -->
+      <div class="dossier-content-body" id="dossierModalBody">
+        <!-- Rendered dynamically by BalsonsOpsApp.open360Dossier() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 1: CREATE WORK PACKAGE -->
+  <div id="modalCreateWp" class="ops-modal-overlay">
+    <div class="ops-modal-card">
+      <div class="ops-modal-header">
+        <h4>➕ Create New Execution Work Package</h4>
+        <button class="ops-modal-close" onclick="BalsonsOpsApp.closeCreateWpModal()">✕</button>
+      </div>
+      <div class="ops-modal-body">
+        <form id="formCreateWp" onsubmit="BalsonsOpsApp.submitCreateWp(event)">
+          <div class="form-group">
+            <label>Execution Workspace</label>
+            <select id="newWpWorkspace" class="form-control" required>
+              <option value="LINE-AXLE">LINE-AXLE (Axle Forging Line & Press)</option>
+              <option value="LINE-WHEEL">LINE-WHEEL (Wheel Forging Line & Heat Treatment)</option>
+              <option value="AREA-MACHINE-SHOP-AXLE">AREA-MACHINE-SHOP-AXLE (Complete Axle Machining Line)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Child Workstream Code</label>
+            <select id="newWpWorkstream" class="form-control" required>
+              <option value="AXLE-PRESS-CELL">AXLE-PRESS-CELL (Schuler Press Assembly)</option>
+              <option value="AXLE-HYDRAULICS">AXLE-HYDRAULICS (Puller & Tensioning)</option>
+              <option value="WHEEL-PRESS-CELL">WHEEL-PRESS-CELL (Monobloc Assembly)</option>
+              <option value="WHEEL-FURNACE">WHEEL-FURNACE (Rotary Furnace Shell)</option>
+              <option value="MS-FFG">MS-FFG (Lathes OP20.1-4, OP30.1-4)</option>
+              <option value="MS-GER">MS-GER (Grinders OP50.1-2)</option>
+              <option value="MS-PARI-GANTRY">MS-PARI-GANTRY (5 Heads GH01-GH05)</option>
+              <option value="MS-AUTO-TRANSFER">MS-AUTO-TRANSFER (Shuttles & Handling)</option>
+              <option value="MS-AUX">MS-AUX (Utilities Filtration/Coolant)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Project Asset ID</label>
+            <input type="text" id="newWpAsset" class="form-control" placeholder="e.g. AST-AXLE-SCH-03" required>
+          </div>
+          <div class="form-group">
+            <label>Work Package Title</label>
+            <input type="text" id="newWpTitle" class="form-control" placeholder="e.g. Press Crown Hydraulic Manifold Staging" required>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <div class="form-group" style="flex:1;">
+              <label>SOW Clause Ref</label>
+              <input type="text" id="newWpScopeRef" class="form-control" value="SOW-MECH-05.1" required>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Assigned Supervisor</label>
+              <select id="newWpSupervisor" class="form-control" required>
+                <option value="Dilip Rout">Dilip Rout (Lifting In-Charge)</option>
+                <option value="Sarat Mishra">Sarat Mishra (Area Manager)</option>
+                <option value="Manoj Das">Manoj Das (Lead Rigger)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Scope Description</label>
+            <input type="text" id="newWpScopeClause" class="form-control" placeholder="Approved mechanical activities only" required>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <div class="form-group" style="flex:1;">
+              <label>Planned Start</label>
+              <input type="date" id="newWpStartDate" class="form-control" value="2026-11-22" required>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Planned Finish</label>
+              <input type="date" id="newWpEndDate" class="form-control" value="2026-12-05" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Crane & Rigging Requirements</label>
+            <input type="text" id="newWpCrane" class="form-control" placeholder="e.g. Demag 250T + Sany 150T" required>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <button type="button" class="beds-btn beds-btn-secondary" onclick="BalsonsOpsApp.closeCreateWpModal()">Cancel</button>
+            <button type="submit" class="beds-btn beds-btn-primary">✔ Save Work Package</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: MANAGE WORK PACKAGE -->
+  <div id="modalManageWp" class="ops-modal-overlay">
+    <div class="ops-modal-card">
+      <div class="ops-modal-header">
+        <h4>⚙️ Manage Work Package: <span id="editWpId" style="color:var(--super-cyan);"></span></h4>
+        <button class="ops-modal-close" onclick="BalsonsOpsApp.closeEditModal()">✕</button>
+      </div>
+      <div class="ops-modal-body">
+        <div style="background:var(--super-bg); padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:12.5px; border:1px solid var(--super-border);">
+          <div style="font-weight:800; font-size:14px; margin-bottom:4px; color:var(--beds-charcoal-heading);" id="editWpTitle"></div>
+          <div>Workspace: <span id="editWpWorkspace" style="font-weight:700;"></span></div>
+          <div>Asset ID: <code id="editWpAsset" style="font-weight:700;"></code></div>
+          <div>Approved Scope: <span id="editWpScope"></span></div>
+        </div>
+
+        <div class="form-group">
+          <label>Lifecycle State Transition</label>
+          <select id="editWpStateSelect" class="form-control">
+            <option value="Identified">1. Identified</option>
+            <option value="Scope verified">2. Scope verified</option>
+            <option value="Ready for planning">3. Ready for planning</option>
+            <option value="Planned">4. Planned</option>
+            <option value="Mobilized">5. Mobilized</option>
+            <option value="In progress">6. In progress</option>
+            <option value="Hold / blocked">7. Hold / blocked</option>
+            <option value="Mechanical completion">8. Mechanical completion</option>
+            <option value="Closed">9. Closed</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Progress Completion Percentage (%)</label>
+          <input type="number" id="editWpProgressPercent" class="form-control" min="0" max="100">
+        </div>
+
+        <div class="form-group">
+          <label>Measurable Progress Basis Description</label>
+          <input type="text" id="editWpProgressBasis" class="form-control">
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="beds-btn beds-btn-secondary" onclick="BalsonsOpsApp.closeEditModal()">Cancel</button>
+          <button type="button" class="beds-btn beds-btn-primary" onclick="BalsonsOpsApp.saveWpChanges()">✔ Update Work Package</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: NEW SHIFT LOG -->
+  <div id="modalNewShiftLog" class="ops-modal-overlay">
+    <div class="ops-modal-card">
+      <div class="ops-modal-header">
+        <h4>📝 Daily Shift Execution Log & Handover</h4>
+        <button class="ops-modal-close" onclick="BalsonsOpsApp.closeNewShiftModal()">✕</button>
+      </div>
+      <div class="ops-modal-body">
+        <form onsubmit="BalsonsOpsApp.submitNewShiftLog(event)">
+          <div style="display: flex; gap: 12px;">
+            <div class="form-group" style="flex:1;">
+              <label>Shift Date</label>
+              <input type="date" id="shiftDate" class="form-control" value="2026-11-21" required>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Shift Code</label>
+              <select id="shiftSelect" class="form-control" required>
+                <option value="Shift A (08:00 - 17:00)">Shift A (08:00 - 17:00)</option>
+                <option value="Shift B (17:00 - 02:00)">Shift B (17:00 - 02:00)</option>
+                <option value="General Shift">General Shift</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <div class="form-group" style="flex:1;">
+              <label>Workspace</label>
+              <select id="shiftWsSelect" class="form-control" required>
+                <option value="LINE-AXLE">LINE-AXLE</option>
+                <option value="LINE-WHEEL">LINE-WHEEL</option>
+                <option value="AREA-MACHINE-SHOP-AXLE">AREA-MACHINE-SHOP-AXLE</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Workstream</label>
+              <input type="text" id="shiftWsStream" class="form-control" value="AXLE-PRESS-CELL" required>
+            </div>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <div class="form-group" style="flex:1;">
+              <label>Area Supervisor</label>
+              <select id="shiftSup" class="form-control" required>
+                <option value="Dilip Rout">Dilip Rout (Lifting In-Charge)</option>
+                <option value="Sarat Mishra">Sarat Mishra (Area Manager)</option>
+                <option value="Manoj Das">Manoj Das (Lead Rigger)</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Lead Rigger</label>
+              <input type="text" id="shiftRigger" class="form-control" value="Manoj Das" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Deployed Crew Count</label>
+            <input type="number" id="shiftCrewCount" class="form-control" value="48" required>
+          </div>
+          <div class="form-group">
+            <label>Cranes & Heavy Equipment Active</label>
+            <input type="text" id="shiftCranes" class="form-control" value="Demag CC2500 250T + Sany SCC1500 150T" required>
+          </div>
+          <div class="form-group">
+            <label>Store Form 11 Tackle Status</label>
+            <input type="text" id="shiftTackleCert" class="form-control" value="Form 11 Verified (100% compliant, 0 defects)" required>
+          </div>
+          <div class="form-group">
+            <label>Safety PTW Permits Status</label>
+            <input type="text" id="shiftPtw" class="form-control" value="PTW-AXLE-049 & PTW-MS-048 Active" required>
+          </div>
+          <div class="form-group">
+            <label>Key Milestones Completed</label>
+            <textarea id="shiftMilestone" class="form-control" rows="2" required>Crown rough levelling reached 0.8 mm tolerance; GH02 trolley seated on runway rails</textarea>
+          </div>
+          <div class="form-group">
+            <label>Shift Handover Critical Notes</label>
+            <textarea id="shiftHandoverNotes" class="form-control" rows="2" required>Shift B to continue torque-checking on Bed Anchor bolts and maintain laydown path clearance</textarea>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <button type="button" class="beds-btn beds-btn-secondary" onclick="BalsonsOpsApp.closeNewShiftModal()">Cancel</button>
+            <button type="submit" class="beds-btn beds-btn-primary">✔ Submit & Sign Off Shift Log</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: RAISE SITE HOLD -->
+  <div id="modalRaiseHold" class="ops-modal-overlay">
+    <div class="ops-modal-card">
+      <div class="ops-modal-header" style="background: rgba(220, 38, 38, 0.08); border-bottom: 2px solid #dc2626;">
+        <h4 style="color:#dc2626;">⚠️ Raise Engineering Hold / Site Bottleneck</h4>
+        <button class="ops-modal-close" onclick="BalsonsOpsApp.closeRaiseHoldModal()">✕</button>
+      </div>
+      <div class="ops-modal-body">
+        <form onsubmit="BalsonsOpsApp.submitRaiseHold(event)">
+          <div style="display: flex; gap: 12px;">
+            <div class="form-group" style="flex:1;">
+              <label>Workspace</label>
+              <select id="holdWsSelect" class="form-control" required>
+                <option value="LINE-AXLE">LINE-AXLE</option>
+                <option value="LINE-WHEEL">LINE-WHEEL</option>
+                <option value="AREA-MACHINE-SHOP-AXLE">AREA-MACHINE-SHOP-AXLE</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Workstream</label>
+              <select id="holdStreamSelect" class="form-control" required>
+                <option value="AXLE-PRESS-CELL">AXLE-PRESS-CELL</option>
+                <option value="WHEEL-FURNACE">WHEEL-FURNACE</option>
+                <option value="MS-FFG">MS-FFG</option>
+                <option value="MS-GER">MS-GER</option>
+                <option value="MS-PARI-GANTRY">MS-PARI-GANTRY</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <div class="form-group" style="flex:1;">
+              <label>Asset ID</label>
+              <input type="text" id="holdAssetInput" class="form-control" placeholder="e.g. AST-AXLE-SCH-01" required>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Hold Category</label>
+              <select id="holdCategorySelect" class="form-control" required>
+                <option value="CIVIL_TOLERANCE">CIVIL_TOLERANCE (Pocket hole / Pad variation)</option>
+                <option value="CIVIL_CURE">CIVIL_CURE (Concrete cube test pending)</option>
+                <option value="PLANT_LOGISTICS">PLANT_LOGISTICS (Internal transit blocked)</option>
+                <option value="OEM_DOCUMENTATION">OEM_DOCUMENTATION (Packing slip / drawing missing)</option>
+                <option value="SAFETY_CLEARANCE">SAFETY_CLEARANCE (High-risk permit hold)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Hold Description & Site Observations</label>
+            <input type="text" id="holdDescInput" class="form-control" placeholder="e.g. Pocket hole depth on axis C3 shallower than Schuler drawing" required>
+          </div>
+          <div class="form-group">
+            <label>Identified Root Cause</label>
+            <input type="text" id="holdCauseInput" class="form-control" placeholder="e.g. Civil casting variation during second pour" required>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <div class="form-group" style="flex:1;">
+              <label>Responsible External Party</label>
+              <input type="text" id="holdPartyInput" class="form-control" value="JTRWF Civil / Client" required>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Impacted SOW Clause</label>
+              <input type="text" id="holdClauseInput" class="form-control" value="SOW-MECH-05.1 Clause 3" required>
+            </div>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <div class="form-group" style="flex:1;">
+              <label>Target Resolution Date</label>
+              <input type="date" id="holdTargetDate" class="form-control" value="2026-11-25" required>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Proposed Resolution Action</label>
+              <input type="text" id="holdActionInput" class="form-control" value="Core drilling of 45mm requested" required>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <button type="button" class="beds-btn beds-btn-secondary" onclick="BalsonsOpsApp.closeRaiseHoldModal()">Cancel</button>
+            <button type="submit" class="beds-btn beds-btn-danger" style="background:#dc2626; border-color:#dc2626;">⚠️ Log & Enforce Hold</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: DUAL SYNC MANAGER -->
+  <div id="modalSyncDb" class="ops-modal-overlay">
+    <div class="ops-modal-card" style="max-width: 580px;">
+      <div class="ops-modal-header">
+        <h4>🔄 Operations Ecosystem Dual-Sync Engine</h4>
+        <button class="ops-modal-close" onclick="BalsonsOpsApp.closeSyncModal()">✕</button>
+      </div>
+      <div class="ops-modal-body">
+        <div style="background:var(--super-bg); border:1px solid var(--super-border); padding:16px; border-radius:8px; margin-bottom:16px; font-size:12.5px;">
+          <div style="margin-bottom:8px;">
+            <strong>Target Google Sheet Database ID:</strong><br>
+            <code style="color:var(--beds-teal-primary); font-size:12px;">1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E</code>
+          </div>
+          <div style="margin-bottom:8px;">
+            <strong>Google Apps Script Clasp Gateway:</strong><br>
+            <code style="color:var(--beds-teal-primary); font-size:12px;">1an3LeD6Ich14qtWZ5GFgJMaa3dYQSboZRwFy9g_gf9zWicPDB9KpFNny</code>
+          </div>
+          <div>
+            <strong>Local Transactional Store:</strong><br>
+            <span>IndexedDB (<code>balsons_ops_db_v7_2</code>) • Local-First Architecture</span>
+          </div>
+        </div>
+
+        <p style="font-size:12px; color:var(--beds-text-secondary); line-height:1.5;">
+          The Operations Portal utilizes bi-directional synchronization. All local executions, shift handovers, and hold logs are reconciled with the official cloud database.
+        </p>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+          <a href="https://docs.google.com/spreadsheets/d/1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E/edit" target="_blank" class="beds-btn beds-btn-secondary" style="text-decoration:none;">
+            📊 Open Google Sheet ↗
+          </a>
+          <button type="button" id="btnForceSync" class="beds-btn beds-btn-primary" onclick="BalsonsOpsApp.triggerDualSync()">
+            ⚡ Force Bi-Directional Sync
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 6: PORTAL LOGIN / ROLE SWITCH (Full-Height Split Screen) -->
+  <div id="modal-login" class="ops-modal-overlay">
+    <div class="login-split-card" style="max-width: 940px;">
+      <!-- Left: Cover image fitted to full side -->
+      <div class="login-split-left">
+        <img class="login-cover" src="assets/images/login-operations.jpg" onerror="this.onerror=null;this.src='../assets/images/login-operations.jpg'" alt="Operations Manager">
+        <div class="login-cover-overlay">
+          <div class="login-cover-label">
+            <h2>Operations &amp; Heavy Rigging</h2>
+            <p>JTRWF Khordha · Schuler Forging Line &amp; Erection</p>
+            <div class="login-motto">“Difficult We Do Easily, Impossible Takes Little Time...!”</div>
+          </div>
+        </div>
+      </div>
+      <!-- Right: Login form -->
+      <div class="login-split-right">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='../assets/images/balsons-logo.png'" alt="BALSONS Logo" style="height: 38px; width: auto; object-fit: contain;">
+            <div>
+              <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: var(--beds-charcoal-heading, #102d35);">BALSONS Operations</h3>
+              <div style="font-size: 10.5px; color: var(--beds-teal-primary, #0097b2); font-weight: 700; text-transform: uppercase;">PRJ-JTRWF-SCHULER</div>
+            </div>
+          </div>
+          <button class="ops-modal-close" onclick="BalsonsOpsApp.closeLoginModal()">✕</button>
+        </div>
+
+        <div style="background: rgba(0, 151, 178, 0.08); padding: 8px 14px; border-radius: 6px; font-size: 11px; color: var(--beds-teal-primary, #0097b2); font-weight: 700; margin-bottom: 16px;">
+          🔐 Operations Portal Role Selection &amp; Authority
+        </div>
+
+        <form onsubmit="BalsonsOpsApp.handleRoleSwitch(event)">
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label style="font-size: 11.5px; font-weight: 700; display: block; margin-bottom: 5px; text-transform: uppercase; color: var(--beds-text-secondary, #475569);">Select Authorized Operations Account</label>
+            <select id="opsRoleSelect" class="form-control" style="width: 100%; height: 42px; font-weight: 600;">
+              <option value="Operations Area Manager" data-name="Dilip Rout">Dilip Rout (Operations Area Manager - Line Axle)</option>
+              <option value="Area Manager (Machine Shop)" data-name="Sarat Mishra">Sarat Mishra (Machine Shop Area Manager - 7 Streams)</option>
+              <option value="Lead Heavy Rigger" data-name="Manoj Das">Manoj Das (Lead Lifting Supervisor Bay-3)</option>
+              <option value="HOD Heavy Rigging" data-name="Ashok Mohanty">Ashok Mohanty (HOD Rigging & Heavy Lift)</option>
+              <option value="Management / Director" data-name="Satish Chandra">Satish Chandra (Management Director - JTRWF)</option>
+              <option value="Super Administrator" data-name="Prashant Muley">Prashant Muley (Executive Super Administrator)</option>
+              <option value="Client Observer / Auditor" data-name="Client Auditor">Client Inspection Auditor (JTRWF / Schuler)</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label style="font-size: 11.5px; font-weight: 700; display: block; margin-bottom: 5px; text-transform: uppercase; color: var(--beds-text-secondary, #475569);">Access Credential</label>
+            <div style="position:relative; display:flex; align-items:center; width:100%;">
+              <input type="password" class="form-control" id="opsLoginPass" value="balsons2026" readonly style="width: 100%; height: 42px; padding-right: 42px; letter-spacing: 1px;">
+              <button type="button" class="btn-ops-pw-toggle" onclick="toggleOpsPassword(this)" title="Show Credential" aria-label="Show Credential" style="position:absolute; right:8px; background:transparent; border:none; cursor:pointer; color:var(--beds-text-muted, #64748b); padding:6px; display:inline-flex; align-items:center; justify-content:center; border-radius:4px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </button>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+            <button type="button" class="beds-btn beds-btn-secondary" onclick="BalsonsOpsApp.closeLoginModal()">Cancel</button>
+            <button type="submit" class="beds-btn beds-btn-primary" style="padding: 10px 22px;">Authorize &amp; Switch</button>
+          </div>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--super-border, #e2e8f0);">
+          <span style="font-weight:700; color:var(--beds-charcoal-heading, #102d35);">BALSONS Heavy Lift &amp; Shift</span> · <span style="color:var(--beds-teal-primary, #0097a7);">JTRWF Site Access</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. FLOATING TOAST NOTIFICATION CONTAINER -->
+  <div id="opsToastContainer" class="ops-toast-container"></div>
+
+  <!-- 7. ENTERPRISE FOOTER -->
+  <footer class="portal-footer">
+    <div><strong>BALSONS Heavy Lift & Shift</strong> • Operations Manager Portal</div>
+    <div style="font-style: italic; color: rgb(223, 35, 14); font-weight: 700; margin-top: 4px;">
+      “Difficult We Do Easily, Impossible Takes Little Time...!”
+    </div>
+    <div style="font-size: 11px; color: var(--beds-text-muted); margin-top: 4px;">
+      Governed by Global Super Administrator Policy V1.0 • Document Reference: BAL-OPS-E2E-007 V7.2 (Locked Baseline)
+    </div>
+  </footer>
+
+  <!-- Application Scripts -->
+  <script src="assets/js/dossier-360.js"></script>
+  <script src="assets/js/balsons-sam-auth.js"></script>
+  <script src="assets/js/beds-superadmin.js"></script>
+  <script src="assets/js/balsons-docs-manager.js"></script>
+  <script src="assets/js/beds-portal-login.js"></script>
+  <script src="assets/js/beds-workspace.js"></script>
+  <script src="assets/js/qrcode.min.js"></script>
+  <script src="assets/js/operations-app.js"></script>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('balsons_theme', isDark ? 'light' : 'dark');
+      const themeBtn = document.getElementById('themeBtn');
+      if (themeBtn) themeBtn.textContent = isDark ? '🌙 Dark' : '☀️ Light';
+    }
+
+    function switchTab(tabId, btn) {
+    if (tabId === 'tab-documents' && window.BalsonsDocs) { window.BalsonsDocs.renderDocumentsTab('tab-documents'); }
+      // Alias handling: tab-workspaces points to tab-axle
+      if (tabId === 'tab-workspaces') tabId = 'tab-axle';
+
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('balsons_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      const themeBtn = document.getElementById('themeBtn');
+      if (themeBtn) themeBtn.textContent = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+    });
+
+    // Header Dropdowns Outside-Click Handler (User Profile Pill)
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#userPillWrap')) {
+        var u = document.getElementById('userPillWrap');
+        if (u) u.classList.remove('open');
+      }
+    });
+  </script>
+<script>
+  function toggleOpsPassword(btn) {
+    const input = document.getElementById('opsLoginPass');
+    if (!input) return;
+    const isPw = (input.type === 'password');
+    input.type = isPw ? 'text' : 'password';
+    if (btn) {
+      btn.title = isPw ? 'Hide Credential' : 'Show Credential';
+      btn.setAttribute('aria-label', isPw ? 'Hide Credential' : 'Show Credential');
+      btn.innerHTML = isPw 
+        ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>'
+        : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+    }
+  }
+</script>
+  <!-- Unified BEDS Statutory Print Stage -->
+  <div id="bedsPrintStage" style="display: none;"></div>
+</body>
+</html>

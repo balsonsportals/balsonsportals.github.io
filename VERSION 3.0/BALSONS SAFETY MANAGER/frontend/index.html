@@ -1,0 +1,2524 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BALSONS Safety Portal · JTRWF Khordha</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- BEDS Enterprise Stylesheet -->
+  <link rel="stylesheet" href="assets/css/beds.css">
+
+  <style>
+    /* BEDS V1.0 Custom Styles for Safety Portal */
+    :root {
+      --beds-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --beds-font-mono: 'JetBrains Mono', monospace;
+    }
+    body {
+      font-family: var(--beds-font-sans);
+      background-color: var(--beds-bg-page);
+      color: var(--beds-text-primary);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Enterprise Header */
+    header {
+      background-color: var(--beds-bg-panel);
+      border-bottom: 1px solid var(--beds-border);
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-wrap img {
+      height: 38px !important;
+      max-height: 38px !important;
+      width: auto !important;
+      object-fit: contain !important;
+    }
+    .brand-titles h1 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading);
+      margin: 0;
+      line-height: 1.2;
+    }
+    .brand-titles p {
+      font-size: 11px;
+      color: var(--beds-teal-primary);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0;
+    }
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Navigation Bar — Locked, No Scrollbar, Tab Color Rules (Black in Light Mode, White in Dark Mode) */
+    nav {
+      background: var(--beds-bg-panel);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 24px;
+      overflow: visible !important; /* STRICTLY NO SCROLLBAR, ALLOWS DROPDOWNS */
+      white-space: normal;
+      position: sticky;
+      top: 58px; /* Locked below top header */
+      z-index: 90;
+      border-bottom: 2px solid var(--beds-teal-primary);
+      border-top: 1px solid var(--beds-border);
+      transition: background-color var(--beds-transition), border-color var(--beds-transition);
+    }
+    nav button.beds-nav-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: #000000 !important; /* STRICTLY BLACK IN LIGHT MODE (USER LOCKED) */
+      padding: 7px 13px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: var(--beds-radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: all var(--beds-transition);
+      position: relative;
+    }
+    nav button.beds-nav-tab:hover:not(.active) {
+      background: rgba(0, 151, 178, 0.08);
+      color: #000000 !important;
+      border-color: rgba(0, 151, 178, 0.2);
+    }
+    nav button.beds-nav-tab.active {
+      background: var(--beds-teal-primary) !important;
+      color: #FFFFFF !important;
+      font-weight: 800;
+      box-shadow: 0 1px 3px rgba(0, 151, 178, 0.3);
+    }
+
+    /* Tab colors in Dark Mode */
+    [data-theme="dark"] nav {
+      background: var(--beds-bg-panel);
+      border-top-color: var(--beds-border);
+    }
+    [data-theme="dark"] nav button.beds-nav-tab {
+      color: #FFFFFF !important; /* STRICTLY WHITE IN DARK MODE (USER LOCKED) */
+    }
+    [data-theme="dark"] nav button.beds-nav-tab:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF !important;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    [data-theme="dark"] nav button.beds-nav-tab.active {
+      background: var(--beds-teal-primary) !important;
+      color: #FFFFFF !important;
+    }
+
+    /* Smart Dropdown Navigation System */
+    .beds-nav-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .beds-caret {
+      font-size: 10px;
+      margin-left: 4px;
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+    .beds-nav-dropdown.open .beds-caret {
+      transform: rotate(180deg);
+    }
+    .beds-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 280px;
+      background: var(--beds-bg-panel);
+      border: 1px solid var(--beds-border);
+      border-radius: var(--beds-radius-md);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+      z-index: 250;
+      padding: 6px;
+    }
+    .beds-nav-dropdown.open .beds-dropdown-menu {
+      display: block;
+      animation: dropdownSlide 0.15s ease-out;
+    }
+    @keyframes dropdownSlide {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .beds-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--beds-radius-sm);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all var(--beds-transition);
+      color: #000000 !important; /* STRICTLY BLACK IN LIGHT MODE */
+    }
+    [data-theme="dark"] .beds-dropdown-item {
+      color: #FFFFFF !important; /* STRICTLY WHITE IN DARK MODE */
+    }
+    .beds-dropdown-item:hover {
+      background: rgba(0, 151, 178, 0.08);
+      color: #000000 !important;
+    }
+    [data-theme="dark"] .beds-dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF !important;
+    }
+    .beds-dropdown-item.active {
+      background: rgba(0, 151, 178, 0.15) !important;
+      border-left: 3px solid var(--beds-teal-primary);
+    }
+    .beds-dropdown-item .item-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .beds-dropdown-item .item-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .beds-dropdown-item .item-text strong {
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .beds-dropdown-item .item-text small {
+      font-size: 10.5px;
+      color: var(--beds-text-secondary);
+      font-weight: 500;
+    }
+
+    /* Sub-view panels */
+    main {
+      flex: 1;
+      padding: 20px 24px;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .beds-view-panel {
+      display: none;
+    }
+    .beds-view-panel.active {
+      display: block;
+      animation: fadeIn 0.15s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Radar KPI Grid */
+    .radar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .radar-card {
+      background: var(--beds-bg-panel);
+      border: 1px solid var(--beds-border);
+      border-radius: var(--beds-radius-md);
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--beds-shadow-card);
+      border-left: 4px solid var(--beds-teal-primary);
+    }
+    .radar-card.danger { border-left-color: var(--beds-alert-red); }
+    .radar-card.warning { border-left-color: var(--beds-alert-orange); }
+    .radar-card.success { border-left-color: var(--beds-alert-green); }
+    .radar-card.info { border-left-color: #2563EB; }
+    .radar-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--beds-text-secondary);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .radar-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading);
+      font-family: var(--beds-font-mono);
+    }
+    [data-theme="dark"] .radar-value {
+      color: #FFFFFF;
+    }
+
+    /* Action bar */
+    .quick-action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      background: var(--beds-bg-panel);
+      padding: 12px 18px;
+      border: 1px solid var(--beds-border);
+      border-radius: var(--beds-radius-md);
+    }
+    .action-btn-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Alert Banner */
+    .safety-alert-banner {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: var(--beds-radius-md);
+      padding: 10px 16px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #B45309;
+    }
+    [data-theme="dark"] .safety-alert-banner {
+      color: #FCD34D;
+      background: rgba(245, 158, 11, 0.15);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: var(--beds-radius-sm);
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: #B45309; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: #B91C1C; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-info { background: rgba(59, 130, 246, 0.15); color: #1D4ED8; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .badge-neutral { background: var(--beds-bg-page); color: var(--beds-text-secondary); border: 1px solid var(--beds-border); }
+
+    /* Tables */
+    .beds-table-wrapper {
+      background: var(--beds-bg-panel);
+      border: 1px solid var(--beds-border);
+      border-radius: var(--beds-radius-md);
+      overflow-x: auto;
+      box-shadow: var(--beds-shadow-card);
+    }
+    table.beds-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      text-align: left;
+    }
+    table.beds-data-table th {
+      background: #102D35;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--beds-teal-primary);
+    }
+    table.beds-data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--beds-border);
+      color: var(--beds-text-primary);
+      vertical-align: middle;
+    }
+    table.beds-data-table tr:hover td {
+      background-color: rgba(0, 151, 178, 0.04);
+    }
+
+    /* Buttons */
+    .beds-btn {
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: var(--beds-radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid transparent;
+      transition: all var(--beds-transition);
+    }
+    .beds-btn-sm {
+      padding: 4px 10px;
+      font-size: 11px;
+    }
+    .beds-btn-primary { background: var(--beds-teal-primary); color: #FFFFFF; }
+    .beds-btn-primary:hover { background: #007D94; }
+    .beds-btn-secondary {
+      background: var(--beds-bg-page);
+      border-color: var(--beds-border);
+      color: #000000 !important; /* STRICTLY BLACK IN LIGHT MODE */
+    }
+    [data-theme="dark"] .beds-btn-secondary {
+      color: #FFFFFF !important; /* STRICTLY WHITE IN DARK MODE */
+    }
+    .beds-btn-outline { background: transparent; border-color: var(--beds-teal-primary); color: var(--beds-teal-primary); }
+    .beds-btn-outline:hover { background: rgba(0, 151, 178, 0.08); }
+    .beds-btn-success { background: #10B981; color: #FFFFFF; }
+    .beds-btn-success:hover { background: #059669; }
+    .beds-btn-danger { background: #EF4444; color: #FFFFFF; }
+    .beds-btn-danger:hover { background: #DC2626; }
+
+    /* Language Switcher Pill */
+    .lang-switcher {
+      display: inline-flex;
+      background: var(--beds-bg-page);
+      border: 1px solid var(--beds-border);
+      border-radius: 20px;
+      padding: 2px;
+    }
+    .lang-pill {
+      border: none;
+      background: transparent;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 16px;
+      cursor: pointer;
+      color: #000000; /* BLACK IN LIGHT */
+    }
+    [data-theme="dark"] .lang-pill {
+      color: #FFFFFF; /* WHITE IN DARK */
+    }
+    .lang-pill.active {
+      background: var(--beds-teal-primary);
+      color: #FFFFFF !important;
+    }
+
+    /* Modal System */
+    .beds-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 45, 53, 0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .beds-modal-overlay.active {
+      display: flex;
+    }
+    .beds-modal-dialog {
+      background: var(--beds-bg-panel);
+      border: 1px solid var(--beds-border);
+      border-radius: var(--beds-radius-lg);
+      max-width: 720px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      animation: modalPop 0.15s ease-out;
+    }
+    .beds-modal-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--beds-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .beds-modal-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading);
+      margin: 0;
+    }
+    [data-theme="dark"] .beds-modal-title {
+      color: #FFFFFF;
+    }
+    .beds-modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .beds-modal-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--beds-border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: var(--beds-bg-page);
+      border-bottom-left-radius: var(--beds-radius-lg);
+      border-bottom-right-radius: var(--beds-radius-lg);
+    }
+    .beds-modal-close {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      color: var(--beds-text-secondary);
+    }
+
+    /* ═══ BEDS V1.0 SPLIT-SCREEN LOGIN ══════════════════════════════ */
+    .login-split-card {
+      width: 100%;
+      max-width: 940px;
+      background: var(--beds-bg-panel);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 151, 178, 0.25);
+      border: 1px solid var(--beds-border);
+      display: flex;
+      flex-direction: row;
+      min-height: 540px;
+      animation: modalPop 0.15s ease-out;
+    }
+    .login-split-left {
+      flex: 0 0 50%;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background-color: #102D35;
+      min-height: 540px;
+    }
+    .login-split-left img.login-cover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .login-split-left .login-cover-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      background: linear-gradient(to top, rgba(16,45,53,0.96) 0%, rgba(16,45,53,0.6) 55%, rgba(16,45,53,0.0) 100%);
+      padding: 34px 28px 26px;
+      color: #fff;
+    }
+    .login-split-left .login-cover-label h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 4px 0;
+      line-height: 1.2;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .login-split-left .login-cover-label p {
+      font-size: 11px;
+      color: var(--beds-teal-primary);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 0;
+    }
+    .login-split-left .login-cover-label .login-motto {
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+      font-style: italic;
+      margin-top: 6px;
+    }
+    .login-split-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 36px 42px;
+      background: var(--beds-bg-panel);
+      overflow-y: auto;
+    }
+    @media (max-width: 768px) {
+      .login-split-card { flex-direction: column; max-width: 95%; }
+      .login-split-left { min-height: 200px; flex: none; }
+      .login-split-right { padding: 24px 18px; }
+    }
+
+    /* ═══ USER PILL DROPDOWN ════════════════════════════════════════ */
+    .user-pill-wrap { position: relative; display: inline-block; }
+    .user-pill { cursor: pointer; user-select: none; }
+    .user-pill-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 220px;
+      background: var(--beds-bg-panel);
+      border: 1px solid var(--beds-border);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(16,45,53,0.18);
+      z-index: 500;
+      padding: 6px;
+      animation: dropdownSlide 0.15s ease-out;
+    }
+    .user-pill-wrap.open .user-pill-menu { display: block; }
+    .user-pill-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--beds-text-primary);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .user-pill-menu-item:hover { background: rgba(0,151,178,0.08); }
+    .user-pill-menu-divider { height: 1px; background: var(--beds-border); margin: 4px 0; }
+    .user-pill-menu-item.danger { color: var(--beds-alert-red); }
+    .user-pill-menu-item.danger:hover { background: rgba(230,70,70,0.08); }
+
+    /* ═══ PORTAL SWITCHER DROPDOWN ══════════════════════════════════ */
+    .portal-switcher-wrap { position: relative; display: inline-block; }
+    .portal-switcher-btn {
+      background: var(--beds-bg-page);
+      border: 1px solid var(--beds-border);
+      color: var(--beds-text-primary);
+      padding: 5px 11px;
+      border-radius: var(--beds-radius-md);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: inherit;
+    }
+    .portal-switcher-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 230px;
+      background: var(--beds-bg-panel);
+      border: 1px solid var(--beds-border);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(16,45,53,0.18);
+      z-index: 500;
+      padding: 6px;
+      animation: dropdownSlide 0.15s ease-out;
+    }
+    .portal-switcher-wrap.open .portal-switcher-menu { display: block; }
+    .portal-switcher-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--beds-text-primary);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .portal-switcher-item:hover { background: rgba(0,151,178,0.08); }
+    .portal-switcher-item.current { background: rgba(0,151,178,0.12); border-left: 3px solid var(--beds-teal-primary); }
+
+    /* KPI Card & Table Standards */
+    .kpi-card:hover, .area-kpi-card:hover, .beds-kpi-card:hover, .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(16,45,53,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--beds-text-secondary);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+    .form-control {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 13px;
+      border: 1px solid var(--beds-border);
+      border-radius: var(--beds-radius-sm);
+      background: var(--beds-bg-panel);
+      color: var(--beds-text-primary);
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--beds-teal-primary);
+      box-shadow: 0 0 0 2px rgba(0, 151, 178, 0.15);
+    }
+
+    /* Checklist checkboxes */
+    .beds-checkbox-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 10px;
+      background: var(--beds-bg-page);
+      border: 1px solid var(--beds-border);
+      border-radius: var(--beds-radius-sm);
+      margin-bottom: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .beds-checkbox-item input {
+      margin-top: 2px;
+      cursor: pointer;
+      accent-color: var(--beds-teal-primary);
+    }
+
+    /* Official A4 Printable Permit Styling */
+    .a4-permit-document {
+      background: #FFFFFF;
+      color: #111827;
+      padding: 24px;
+      border: 2px solid #102D35;
+      font-family: var(--beds-font-sans);
+      font-size: 11.5px;
+      line-height: 1.4;
+    }
+    .permit-doc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #102D35;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+    .permit-org-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #102D35;
+    }
+    .permit-doc-heading {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0097B2;
+      letter-spacing: 0.5px;
+    }
+    .permit-project-sub {
+      font-size: 10px;
+      font-weight: 700;
+      color: #4B5563;
+    }
+    .permit-spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 12px;
+    }
+    .permit-spec-table td {
+      border: 1px solid #D1D5DB;
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+    .permit-section-heading {
+      background: #102D35;
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 10.5px;
+      padding: 6px 10px;
+      margin-top: 10px;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    .permit-prereq-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+    .permit-prereq-item {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 4px 8px;
+      background: #F3F4F6;
+      border-left: 3px solid #0097B2;
+      font-size: 10.5px;
+    }
+    .prereq-box {
+      color: #059669;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .permit-signatures-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+      margin-bottom: 10px;
+    }
+    .sig-card {
+      border: 1px solid #9CA3AF;
+      padding: 8px;
+      text-align: center;
+      background: #F9FAFB;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sig-role {
+      font-size: 9px;
+      font-weight: 800;
+      color: #374151;
+      border-bottom: 1px dashed #D1D5DB;
+      padding-bottom: 2px;
+      margin-bottom: 4px;
+    }
+    .sig-name {
+      font-size: 10px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .sig-line {
+      font-size: 8.5px;
+      color: #6B7280;
+    }
+    .sig-stamp {
+      font-size: 9px;
+      font-weight: 800;
+      color: #059669;
+      margin-top: 4px;
+    }
+    .permit-footer-disclaimer {
+      font-size: 9px;
+      color: #6B7280;
+      text-align: center;
+      border-top: 1px solid #E5E7EB;
+      padding-top: 6px;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* 100% Faithful Document Styling matching BALSONS_JTRWF_PTW_FORMS_V1_1_SEVEN_PERMITS.docx */
+    .docx-permit-sheet {
+      background: #FFFFFF !important;
+      color: #000000 !important;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 30px 34px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      border: 1px solid #9CA3AF;
+      box-sizing: border-box;
+      font-family: Arial, Calibri, 'Inter', sans-serif;
+      line-height: 1.35;
+    }
+    .docx-section-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #000000 !important;
+      letter-spacing: 0.5px;
+      margin-top: 10px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    table.docx-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      border: 1px solid #000000 !important;
+    }
+    table.docx-table td, table.docx-table th {
+      border: 1px solid #000000 !important;
+      padding: 5px 8px;
+      font-size: 11px;
+      color: #000000 !important;
+      vertical-align: middle;
+      line-height: 1.3;
+    }
+
+    /* Fillable Online Input & Control Elements */
+    .docx-input {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      color: #0F172A;
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 3px;
+      padding: 3px 6px;
+      transition: all 0.15s ease;
+    }
+    .docx-input:focus {
+      outline: none;
+      border-color: #0097B2;
+      background: #FFFFFF;
+      box-shadow: 0 0 0 2px rgba(0, 151, 178, 0.18);
+    }
+    .docx-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      color: #0F172A;
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 3px;
+      padding: 4px 6px;
+      resize: vertical;
+      min-height: 38px;
+      transition: all 0.15s ease;
+    }
+    .docx-textarea:focus {
+      outline: none;
+      border-color: #0097B2;
+      background: #FFFFFF;
+      box-shadow: 0 0 0 2px rgba(0, 151, 178, 0.18);
+    }
+
+    /* Checklist Row & Interactive Radio Buttons */
+    .docx-chk-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+    .docx-chk-label {
+      flex: 1;
+      font-size: 10px;
+      color: #000000;
+      line-height: 1.25;
+    }
+    .docx-radio-group {
+      display: inline-flex;
+      gap: 3px;
+      flex-shrink: 0;
+      background: #F1F5F9;
+      padding: 2px 4px;
+      border-radius: 4px;
+      border: 1px solid #CBD5E1;
+    }
+    .docx-radio-btn {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 9.5px;
+      font-weight: 700;
+      user-select: none;
+      color: #334155;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      transition: all 0.12s;
+    }
+    .docx-radio-btn input {
+      margin-right: 2px;
+      cursor: pointer;
+      display: none;
+    }
+    .docx-radio-btn.active-y {
+      background: #059669 !important;
+      color: #FFFFFF !important;
+      border-color: #047857 !important;
+    }
+    .docx-radio-btn.active-n {
+      background: #DC2626 !important;
+      color: #FFFFFF !important;
+      border-color: #B91C1C !important;
+    }
+    .docx-radio-btn.active-na {
+      background: #4B5563 !important;
+      color: #FFFFFF !important;
+      border-color: #374151 !important;
+    }
+
+    .docx-print-chk {
+      display: none;
+      font-family: monospace;
+      font-weight: 800;
+      font-size: 10.5px;
+      color: #000000;
+      white-space: nowrap;
+    }
+
+    /* Print Preview Mode: Hide borders, hide helper buttons, show clean printed document */
+    .docx-permit-sheet.preview-mode .docx-input,
+    .docx-permit-sheet.preview-mode .docx-textarea,
+    .docx-permit-sheet.preview-mode select.docx-input {
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      color: #000000 !important;
+      font-weight: 700 !important;
+      resize: none !important;
+      min-height: auto !important;
+      border-radius: 0 !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+    }
+    .docx-permit-sheet.preview-mode .docx-chk-toolbar,
+    .docx-permit-sheet.preview-mode .sec04-helper-btn,
+    .docx-permit-sheet.preview-mode .docx-radio-group {
+      display: none !important;
+    }
+    .docx-permit-sheet.preview-mode .docx-print-chk {
+      display: inline-block !important;
+    }
+
+    /* Print media rule — Exact standard A4 page reproduction */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 4mm 6mm 4mm 6mm;
+      }
+      input[type="checkbox"], input[type="radio"] {
+        accent-color: #000000 !important;
+      }
+      *, *:before, *:after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+        box-sizing: border-box !important;
+      }
+      html, body {
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        overflow: visible !important;
+      }
+      body * {
+        visibility: hidden !important;
+      }
+
+      /* ======================================================== */
+      /* 1. PERMIT STUDIO & 3 V2.0 DOCX PERMITS (EXACT 1-PAGE A4) */
+      /* ======================================================== */
+      .docx-permit-sheet, .docx-permit-sheet * {
+        visibility: visible !important;
+      }
+      .docx-permit-sheet {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 1mm 2.5mm !important;
+        box-shadow: none !important;
+        border: none !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      .docx-permit-sheet.landscape-mode,
+      body.print-landscape .docx-permit-sheet {
+        padding: 1mm 2mm !important;
+      }
+      .docx-permit-sheet.landscape-mode .docx-landscape-grid,
+      body.print-landscape .docx-landscape-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 3mm !important;
+        align-items: start !important;
+      }
+      .docx-permit-sheet.landscape-mode .docx-land-col-1,
+      .docx-permit-sheet.landscape-mode .docx-land-col-2,
+      body.print-landscape .docx-land-col-1,
+      body.print-landscape .docx-land-col-2 {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      .docx-permit-sheet table.docx-table {
+        margin-bottom: 1px !important;
+        border-collapse: collapse !important;
+        width: 100% !important;
+      }
+      .docx-permit-sheet table.docx-table td,
+      .docx-permit-sheet table.docx-table th {
+        padding: 0.8px 2px !important;
+        font-size: 5.5pt !important;
+        line-height: 1.05 !important;
+      }
+      .docx-permit-sheet .docx-sec-box {
+        margin-bottom: 1.5px !important;
+        border: 1px solid #CBD5E1 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      .docx-permit-sheet .docx-input,
+      .docx-permit-sheet .docx-textarea,
+      .docx-permit-sheet select.docx-input {
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        color: #000000 !important;
+        font-weight: 700 !important;
+        font-size: 5.5pt !important;
+        line-height: 1.05 !important;
+        resize: none !important;
+        min-height: auto !important;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+      }
+      .docx-permit-sheet .docx-radio-group,
+      .quick-action-bar,
+      #permit-studio-selector,
+      #top-nav-bar,
+      #beds-app-header,
+      #beds-app-footer,
+      .beds-orientation-selector,
+      .beds-orientation-group {
+        display: none !important;
+      }
+      .docx-permit-sheet .docx-print-chk {
+        display: inline-block !important;
+        font-size: 5.3pt !important;
+      }
+
+      /* ======================================================== */
+      /* 2. UNIFIED BEDS STATUTORY PRINT STAGE (DOSSIERS & CR80)  */
+      /* ======================================================== */
+      #bedsPrintStage, #bedsPrintStage * {
+        visibility: visible !important;
+      }
+      #bedsPrintStage {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      #bedsPrintStage .beds-print-a4-sheet {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 1.5mm 3mm !important;
+        box-sizing: border-box !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      #bedsPrintStage .beds-print-a4-sheet.landscape-mode {
+        padding: 1mm 2mm !important;
+      }
+
+      .beds-modal-overlay, .beds-modal-dialog, .beds-modal-body {
+        position: static !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        transform: none !important;
+      }
+      .beds-modal-header {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Enterprise Header -->
+  <header>
+    <div class="brand-wrap">
+      <img src="assets/images/balsons-logo.png" alt="BALSONS Logo" style="height: 38px !important; max-height: 38px !important; width: auto !important; object-fit: contain !important;">
+      <div class="brand-titles">
+        <h1 data-i18n="portal_title">BALSONS SAFETY PORTAL</h1>
+        <p data-i18n="portal_sub">JTRWF Khordha Project · Work Authorisation System</p>
+        <div style="font-size: 10px; font-style: italic; color: var(--beds-teal-primary); font-weight: 600; margin-top: 1px;">“Difficult We Do Easily, Impossible Takes Little Time...!”</div>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Live Google Sheets Indicator -->
+      <a href="https://docs.google.com/spreadsheets/d/1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0/edit" target="_blank" rel="noopener" class="meta-badge" style="font-size: 11px; background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid #10b981; font-weight: 700; text-decoration: none;" title="Open Live Safety Manager Google Sheet Database">
+        🟢 Sheet: 1SyOGt...
+      </a>
+
+      <!-- Live DB Sync Button -->
+      <button id="safetyLiveSyncBtn" onclick="BalsonsSafetyApp.syncWithLiveSafetyDb(true)" class="meta-badge" style="font-size: 11px; background: rgba(0, 151, 178, 0.12); color: #0097B2; border: 1px solid rgba(0, 151, 178, 0.3); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 6px;" title="Click to refresh live safety metrics from Google Sheets">
+        <span id="safetySyncDot" style="width: 7px; height: 7px; border-radius: 50%; background: #10B981; display: inline-block;"></span>
+        <span id="safetySyncText">Live DB Synced (9)</span>
+        <span id="safetySyncIcon" style="font-size: 11px; font-weight: 800;">🔄</span>
+      </button>
+
+      <!-- Cloud Drive Vault Shortcut -->
+      <a href="https://drive.google.com/drive/folders/17l96F-Y2VwS2L3Kev9Yx-b9Z71M8a9F0" target="_blank" rel="noopener" class="meta-badge" style="font-size: 11px; background: rgba(0, 168, 150, 0.12); color: var(--beds-teal-primary); border: 1px solid var(--beds-teal-primary); font-weight: 700; text-decoration: none;" title="Open Safety Google Drive Cloud Vault">
+        📁 Drive Vault ↗
+      </a>
+      <!-- Portal Switcher Dropdown -->
+      
+
+      <!-- Bilingual Selector -->
+      <div class="lang-switcher">
+        <button class="lang-pill active" data-lang="en">EN</button>
+        <button class="lang-pill" data-lang="hi">हिन्दी</button>
+      </div>
+
+      <!-- User Profile Badge Wrap -->
+      <div class="user-pill-wrap" id="userPillWrap">
+        <div class="meta-badge user-pill" onclick="document.getElementById('userPillWrap').classList.toggle('open')" style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <span>👤 <strong id="header-user-display">Gajendra Rao</strong></span>
+          <span class="role-badge role-SafetyManager" id="header-role-badge">Safety Manager</span>
+          <span style="font-size: 10px; margin-left: 2px;">▾</span>
+        </div>
+        <div class="user-pill-menu">
+          <div class="user-pill-menu-item">👤 <span id="menuUserFullName">Gajendra Rao (HSE Lead)</span></div>
+          <div class="user-pill-menu-divider"></div>
+          <div class="user-pill-menu-item" onclick="document.getElementById('btn-switch-user').click()">🔄 Switch Role</div>
+          <div class="user-pill-menu-divider"></div>
+          <div class="user-pill-menu-item danger" onclick="document.getElementById('btn-switch-user').click()">🔓 Log Out / Re-auth</div>
+        </div>
+      </div>
+
+      <!-- Switch User & Theme Toggle -->
+      <button class="beds-btn beds-btn-sm beds-btn-secondary" id="btn-switch-user">Switch Role</button>
+      <button class="beds-btn beds-btn-sm beds-btn-secondary" id="btn-toggle-theme">🌙 Dark</button>
+      <a href="../../mobile/safety.html" class="beds-btn beds-btn-sm" style="background: rgba(220, 38, 38, 0.12); border: 1px solid #dc2626; color: #dc2626; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center;" title="Switch to Mobile & Tablet Optimized View">
+        📱 Mobile View
+      </a>
+    </div>
+  </header>
+
+  <!-- Smart Grouped Enterprise Navigation Bar (Locked, No Scrollbar, Dropdown Menus) -->
+  <nav id="master-nav-tabs">
+    <!-- Group 1: Safety Dashboard (Direct) -->
+    <button class="beds-nav-tab active" data-target="view-dashboard" data-i18n="nav_dashboard">
+      📊 Safety Dashboard
+    </button>
+
+    <!-- Group 2: Work Authorisation (PTW) Dropdown -->
+    <div class="beds-nav-dropdown">
+      <button class="beds-nav-tab beds-dropdown-toggle" id="toggle-nav-ptw" type="button">
+        📋 <span data-i18n="nav_work_auth">Work Authorisation (PTW)</span> <span class="beds-caret">▾</span>
+      </button>
+      <div class="beds-dropdown-menu" id="menu-nav-ptw">
+        <a class="beds-dropdown-item" data-target="view-permit-studio" style="background: rgba(0, 151, 178, 0.08); border-left: 3px solid var(--beds-teal-primary);">
+          <span class="item-icon">✍️</span>
+          <div class="item-text">
+            <strong style="color: var(--beds-teal-primary);">Initiate Permit-to-Work (Supervisor Studio)</strong>
+            <small>Official fillable A4 format & instant printout</small>
+          </div>
+        </a>
+        <a class="beds-dropdown-item" data-target="view-ptw">
+          <span class="item-icon">📋</span>
+          <div class="item-text">
+            <strong data-i18n="nav_ptw_master">Master PTW Register</strong>
+            <small>Live active, verified & approved permits</small>
+          </div>
+        </a>
+        <a class="beds-dropdown-item" data-target="view-lifting">
+          <span class="item-icon">🏗️</span>
+          <div class="item-text">
+            <strong data-i18n="nav_lifting">Heavy Lifting & Rigging</strong>
+            <small>Tandem lifts, lift plans & crane safety</small>
+          </div>
+        </a>
+        <a class="beds-dropdown-item" data-target="view-hira">
+          <span class="item-icon">📑</span>
+          <div class="item-text">
+            <strong data-i18n="nav_hira">HIRA & JSA Repository</strong>
+            <small>Method statements & risk assessments</small>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Group 3: Safety & Field Inspections Dropdown -->
+    <div class="beds-nav-dropdown">
+      <button class="beds-nav-tab beds-dropdown-toggle" id="toggle-nav-inspections" type="button">
+        🔍 <span data-i18n="nav_safety_inspections">Safety & Field Inspections</span> <span class="beds-caret">▾</span>
+      </button>
+      <div class="beds-dropdown-menu" id="menu-nav-inspections">
+        <a class="beds-dropdown-item" data-target="view-tbt">
+          <span class="item-icon">🗣️</span>
+          <div class="item-text">
+            <strong data-i18n="nav_tbt">Toolbox Talks (TBT)</strong>
+            <small>Daily pre-work briefings & attendance</small>
+          </div>
+        </a>
+        <a class="beds-dropdown-item" data-target="view-inspections">
+          <span class="item-icon">🔍</span>
+          <div class="item-text">
+            <strong data-i18n="nav_inspections">Digital Safety Inspections</strong>
+            <small>Daily, weekly & equipment checklists</small>
+          </div>
+        </a>
+        <a class="beds-dropdown-item" data-target="view-emergency">
+          <span class="item-icon">🧯</span>
+          <div class="item-text">
+            <strong data-i18n="nav_emergency">Emergency Readiness & Fire</strong>
+            <small>Evacuation drills, extinguishers & muster points</small>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Group 4: Hazards & Incidents Dropdown -->
+    <div class="beds-nav-dropdown">
+      <button class="beds-nav-tab beds-dropdown-toggle" id="toggle-nav-hazards" type="button">
+        ⚠️ <span data-i18n="nav_hazards_incidents">Hazards & Incidents</span> <span class="beds-caret">▾</span>
+      </button>
+      <div class="beds-dropdown-menu" id="menu-nav-hazards">
+        <a class="beds-dropdown-item" data-target="view-hazards">
+          <span class="item-icon">⚠️</span>
+          <div class="item-text">
+            <strong data-i18n="nav_hazards">Hazard Observations (UA/UC)</strong>
+            <small>Unsafe acts & unsafe conditions reporting</small>
+          </div>
+        </a>
+        <a class="beds-dropdown-item" data-target="view-incidents">
+          <span class="item-icon">🚨</span>
+          <div class="item-text">
+            <strong data-i18n="nav_incidents">Incident & Near Miss Management</strong>
+            <small>Investigation, 5-Why analysis & lessons learned</small>
+          </div>
+        </a>
+        <a class="beds-dropdown-item" data-target="view-capa">
+          <span class="item-icon">✅</span>
+          <div class="item-text">
+            <strong data-i18n="nav_capa">CAPA Register</strong>
+            <small>Corrective & preventive actions tracking</small>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Group 5: Manpower & Reports Dropdown -->
+    <div class="beds-nav-dropdown">
+      <button class="beds-nav-tab beds-dropdown-toggle" id="toggle-nav-manpower" type="button">
+        👷 <span data-i18n="nav_manpower_reports">Manpower & Reports</span> <span class="beds-caret">▾</span>
+      </button>
+      <div class="beds-dropdown-menu" id="menu-nav-manpower">
+        <a class="beds-dropdown-item" data-target="view-induction">
+          <span class="item-icon">🛡️</span>
+          <div class="item-text">
+            <strong>Employee Safety Induction</strong>
+            <small>Worker induction register & safety pass</small>
+          </div>
+        </a>
+        <a class="beds-dropdown-item" data-target="view-gate-clearance">
+          <span class="item-icon">🔗</span>
+          <div class="item-text">
+            <strong>Gate Clearance & Work Auth Hub</strong>
+            <small>Tri-portal live link (HR + Safety + Gate Entry)</small>
+          </div>
+        </a>
+        <a class="beds-dropdown-item" data-target="view-dossier-360">
+          <span class="item-icon">📄</span>
+          <div class="item-text">
+            <strong>360° Workforce Dossier</strong>
+            <small>Unified cross-portal master personnel record</small>
+          </div>
+        </a>
+        <a class="beds-dropdown-item" data-target="view-manpower">
+          <span class="item-icon">👷</span>
+          <div class="item-text">
+            <strong data-i18n="nav_manpower">Manpower Competency & Form 31</strong>
+            <small>Skill badges & statutory medical records</small>
+          </div>
+        </a>
+        <a class="beds-dropdown-item" data-target="view-reports">
+          <span class="item-icon">📈</span>
+          <div class="item-text">
+            <strong data-i18n="nav_reports">Daily Safety Report (DSR)</strong>
+            <small>Automated daily HSE summaries & export</small>
+          </div>
+        </a>
+      </div>
+    </div>
+      <!-- Direct 360° Safety Dossiers Hub Button -->
+    <button class="beds-nav-tab" onclick="Balsons360Dossier.openModal()" style="font-weight: 800; color: #0097B2; background: rgba(0, 151, 178, 0.08); border-left: 2px solid #0097B2;" title="Open 360° Safety Dossiers for Workforce, Permits, Equipment, Areas, Incidents & TBTs">
+      🌐 360° Safety Dossiers
+    </button>
+    <!-- Documents & Google Drive Vault Button -->
+    <button class="beds-nav-tab" id="tab-nav-documents" data-target="view-documents" onclick="BalsonsSafetyApp.switchView('view-documents')" style="font-weight: 800; color: #008080;" title="Open Official Documents & Google Drive Vault">
+      📁 Documents &amp; Drive Vault
+    </button>
+  </nav>
+
+  <!-- Mobile Swipeable Quick-Pill Bar (Smartphone & Tablet Optimized) -->
+  <div class="beds-mobile-pill-bar">
+    <button class="beds-btn beds-btn-sm beds-btn-primary" onclick="BalsonsSafetyApp.switchView('view-dashboard')">📊 Dashboard</button>
+    <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="BalsonsSafetyApp.switchView('view-permit-studio')" style="color: var(--beds-teal-primary); font-weight: 700;">✍️ Initiate PTW</button>
+    <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="BalsonsSafetyApp.switchView('view-ptw')">📋 Permits</button>
+    <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="BalsonsSafetyApp.switchView('view-dossier-360')">📄 360° Dossier</button>
+    <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="BalsonsSafetyApp.switchView('view-induction')">🦺 Inductions</button>
+    <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="BalsonsSafetyApp.switchView('view-tbt')">🗣️ TBT</button>
+  </div>
+
+  <!-- Main View Area -->
+  <main>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 01: SAFETY DASHBOARD                                 -->
+    <!-- ======================================================== -->
+    <div id="view-dashboard" class="beds-view-panel active">
+      <!-- Active Hazard Alert Banner -->
+      <div class="safety-alert-banner">
+        <span style="font-size: 16px;">⚠️</span>
+        <span><strong>CRITICAL SAFETY ALERT:</strong> Heavy Tandem Lift in progress at AREA-01 (Axle Forging Line) — 10M radial barricading strictly enforced. No entry without Lifting Supervisor authorization.</span>
+      </div>
+
+      <!-- KPI Radar Grid -->
+      <div class="radar-grid">
+        <div class="radar-card success">
+          <span class="radar-label" data-i18n="kpi_safe_hours">Safe Man-Hours</span>
+          <span class="radar-value" id="kpi-safe-hours">148,520</span>
+        </div>
+        <div class="radar-card success">
+          <span class="radar-label" data-i18n="kpi_days_lti">Days Without LTI</span>
+          <span class="radar-value" id="kpi-days-lti">142</span>
+        </div>
+        <div class="radar-card info">
+          <span class="radar-label" data-i18n="kpi_active_permits">Active Permits</span>
+          <span class="radar-value" id="kpi-active-permits">1</span>
+        </div>
+        <div class="radar-card warning">
+          <span class="radar-label" data-i18n="kpi_pending_permits">Pending Approvals</span>
+          <span class="radar-value" id="kpi-pending-permits">2</span>
+        </div>
+        <div class="radar-card info">
+          <span class="radar-label" data-i18n="kpi_tbts_today">TBTs Today</span>
+          <span class="radar-value" id="kpi-tbts-today">2</span>
+        </div>
+        <div class="radar-card danger">
+          <span class="radar-label" data-i18n="kpi_open_capas">Open CAPAs</span>
+          <span class="radar-value" id="kpi-open-capas">1</span>
+        </div>
+        <div class="radar-card success">
+          <span class="radar-label" data-i18n="kpi_compliance_rate">Compliance Score</span>
+          <span class="radar-value" id="kpi-compliance-rate">98.4%</span>
+        </div>
+      </div>
+
+      <!-- Quick Action Bar -->
+      <div class="quick-action-bar">
+        <div style="font-weight: 700; font-size: 14px;">Active Work Operations & Permitted Activities</div>
+        <div class="action-btn-group">
+          <button class="beds-btn beds-btn-primary" id="btn-open-ptw-modal" data-i18n="btn_new_ptw">
+            + Create Work Permit (PTW)
+          </button>
+          <button class="beds-btn beds-btn-secondary" onclick="document.getElementById('modal-tbt-create').classList.add('active')" data-i18n="btn_conduct_tbt">
+            + Log Toolbox Talk
+          </button>
+          <button class="beds-btn beds-btn-secondary" onclick="document.getElementById('modal-inspection-create').classList.add('active')" data-i18n="btn_new_inspection">
+            + New Inspection
+          </button>
+          <button class="beds-btn beds-btn-outline" onclick="BalsonsSafetyApp.switchView('view-reports')" data-i18n="btn_generate_dsr">
+            Daily Safety Report (DSR)
+          </button>
+        </div>
+      </div>
+
+      <!-- Active High-Risk Work Table -->
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th data-i18n="lbl_permit_id">Permit ID</th>
+              <th data-i18n="lbl_category">Category</th>
+              <th data-i18n="lbl_description">Work Description</th>
+              <th data-i18n="lbl_area">Area</th>
+              <th data-i18n="lbl_supervisor">Supervisor</th>
+              <th>Planned Window</th>
+              <th data-i18n="lbl_risk_level">Risk</th>
+              <th data-i18n="lbl_status">Status</th>
+              <th data-i18n="lbl_actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dash-active-permits-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 02: PERMIT-TO-WORK (PTW) MASTER REGISTER            -->
+    <!-- ======================================================== -->
+    <div id="view-ptw" class="beds-view-panel">
+      <div class="quick-action-bar">
+        <div class="action-btn-group">
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.loadPermits('ALL')">All Categories</button>
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.loadPermits('GENERAL')">General Work</button>
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.loadPermits('HOT WORK')">🔥 Hot Work</button>
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.loadPermits('HEIGHT WORK')">🪜 Height Work</button>
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.loadPermits('CONFINED SPACE')">⚠️ Confined Space</button>
+        </div>
+        <div class="action-btn-group">
+          <button class="beds-btn beds-btn-primary" onclick="BalsonsSafetyApp.switchView('view-permit-studio')" data-i18n="btn_new_ptw" style="font-weight: 700;">
+            ✍️ Initiate Permit-to-Work
+          </button>
+        </div>
+      </div>
+
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th data-i18n="lbl_permit_id">Permit ID</th>
+              <th data-i18n="lbl_category">Category</th>
+              <th data-i18n="lbl_description">Work Description & Scope</th>
+              <th data-i18n="lbl_area">Area</th>
+              <th data-i18n="lbl_supervisor">Supervisor</th>
+              <th>Planned Duration</th>
+              <th data-i18n="lbl_risk_level">Risk</th>
+              <th data-i18n="lbl_status">Status</th>
+              <th data-i18n="lbl_actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ptw-table-body">
+            <!-- Dynamically loaded -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 02-B: INITIATE PERMIT-TO-WORK (SUPERVISOR STUDIO)     -->
+    <!-- ======================================================== -->
+    <div id="view-permit-studio" class="beds-view-panel">
+      <!-- Studio Header / Action Toolbar -->
+      <div class="quick-action-bar" style="border-left: 4px solid var(--beds-teal-primary); background: var(--beds-bg-panel); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span style="font-size: 15px; font-weight: 800; color: var(--beds-charcoal-heading);" data-i18n="studio_title">
+              ✍️ INITIATE PERMIT-TO-WORK (SUPERVISOR FILLABLE & PRINTABLE FORM)
+            </span>
+            <span id="studio-mode-badge" style="font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px; background: rgba(0, 151, 178, 0.12); color: var(--beds-teal-primary); border: 1px solid var(--beds-teal-primary);">
+              ✏️ SUPERVISOR EDIT ONLINE
+            </span>
+            <span class="meta-badge" style="background: rgba(16, 185, 129, 0.12); color: #059669; font-weight: 700; border: 1px solid #10B981; font-size: 10px;">
+              ⚡ DUAL-SYNC ACTIVE
+            </span>
+          </div>
+          <div style="font-size: 11.5px; color: var(--beds-text-secondary);" data-i18n="studio_sub">
+            Exact Official BALSONS Word Clone · Supervisor Online Interactive Fill · Checklists · Live A4 Printout
+          </div>
+        </div>
+        <div class="action-btn-group" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+          <!-- Orientation Selector: Portrait / Landscape -->
+          <span class="meta-badge" id="btn-studio-orient-portrait" style="font-size: 11px; background: rgba(5, 150, 105, 0.12); color: #059669; border: 1px solid rgba(5, 150, 105, 0.3); font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
+            📄 A4 Portrait (Calibrated 100% Scale)
+          </span>
+          <button id="btn-studio-mode-toggle" class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.toggleStudioPreviewMode()" style="font-weight: 700;">
+            👁️ Preview Print
+          </button>
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.fillStudioSampleData()" title="Populate realistic JTRWF project engineering data" style="font-weight: 700;">
+            ⚡ Fill Sample Demo Data
+          </button>
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.resetStudioForm()" title="Clear form to blank template" style="font-weight: 700;">
+            🔄 Reset to Blank
+          </button>
+          <button class="beds-btn beds-btn-primary" onclick="BalsonsSafetyApp.saveStudioPermitOnline()" style="background: #059669; border-color: #059669; color: #FFFFFF; font-weight: 700;">
+            💾 Save & Submit Permit
+          </button>
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.printStudioForm()" style="font-weight: 700;" data-i18n="btn_print_form">
+            🖨️ Print Form (A4)
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Submit Status Notification Banner -->
+      <div id="permit-submit-status-container" style="display: none; margin-bottom: 14px;"></div>
+
+      <!-- 7 Permit Template Selector Pill Bar -->
+      <div id="permit-studio-selector" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; background: var(--beds-bg-panel); padding: 10px 14px; border: 1px solid var(--beds-border); border-radius: var(--beds-radius-md);">
+        <!-- Dynamically injected via BalsonsSafetyApp.renderPermitStudio() -->
+      </div>
+
+      <!-- Official A4 Form Sheet Container -->
+      <div id="studio-rendered-form" style="max-width: 920px; margin: 0 auto; box-shadow: 0 4px 24px rgba(0,0,0,0.12); border-radius: var(--beds-radius-md); overflow: hidden; background: #FFFFFF;">
+        <!-- Official BALSONS Branded Document Rendered Here -->
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 03: TOOLBOX TALKS (TBT)                             -->
+    <!-- ======================================================== -->
+    <div id="view-tbt" class="beds-view-panel">
+      <div class="quick-action-bar">
+        <div style="font-weight: 700;">Pre-Shift Safety Briefings & Worker Attendance Register</div>
+        <button class="beds-btn beds-btn-primary" onclick="document.getElementById('modal-tbt-create').classList.add('active')" data-i18n="btn_conduct_tbt">
+          + Log Toolbox Talk
+        </button>
+      </div>
+
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th>TBT Reference</th>
+              <th>Date & Time</th>
+              <th>Work Area</th>
+              <th>Safety Topic & Discussion Points</th>
+              <th>Conducting Supervisor</th>
+              <th>Attendees</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbt-table-body">
+            <!-- Dynamically loaded -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 04: SAFETY INSPECTIONS & CHECKLISTS                 -->
+    <!-- ======================================================== -->
+    <div id="view-inspections" class="beds-view-panel">
+      <div class="quick-action-bar">
+        <div style="font-weight: 700;">Routine & Activity-Specific Digital Safety Inspections</div>
+        <button class="beds-btn beds-btn-primary" onclick="document.getElementById('modal-inspection-create').classList.add('active')" data-i18n="btn_new_inspection">
+          + New Inspection Checklist
+        </button>
+      </div>
+
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th>Inspection Ref</th>
+              <th>Date</th>
+              <th>Area</th>
+              <th>Checklist Category</th>
+              <th>Inspector</th>
+              <th>Compliance Score</th>
+              <th>Result / Status</th>
+            </tr>
+          </thead>
+          <tbody id="inspection-table-body">
+            <!-- Dynamically loaded -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 05: HEAVY LIFTING & RIGGING                         -->
+    <!-- ======================================================== -->
+    <div id="view-lifting" class="beds-view-panel">
+      <div class="quick-action-bar">
+        <div style="font-weight: 700;">Engineered Heavy Lifting & Rigging Operations Log</div>
+        <button class="beds-btn beds-btn-primary" onclick="alert('Heavy Lifting Plan evaluation tool initialized. Enter crane and load parameters.')" data-i18n="btn_plan_lift">
+          + New Heavy Lifting Plan
+        </button>
+      </div>
+
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th>Lift Plan ID</th>
+              <th>Permit Ref</th>
+              <th>Classification</th>
+              <th>Crane / Hydra Model</th>
+              <th>Load Weight</th>
+              <th>Rated Capacity (Util %)</th>
+              <th>Rigging Supervisor</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="lifting-table-body">
+            <!-- Dynamically loaded -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 06: HAZARDS & OBSERVATIONS (UA/UC)                  -->
+    <!-- ======================================================== -->
+    <div id="view-hazards" class="beds-view-panel">
+      <div class="quick-action-bar">
+        <div style="font-weight: 700;">Unsafe Act (UA) & Unsafe Condition (UC) Hazard Reporting</div>
+        <button class="beds-btn beds-btn-primary" onclick="alert('Hazard reporting modal ready.')" data-i18n="btn_report_hazard">
+          + Report Hazard / UA
+        </button>
+      </div>
+
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th>Hazard ID</th>
+              <th>Reported Date</th>
+              <th>Area</th>
+              <th>Classification</th>
+              <th>Description & Immediate Action</th>
+              <th>Reported By</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="hazard-table-body">
+            <!-- Dynamically loaded -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 07: INCIDENTS & NEAR MISS                           -->
+    <!-- ======================================================== -->
+    <div id="view-incidents" class="beds-view-panel">
+      <div class="quick-action-bar">
+        <div style="font-weight: 700;">Incident, Near Miss & Root Cause Investigation Register</div>
+        <button class="beds-btn beds-btn-danger" onclick="alert('Incident reporting modal ready.')" data-i18n="btn_report_incident">
+          + Report Incident / Near Miss
+        </button>
+      </div>
+
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th>Incident Ref</th>
+              <th>Date & Time</th>
+              <th>Area</th>
+              <th>Severity Type</th>
+              <th>Title & Summary</th>
+              <th>Lead Investigator</th>
+              <th>Investigation Status</th>
+            </tr>
+          </thead>
+          <tbody id="incident-table-body">
+            <!-- Dynamically loaded -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 08: MANPOWER & COMPETENCY                           -->
+    <!-- ======================================================== -->
+    <!-- ======================================================== -->
+    <!-- VIEW 08-A: EMPLOYEE SAFETY INDUCTION & WORK CLEARANCE     -->
+    <!-- ======================================================== -->
+    <div id="view-induction" class="beds-view-panel">
+      <!-- Action Toolbar -->
+      <div class="quick-action-bar" style="border-left: 4px solid var(--beds-teal-primary); background: var(--beds-bg-panel); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <div style="font-size: 14.5px; font-weight: 800; color: var(--beds-charcoal-heading);">
+            🛡️ EMPLOYEE SAFETY INDUCTION REGISTER & WORK AUTHORISATION
+          </div>
+          <div style="font-size: 11.5px; color: var(--beds-text-secondary);">
+            JTRWF Khordha Project · Pre-Work Mandatory Safety Induction, Medical Fitness & Working Clearance Passes
+          </div>
+        </div>
+        <div class="action-btn-group" style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="beds-btn beds-btn-primary" onclick="BalsonsSafetyApp.openInductionModal()">
+            🛡️ Conduct Safety Induction
+          </button>
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.syncWithHrPortal()">
+            🔄 Sync with HR Master
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-bottom: 16px;">
+        <div class="beds-card" style="padding: 14px; border-left: 4px solid #059669; background: var(--beds-bg-panel);">
+          <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-secondary); text-transform: uppercase;">Active Inducted Workers</div>
+          <div style="font-size: 22px; font-weight: 800; color: #059669;" id="kpi-inducted-count">142</div>
+          <div style="font-size: 10px; color: #059669;">✓ Cleared for site work</div>
+        </div>
+        <div class="beds-card" style="padding: 14px; border-left: 4px solid #DC2626; background: var(--beds-bg-panel);">
+          <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-secondary); text-transform: uppercase;">Pending Initial Induction</div>
+          <div style="font-size: 22px; font-weight: 800; color: #DC2626;" id="kpi-pending-induction-count">6</div>
+          <div style="font-size: 10px; color: #DC2626;">⛔ Entry strictly blocked at gate</div>
+        </div>
+        <div class="beds-card" style="padding: 14px; border-left: 4px solid var(--beds-teal-primary); background: var(--beds-bg-panel);">
+          <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-secondary); text-transform: uppercase;">Form 31 Medical Fitness</div>
+          <div style="font-size: 22px; font-weight: 800; color: var(--beds-teal-primary);">100%</div>
+          <div style="font-size: 10px; color: var(--beds-text-secondary);">Certified by Project OHC Dr.</div>
+        </div>
+        <div class="beds-card" style="padding: 14px; border-left: 4px solid #D97706; background: var(--beds-bg-panel);">
+          <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-secondary); text-transform: uppercase;">Safety Passes Issued</div>
+          <div style="font-size: 22px; font-weight: 800; color: #D97706;" id="kpi-passes-count">142</div>
+          <div style="font-size: 10px; color: var(--beds-text-secondary);">QR enabled sticker passes</div>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div style="background: var(--beds-bg-panel); padding: 10px 14px; border: 1px solid var(--beds-border); border-radius: var(--beds-radius-md); margin-bottom: 14px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        <input type="text" id="induction-search-input" class="form-control" style="width: 260px;" placeholder="Search Worker, Emp ID, Trade..." oninput="BalsonsSafetyApp.filterInductions()">
+        <select id="induction-status-filter" class="form-control" style="width: 180px;" onchange="BalsonsSafetyApp.filterInductions()">
+          <option value="ALL">All Induction Status</option>
+          <option value="INDUCTED">🟢 Inducted (Cleared)</option>
+          <option value="PENDING">🔴 Pending Induction (Blocked)</option>
+          <option value="EXPIRED">⚠️ Expired (Re-test)</option>
+        </select>
+        <select id="induction-trade-filter" class="form-control" style="width: 170px;" onchange="BalsonsSafetyApp.filterInductions()">
+          <option value="ALL">All Trades / Roles</option>
+          <option value="Rigger">Riggers & Rigging Leads</option>
+          <option value="Welder">Welders & Fitters</option>
+          <option value="Electrician">Electricians</option>
+          <option value="Crane">Crane Operators</option>
+          <option value="Helper">Helpers & Standbys</option>
+        </select>
+        <span style="margin-left: auto; font-size: 11.5px; color: var(--beds-text-secondary);" id="induction-count-label">
+          Showing 8 workforce records
+        </span>
+      </div>
+
+      <!-- Induction Master Data Table -->
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th>Induction ID</th>
+              <th>Employee ID (HR)</th>
+              <th>Full Name & Trade</th>
+              <th>Contractor / Department</th>
+              <th>Induction Date</th>
+              <th>Valid Until</th>
+              <th>Safety Pass / Sticker #</th>
+              <th>Medical Fitness</th>
+              <th>Work Clearance</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="induction-table-body">
+            <!-- Dynamically populated via BalsonsSafetyApp.loadInductions() -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 08-B: TRI-PORTAL WORK AUTHORISATION & GATE CLEARANCE -->
+    <!-- ======================================================== -->
+    <div id="view-gate-clearance" class="beds-view-panel">
+      <div class="quick-action-bar" style="border-left: 4px solid #059669; background: var(--beds-bg-panel); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <div style="font-size: 14.5px; font-weight: 800; color: var(--beds-charcoal-heading);">
+            🔗 TRI-PORTAL WORK AUTHORISATION & GATE SECURITY TERMINAL
+          </div>
+          <div style="font-size: 11.5px; color: var(--beds-text-secondary);">
+            Synchronized Real-Time Verification: HR Master (Identity) + Safety Portal (Induction & PTW) + Gate Entry (Access)
+          </div>
+        </div>
+        <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.syncWithHrPortal()">
+          🔄 Refresh Tri-Portal Sync
+        </button>
+      </div>
+
+      <!-- Live Employee Clearance Scanner & Inspector -->
+      <div class="beds-card" style="padding: 18px; margin-bottom: 20px; background: var(--beds-bg-panel); border: 1.5px solid var(--beds-border);">
+        <div style="font-size: 13px; font-weight: 800; margin-bottom: 10px; color: var(--beds-charcoal-heading);">
+          🔍 Query Employee Site Work Clearance & Gate Authorization:
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; align-items: center;">
+          <input type="text" id="gate-query-emp-id" class="form-control" style="width: 280px; font-weight: 700; font-family: monospace;" placeholder="Enter Employee ID (e.g. EMP-2026-0001)" value="EMP-2026-0001">
+          <button class="beds-btn beds-btn-primary" onclick="BalsonsSafetyApp.verifyEmployeeForGate()" style="font-weight: 700;">
+            Verify Clearance & Authorisation
+          </button>
+          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+            <span style="font-size: 11px; color: var(--beds-text-secondary); font-weight: 600;">Quick Demo Tests:</span>
+            <button type="button" class="beds-btn beds-btn-secondary" style="font-size: 10.5px; padding: 3px 8px;" onclick="BalsonsSafetyApp.testEmployeeClearance('EMP-2026-0001')">🟢 EMP-0001 (Ramesh Kumar - Cleared)</button>
+            <button type="button" class="beds-btn beds-btn-secondary" style="font-size: 10.5px; padding: 3px 8px;" onclick="BalsonsSafetyApp.testEmployeeClearance('EMP-2026-0002')">🟢 EMP-0002 (Sunil Swain - Cleared)</button>
+            <button type="button" class="beds-btn beds-btn-secondary" style="font-size: 10.5px; padding: 3px 8px;" onclick="BalsonsSafetyApp.testEmployeeClearance('EMP-2026-0003')">🟢 EMP-0003 (Ajay Verma - Cleared)</button>
+            <button type="button" class="beds-btn beds-btn-secondary" style="font-size: 10.5px; padding: 3px 8px;" onclick="BalsonsSafetyApp.testEmployeeClearance('EMP-2026-0099')">🔴 EMP-0099 (Unregistered - Blocked)</button>
+          </div>
+        </div>
+
+        <!-- Clearance Verification Verdict Banner -->
+        <div id="gate-clearance-verdict-box" style="margin-top: 14px;">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <div id="view-manpower" class="beds-view-panel">
+      <div class="quick-action-bar">
+        <div style="font-weight: 700;">Personnel Safety Records, Medical Fitness (Form 31) & Height Pass Status</div>
+        <div class="action-btn-group">
+          <input type="text" class="form-control" style="width: 200px;" placeholder="Search Worker / Trade...">
+        </div>
+      </div>
+
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th>Worker ID</th>
+              <th>Full Name</th>
+              <th>Designation / Trade</th>
+              <th>Induction Date</th>
+              <th>Form 31 Medical</th>
+              <th>Height Pass</th>
+              <th>Heavy Crane Licence</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>WRK-BAL-001</strong></td>
+              <td>Ramesh Kumar</td>
+              <td>Senior Rigger Lead</td>
+              <td>2026-01-10</td>
+              <td><span class="badge badge-success">FIT (VALID)</span></td>
+              <td><span class="badge badge-success">CERTIFIED</span></td>
+              <td><span class="badge badge-success">TPI-HMV-8841</span></td>
+              <td><span class="badge badge-success">ACTIVE</span></td>
+            </tr>
+            <tr>
+              <td><strong>WRK-BAL-002</strong></td>
+              <td>Bikram Patra</td>
+              <td>Safety Officer</td>
+              <td>2026-01-05</td>
+              <td><span class="badge badge-success">FIT (VALID)</span></td>
+              <td><span class="badge badge-success">CERTIFIED</span></td>
+              <td>N/A</td>
+              <td><span class="badge badge-success">ACTIVE</span></td>
+            </tr>
+            <tr>
+              <td><strong>WRK-BAL-003</strong></td>
+              <td>Sukumar Jena</td>
+              <td>Heavy Hydra Operator</td>
+              <td>2026-02-14</td>
+              <td><span class="badge badge-success">FIT (VALID)</span></td>
+              <td>N/A</td>
+              <td><span class="badge badge-success">OD-02-HYD-9912</span></td>
+              <td><span class="badge badge-success">ACTIVE</span></td>
+            </tr>
+            <tr>
+              <td><strong>WRK-BAL-004</strong></td>
+              <td>Dinesh Sahu</td>
+              <td>Scaffolder Lead</td>
+              <td>2026-01-20</td>
+              <td><span class="badge badge-success">FIT (VALID)</span></td>
+              <td><span class="badge badge-success">CERTIFIED</span></td>
+              <td>N/A</td>
+              <td><span class="badge badge-success">ACTIVE</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 09: EMERGENCY READINESS & FIRE SAFETY               -->
+    <!-- ======================================================== -->
+    <div id="view-emergency" class="beds-view-panel">
+      <div class="radar-grid">
+        <div class="radar-card info">
+          <span class="radar-label">Designated Assembly Points</span>
+          <span class="radar-value">3</span>
+        </div>
+        <div class="radar-card success">
+          <span class="radar-label">Fire Extinguishers Inspected</span>
+          <span class="radar-value">28 / 28</span>
+        </div>
+        <div class="radar-card info">
+          <span class="radar-label">First Aid Boxes Active</span>
+          <span class="radar-value">6 Stations</span>
+        </div>
+        <div class="radar-card success">
+          <span class="radar-label">Last Mock Drill Date</span>
+          <span class="radar-value" style="font-size: 18px;">2026-11-05</span>
+        </div>
+      </div>
+
+      <div class="quick-action-bar">
+        <div style="font-weight: 700;">Emergency Response Matrix & Site Evacuation Contact Directory</div>
+      </div>
+
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th>Designation</th>
+              <th>Contact Person</th>
+              <th>Emergency Hotline</th>
+              <th>Location Station</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Site Safety Head</strong></td>
+              <td>Gajendra Rao</td>
+              <td><strong class="text-primary font-mono">+91 94370 XXXXX</strong></td>
+              <td>Main Safety Office (Gate 1)</td>
+            </tr>
+            <tr>
+              <td><strong>Area Safety Officer</strong></td>
+              <td>Bikram Patra</td>
+              <td><strong class="text-primary font-mono">+91 98610 XXXXX</strong></td>
+              <td>Axle Bay Station</td>
+            </tr>
+            <tr>
+              <td><strong>Site Medic / First Aider</strong></td>
+              <td>Dr. P. C. Nayak</td>
+              <td><strong class="text-primary font-mono">+91 97760 XXXXX</strong></td>
+              <td>Occupational Health Centre (OHC)</td>
+            </tr>
+            <tr>
+              <td><strong>JTRWF Fire Control</strong></td>
+              <td>Duty Fire Officer</td>
+              <td><strong class="text-danger font-mono">0674-XXXXXXX</strong></td>
+              <td>JTRWF Plant Fire Station</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 10: METHOD STATEMENTS & HIRA                       -->
+    <!-- ======================================================== -->
+    <div id="view-hira" class="beds-view-panel">
+      <div class="quick-action-bar">
+        <div style="font-weight: 700;">Approved Hazard Identification & Risk Assessment (HIRA) / JSA Repository</div>
+        <button class="beds-btn beds-btn-secondary" onclick="alert('Document upload restricted to Safety Admin.')">
+          Upload Approved JSA
+        </button>
+      </div>
+
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th>HIRA Code</th>
+              <th>Activity Description</th>
+              <th>Applicable Work Area</th>
+              <th>Residual Risk Level</th>
+              <th>Client Approval Ref</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>HIRA-JTRWF-01</strong></td>
+              <td>Heavy Tandem Lifting of 1600T Schuler Press Components</td>
+              <td>AREA-01: Axle Line</td>
+              <td><span class="badge badge-warning">MEDIUM (CONTROLLED)</span></td>
+              <td>JTRWF-HSE-APP-2026-042</td>
+              <td><span class="badge badge-success">ACTIVE & APPROVED</span></td>
+            </tr>
+            <tr>
+              <td><strong>HIRA-JTRWF-02</strong></td>
+              <td>Work at Height & Overhead Crane Girder Alignment</td>
+              <td>AREA-02: Wheel Line</td>
+              <td><span class="badge badge-warning">MEDIUM (CONTROLLED)</span></td>
+              <td>JTRWF-HSE-APP-2026-038</td>
+              <td><span class="badge badge-success">ACTIVE & APPROVED</span></td>
+            </tr>
+            <tr>
+              <td><strong>HIRA-JTRWF-03</strong></td>
+              <td>Hot Cutting & Welding of Heavy Machine Foundation Plates</td>
+              <td>AREA-04: Die Shop</td>
+              <td><span class="badge badge-info">LOW (CONTROLLED)</span></td>
+              <td>JTRWF-HSE-APP-2026-029</td>
+              <td><span class="badge badge-success">ACTIVE & APPROVED</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 11: CAPA REGISTER                                  -->
+    <!-- ======================================================== -->
+    <div id="view-capa" class="beds-view-panel">
+      <div class="quick-action-bar">
+        <div style="font-weight: 700;">Corrective and Preventive Action (CAPA) Tracking to Verified Closure</div>
+      </div>
+
+      <div class="beds-table-wrapper">
+        <table class="beds-data-table">
+          <thead>
+            <tr>
+              <th>CAPA Ref</th>
+              <th>Source & Ref</th>
+              <th>Finding & Action Required</th>
+              <th>Risk</th>
+              <th>Responsible Owner</th>
+              <th>Target Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="capa-table-body">
+            <!-- Dynamically loaded -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 12: REPORTS & DAILY DSR                            -->
+    <!-- ======================================================== -->
+    <div id="view-reports" class="beds-view-panel">
+      <div class="quick-action-bar">
+        <div>
+          <strong>Daily Safety Report (DSR)</strong> · Date: <span id="dsr-date" class="font-mono text-primary font-bold">2026-11-19</span>
+        </div>
+        <div class="action-btn-group">
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.printDailySafetyReport()" style="font-weight: 800;">🖨️ Print DSR (A4)</button>
+          <button class="beds-btn beds-btn-primary" onclick="alert('Exporting DSR as PDF...')">
+            📥 Export PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="radar-card" style="margin-bottom: 20px;">
+        <div style="font-size: 15px; font-weight: 800; color: #102D35; margin-bottom: 6px;" id="dsr-project">
+          Jupiter Tatravagonka Railwheel Factory (JTRWF) · Khordha, Odisha
+        </div>
+        <div style="font-size: 12.5px; color: var(--beds-text-primary); line-height: 1.5;" id="dsr-summary">
+          Zero reportable incidents or injuries across all work areas. All heavy lifting and high-risk activities executed under verified PTWs and mandatory TBT briefings.
+        </div>
+        <div style="display: flex; gap: 20px; margin-top: 12px; font-size: 12px;">
+          <div>Manpower on Site: <strong id="dsr-manpower" class="text-primary font-mono">68</strong></div>
+          <div>Certified Riggers Active: <strong id="dsr-riggers" class="text-primary font-mono">8</strong></div>
+          <div>Equipment Inspected: <strong id="dsr-equipment" class="text-primary font-mono">6</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 12: 360° WORKFORCE DOSSIER -->
+    <div id="view-dossier-360" class="beds-view-panel">
+      <div class="quick-action-bar" style="border-left: 4px solid #0097B2; background: var(--beds-bg-panel); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+        <div>
+          <div style="font-size: 14.5px; font-weight: 800; color: var(--beds-charcoal-heading);">
+            📄 360° WORKFORCE & SITE ACCESS MASTER DOSSIER
+          </div>
+          <div style="font-size: 11.5px; color: var(--beds-text-secondary);">
+            Unified Cross-Portal Record: BALSONS HR Manager (Identity & KYC) ↔ Safety Manager (Induction & PTW) ↔ Gate Entry Manager (Access)
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <select id="dossier-page-emp-select" class="beds-select" style="font-size: 12px; padding: 6px 10px; font-weight: 700;" onchange="BalsonsSafetyApp.render360DossierPage(this.value)">
+            <!-- Options populated dynamically -->
+          </select>
+          <button class="beds-btn beds-btn-primary" onclick="BalsonsSafetyApp.print360Dossier(document.getElementById('dossier-page-emp-select') ? document.getElementById('dossier-page-emp-select').value : 'EMP-2026-0001')" style="font-weight: 800;">🖨️ Print Full Dossier (A4)</button>
+        </div>
+      </div>
+      <div id="dossier-page-container">
+        <!-- Rendered 360 Dossier Sheet -->
+      </div>
+    </div>
+
+  
+    <!-- ======================================================== -->
+    <!-- VIEW 16: OFFICIAL DOCUMENTS & GOOGLE DRIVE VAULT          -->
+    <!-- ======================================================== -->
+    <div id="view-documents" class="beds-view-panel">
+      <section id="tab-documents" class="section-view">
+        <!-- Injected dynamically by BalsonsDocs.renderDocumentsTab('tab-documents') -->
+      </section>
+    </div>
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- MODALS                                                   -->
+  <!-- ======================================================== -->
+
+  <!-- Modal 1: Create Work Permit (PTW) -->
+  <div class="beds-modal-overlay" id="modal-ptw-create">
+    <div class="beds-modal-dialog">
+      <div class="beds-modal-header">
+        <h3 class="beds-modal-title">Initiate Permit-to-Work (Stage 1: Work Supervisor)</h3>
+        <button class="beds-modal-close btn-modal-cancel">&times;</button>
+      </div>
+      <form id="form-create-ptw">
+        <div class="beds-modal-body">
+          <div class="form-group">
+            <label class="form-label" data-i18n="lbl_template">Permit Template & Category</label>
+            <select class="form-control" id="ptw-form-template" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" data-i18n="lbl_area">Designated Work Area</label>
+            <select class="form-control area-select-target" id="ptw-form-area" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" data-i18n="lbl_description">Detailed Scope of Work</label>
+            <textarea class="form-control" id="ptw-form-desc" rows="2" placeholder="Describe exact machinery, elevation, and execution steps..." required></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label" data-i18n="lbl_contractor">Executing Contractor</label>
+              <input type="text" class="form-control" id="ptw-form-contractor" value="BALSONS HEAVY LIFT & SHIFT" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="lbl_risk_level">Assessed Risk Level</label>
+              <select class="form-control" id="ptw-form-risk">
+                <option value="CRITICAL">CRITICAL (Tandem Lift / Confined Space)</option>
+                <option value="HIGH" selected>HIGH (Height Work / Hot Work)</option>
+                <option value="MEDIUM">MEDIUM (General Mechanical)</option>
+                <option value="LOW">LOW (Housekeeping)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" data-i18n="lbl_prerequisites">Mandatory Safety Prerequisites Checklist</label>
+            <div id="ptw-prereq-container">
+              <!-- Populated dynamically based on template -->
+            </div>
+          </div>
+        </div>
+
+        <div class="beds-modal-footer">
+          <button type="button" class="beds-btn beds-btn-secondary btn-modal-cancel" data-i18n="btn_cancel">Cancel</button>
+          <button type="submit" class="beds-btn beds-btn-primary" data-i18n="btn_save">Submit for Safety Verification</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Official Printable A4 Permit Document -->
+  <div class="beds-modal-overlay" id="modal-permit-print">
+    <div class="beds-modal-dialog" style="max-width: 900px;">
+      <div class="beds-modal-header">
+        <h3 class="beds-modal-title">Official Permit Authorisation Certificate</h3>
+        <div class="action-btn-group" style="display: flex; gap: 8px; align-items: center;">
+          <!-- Modal Orientation Selector -->
+          <span class="meta-badge" id="btn-modal-orient-portrait" style="font-size: 11px; background: rgba(5, 150, 105, 0.12); color: #059669; border: 1px solid rgba(5, 150, 105, 0.3); font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
+            📄 A4 Portrait (Calibrated 100% Scale)
+          </span>
+          <button class="beds-btn beds-btn-sm beds-btn-primary" onclick="window.print()">🖨️ Print Certificate (A4)</button>
+          <button class="beds-modal-close btn-modal-cancel">&times;</button>
+        </div>
+      </div>
+      <div class="beds-modal-body" id="ptw-print-content">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Log Toolbox Talk -->
+  <div class="beds-modal-overlay" id="modal-tbt-create">
+    <div class="beds-modal-dialog">
+      <div class="beds-modal-header">
+        <h3 class="beds-modal-title">Log Pre-Shift Toolbox Talk (TBT)</h3>
+        <button class="beds-modal-close btn-modal-cancel">&times;</button>
+      </div>
+      <form id="form-create-tbt">
+        <div class="beds-modal-body">
+          <div class="form-group">
+            <label class="form-label">Work Area</label>
+            <select class="form-control area-select-target" id="tbt-form-area" required></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Safety Topic</label>
+            <input type="text" class="form-control" id="tbt-form-topic" placeholder="e.g. Rigging Safety & Tag Line Controls" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Attendees Count</label>
+            <input type="number" class="form-control" id="tbt-form-attendees" value="12" min="1" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Discussion Points & Worker Questions</label>
+            <textarea class="form-control" id="tbt-form-points" rows="3" placeholder="Key hazards reviewed, PPE checks, communication signals..."></textarea>
+          </div>
+        </div>
+        <div class="beds-modal-footer">
+          <button type="button" class="beds-btn beds-btn-secondary btn-modal-cancel">Cancel</button>
+          <button type="submit" class="beds-btn beds-btn-primary">Record TBT</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: New Safety Inspection -->
+  <div class="beds-modal-overlay" id="modal-inspection-create">
+    <div class="beds-modal-dialog">
+      <div class="beds-modal-header">
+        <h3 class="beds-modal-title">Log Digital Safety Inspection</h3>
+        <button class="beds-modal-close btn-modal-cancel">&times;</button>
+      </div>
+      <form id="form-create-inspection">
+        <div class="beds-modal-body">
+          <div class="form-group">
+            <label class="form-label">Work Area</label>
+            <select class="form-control area-select-target" id="insp-form-area" required></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Checklist Category</label>
+            <select class="form-control" id="insp-form-category">
+              <option value="Lifting Tools & Tackles (LTT)">Lifting Tools & Tackles (LTT)</option>
+              <option value="Scaffolding & Work at Height">Scaffolding & Work at Height</option>
+              <option value="Electrical & Power Tools">Electrical & Power Tools</option>
+              <option value="Fire Safety & Extinguishers">Fire Safety & Extinguishers</option>
+              <option value="PPE Compliance & Housekeeping">PPE Compliance & Housekeeping</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Non-Compliant Items Count</label>
+            <input type="number" class="form-control" id="insp-form-nc" value="0" min="0" max="10">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Non-Compliance Findings (Auto-generates CAPA)</label>
+            <textarea class="form-control" id="insp-form-obs" rows="2" placeholder="Describe any defect or safety deviation observed..."></textarea>
+          </div>
+        </div>
+        <div class="beds-modal-footer">
+          <button type="button" class="beds-btn beds-btn-secondary btn-modal-cancel">Cancel</button>
+          <button type="submit" class="beds-btn beds-btn-primary">Submit Inspection</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: Login / Switch User (Full-Height Split Screen) -->
+  <div class="beds-modal-overlay" id="modal-login">
+    <div class="login-split-card" style="max-width: 940px;">
+      <!-- Left: Cover image fitted to full side -->
+      <div class="login-split-left">
+        <img class="login-cover" src="assets/images/login-safety.jpg" onerror="this.onerror=null;this.src='assets/images/login-gate.jpg'" alt="Safety Manager">
+        <div class="login-cover-overlay">
+          <div class="login-cover-label">
+            <h2>Safety &amp; PTW Governance</h2>
+            <p>JTRWF Khordha · Work Authorisation System</p>
+            <div class="login-motto">“Difficult We Do Easily, Impossible Takes Little Time...!”</div>
+          </div>
+        </div>
+      </div>
+      <!-- Right: Login form -->
+      <div class="login-split-right">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1HB7sGaQ4f2qq0NNzgBQrSpUe2DJWV4uh'" alt="BALSONS Logo" style="height: 38px; width: auto; object-fit: contain;">
+            <div>
+              <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: var(--beds-charcoal-heading);">BALSONS Safety Portal</h3>
+              <div style="font-size: 10.5px; color: var(--beds-teal-primary); font-weight: 700; text-transform: uppercase;">PRJ-JTRWF-SCHULER</div>
+            </div>
+          </div>
+          <button class="beds-modal-close btn-modal-cancel">&times;</button>
+        </div>
+
+        <div style="background: rgba(0, 151, 178, 0.08); padding: 8px 14px; border-radius: 6px; font-size: 11px; color: var(--beds-teal-primary); font-weight: 700; margin-bottom: 16px;">
+          🔒 Secure Login | Authorized HSE Personnel Only
+        </div>
+
+        <form id="form-login">
+          <div class="form-group">
+            <label class="form-label">Select Authorized User</label>
+            <select class="form-control" id="login-username" style="height: 42px; font-weight: 600;">
+              <option value="safety.mgr">safety.mgr (Gajendra Rao - Safety Manager)</option>
+              <option value="safety.off">safety.off (Bikram Patra - Safety Officer)</option>
+              <option value="sup.ramesh">sup.ramesh (Ramesh Kumar - Lifting Supervisor)</option>
+              <option value="admin">admin (Prashant - Admin / Owner)</option>
+              <option value="client.jtrwf">client.jtrwf (JTRWF Client Reviewer)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div style="position:relative; display:flex; align-items:center; width:100%;">
+              <input type="password" class="form-control" id="login-password" value="Balsons@2026" required style="height: 42px; padding-right: 42px; width: 100%;">
+              <button type="button" class="btn-safety-pw-toggle" onclick="toggleSafetyPassword(this)" title="Show Password" aria-label="Show Password" style="position:absolute; right:8px; background:transparent; border:none; cursor:pointer; color:var(--beds-text-muted, #64748b); padding:6px; display:inline-flex; align-items:center; justify-content:center; border-radius:4px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </button>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
+            <button type="button" class="beds-btn beds-btn-secondary btn-modal-cancel">Cancel</button>
+            <button type="submit" class="beds-btn beds-btn-primary" style="padding: 10px 22px;">Authenticate</button>
+          </div>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--beds-border-subtle);">
+          <span style="font-weight:700; color:var(--beds-charcoal-heading, #102d35);">BALSONS Heavy Lift &amp; Shift</span> · <span style="color:var(--beds-teal-primary, #0097a7);">JTRWF Site Access</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 6: Conduct Safety Induction -->
+  <div class="beds-modal-overlay" id="modal-induction-create">
+    <div class="beds-modal-dialog" style="max-width: 640px;">
+      <div class="beds-modal-header">
+        <h3 class="beds-modal-title">Conduct Worker Safety Induction</h3>
+        <button class="beds-modal-close btn-modal-cancel">&times;</button>
+      </div>
+      <form id="form-create-induction" onsubmit="BalsonsSafetyApp.submitInductionForm(event)">
+        <div class="beds-modal-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div class="form-group">
+              <label class="form-label">Employee ID (from HR Master)</label>
+              <select class="form-control" id="ind-form-emp-id" onchange="BalsonsSafetyApp.onInductionEmpSelect(this.value)" required>
+                <option value="">-- Select Worker from HR Master --</option>
+                <option value="EMP-2026-0007">EMP-2026-0007 · Deepak Nayak (Helper)</option>
+                <option value="EMP-2026-0001">EMP-2026-0001 · Ramesh Kumar (Rigger Lead)</option>
+                <option value="EMP-2026-0002">EMP-2026-0002 · Suresh Sharma (Welder 6G)</option>
+                <option value="EMP-2026-0003">EMP-2026-0003 · Manoj Patra (Fitter)</option>
+                <option value="EMP-2026-0004">EMP-2026-0004 · Bikram Jena (Electrician HT)</option>
+                <option value="EMP-2026-0005">EMP-2026-0005 · Rajesh Mohanty (Hydraulic Sp.)</option>
+                <option value="EMP-2026-0006">EMP-2026-0006 · Alok Verma (Rigger/Banksman)</option>
+                <option value="EMP-2026-0008">EMP-2026-0008 · Subhash Rao (Crane Operator)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="ind-form-name" placeholder="Worker Full Name" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div class="form-group">
+              <label class="form-label">Trade / Designation</label>
+              <input type="text" class="form-control" id="ind-form-trade" placeholder="e.g. Heavy Rigger / Welder" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contractor / Department</label>
+              <input type="text" class="form-control" id="ind-form-contractor" value="BALSONS HEAVY LIFT & SHIFT" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div class="form-group">
+              <label class="form-label">Medical Fitness (Form 31)</label>
+              <select class="form-control" id="ind-form-medical">
+                <option value="FIT (Form 31 Certified)">FIT (Certified by Site OHC Dr.)</option>
+                <option value="FIT (Height Work Approved)">FIT (Height & Confined Space Approved)</option>
+                <option value="TEMPORARY_UNFIT">Temporary Unfit (Requires Re-check)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Safety Sticker / Pass #</label>
+              <input type="text" class="form-control" id="ind-form-pass-no" value="SP-2026-007" required>
+            </div>
+          </div>
+
+          <div class="form-group" style="background: var(--beds-bg-page); padding: 10px; border-radius: var(--beds-radius-sm); border: 1px solid var(--beds-border);">
+            <label class="form-label" style="font-weight: 800; margin-bottom: 6px;">Mandatory Safety Induction Topics Covered:</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px;">
+              <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox" checked required> <span>JTRWF Site Golden Rules</span></label>
+              <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox" checked required> <span>BALSONS Life-Saving Rules</span></label>
+              <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox" checked required> <span>Mandatory PPE Inspection</span></label>
+              <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox" checked required> <span>Emergency Sirens & Egress</span></label>
+              <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox" checked required> <span>Permit-to-Work (PTW) Scope</span></label>
+              <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox" checked required> <span>Near Miss / Hazard Reporting</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="beds-modal-footer">
+          <button type="button" class="beds-btn beds-btn-secondary btn-modal-cancel">Cancel</button>
+          <button type="submit" class="beds-btn beds-btn-primary">✓ Complete Induction & Issue Pass</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 7: Printable Safety Induction Pass & Badge -->
+  <div class="beds-modal-overlay" id="modal-safety-pass-print">
+    <div class="beds-modal-dialog" style="max-width: 520px;">
+      <div class="beds-modal-header">
+        <h3 class="beds-modal-title">Official Safety Induction Pass & Badge</h3>
+        <div class="action-btn-group">
+          <button class="beds-btn beds-btn-sm beds-btn-primary" onclick="BalsonsSafetyApp.printSafetyPass(document.getElementById('safety-pass-print-content').dataset.empId || 'EMP-2026-0001')" style="font-weight: 800; background: var(--beds-teal-primary);">🖨️ Print CR80 Pass (A4)</button>
+          <button class="beds-modal-close btn-modal-cancel">&times;</button>
+        </div>
+      </div>
+      <div class="beds-modal-body" id="safety-pass-print-content" style="display: flex; justify-content: center; padding: 20px;">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Scripts -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/balsons-sam-auth.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/translations.js"></script>
+  <script src="assets/js/api-client.js"></script>
+  <script src="assets/js/docx-forms-data.js"></script>
+  <script src="assets/js/qrcode.min.js"></script>
+  <script src="assets/js/dossier-360.js"></script>
+  <script src="assets/js/beds-superadmin.js"></script>
+  <script src="assets/js/balsons-docs-manager.js"></script>
+  <script src="assets/js/beds-portal-login.js"></script>
+  <script src="assets/js/beds-workspace.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    // Header Dropdowns Outside-Click Handler (User Profile Pill)
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#userPillWrap')) {
+        var u = document.getElementById('userPillWrap');
+        if (u) u.classList.remove('open');
+      }
+    });
+  </script>
+<script>
+  function toggleSafetyPassword(btn) {
+    const input = document.getElementById('login-password');
+    if (!input) return;
+    const isPw = (input.type === 'password');
+    input.type = isPw ? 'text' : 'password';
+    if (btn) {
+      btn.title = isPw ? 'Hide Password' : 'Show Password';
+      btn.setAttribute('aria-label', isPw ? 'Hide Password' : 'Show Password');
+      btn.innerHTML = isPw 
+        ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>'
+        : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+    }
+  }
+</script>
+  <!-- Unified BEDS Statutory Print Stage -->
+  <div id="bedsPrintStage" style="display: none;"></div>
+</body>
+</html>

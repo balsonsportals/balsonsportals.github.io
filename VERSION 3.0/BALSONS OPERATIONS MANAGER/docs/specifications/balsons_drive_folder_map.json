@@ -1,0 +1,426 @@
+{
+  "ROOT": {
+    "id": "1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde",
+    "name": "BALSONS DOCUMENTS CENTER",
+    "url": "https://drive.google.com/drive/folders/1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde"
+  },
+  "PORTALS": {
+    "01_GATE_ENTRY_MANAGER": {
+      "id": "1BbLIA4W-JSk2HFTKsNN1XI5Vr9WQ1bi-",
+      "url": "https://drive.google.com/drive/folders/1BbLIA4W-JSk2HFTKsNN1XI5Vr9WQ1bi-",
+      "categories": {
+        "01_GATE_PASSES": {
+          "id": "1Q6UA4DOPPKJ-QydctzYktNK0A9xUQ-Pa",
+          "url": "https://drive.google.com/drive/folders/1Q6UA4DOPPKJ-QydctzYktNK0A9xUQ-Pa",
+          "subcategories": {
+            "RETURNABLE_GATE_PASSES_RGP": {
+              "id": "1TIJab14EOy-NuWEAZTfXh58dmg5ApXCl",
+              "url": "https://drive.google.com/drive/folders/1TIJab14EOy-NuWEAZTfXh58dmg5ApXCl"
+            },
+            "NON_RETURNABLE_GATE_PASSES_NRGP": {
+              "id": "1jvCQLZzU_sHqhCu2DuPa4bbwwaVOcMnx",
+              "url": "https://drive.google.com/drive/folders/1jvCQLZzU_sHqhCu2DuPa4bbwwaVOcMnx"
+            },
+            "VISITOR_AND_CONTRACTOR_PASSES": {
+              "id": "1AA14LbVZA1lBDegALWbwvCsrPRvg6F2m",
+              "url": "https://drive.google.com/drive/folders/1AA14LbVZA1lBDegALWbwvCsrPRvg6F2m"
+            }
+          }
+        },
+        "02_MATERIAL_CHALLANS": {
+          "id": "1nY5SEh-nds0QGE_7pcrrjN1zFjoBtIRX",
+          "url": "https://drive.google.com/drive/folders/1nY5SEh-nds0QGE_7pcrrjN1zFjoBtIRX",
+          "subcategories": {
+            "INWARD_DELIVERY_CHALLANS": {
+              "id": "1UaDIushjgT9n2-bMY0g0d7vHVofU9mqZ",
+              "url": "https://drive.google.com/drive/folders/1UaDIushjgT9n2-bMY0g0d7vHVofU9mqZ"
+            },
+            "OUTWARD_DISPATCH_CHALLANS": {
+              "id": "1g-SiGU3mxEPlBGoheoYhM1IL9gRKTzEx",
+              "url": "https://drive.google.com/drive/folders/1g-SiGU3mxEPlBGoheoYhM1IL9gRKTzEx"
+            }
+          }
+        },
+        "03_VEHICLES_AND_DRIVERS": {
+          "id": "1Cy6qm3VCUvxH3Te7aHYLyN9nEve5dWWK",
+          "url": "https://drive.google.com/drive/folders/1Cy6qm3VCUvxH3Te7aHYLyN9nEve5dWWK",
+          "subcategories": {
+            "DRIVER_LICENSES_AND_KYC": {
+              "id": "1QnkPgFu7wJkCwidw5uUuohnP4kke1Ycw",
+              "url": "https://drive.google.com/drive/folders/1QnkPgFu7wJkCwidw5uUuohnP4kke1Ycw"
+            },
+            "VEHICLE_FITNESS_AND_INSURANCE": {
+              "id": "1OOZT5oulsQiDD0c4p6Q_edfob7vMpBFr",
+              "url": "https://drive.google.com/drive/folders/1OOZT5oulsQiDD0c4p6Q_edfob7vMpBFr"
+            }
+          }
+        },
+        "04_SECURITY_LOGS_AND_REPORTS": {
+          "id": "1Kg7gJNE6p3LQ9Gx6Kkqw_FmImjd2R5bz",
+          "url": "https://drive.google.com/drive/folders/1Kg7gJNE6p3LQ9Gx6Kkqw_FmImjd2R5bz",
+          "subcategories": {
+            "DAILY_MUSTER_REPORTS": {
+              "id": "1ImOeNWUUKez2ajJeHKytUbcYrNY49aje",
+              "url": "https://drive.google.com/drive/folders/1ImOeNWUUKez2ajJeHKytUbcYrNY49aje"
+            },
+            "SECURITY_AUDIT_LOGS": {
+              "id": "1SHkOxQvSDWk8C217Nl0zRFgkB02tW7md",
+              "url": "https://drive.google.com/drive/folders/1SHkOxQvSDWk8C217Nl0zRFgkB02tW7md"
+            }
+          }
+        }
+      }
+    },
+    "02_HR_AND_PAYROLL_MANAGER": {
+      "id": "1TGaAS1aB6B0W8HHrZ6SYccG0XbsdSlLt",
+      "url": "https://drive.google.com/drive/folders/1TGaAS1aB6B0W8HHrZ6SYccG0XbsdSlLt",
+      "categories": {
+        "01_EMPLOYEE_KYC_DOSSIERS": {
+          "id": "1XlLXjqWkReptJNMr7TO5F2qEDusiSHna",
+          "url": "https://drive.google.com/drive/folders/1XlLXjqWkReptJNMr7TO5F2qEDusiSHna",
+          "subcategories": {
+            "AADHAAR_AND_PAN_CARDS": {
+              "id": "1M-Lc7VoEB03KiVYQrABHW8g4q4h-QSHV",
+              "url": "https://drive.google.com/drive/folders/1M-Lc7VoEB03KiVYQrABHW8g4q4h-QSHV"
+            },
+            "BANK_AND_EPFO_ESIC_RECORDS": {
+              "id": "1d0sMG99CelDexwKmMvlLOJ4DQklJNZS6",
+              "url": "https://drive.google.com/drive/folders/1d0sMG99CelDexwKmMvlLOJ4DQklJNZS6"
+            }
+          }
+        },
+        "02_STATUTORY_FITNESS_FORM31": {
+          "id": "1VF3pjjPIYbsS3OVb9Tt50OcqEsCrmM80",
+          "url": "https://drive.google.com/drive/folders/1VF3pjjPIYbsS3OVb9Tt50OcqEsCrmM80",
+          "subcategories": {
+            "MEDICAL_FITNESS_CERTIFICATES": {
+              "id": "1ZOd6JadZmfaHjsT1v5nAodHHAu5VOPnr",
+              "url": "https://drive.google.com/drive/folders/1ZOd6JadZmfaHjsT1v5nAodHHAu5VOPnr"
+            },
+            "VERTIGO_AND_SPECIAL_CLEARANCES": {
+              "id": "12rVm23cqCwVVpzjFYVy7KcB1SUMMtoGA",
+              "url": "https://drive.google.com/drive/folders/12rVm23cqCwVVpzjFYVy7KcB1SUMMtoGA"
+            }
+          }
+        },
+        "03_POLICE_VERIFICATION_PVC": {
+          "id": "1OhUX41B6XzbfcQrVh-Sfqb-7_3N0VeS7",
+          "url": "https://drive.google.com/drive/folders/1OhUX41B6XzbfcQrVh-Sfqb-7_3N0VeS7",
+          "subcategories": {}
+        },
+        "04_PAYROLL_AND_SALARY_SLIPS": {
+          "id": "1NExcIUeQ95mN7WFOdv5-Vh0ZlywblvN9",
+          "url": "https://drive.google.com/drive/folders/1NExcIUeQ95mN7WFOdv5-Vh0ZlywblvN9",
+          "subcategories": {
+            "MONTHLY_SALARY_SLIPS": {
+              "id": "1nvhg-MYV9R-nhu5I9CmS1dAlSGqfIT0P",
+              "url": "https://drive.google.com/drive/folders/1nvhg-MYV9R-nhu5I9CmS1dAlSGqfIT0P"
+            },
+            "DAILY_WAGE_PAYOUT_VOUCHERS": {
+              "id": "1kohY-EsZZrm03aYkkDuJWq1_W0panBca",
+              "url": "https://drive.google.com/drive/folders/1kohY-EsZZrm03aYkkDuJWq1_W0panBca"
+            }
+          }
+        },
+        "05_HR_LETTERS_AND_EXPENSES": {
+          "id": "1DHGi1wydVQmOckDQGNOgfEaRPAjeX89y",
+          "url": "https://drive.google.com/drive/folders/1DHGi1wydVQmOckDQGNOgfEaRPAjeX89y",
+          "subcategories": {
+            "APPOINTMENT_AND_INDUCTION": {
+              "id": "1y03sfi-JIU7wCU7bSbN9T0oKQC9gNAa2",
+              "url": "https://drive.google.com/drive/folders/1y03sfi-JIU7wCU7bSbN9T0oKQC9gNAa2"
+            },
+            "STAFF_EXPENSE_VOUCHERS": {
+              "id": "1vlXa07b_8FjFi-bEE-mq5e-O2shTN1yn",
+              "url": "https://drive.google.com/drive/folders/1vlXa07b_8FjFi-bEE-mq5e-O2shTN1yn"
+            }
+          }
+        }
+      }
+    },
+    "03_OPERATIONS_AND_RIGGING_MANAGER": {
+      "id": "1mNMSK9VmE5olCOtIdMzIm1HUcLEULn5g",
+      "url": "https://drive.google.com/drive/folders/1mNMSK9VmE5olCOtIdMzIm1HUcLEULn5g",
+      "categories": {
+        "01_WORK_PACKAGE_DOSSIERS": {
+          "id": "19yyLaRm0RQR3e9oiAZnuQTp_EdpPCywu",
+          "url": "https://drive.google.com/drive/folders/19yyLaRm0RQR3e9oiAZnuQTp_EdpPCywu",
+          "subcategories": {
+            "360_COMPLETION_DOSSIERS": {
+              "id": "133aMeTWsjbfQscXLrdUJYwTt9UNtMiB1",
+              "url": "https://drive.google.com/drive/folders/133aMeTWsjbfQscXLrdUJYwTt9UNtMiB1"
+            },
+            "RIGGING_PLANS_AND_LIFT_STUDIES": {
+              "id": "1Eddnjohgk5zDL4Bj_apBKPrHjEIyIRjD",
+              "url": "https://drive.google.com/drive/folders/1Eddnjohgk5zDL4Bj_apBKPrHjEIyIRjD"
+            }
+          }
+        },
+        "02_DAILY_SHIFT_LOGS_DPR": {
+          "id": "1tnkhIFQXkowXNo23pfQoPAVtQRQXWSyq",
+          "url": "https://drive.google.com/drive/folders/1tnkhIFQXkowXNo23pfQoPAVtQRQXWSyq",
+          "subcategories": {}
+        },
+        "03_HOLDS_AND_DISCREPANCIES": {
+          "id": "1xzzrRAcxQQRXiK9FaKafvCaxsSDJYewW",
+          "url": "https://drive.google.com/drive/folders/1xzzrRAcxQQRXiK9FaKafvCaxsSDJYewW",
+          "subcategories": {
+            "HOLD_NOTICES_AND_RCAS": {
+              "id": "10aP1xCR37-m6P4zEWTtEaetlW9kVHAdY",
+              "url": "https://drive.google.com/drive/folders/10aP1xCR37-m6P4zEWTtEaetlW9kVHAdY"
+            },
+            "ENGINEERING_DEVIATIONS": {
+              "id": "1iAbgBaIRexX1m3BfBneecXkT1ieA0NeP",
+              "url": "https://drive.google.com/drive/folders/1iAbgBaIRexX1m3BfBneecXkT1ieA0NeP"
+            }
+          }
+        },
+        "04_CRANE_AND_SPMT_INSPECTIONS": {
+          "id": "1b3iv-qt8-WXntvAyIAPGUNZWWJ4JjuHw",
+          "url": "https://drive.google.com/drive/folders/1b3iv-qt8-WXntvAyIAPGUNZWWJ4JjuHw",
+          "subcategories": {
+            "CRANE_PRE_LIFT_CHECKLISTS": {
+              "id": "1BItDDrnVAScOqgBydk7gpMB2ybIdChTp",
+              "url": "https://drive.google.com/drive/folders/1BItDDrnVAScOqgBydk7gpMB2ybIdChTp"
+            },
+            "SPMT_AXLE_LOAD_CALCULATIONS": {
+              "id": "1TvbVdA-sCVIQbec89lDjEKyKJT_OSc-P",
+              "url": "https://drive.google.com/drive/folders/1TvbVdA-sCVIQbec89lDjEKyKJT_OSc-P"
+            }
+          }
+        }
+      }
+    },
+    "04_PURCHASE_AND_COMMERCIAL_MANAGER": {
+      "id": "1lBWPI1VJos1lx_dkPi9l-sMVhsEM1iTp",
+      "url": "https://drive.google.com/drive/folders/1lBWPI1VJos1lx_dkPi9l-sMVhsEM1iTp",
+      "categories": {
+        "01_PURCHASE_REQUISITIONS_PR": {
+          "id": "1ZpR32qJZbmnEHlpf3DYl8BzRpIqaYqLM",
+          "url": "https://drive.google.com/drive/folders/1ZpR32qJZbmnEHlpf3DYl8BzRpIqaYqLM",
+          "subcategories": {
+            "TECHNICAL_REQUISITION_NOTES": {
+              "id": "1m_eFwApE49mgf9Mcia43nXcowVPub-N8",
+              "url": "https://drive.google.com/drive/folders/1m_eFwApE49mgf9Mcia43nXcowVPub-N8"
+            },
+            "BOQ_AND_TECHNICAL_SPECS": {
+              "id": "15Je4NA28FwLRpFhUOjx5imQb6lYp42SN",
+              "url": "https://drive.google.com/drive/folders/15Je4NA28FwLRpFhUOjx5imQb6lYp42SN"
+            }
+          }
+        },
+        "02_VENDOR_RFQS_AND_QUOTATIONS": {
+          "id": "1EuZGyAqIl_Bz7PO6-BJ_bXGX7apdj_cc",
+          "url": "https://drive.google.com/drive/folders/1EuZGyAqIl_Bz7PO6-BJ_bXGX7apdj_cc",
+          "subcategories": {
+            "TENDER_ENQUIRIES_AND_RFQS": {
+              "id": "1pvzJd7Q2-SLg_dLstF89KMbmbBNVzJe3",
+              "url": "https://drive.google.com/drive/folders/1pvzJd7Q2-SLg_dLstF89KMbmbBNVzJe3"
+            },
+            "SUPPLIER_RATE_QUOTATIONS": {
+              "id": "1uBYo5NqGgBehFIiC8Q5cf75lxE823JMY",
+              "url": "https://drive.google.com/drive/folders/1uBYo5NqGgBehFIiC8Q5cf75lxE823JMY"
+            }
+          }
+        },
+        "03_COMPARATIVE_STATEMENTS_CS": {
+          "id": "1mURqm_1Q8Y9J9hFLucRcbaAb0TRreYqG",
+          "url": "https://drive.google.com/drive/folders/1mURqm_1Q8Y9J9hFLucRcbaAb0TRreYqG",
+          "subcategories": {}
+        },
+        "04_PURCHASE_ORDERS_PO": {
+          "id": "1Ff_l7o78hLtUW_PlNUMqw2hLCG2-FycI",
+          "url": "https://drive.google.com/drive/folders/1Ff_l7o78hLtUW_PlNUMqw2hLCG2-FycI",
+          "subcategories": {
+            "FORMAL_SIGNED_POS": {
+              "id": "1cdAbBuE2RFo5e-UlgCSKvJIJRAzJ2iZf",
+              "url": "https://drive.google.com/drive/folders/1cdAbBuE2RFo5e-UlgCSKvJIJRAzJ2iZf"
+            },
+            "WORK_ORDERS_AND_AMENDMENTS": {
+              "id": "1xJ-Cqu69BNVIzIyfOS8N0iiXJhlJIm4a",
+              "url": "https://drive.google.com/drive/folders/1xJ-Cqu69BNVIzIyfOS8N0iiXJhlJIm4a"
+            }
+          }
+        },
+        "05_ADVANCE_SHIPPING_AND_GRN": {
+          "id": "1lzHBGtsN9rEHsoArkFl8VOMmH4tXoNn_",
+          "url": "https://drive.google.com/drive/folders/1lzHBGtsN9rEHsoArkFl8VOMmH4tXoNn_",
+          "subcategories": {
+            "ASN_DISPATCH_NOTICES": {
+              "id": "1qulnT0yjNfi9697og-Yh5rbl7kqPHZcs",
+              "url": "https://drive.google.com/drive/folders/1qulnT0yjNfi9697og-Yh5rbl7kqPHZcs"
+            },
+            "3_WAY_MATCH_INSPECTION_CERTS": {
+              "id": "1mcUmpC9oJ8ovuk6_bYHHiZ3XMwk1yBQr",
+              "url": "https://drive.google.com/drive/folders/1mcUmpC9oJ8ovuk6_bYHHiZ3XMwk1yBQr"
+            }
+          }
+        },
+        "06_COMMERCIAL_VOUCHERS_AND_INVOICES": {
+          "id": "1AYsyDEvpDL26_U5zcg7v2sxGQs1QofE8",
+          "url": "https://drive.google.com/drive/folders/1AYsyDEvpDL26_U5zcg7v2sxGQs1QofE8",
+          "subcategories": {
+            "ADVANCE_PAYMENT_VOUCHERS": {
+              "id": "1G-aYuxYi5hd6eRB-JQ-u2_f9RI1n_eUB",
+              "url": "https://drive.google.com/drive/folders/1G-aYuxYi5hd6eRB-JQ-u2_f9RI1n_eUB"
+            },
+            "VENDOR_TAX_INVOICES": {
+              "id": "14nh1Dpip4uMhn5RtLhhVYsnl28sfvdY8",
+              "url": "https://drive.google.com/drive/folders/14nh1Dpip4uMhn5RtLhhVYsnl28sfvdY8"
+            }
+          }
+        }
+      }
+    },
+    "05_SAFETY_AND_RISK_MANAGER": {
+      "id": "14l-IAZcb39iSeBSa9kQVUCI2lnty9cOK",
+      "url": "https://drive.google.com/drive/folders/14l-IAZcb39iSeBSa9kQVUCI2lnty9cOK",
+      "categories": {
+        "01_PERMIT_TO_WORK_PTW": {
+          "id": "1vDJhDaxhGXyEZaIFnKzV_otuiiRba6Ay",
+          "url": "https://drive.google.com/drive/folders/1vDJhDaxhGXyEZaIFnKzV_otuiiRba6Ay",
+          "subcategories": {
+            "HOT_WORK_PERMITS": {
+              "id": "1DxOmM8GiogdMa8TwWJPu_hudwrPwfZTj",
+              "url": "https://drive.google.com/drive/folders/1DxOmM8GiogdMa8TwWJPu_hudwrPwfZTj"
+            },
+            "HEIGHT_WORK_PERMITS": {
+              "id": "1_Z1CNzU8itjAe6zVL_p94R0NhyPbC2bo",
+              "url": "https://drive.google.com/drive/folders/1_Z1CNzU8itjAe6zVL_p94R0NhyPbC2bo"
+            },
+            "CONFINED_SPACE_PERMITS": {
+              "id": "1ULa0k-ruBqFcAmUFqCkjwEkvaDi68vyd",
+              "url": "https://drive.google.com/drive/folders/1ULa0k-ruBqFcAmUFqCkjwEkvaDi68vyd"
+            },
+            "HEAVY_TANDEM_LIFT_PTWS": {
+              "id": "1N_UcAYVH8-IZ5zc0nmKcbrZevqkcgfFT",
+              "url": "https://drive.google.com/drive/folders/1N_UcAYVH8-IZ5zc0nmKcbrZevqkcgfFT"
+            }
+          }
+        },
+        "02_TOOLBOX_TALKS_TBT": {
+          "id": "1aO_y-jQ7KZnB9LtvAtBM5I3_BKIluMzG",
+          "url": "https://drive.google.com/drive/folders/1aO_y-jQ7KZnB9LtvAtBM5I3_BKIluMzG",
+          "subcategories": {}
+        },
+        "03_HIRA_JSA_RISK_ASSESSMENTS": {
+          "id": "1EANrLhxJX-N-iwm1Cbu8KygpW-Xsk9AX",
+          "url": "https://drive.google.com/drive/folders/1EANrLhxJX-N-iwm1Cbu8KygpW-Xsk9AX",
+          "subcategories": {}
+        },
+        "04_INCIDENT_AND_CAPA_REPORTS": {
+          "id": "1zSzyrNFBljGL0rf2CDYTzqhXAuQ2YNHi",
+          "url": "https://drive.google.com/drive/folders/1zSzyrNFBljGL0rf2CDYTzqhXAuQ2YNHi",
+          "subcategories": {
+            "NEAR_MISS_AND_INCIDENT_REPORTS": {
+              "id": "1BCE0vPROmO9ByPbF5YkPfVpzYwef_0fU",
+              "url": "https://drive.google.com/drive/folders/1BCE0vPROmO9ByPbF5YkPfVpzYwef_0fU"
+            },
+            "CAPA_COMPLIANCE_EVIDENCES": {
+              "id": "1KgDvS5y_cJFZd7Pe6uQlHMX2COZ29yZ9",
+              "url": "https://drive.google.com/drive/folders/1KgDvS5y_cJFZd7Pe6uQlHMX2COZ29yZ9"
+            }
+          }
+        },
+        "05_STATUTORY_HSE_AUDITS": {
+          "id": "1mDJwq6fI9UWM1zG4Xg6jpsmR74bzxfj1",
+          "url": "https://drive.google.com/drive/folders/1mDJwq6fI9UWM1zG4Xg6jpsmR74bzxfj1",
+          "subcategories": {}
+        }
+      }
+    },
+    "06_STORE_AND_TACKLE_MANAGER": {
+      "id": "1RSSF5Ld9fEJ2VfacDp80DVrGyq4pE3HY",
+      "url": "https://drive.google.com/drive/folders/1RSSF5Ld9fEJ2VfacDp80DVrGyq4pE3HY",
+      "categories": {
+        "01_FORM11_STATUTORY_CERTIFICATES": {
+          "id": "1gD4HLVZXXzkNIW1D9bNA-i4Wwyvb6Efy",
+          "url": "https://drive.google.com/drive/folders/1gD4HLVZXXzkNIW1D9bNA-i4Wwyvb6Efy",
+          "subcategories": {
+            "CRANE_TACKLE_FORM11_REPORTS": {
+              "id": "112lOk4oYBBgXmahapIKv2eohGnG0wWt0",
+              "url": "https://drive.google.com/drive/folders/112lOk4oYBBgXmahapIKv2eohGnG0wWt0"
+            },
+            "WIRE_ROPE_AND_SLING_CERTIFICATES": {
+              "id": "1RHFvZn7u6cPe400NGT6TfLDkMiNMU_I9",
+              "url": "https://drive.google.com/drive/folders/1RHFvZn7u6cPe400NGT6TfLDkMiNMU_I9"
+            },
+            "SHACKLE_AND_SPREADER_TEST_CERTS": {
+              "id": "1IRpGn6kcv0eINWRixgvnewaFYIAnLrOF",
+              "url": "https://drive.google.com/drive/folders/1IRpGn6kcv0eINWRixgvnewaFYIAnLrOF"
+            }
+          }
+        },
+        "02_TOOL_AND_TACKLE_ISSUE_SLIPS": {
+          "id": "1hzqNg-zQDL7wNPoDh592DFXjBLvGoWIb",
+          "url": "https://drive.google.com/drive/folders/1hzqNg-zQDL7wNPoDh592DFXjBLvGoWIb",
+          "subcategories": {}
+        },
+        "03_TOOL_RETURN_AND_CUSTODY_VOUCHERS": {
+          "id": "1SiyU8Obt5ksHJOoP-RACKqOThHRZfOaJ",
+          "url": "https://drive.google.com/drive/folders/1SiyU8Obt5ksHJOoP-RACKqOThHRZfOaJ",
+          "subcategories": {}
+        },
+        "04_QUARANTINE_AND_REJECTIONS": {
+          "id": "1Kelzusz9F_49Jr9xvGuiglQP8QcT-ekD",
+          "url": "https://drive.google.com/drive/folders/1Kelzusz9F_49Jr9xvGuiglQP8QcT-ekD",
+          "subcategories": {
+            "QUARANTINE_TAGS_AND_RECORDS": {
+              "id": "1wTeH5iNmsykhntEKRP9_EsNT29WS0VNw",
+              "url": "https://drive.google.com/drive/folders/1wTeH5iNmsykhntEKRP9_EsNT29WS0VNw"
+            },
+            "SCRAP_AND_DECOMMISSIONING": {
+              "id": "15xE9rot7NPycRobwB6M6nl7B1OKEm_cY",
+              "url": "https://drive.google.com/drive/folders/15xE9rot7NPycRobwB6M6nl7B1OKEm_cY"
+            }
+          }
+        },
+        "05_CALIBRATION_NABL_RECORDS": {
+          "id": "1bRhFpfPnXH4_xctlfRx2Tk47durZPMnJ",
+          "url": "https://drive.google.com/drive/folders/1bRhFpfPnXH4_xctlfRx2Tk47durZPMnJ",
+          "subcategories": {
+            "TORQUE_AND_PRESSURE_CALIBRATIONS": {
+              "id": "1aCLORW-XVNDxC2lMijd7zwBxzZVffx6n",
+              "url": "https://drive.google.com/drive/folders/1aCLORW-XVNDxC2lMijd7zwBxzZVffx6n"
+            }
+          }
+        }
+      }
+    },
+    "07_EXECUTIVE_GOVERNANCE_AND_SYNC_HUB": {
+      "id": "1ZnMBMc2A9bek2i_YGqspVIJR2Q_qgXye",
+      "url": "https://drive.google.com/drive/folders/1ZnMBMc2A9bek2i_YGqspVIJR2Q_qgXye",
+      "categories": {
+        "01_EXECUTIVE_ECOSYSTEM_REPORTS": {
+          "id": "1qgCxlA-2CkZv2tNazpZsm2rp--Sj8mrQ",
+          "url": "https://drive.google.com/drive/folders/1qgCxlA-2CkZv2tNazpZsm2rp--Sj8mrQ",
+          "subcategories": {}
+        },
+        "02_CLIENT_AUDIT_PACKS": {
+          "id": "17uJ4RgHW-og9MGvUYRq4PBtYP2NU6Ep7",
+          "url": "https://drive.google.com/drive/folders/17uJ4RgHW-og9MGvUYRq4PBtYP2NU6Ep7",
+          "subcategories": {}
+        },
+        "03_CLOUD_DATABASE_BACKUPS": {
+          "id": "1GRmwFJ4LqFm75CpRdohuyGY3FzIFSOmx",
+          "url": "https://drive.google.com/drive/folders/1GRmwFJ4LqFm75CpRdohuyGY3FzIFSOmx",
+          "subcategories": {
+            "DAILY_SHEET_SNAPSHOTS": {
+              "id": "1S4Mr3hBL-NuYrEELBYf4BxTaE1SV6Kv3",
+              "url": "https://drive.google.com/drive/folders/1S4Mr3hBL-NuYrEELBYf4BxTaE1SV6Kv3"
+            },
+            "DISASTER_RECOVERY_ARCHIVES": {
+              "id": "1OdkOWE73n72A1nC9LrDfq0n1v7nORkxh",
+              "url": "https://drive.google.com/drive/folders/1OdkOWE73n72A1nC9LrDfq0n1v7nORkxh"
+            }
+          }
+        },
+        "04_GOVERNANCE_AUDIT_LOGS": {
+          "id": "18YntZNIsW5oZfD2i0rEsgSuMzBwuw_aW",
+          "url": "https://drive.google.com/drive/folders/18YntZNIsW5oZfD2i0rEsgSuMzBwuw_aW",
+          "subcategories": {}
+        }
+      }
+    }
+  }
+}

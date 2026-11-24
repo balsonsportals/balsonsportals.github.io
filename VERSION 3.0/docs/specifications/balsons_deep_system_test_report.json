@@ -1,0 +1,1135 @@
+{
+  "timestamp": "2026-11-22T17:43:09.156Z",
+  "environment": "Windows 11 x64 / Node v24.19.0",
+  "testSuites": [
+    {
+      "name": "Suite 1: Visual Assets, Cover Images & CSS Full-Side Alignment",
+      "total": 91,
+      "passed": 91,
+      "failed": 0,
+      "tests": [
+        {
+          "title": "Root assets/images contains login-gate.jpg",
+          "status": "PASS",
+          "details": "Size: 1401052 bytes"
+        },
+        {
+          "title": "Root assets/images contains login-hr.jpg",
+          "status": "PASS",
+          "details": "Size: 1330809 bytes"
+        },
+        {
+          "title": "Root assets/images contains login-operations.jpg",
+          "status": "PASS",
+          "details": "Size: 1691670 bytes"
+        },
+        {
+          "title": "Root assets/images contains login-purchase.jpg",
+          "status": "PASS",
+          "details": "Size: 1715149 bytes"
+        },
+        {
+          "title": "Root assets/images contains login-safety.jpg",
+          "status": "PASS",
+          "details": "Size: 2151053 bytes"
+        },
+        {
+          "title": "Root assets/images contains login-store.jpg",
+          "status": "PASS",
+          "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "Root assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "Root assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
+          "title": "Root assets/images contains balsons-logo.png",
+          "status": "PASS",
+          "details": "Size: 194271 bytes"
+        },
+        {
+          "title": "Directory exists: BALSONS GATE ENTRY MANAGER/frontend/assets/images",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains login-gate.jpg",
+          "status": "PASS",
+          "details": "Size: 1401052 bytes"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains login-hr.jpg",
+          "status": "PASS",
+          "details": "Size: 1330809 bytes"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains login-operations.jpg",
+          "status": "PASS",
+          "details": "Size: 1691670 bytes"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains login-purchase.jpg",
+          "status": "PASS",
+          "details": "Size: 1715149 bytes"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains login-safety.jpg",
+          "status": "PASS",
+          "details": "Size: 2151053 bytes"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains login-store.jpg",
+          "status": "PASS",
+          "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/assets/images contains balsons-logo.png",
+          "status": "PASS",
+          "details": "Size: 194271 bytes"
+        },
+        {
+          "title": "Directory exists: BALSONS HR MANAGER/frontend/assets/images",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/assets/images contains login-gate.jpg",
+          "status": "PASS",
+          "details": "Size: 1401052 bytes"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/assets/images contains login-hr.jpg",
+          "status": "PASS",
+          "details": "Size: 1330809 bytes"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/assets/images contains login-operations.jpg",
+          "status": "PASS",
+          "details": "Size: 1691670 bytes"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/assets/images contains login-purchase.jpg",
+          "status": "PASS",
+          "details": "Size: 1715149 bytes"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/assets/images contains login-safety.jpg",
+          "status": "PASS",
+          "details": "Size: 2151053 bytes"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/assets/images contains login-store.jpg",
+          "status": "PASS",
+          "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/assets/images contains balsons-logo.png",
+          "status": "PASS",
+          "details": "Size: 194271 bytes"
+        },
+        {
+          "title": "Directory exists: BALSONS OPERATIONS MANAGER/assets/images",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/assets/images contains login-gate.jpg",
+          "status": "PASS",
+          "details": "Size: 1401052 bytes"
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/assets/images contains login-hr.jpg",
+          "status": "PASS",
+          "details": "Size: 1330809 bytes"
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/assets/images contains login-operations.jpg",
+          "status": "PASS",
+          "details": "Size: 1691670 bytes"
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/assets/images contains login-purchase.jpg",
+          "status": "PASS",
+          "details": "Size: 1715149 bytes"
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/assets/images contains login-safety.jpg",
+          "status": "PASS",
+          "details": "Size: 2151053 bytes"
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/assets/images contains login-store.jpg",
+          "status": "PASS",
+          "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/assets/images contains balsons-logo.png",
+          "status": "PASS",
+          "details": "Size: 194271 bytes"
+        },
+        {
+          "title": "Directory exists: BALSONS PURCHASE MANAGER/assets/images",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/assets/images contains login-gate.jpg",
+          "status": "PASS",
+          "details": "Size: 1401052 bytes"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/assets/images contains login-hr.jpg",
+          "status": "PASS",
+          "details": "Size: 1330809 bytes"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/assets/images contains login-operations.jpg",
+          "status": "PASS",
+          "details": "Size: 1691670 bytes"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/assets/images contains login-purchase.jpg",
+          "status": "PASS",
+          "details": "Size: 1715149 bytes"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/assets/images contains login-safety.jpg",
+          "status": "PASS",
+          "details": "Size: 2151053 bytes"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/assets/images contains login-store.jpg",
+          "status": "PASS",
+          "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/assets/images contains balsons-logo.png",
+          "status": "PASS",
+          "details": "Size: 194271 bytes"
+        },
+        {
+          "title": "Directory exists: BALSONS SAFETY MANAGER/frontend/assets/images",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains login-gate.jpg",
+          "status": "PASS",
+          "details": "Size: 1401052 bytes"
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains login-hr.jpg",
+          "status": "PASS",
+          "details": "Size: 1330809 bytes"
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains login-operations.jpg",
+          "status": "PASS",
+          "details": "Size: 1691670 bytes"
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains login-purchase.jpg",
+          "status": "PASS",
+          "details": "Size: 1715149 bytes"
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains login-safety.jpg",
+          "status": "PASS",
+          "details": "Size: 2151053 bytes"
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains login-store.jpg",
+          "status": "PASS",
+          "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/assets/images contains balsons-logo.png",
+          "status": "PASS",
+          "details": "Size: 194271 bytes"
+        },
+        {
+          "title": "Directory exists: BALSONS STORE MANAGER/frontend/assets/images",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/assets/images contains login-gate.jpg",
+          "status": "PASS",
+          "details": "Size: 1401052 bytes"
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/assets/images contains login-hr.jpg",
+          "status": "PASS",
+          "details": "Size: 1330809 bytes"
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/assets/images contains login-operations.jpg",
+          "status": "PASS",
+          "details": "Size: 1691670 bytes"
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/assets/images contains login-purchase.jpg",
+          "status": "PASS",
+          "details": "Size: 1715149 bytes"
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/assets/images contains login-safety.jpg",
+          "status": "PASS",
+          "details": "Size: 2151053 bytes"
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/assets/images contains login-store.jpg",
+          "status": "PASS",
+          "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/assets/images contains balsons-logo.png",
+          "status": "PASS",
+          "details": "Size: 194271 bytes"
+        },
+        {
+          "title": "Directory exists: BALSONS ENTERPRISE LAUNCHER/assets/images",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains login-gate.jpg",
+          "status": "PASS",
+          "details": "Size: 1401052 bytes"
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains login-hr.jpg",
+          "status": "PASS",
+          "details": "Size: 1330809 bytes"
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains login-operations.jpg",
+          "status": "PASS",
+          "details": "Size: 1691670 bytes"
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains login-purchase.jpg",
+          "status": "PASS",
+          "details": "Size: 1715149 bytes"
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains login-safety.jpg",
+          "status": "PASS",
+          "details": "Size: 2151053 bytes"
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains login-store.jpg",
+          "status": "PASS",
+          "details": "Size: 1515822 bytes"
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains login-reports.jpg",
+          "status": "PASS",
+          "details": "Size: 928558 bytes"
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains login-document-hub.jpg",
+          "status": "PASS",
+          "details": "Size: 920956 bytes"
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/assets/images contains balsons-logo.png",
+          "status": "PASS",
+          "details": "Size: 194271 bytes"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/index.html binds to login-gate.jpg",
+          "status": "PASS",
+          "details": "Expected: login-gate.jpg"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/index.html binds to login-hr.jpg",
+          "status": "PASS",
+          "details": "Expected: login-hr.jpg"
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/index.html binds to login-operations.jpg",
+          "status": "PASS",
+          "details": "Expected: login-operations.jpg"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/index.html binds to login-purchase.jpg",
+          "status": "PASS",
+          "details": "Expected: login-purchase.jpg"
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/index.html binds to login-safety.jpg",
+          "status": "PASS",
+          "details": "Expected: login-safety.jpg"
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/index.html binds to login-store.jpg",
+          "status": "PASS",
+          "details": "Expected: login-store.jpg"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/index.html has full-side object-fit cover styling",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/index.html has full-side object-fit cover styling",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/index.html has full-side object-fit cover styling",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/index.html has full-side object-fit cover styling",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/index.html has full-side object-fit cover styling",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/index.html has full-side object-fit cover styling",
+          "status": "PASS",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "name": "Suite 2: Centralised Launcher Security & Governance Isolation",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "tests": [
+        {
+          "title": "Launcher contains Super Administrator exclusive guard",
+          "status": "PASS",
+          "details": "Enforces superadmin only on index.html"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/index.html has ZERO portalSwitcherWrap / cross-portal switcher links",
+          "status": "PASS",
+          "details": "Clean: Strictly Isolated"
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/index.html has ZERO portalSwitcherWrap / cross-portal switcher links",
+          "status": "PASS",
+          "details": "Clean: Strictly Isolated"
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/index.html has ZERO portalSwitcherWrap / cross-portal switcher links",
+          "status": "PASS",
+          "details": "Clean: Strictly Isolated"
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/index.html has ZERO portalSwitcherWrap / cross-portal switcher links",
+          "status": "PASS",
+          "details": "Clean: Strictly Isolated"
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/index.html has ZERO portalSwitcherWrap / cross-portal switcher links",
+          "status": "PASS",
+          "details": "Clean: Strictly Isolated"
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/index.html has ZERO portalSwitcherWrap / cross-portal switcher links",
+          "status": "PASS",
+          "details": "Clean: Strictly Isolated"
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/index.html has user-scoped profile/logout controller",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/index.html has user-scoped profile/logout controller",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/index.html has user-scoped profile/logout controller",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/index.html has user-scoped profile/logout controller",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/index.html has user-scoped profile/logout controller",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/index.html has user-scoped profile/logout controller",
+          "status": "PASS",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "name": "Suite 3: Super Admin User & Credential Management Engine",
+      "total": 16,
+      "passed": 16,
+      "failed": 0,
+      "tests": [
+        {
+          "title": "BalsonsSuperAdmin is defined in window",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Initial user roster loaded from DEFAULT_USERS",
+          "status": "PASS",
+          "details": "Found: 14 users"
+        },
+        {
+          "title": "superadmin account exists with Super Administrator role",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "superadmin can access launcher",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "All non-superadmin users are strictly blocked from launcher",
+          "status": "PASS",
+          "details": "13/13 blocked from launcher"
+        },
+        {
+          "title": "createUser() successfully adds user",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Created user exists in roster with correct properties",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "updateUser() updates user fields",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "User field modification verified",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "updateUserPassword() succeeds",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Password property is updated in roster",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "toggleUserStatus() toggles to Deactivated",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "toggleUserStatus() toggles back to Active",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "deleteUser() protects root superadmin from deletion",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "deleteUser() successfully removes custom user",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Deleted user no longer exists in roster",
+          "status": "PASS",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "name": "Suite 4: Smart Bidirectional Portal Login & Role Dropdowns",
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "tests": [
+        {
+          "title": "Operations portal uses login-operations.jpg",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Purchase portal uses login-purchase.jpg",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Gate portal uses login-gate.jpg",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "HR portal uses login-hr.jpg",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Safety portal uses login-safety.jpg",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Store portal uses login-store.jpg",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Launcher restricts role dropdown strictly to Super Administrator",
+          "status": "PASS",
+          "details": "Launcher role dropdown enforces superadmin isolation"
+        },
+        {
+          "title": "beds-portal-login.js blocks non-superadmins from launcher with Access Denied",
+          "status": "PASS",
+          "details": "Strict 403 Access Denied banner enforced"
+        }
+      ]
+    },
+    {
+      "name": "Suite 5: Google Drive Master Storage & 87-Folder Provisioning",
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "tests": [
+        {
+          "title": "balsons_drive_folder_map.json exists",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Root folder ID matches 1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Total mapped folder IDs count is 88 (1 Root + 87 Subfolders)",
+          "status": "PASS",
+          "details": "Total IDs: 88"
+        },
+        {
+          "title": "Major Vault 01_GATE_ENTRY_MANAGER is provisioned",
+          "status": "PASS",
+          "details": "ID: 1BbLIA4W-JSk2HFTKsNN1XI5Vr9WQ1bi-"
+        },
+        {
+          "title": "Major Vault 02_HR_AND_PAYROLL_MANAGER is provisioned",
+          "status": "PASS",
+          "details": "ID: 1TGaAS1aB6B0W8HHrZ6SYccG0XbsdSlLt"
+        },
+        {
+          "title": "Major Vault 03_OPERATIONS_AND_RIGGING_MANAGER is provisioned",
+          "status": "PASS",
+          "details": "ID: 1mNMSK9VmE5olCOtIdMzIm1HUcLEULn5g"
+        },
+        {
+          "title": "Major Vault 04_PURCHASE_AND_COMMERCIAL_MANAGER is provisioned",
+          "status": "PASS",
+          "details": "ID: 1lBWPI1VJos1lx_dkPi9l-sMVhsEM1iTp"
+        },
+        {
+          "title": "Major Vault 05_SAFETY_AND_RISK_MANAGER is provisioned",
+          "status": "PASS",
+          "details": "ID: 14l-IAZcb39iSeBSa9kQVUCI2lnty9cOK"
+        },
+        {
+          "title": "Major Vault 06_STORE_AND_TACKLE_MANAGER is provisioned",
+          "status": "PASS",
+          "details": "ID: 1RSSF5Ld9fEJ2VfacDp80DVrGyq4pE3HY"
+        },
+        {
+          "title": "Major Vault 07_EXECUTIVE_GOVERNANCE_AND_SYNC_HUB is provisioned",
+          "status": "PASS",
+          "details": "ID: 1ZnMBMc2A9bek2i_YGqspVIJR2Q_qgXye"
+        },
+        {
+          "title": "BalsonsDriveProvisioner.gs exists",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BalsonsDriveProvisioner.gs has ROOT_FOLDER_ID 1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BalsonsDriveProvisioner.gs has provisionBalsonsDrive function",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BalsonsDriveProvisioner.gs has savePortalDocument storage function",
+          "status": "PASS",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "name": "Suite 6: Portal Backend Integrations & Sheet Bindings Audit",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "tests": [
+        {
+          "title": "Gate Entry Manager binds to master Google Sheet ID 1yAuZOXc8W...",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Gate Entry Manager contains Google Apps Script deployment URL",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Gate Entry Manager has India Standard Time (IST) timestamp formatting",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "HR Manager binds to master Google Sheet ID 1so_aH05vV...",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "HR Manager contains Google Apps Script deployment URL",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "HR Manager has India Standard Time (IST) timestamp formatting",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Operations Manager binds to master Google Sheet ID 1GeqDDmBgd...",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Operations Manager contains Google Apps Script deployment URL",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Operations Manager has India Standard Time (IST) timestamp formatting",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Purchase Manager binds to master Google Sheet ID 1ANnu4X2dR...",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Purchase Manager contains Google Apps Script deployment URL",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Purchase Manager has India Standard Time (IST) timestamp formatting",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Safety Manager binds to master Google Sheet ID 1SyOGt6HEu...",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Safety Manager contains Google Apps Script deployment URL",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Safety Manager has India Standard Time (IST) timestamp formatting",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Store Manager binds to master Google Sheet ID 1u_ZKvvCVf...",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Store Manager contains Google Apps Script deployment URL",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Store Manager has India Standard Time (IST) timestamp formatting",
+          "status": "PASS",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "name": "Suite 7: Common Enterprise Password (\"balsons2026\") & Zero ID Collisions",
+      "total": 25,
+      "passed": 25,
+      "failed": 0,
+      "tests": [
+        {
+          "title": "beds-superadmin.js has DEFAULT_USERS with balsons2026",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "User @superadmin has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @director.mgmt has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @dilip.rout has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @sarat.mishra has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @admin.store has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @admin.safety has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @admin.gate has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @admin.hr has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @admin.purch has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @indenter.ops has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @hod.rigging has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @sup.bay3 has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @emp.ramesh has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "User @client.jtrwf has password balsons2026",
+          "status": "PASS",
+          "details": "Found: balsons2026"
+        },
+        {
+          "title": "beds-portal-login.js verifies balsons2026 explicitly",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "beds-portal-login.js auto-fills balsons2026 on role selection",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS GATE ENTRY MANAGER/frontend/index.html has ZERO colliding id=\"loginPassword\" inputs",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS HR MANAGER/frontend/index.html has ZERO colliding id=\"loginPassword\" inputs",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS OPERATIONS MANAGER/index.html has ZERO colliding id=\"loginPassword\" inputs",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS PURCHASE MANAGER/index.html has ZERO colliding id=\"loginPassword\" inputs",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS SAFETY MANAGER/frontend/index.html has ZERO colliding id=\"loginPassword\" inputs",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS STORE MANAGER/frontend/index.html has ZERO colliding id=\"loginPassword\" inputs",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS REPOTS PORTAL/index.html has ZERO colliding id=\"loginPassword\" inputs",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "BALSONS ENTERPRISE LAUNCHER/index.html has ZERO colliding id=\"loginPassword\" inputs",
+          "status": "PASS",
+          "details": ""
+        }
+      ]
+    },
+    {
+      "name": "Suite 8: Document Vault, In-Portal Modal Viewer & Statutory Validation Engine",
+      "total": 28,
+      "passed": 28,
+      "failed": 0,
+      "tests": [
+        {
+          "title": "balsons-docs-manager.js exists at assets/js/balsons-docs-manager.js",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "balsons-docs-manager.js exists at BALSONS GATE ENTRY MANAGER/frontend/assets/js/balsons-docs-manager.js",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "balsons-docs-manager.js exists at BALSONS HR MANAGER/frontend/assets/js/balsons-docs-manager.js",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "balsons-docs-manager.js exists at BALSONS OPERATIONS MANAGER/assets/js/balsons-docs-manager.js",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "balsons-docs-manager.js exists at BALSONS PURCHASE MANAGER/assets/js/balsons-docs-manager.js",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "balsons-docs-manager.js exists at BALSONS SAFETY MANAGER/frontend/assets/js/balsons-docs-manager.js",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "balsons-docs-manager.js exists at BALSONS STORE MANAGER/frontend/assets/js/balsons-docs-manager.js",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "balsons-docs-manager.js exists at BALSONS REPOTS PORTAL/assets/js/balsons-docs-manager.js",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "balsons-docs-manager.js exists at BALSONS ENTERPRISE LAUNCHER/assets/js/balsons-docs-manager.js",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Root Drive folder ID 1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde is configured",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "In-portal modal viewer markup is configured (#bedsDocViewerBackdrop)",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "viewDocument() function exists for in-portal viewing",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "uploadDocumentToDrive() function exists for 1-click cloud sync",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "deleteDocument() enforces role-based access control",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "editDocument() metadata modal exists",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Gate Entry has Document Vault tab button in nav",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Gate Entry has #tab-documents section",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Gate Entry has exportCurrentStudioGatePassToDrive() handler",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Gate Entry has exportCurrentChallanToDrive() handler",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Gate Entry has RTO vehicle regex validator validateVehicleInput",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Gate Entry has 10-digit mobile validator validatePhoneInput",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Gate Entry has Weighbridge Gross/Tare/Net calculator calcWeighbridgeNet",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Gate Entry has 0.00 BAC sobriety statutory check",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "RTO Regex validates standard plate OD-02-AX-8910",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "RTO Regex validates standard plate MH-12-PQ-4521",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "RTO Regex rejects invalid plate 123456",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Driver phone regex validates 10-digit mobile 9876543210",
+          "status": "PASS",
+          "details": ""
+        },
+        {
+          "title": "Driver phone regex rejects 5-digit number 12345",
+          "status": "PASS",
+          "details": ""
+        }
+      ]
+    }
+  ]
+}

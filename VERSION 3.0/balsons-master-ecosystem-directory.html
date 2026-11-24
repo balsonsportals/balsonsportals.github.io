@@ -1,0 +1,2692 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BALSONS Enterprise Ecosystem Directory & Governance Gateway | JTRWF</title>
+  <link rel="icon" type="image/png" href="assets/images/balsons-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================================
+       BEDS V1.0 DESIGN TOKENS & MASTER ECOSYSTEM DIRECTORY STYLES
+       ========================================================================= */
+    :root {
+      --beds-navy-deep: #102a35;
+      --beds-charcoal-heading: #102a35;
+      --beds-teal-primary: #0097a7;
+      --beds-bg-base: #f0f4f8;
+      --beds-bg-panel: #ffffff;
+      --beds-bg-card: #ffffff;
+      --beds-text-primary: #0f172a;
+      --beds-text-secondary: #475569;
+      --beds-text-muted: #64748b;
+      --beds-border: #cbd5e1;
+      --beds-accent-orange: rgb(223, 35, 14);
+
+      --super-navy: #0b1924;
+      --super-cyan: #0097a7;
+      --super-cyan-glow: rgba(0, 151, 167, 0.35);
+      --super-bg: #f8fafc;
+      --super-border: #e2e8f0;
+      --super-shadow: 0 4px 20px rgba(16, 42, 53, 0.06);
+
+      --beds-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --beds-font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="dark"] {
+      --beds-navy-deep: #060d13;
+      --beds-charcoal-heading: #f1f5f9;
+      --beds-teal-primary: #26c6da;
+      --beds-bg-base: #0a1219;
+      --beds-bg-panel: #101d27;
+      --beds-bg-card: #132431;
+      --beds-text-primary: #f8fafc;
+      --beds-text-secondary: #cbd5e1;
+      --beds-text-muted: #94a3b8;
+      --beds-border: #1e3345;
+
+      --super-navy: #04090e;
+      --super-cyan: #26c6da;
+      --super-cyan-glow: rgba(38, 198, 218, 0.4);
+      --super-bg: #0c1822;
+      --super-border: #1a3042;
+      --super-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--beds-font-sans);
+      background-color: var(--beds-bg-base);
+      color: var(--beds-text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    @keyframes superFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    }
+
+    /* 1. MASTER EXECUTIVE HEADER */
+    header.exec-header {
+      background: var(--beds-bg-panel, #ffffff);
+      border-bottom: 1px solid var(--super-border);
+      padding: 12px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--super-shadow);
+      animation: superFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .header-brand img {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+      transition: transform 0.25s ease;
+    }
+    .header-brand:hover img {
+      transform: scale(1.04);
+    }
+    .brand-text h1 {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--beds-charcoal-heading, #102a35);
+      margin: 0;
+      line-height: 1.2;
+      letter-spacing: -0.2px;
+    }
+    .brand-text p {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--super-cyan);
+      margin: 1px 0 0 0;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .brand-slogan {
+      font-size: 11px;
+      font-style: italic;
+      color: rgb(223, 35, 14);
+      margin-top: 2px;
+      font-weight: 700;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--beds-text-secondary, #475569);
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .badge-pill:hover {
+      border-color: var(--super-cyan);
+      color: var(--super-cyan);
+    }
+    .badge-live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      animation: pulseGlow 2s infinite;
+    }
+
+    /* ═══ PORTAL SWITCHER & USER PILL DROPDOWNS (BEDS V1.0) ═══════ */
+    .portal-switcher-wrap, .user-pill-wrap { position: relative; display: inline-block; }
+    .portal-switcher-btn {
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      color: var(--beds-text-primary, #102d35);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .portal-switcher-btn:hover {
+      border-color: var(--super-cyan);
+      color: var(--super-cyan);
+    }
+    .portal-switcher-menu, .user-pill-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 240px;
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border, #e2e8f0);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(16,45,53,0.18);
+      z-index: 500;
+      padding: 6px;
+    }
+    .portal-switcher-wrap.open .portal-switcher-menu,
+    .user-pill-wrap.open .user-pill-menu { display: block; }
+    .portal-switcher-item, .user-pill-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--beds-text-primary, #102d35);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .portal-switcher-item:hover, .user-pill-menu-item:hover { background: rgba(0,151,178,0.08); }
+    .portal-switcher-item.current { background: rgba(0,151,178,0.12); border-left: 3px solid #0097a7; }
+    .user-pill-menu-divider { height: 1px; background: var(--super-border, #e2e8f0); margin: 4px 0; }
+    .user-session-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 151, 167, 0.08);
+      border: 1px solid rgba(0, 151, 167, 0.25);
+      color: var(--super-cyan, #0097a7);
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* 2. EXECUTIVE HUB BANNER */
+    .hub-hero-ribbon {
+      background: linear-gradient(135deg, #0b1924 0%, #102a35 50%, #004d5a 100%);
+      color: #ffffff;
+      padding: 28px 32px 32px 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .hub-hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .hub-hero-title h2 {
+      font-size: 23px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      margin: 0;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hub-hero-title p {
+      font-size: 13.5px;
+      color: #94a3b8;
+      margin: 6px 0 0 0;
+      max-width: 850px;
+      line-height: 1.5;
+    }
+    .hub-hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-super-act {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-super-act:hover {
+      background: #0097a7;
+      border-color: #0097a7;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0, 151, 167, 0.4);
+      color: #ffffff;
+    }
+
+    .hub-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .hub-stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 16px 18px;
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
+    }
+    .hub-stat-card:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: var(--super-cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+    .stat-lbl {
+      font-size: 11px;
+      font-weight: 700;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-num {
+      font-size: 26px;
+      font-weight: 900;
+      color: #ffffff;
+      font-family: var(--beds-font-mono);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .stat-sub {
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
+
+    /* 3. MAIN DIRECTORY BODY & MASTER TABS */
+    main.hub-main {
+      padding: 28px 32px;
+      flex: 1;
+      max-width: 1680px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* MASTER NAVIGATION TABS - STRICT BEDS V1.0 COLOR STANDARDS */
+    .master-tab-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--super-border);
+      padding-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .master-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border);
+      color: #000000 !important; /* STRICTLY BLACK IN LIGHT MODE (BEDS STANDARD) */
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    [data-theme="dark"] .master-tab-btn {
+      color: #ffffff !important; /* STRICTLY WHITE IN DARK MODE (BEDS STANDARD) */
+      background: #112230;
+      border-color: #1a3042;
+    }
+    .master-tab-btn:hover {
+      border-color: var(--super-cyan);
+      background: rgba(0, 151, 167, 0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 151, 167, 0.15);
+    }
+    .master-tab-btn.active {
+      background: var(--super-cyan) !important;
+      border-color: var(--super-cyan);
+      color: #ffffff !important;
+      box-shadow: 0 4px 16px var(--super-cyan-glow);
+    }
+    .master-tab-btn .tab-count-badge {
+      background: rgba(0, 0, 0, 0.09);
+      color: inherit;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+    .master-tab-btn.active .tab-count-badge {
+      background: rgba(255, 255, 255, 0.28);
+      color: #ffffff !important;
+    }
+
+    /* Tab Panes */
+    .master-tab-pane {
+      display: none;
+      animation: superFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .master-tab-pane.active {
+      display: block;
+    }
+
+    /* Toolbar Filter Row */
+    .filter-toolbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      background: var(--beds-bg-panel, #ffffff);
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--super-border);
+      box-shadow: var(--super-shadow);
+    }
+    .filter-search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      border-radius: 6px;
+      padding: 8px 14px;
+      flex: 1;
+      min-width: 260px;
+      max-width: 520px;
+    }
+    .filter-search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-size: 13px;
+      color: var(--beds-text-primary);
+    }
+    .filter-pills-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-pill-btn {
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      color: #000000 !important; /* STRICTLY BLACK IN LIGHT MODE (BEDS STANDARD) */
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .filter-pill-btn:hover {
+      border-color: var(--super-cyan);
+      background: rgba(0, 151, 167, 0.08);
+      color: #000000 !important;
+    }
+    .filter-pill-btn.active {
+      background: var(--super-cyan) !important;
+      border-color: var(--super-cyan);
+      color: #ffffff !important;
+      box-shadow: 0 2px 8px var(--super-cyan-glow);
+    }
+    [data-theme="dark"] .filter-pill-btn {
+      color: #ffffff !important; /* STRICTLY WHITE IN DARK MODE (BEDS STANDARD) */
+    }
+    [data-theme="dark"] .filter-pill-btn:hover {
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* DIRECTORY CARDS GRID */
+    .portal-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+      gap: 22px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 600px) {
+      .portal-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .portal-master-card {
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--super-shadow);
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .portal-master-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(16, 42, 53, 0.1);
+      border-color: var(--super-cyan);
+    }
+
+    .pm-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--super-border);
+      padding-bottom: 14px;
+    }
+    .pm-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .pm-title-group h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading, #102a35);
+      line-height: 1.3;
+    }
+    .pm-title-group p {
+      margin: 3px 0 0 0;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--beds-text-muted);
+    }
+    .pm-version-badge {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    .pm-desc {
+      font-size: 12.5px;
+      color: var(--beds-text-secondary);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    /* TELEMETRY LINKS BOX */
+    .pm-telemetry-box {
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .pm-link-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pm-link-lbl {
+      font-weight: 700;
+      color: var(--beds-text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+    }
+    .pm-code-id {
+      font-family: var(--beds-font-mono);
+      font-weight: 700;
+      font-size: 11.5px;
+      background: rgba(0, 151, 167, 0.08);
+      color: var(--super-cyan);
+      padding: 2px 6px;
+      border-radius: 4px;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .pm-open-link {
+      color: #0097a7;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11.5px;
+    }
+    .pm-open-link:hover {
+      text-decoration: underline;
+    }
+
+    /* FEATURES & UPDATIONS LIST */
+    .pm-features-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 18px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .pm-features-list li {
+      font-size: 12px;
+      color: var(--beds-text-primary);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.4;
+    }
+    .pm-features-list li span.check-icon {
+      color: #10b981;
+      font-weight: 800;
+      font-size: 13px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* CARD ACTION FOOTER */
+    .pm-card-actions {
+      margin-top: auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-top: 14px;
+      border-top: 1px solid var(--super-border);
+    }
+    .btn-launch-primary {
+      background: var(--super-cyan);
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px var(--super-cyan-glow);
+    }
+    .btn-launch-primary:hover {
+      background: #008394;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px var(--super-cyan-glow);
+      color: #ffffff;
+    }
+    .btn-launch-secondary {
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      color: var(--beds-text-secondary);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-launch-secondary:hover {
+      border-color: var(--super-cyan);
+      color: var(--super-cyan);
+    }
+
+    /* MATRIX & CREDENTIALS PANELS */
+    .matrix-panel {
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--super-shadow);
+      margin-bottom: 32px;
+    }
+    .matrix-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--super-border);
+      padding-bottom: 12px;
+    }
+    .matrix-panel-header h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* CREDENTIALS SPECIFIC STYLING */
+    .cred-toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-cred-act {
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      color: var(--beds-text-primary);
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-cred-act:hover {
+      border-color: var(--super-cyan);
+      background: rgba(0, 151, 167, 0.08);
+      color: var(--super-cyan);
+    }
+    .btn-cred-act.active-toggle {
+      background: var(--super-cyan);
+      color: #ffffff;
+      border-color: var(--super-cyan);
+    }
+
+    .pw-badge-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 151, 167, 0.08);
+      border: 1px solid rgba(0, 151, 167, 0.2);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-family: var(--beds-font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--beds-text-primary);
+    }
+    .pw-val-text {
+      letter-spacing: 0.5px;
+    }
+    .pw-val-text.masked {
+      letter-spacing: 2px;
+      font-family: monospace;
+    }
+    .btn-pw-eye {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      line-height: 1;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
+    }
+    .btn-pw-eye:hover {
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .btn-cred-copy {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      line-height: 1;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
+    }
+    .btn-cred-copy:hover {
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .user-avatar-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    /* TAG CHIPS */
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .tag-cyan { background: rgba(0, 151, 167, 0.12); color: #0097a7; border: 1px solid rgba(0, 151, 167, 0.25); }
+    .tag-green { background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25); }
+    .tag-red { background: rgba(220, 38, 38, 0.12); color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.25); }
+    .tag-amber { background: rgba(217, 119, 6, 0.12); color: #d97706; border: 1px solid rgba(217, 119, 6, 0.25); }
+    .tag-blue { background: rgba(37, 99, 235, 0.12); color: #2563eb; border: 1px solid rgba(37, 99, 235, 0.25); }
+    .tag-purple { background: rgba(124, 58, 237, 0.12); color: #7c3aed; border: 1px solid rgba(124, 58, 237, 0.25); }
+
+    /* BEDS RESPONSIVE TABLE */
+    .table-responsive {
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+    table.beds-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      text-align: left;
+    }
+    table.beds-table th {
+      background: var(--super-bg);
+      color: var(--beds-text-secondary);
+      font-weight: 800;
+      padding: 12px 14px;
+      border-bottom: 2px solid var(--super-border);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    table.beds-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--super-border);
+      color: var(--beds-text-primary);
+      vertical-align: middle;
+    }
+    table.beds-table tr:hover td {
+      background: rgba(0, 151, 167, 0.03);
+    }
+
+    /* 4. FOOTER */
+    footer.hub-footer {
+      background: var(--beds-bg-panel, #ffffff);
+      border-top: 1px solid var(--super-border);
+      padding: 24px 32px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--beds-text-secondary);
+      margin-top: auto;
+    }
+
+    /* PRINT STYLES */
+    @media print {
+      header.exec-header, .hub-hero-actions, .filter-toolbar-row, .pm-card-actions, .master-tab-bar {
+        display: none !important;
+      }
+      .master-tab-pane {
+        display: block !important;
+        margin-bottom: 40px;
+      }
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .portal-cards-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+      .portal-master-card, .matrix-panel {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+      }
+      .pw-val-text.masked {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. MASTER EXECUTIVE HEADER -->
+  <header class="exec-header">
+    <div class="header-brand">
+      <img src="assets/images/balsons-logo.png" alt="BALSONS Heavy Lift & Shift" onerror="this.onerror=null; this.src='../assets/images/balsons-logo.png';">
+      <div class="brand-text">
+        <h1>BALSONS HEAVY LIFT & SHIFT</h1>
+        <p>Ecosystem Directory & Technical Baseline</p>
+        <div class="brand-slogan">“Difficult We Do Easily, Impossible Takes Little Time...!”</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="badge-pill">
+        <span class="badge-live-dot"></span> 7 Portals Live
+      </span>
+      <a href="mobile/directory.html" class="badge-pill" style="background: rgba(124, 58, 237, 0.12); border-color: #7c3aed; color: #7c3aed; font-weight: 800; text-decoration: none;" title="Open Mobile Directory & Credentials View">
+        📱 Mobile Directory
+      </a>
+      <span class="badge-pill" title="Security & Authentication Model">
+        🛡️ SAM-2026 Engine
+      </span>
+
+      <!-- 🚀 Portals Dropdown -->
+      <div class="portal-switcher-wrap" id="portalSwitcherWrap">
+        <button class="portal-switcher-btn" type="button" onclick="document.getElementById('portalSwitcherWrap').classList.toggle('open')">
+          🚀 Portals <span style="font-size:10px;">▾</span>
+        </button>
+        <div class="portal-switcher-menu">
+          <a class="portal-switcher-item" href="index.html">🏢 Enterprise Launcher</a>
+          <a class="portal-switcher-item" href="BALSONS OPERATIONS MANAGER/index.html">🏗️ Operations Manager</a>
+          <a class="portal-switcher-item" href="BALSONS PURCHASE MANAGER/index.html">🛒 Purchase Manager</a>
+          <a class="portal-switcher-item" href="BALSONS STORE MANAGER/frontend/index.html">📦 Store Manager</a>
+          <a class="portal-switcher-item" href="BALSONS SAFETY MANAGER/frontend/index.html">🦺 Safety Manager</a>
+          <a class="portal-switcher-item" href="BALSONS GATE ENTRY MANAGER/frontend/index.html">🚪 Gate Entry Manager</a>
+          <a class="portal-switcher-item" href="BALSONS HR MANAGER/frontend/index.html">👥 HR &amp; Payroll Manager</a>
+          <div class="user-pill-menu-divider"></div>
+          <a class="portal-switcher-item current" href="balsons-master-ecosystem-directory.html">🌐 Master Directory</a>
+          <a class="portal-switcher-item" href="mobile/index.html">📱 Mobile Hub</a>
+        </div>
+      </div>
+
+      <button class="badge-pill" id="themeBtn" onclick="toggleTheme()" style="cursor: pointer;" title="Toggle Light/Dark Theme">
+        🌙 Dark
+      </button>
+
+      <!-- 👤 User Pill Dropdown -->
+      <div class="user-pill-wrap" id="userPillWrap">
+        <div id="headerUserBadge" class="user-session-chip user-pill" onclick="document.getElementById('userPillWrap').classList.toggle('open')">
+          👑 <strong>Prashant Muley</strong> · Super Admin <span style="font-size:10px; margin-left:2px;">▾</span>
+        </div>
+        <div class="user-pill-menu">
+          <div class="user-pill-menu-item">👑 <span id="menuUserFullName">Prashant Muley (Super Admin)</span></div>
+          <div class="user-pill-menu-divider"></div>
+          <a class="user-pill-menu-item" href="index.html">🏢 Central Launcher</a>
+          <div class="user-pill-menu-item" onclick="switchMasterTab('credentials')">🔐 User Credentials Table</div>
+          <div class="user-pill-menu-divider"></div>
+          <a class="user-pill-menu-item" href="mobile/directory.html">📱 Mobile Directory</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. EXECUTIVE HUB BANNER -->
+  <section class="hub-hero-ribbon">
+    <div class="hub-hero-header">
+      <div class="hub-hero-title">
+        <h2><span>🌐</span> BALSONS Enterprise Ecosystem Directory & Governance Gateway</h2>
+        <p>
+          Master Technical Baseline for Jupiter Tatravagonka Railwheel Factory (JTRWF). Governs all integrated operational portals, dedicated Google Sheets databases, Clasp Apps Script API gateways, and authorized user credentials under SAM-2026 and BEDS V1.0 standards.
+        </p>
+      </div>
+      <div class="hub-hero-actions">
+        <button class="btn-super-act" onclick="copyAllEcosystemLinks()" title="Copy all portal and database links to clipboard">
+          📋 Copy All Links
+        </button>
+        <button class="btn-super-act" onclick="copyAllCredentials()" title="Copy all user login credentials to clipboard">
+          🔐 Copy All Credentials
+        </button>
+        <button class="btn-super-act" onclick="window.print()" title="Print / Export PDF Ecosystem Report">
+          🖨️ Print A4 Directory
+        </button>
+        <a href="https://github.com/balsonsportals" target="_blank" class="btn-super-act" title="Open GitHub Organization Repositories">
+          🐙 GitHub Org ↗
+        </a>
+      </div>
+    </div>
+
+    <div class="hub-stats-grid">
+      <div class="hub-stat-card">
+        <div class="stat-lbl"><span>🏛️</span> Portals Deployed</div>
+        <div class="stat-num">7 Live</div>
+        <div class="stat-sub">100% Responsive & Offline-First</div>
+      </div>
+      <div class="hub-stat-card">
+        <div class="stat-lbl"><span>📊</span> Dedicated DB Sheets</div>
+        <div class="stat-num">6 Sheets</div>
+        <div class="stat-sub">Strict System-Boundary Segregation</div>
+      </div>
+      <div class="hub-stat-card">
+        <div class="stat-lbl"><span>⚡</span> Apps Script Gateways</div>
+        <div class="stat-num">6 Clasp APIs</div>
+        <div class="stat-sub">Bi-Directional JSON & REST Hooks</div>
+      </div>
+      <div class="hub-stat-card">
+        <div class="stat-lbl"><span>🔐</span> Authorized Accounts</div>
+        <div class="stat-num">14 Verified</div>
+        <div class="stat-sub">Super Admin & Role-Segregated Logins</div>
+      </div>
+      <div class="hub-stat-card">
+        <div class="stat-lbl"><span>📁</span> Google Drive Master Vault</div>
+        <div class="stat-num">87 Folders</div>
+        <div class="stat-sub"><a href="https://drive.google.com/drive/folders/1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde" target="_blank" style="color:#38bdf8; text-decoration:none;">Root: 1p56Z_7_yHC5St... ↗</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. MAIN DIRECTORY BODY WITH DEDICATED TABS -->
+  <main class="hub-main">
+
+    <!-- MASTER TAB NAVIGATION BAR (STRICT BEDS V1.0 STANDARDS) -->
+    <div class="master-tab-bar">
+      <button class="master-tab-btn active" id="btnTabPortals" onclick="switchMasterTab('portals')">
+        <span>🌐</span> Master Portals & Live Links <span class="tab-count-badge">9</span>
+      </button>
+      <button class="master-tab-btn" id="btnTabCredentials" onclick="switchMasterTab('credentials')">
+        <span>🔐</span> User IDs & Passwords <span class="tab-count-badge">14 Accounts</span>
+      </button>
+      <button class="master-tab-btn" id="btnTabArchitecture" onclick="switchMasterTab('architecture')">
+        <span>📊</span> Architecture & DB Matrix <span class="tab-count-badge">6 DBs</span>
+      </button>
+    </div>
+
+    <!-- =========================================================================
+         TAB PANE 1: MASTER PORTALS & LIVE LINKS DIRECTORY
+         ========================================================================= -->
+    <div id="tab-pane-portals" class="master-tab-pane active">
+
+      <!-- Filter & Search Toolbar -->
+      <div class="filter-toolbar-row">
+        <div class="filter-search-box">
+          <span>🔍</span>
+          <input type="text" id="portalSearchInput" placeholder="Search portals by name, sheet ID, clasp script ID, or capability..." oninput="filterPortals()">
+        </div>
+        <div class="filter-pills-group">
+          <button class="filter-pill-btn active" onclick="setFilter('ALL', this)">All Portals (9)</button>
+          <button class="filter-pill-btn" onclick="setFilter('OPERATIONS', this)">Operations & Erection</button>
+          <button class="filter-pill-btn" onclick="setFilter('PURCHASE', this)">Purchase & Procurement</button>
+          <button class="filter-pill-btn" onclick="setFilter('STORE', this)">Store & Tackle Form 11</button>
+          <button class="filter-pill-btn" onclick="setFilter('SAFETY', this)">Safety & PTW Risk</button>
+          <button class="filter-pill-btn" onclick="setFilter('GATE', this)">Gate Entry & Muster</button>
+          <button class="filter-pill-btn" onclick="setFilter('HR', this)">Human Resources</button>
+        </div>
+      </div>
+
+      <!-- PORTALS DIRECTORY GRID -->
+      <div class="portal-cards-grid" id="portalCardsContainer">
+
+        <!-- CARD 1: OPERATIONS & HEAVY RIGGING EXECUTION MANAGER -->
+        <div class="portal-master-card" data-category="OPERATIONS">
+          <div class="pm-header">
+            <div class="pm-icon-box" style="background: rgba(0, 151, 167, 0.12); color: #0097a7;">🏗️</div>
+            <div class="pm-title-group">
+              <h3>Operations & Heavy Rigging Manager</h3>
+              <p>Execution Planning, 8-State Lifecycles, Cranes & Work Packages</p>
+            </div>
+            <span class="pm-version-badge tag-chip tag-cyan">V7.2 BASELINE</span>
+          </div>
+
+          <div class="pm-desc">
+            Controls onsite mechanical erection, multi-axle modular trailer haulage, tandem heavy crane coordination, shift handovers, and commercial SOW reconciliation across 3 execution zones and 7 Machine Shop workstreams.
+          </div>
+
+          <div class="pm-telemetry-box">
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>📊</span> Dedicated Sheet DB:</span>
+              <code class="pm-code-id" title="1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E">1GeqDDmB...xa-E</code>
+              <a href="https://docs.google.com/spreadsheets/d/1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E/edit" target="_blank" class="pm-open-link">Open Sheet ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>⚡</span> Apps Script Gateway:</span>
+              <code class="pm-code-id" title="1an3LeD6Ich14qtWZ5GFgJMaa3dYQSboZRwFy9g_gf9zWicPDB9KpFNny">1an3LeD6...FNny</code>
+              <a href="https://script.google.com/d/1an3LeD6Ich14qtWZ5GFgJMaa3dYQSboZRwFy9g_gf9zWicPDB9KpFNny/edit" target="_blank" class="pm-open-link">Open Script ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🌐</span> Live Production URL:</span>
+              <a href="https://balsonsportals.github.io/BALSONS%20OPERATIONS%20MANAGER/index.html" target="_blank" class="pm-open-link" style="font-weight:800;">balsonsportals.github.io/.../index.html ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🐙</span> Git Repository:</span>
+              <a href="https://github.com/balsonsportals/BALSONS_OPERATIONS_PORTAL.git" target="_blank" class="pm-open-link">BALSONS_OPERATIONS_PORTAL.git ↗</a>
+            </div>
+          </div>
+
+          <ul class="pm-features-list">
+            <li><span class="check-icon">✓</span> <strong>Area-Wise Segmentation:</strong> Area 1 (Line Axle, 717 MD), Area 2 (Line Wheel, 1,075 MD), Area 3 (Machine Shop Bay, 7 workstreams).</li>
+            <li><span class="check-icon">✓</span> <strong>Universal 360° Dossier:</strong> One-click comprehensive dossier for Work Packages, Heavy Machinery Assets, and Execution Areas with interactive punchlist checklists.</li>
+            <li><span class="check-icon">✓</span> <strong>Mandatory Real-Time Dual-Sync:</strong> IndexedDB offline store automatically syncs mutations to dedicated Google Sheet <code>1GeqDDmB...</code>.</li>
+            <li><span class="check-icon">✓</span> <strong>Persistent Login Guarantee:</strong> Stays securely logged in on mobile and PC across page refreshes.</li>
+          </ul>
+
+          <div class="pm-card-actions">
+            <a href="BALSONS%20OPERATIONS%20MANAGER/index.html" class="btn-launch-primary">Launch Portal ➔</a>
+            <a href="https://docs.google.com/spreadsheets/d/1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E/edit" target="_blank" class="btn-launch-secondary">Database Sheet ↗</a>
+            <a href="https://script.google.com/d/1an3LeD6Ich14qtWZ5GFgJMaa3dYQSboZRwFy9g_gf9zWicPDB9KpFNny/edit" target="_blank" class="btn-launch-secondary">Apps Script API ↗</a>
+          </div>
+        </div>
+
+        <!-- CARD 2: STORE & TACKLE INVENTORY MANAGER -->
+        <div class="portal-master-card" data-category="STORE">
+          <div class="pm-header">
+            <div class="pm-icon-box" style="background: rgba(16, 185, 129, 0.12); color: #059669;">📦</div>
+            <div class="pm-title-group">
+              <h3>Store & Tackle Inventory Manager</h3>
+              <p>Form 11 Lifting Tackle Certificates, Tool Issues & Store Radar</p>
+            </div>
+            <span class="pm-version-badge tag-chip tag-green">V3.2 / V5.3</span>
+          </div>
+
+          <div class="pm-desc">
+            Official custodian of heavy rigging tackle Form 11 certificate compliance, certified wire rope slings, master links, calibrated hydraulic torque wrenches, tool issuing/returns, and store radar inventory tracking.
+          </div>
+
+          <div class="pm-telemetry-box">
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>📊</span> Dedicated Sheet DB:</span>
+              <code class="pm-code-id" title="1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ">1u_ZKvvC...P6yQ</code>
+              <a href="https://docs.google.com/spreadsheets/d/1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ/edit" target="_blank" class="pm-open-link">Open Sheet ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>⚡</span> Apps Script Gateway:</span>
+              <code class="pm-code-id" title="1brrNLzFHk-qNEcP60mQEOsnm9kWnyRQNVx9flj8d5vL_DChuajbD0mN-">1brrNLzF...0mN-</code>
+              <a href="https://script.google.com/d/1brrNLzFHk-qNEcP60mQEOsnm9kWnyRQNVx9flj8d5vL_DChuajbD0mN-/edit" target="_blank" class="pm-open-link">Open Script ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🌐</span> Live Production URL:</span>
+              <a href="https://balsonsportals.github.io/BALSONS%20STORE%20MANAGER/frontend/index.html" target="_blank" class="pm-open-link" style="font-weight:800;">balsonsportals.github.io/.../store/index.html ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🐙</span> Git Repository:</span>
+              <a href="https://github.com/balsonsportals/BALSONS_STORE_MANAGER.git" target="_blank" class="pm-open-link">BALSONS_STORE_MANAGER.git ↗</a>
+            </div>
+          </div>
+
+          <ul class="pm-features-list">
+            <li><span class="check-icon">✓</span> <strong>Form 11 Tackle Compliance:</strong> Live TPI inspection validity tracker; prevents tool issuance if certificate is expired.</li>
+            <li><span class="check-icon">✓</span> <strong>360° Workforce Tool Dossier:</strong> Inspects issued tools, torque certificates, and custody history by employee badge.</li>
+            <li><span class="check-icon">✓</span> <strong>Multi-Lingual Engine:</strong> Instant bilingual toggle between English and Hindi (हिन्दी) for onsite store keepers.</li>
+            <li><span class="check-icon">✓</span> <strong>Inventory Barcode & Quick Issue:</strong> Instant tool dispatch with gate returnable gate pass (RGP) tracking.</li>
+          </ul>
+
+          <div class="pm-card-actions">
+            <a href="BALSONS%20STORE%20MANAGER/frontend/index.html" class="btn-launch-primary" style="background:#059669;">Launch Portal ➔</a>
+            <a href="https://docs.google.com/spreadsheets/d/1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ/edit" target="_blank" class="btn-launch-secondary">Database Sheet ↗</a>
+            <a href="https://script.google.com/d/1brrNLzFHk-qNEcP60mQEOsnm9kWnyRQNVx9flj8d5vL_DChuajbD0mN-/edit" target="_blank" class="btn-launch-secondary">Apps Script API ↗</a>
+          </div>
+        </div>
+
+        <!-- CARD 3: SAFETY & RISK MANAGER -->
+        <div class="portal-master-card" data-category="SAFETY">
+          <div class="pm-header">
+            <div class="pm-icon-box" style="background: rgba(220, 38, 38, 0.12); color: #dc2626;">🛡️</div>
+            <div class="pm-title-group">
+              <h3>Safety & Risk Manager</h3>
+              <p>Permit-To-Work (PTW), Form 31 Medical Fitness & 4-Eye Rigging Clearance</p>
+            </div>
+            <span class="pm-version-badge tag-chip tag-red">V2.1 / V5.3</span>
+          </div>
+
+          <div class="pm-desc">
+            Controls high-risk work permits (Hot Work, Height, Confined Space, Heavy Tandem Lifts), Form 31 medical fitness validity, safety induction passports, daily Toolbox Talks (TBT), and zero-harm audit registers.
+          </div>
+
+          <div class="pm-telemetry-box">
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>📊</span> Dedicated Sheet DB:</span>
+              <code class="pm-code-id" title="1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0">1SyOGt6H...aOP0</code>
+              <a href="https://docs.google.com/spreadsheets/d/1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0/edit" target="_blank" class="pm-open-link">Open Sheet ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>⚡</span> Apps Script Gateway:</span>
+              <code class="pm-code-id" title="1hDeYHxT2oU3G7i5YLPl5D_hzRiAEwpwKgUKsO1P3N0vMuum2e2Unitfj">1hDeYHxT...itfj</code>
+              <a href="https://script.google.com/d/1hDeYHxT2oU3G7i5YLPl5D_hzRiAEwpwKgUKsO1P3N0vMuum2e2Unitfj/edit" target="_blank" class="pm-open-link">Open Script ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🌐</span> Live Production URL:</span>
+              <a href="https://balsonsportals.github.io/BALSONS%20SAFETY%20MANAGER/index.html" target="_blank" class="pm-open-link" style="font-weight:800;">balsonsportals.github.io/.../safety/index.html ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🐙</span> Git Repository:</span>
+              <a href="https://github.com/balsonsportals/BALSONS_SAFETY_MANAGER.git" target="_blank" class="pm-open-link">BALSONS_SAFETY_MANAGER.git ↗</a>
+            </div>
+          </div>
+
+          <ul class="pm-features-list">
+            <li><span class="check-icon">✓</span> <strong>4-Eye Tandem Lift Review:</strong> Joint sign-off between Safety Steward and Area Rigging In-Charge.</li>
+            <li><span class="check-icon">✓</span> <strong>Environmental & Wind Interlocks:</strong> Wind speed exceeding 9.8 m/s triggers automatic suspension of heavy lifts.</li>
+            <li><span class="check-icon">✓</span> <strong>Tri-Portal Clearance Integration:</strong> Feeds real-time safety induction & fitness status directly to Gate Entry.</li>
+            <li><span class="check-icon">✓</span> <strong>Form 31 Medical Tracking:</strong> Automated warning when worker annual height/rigging medical examination approaches expiry.</li>
+          </ul>
+
+          <div class="pm-card-actions">
+            <a href="BALSONS%20SAFETY%20MANAGER/index.html" class="btn-launch-primary" style="background:#dc2626;">Launch Portal ➔</a>
+            <a href="https://docs.google.com/spreadsheets/d/1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0/edit" target="_blank" class="btn-launch-secondary">Database Sheet ↗</a>
+            <a href="https://script.google.com/d/1hDeYHxT2oU3G7i5YLPl5D_hzRiAEwpwKgUKsO1P3N0vMuum2e2Unitfj/edit" target="_blank" class="btn-launch-secondary">Apps Script API ↗</a>
+          </div>
+        </div>
+
+        <!-- CARD 4: GATE ENTRY & SECURITY MANAGER -->
+        <div class="portal-master-card" data-category="GATE">
+          <div class="pm-header">
+            <div class="pm-icon-box" style="background: rgba(217, 119, 6, 0.12); color: #d97706;">🚪</div>
+            <div class="pm-title-group">
+              <h3>Gate Entry & Security Manager</h3>
+              <p>Tri-Portal Turnstile Clearance, Biometric Muster & Vehicle Passes</p>
+            </div>
+            <span class="pm-version-badge tag-chip tag-amber">V2.0 / V5.3</span>
+          </div>
+
+          <div class="pm-desc">
+            Automated gate decision engine that unlocks turnstiles ONLY when an employee possesses active HR onboarding AND verified Safety induction/medical clearance. Controls returnable/non-returnable material gate passes (RGP/NRGP).
+          </div>
+
+          <div class="pm-telemetry-box">
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>📊</span> Dedicated Sheet DB:</span>
+              <code class="pm-code-id" title="1yAuZOXc8WoC2TvTvnEWMrOyLl_50BRuJgDed_pdFT3o">1yAuZOXc...FT3o</code>
+              <a href="https://docs.google.com/spreadsheets/d/1yAuZOXc8WoC2TvTvnEWMrOyLl_50BRuJgDed_pdFT3o/edit" target="_blank" class="pm-open-link">Open Sheet ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>⚡</span> Apps Script Gateway:</span>
+              <code class="pm-code-id" title="1emZvUYjT-hTduELE4lSboVCtndFfGQ8KC2elpQ6Em9TF4RW6d2VF75J-">1emZvUYj...75J-</code>
+              <a href="https://script.google.com/d/1emZvUYjT-hTduELE4lSboVCtndFfGQ8KC2elpQ6Em9TF4RW6d2VF75J-/edit" target="_blank" class="pm-open-link">Open Script ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🌐</span> Live Production URL:</span>
+              <a href="https://balsonsportals.github.io/BALSONS%20GATE%20ENTRY%20MANAGER/index.html" target="_blank" class="pm-open-link" style="font-weight:800;">balsonsportals.github.io/.../gate/index.html ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🐙</span> Git Repository:</span>
+              <a href="https://github.com/balsonsportals/BALSONS_GATE_ENTRY_MANAGER.git" target="_blank" class="pm-open-link">BALSONS_GATE_ENTRY_MANAGER.git ↗</a>
+            </div>
+          </div>
+
+          <ul class="pm-features-list">
+            <li><span class="check-icon">✓</span> <strong>Tri-Portal Access Interlock:</strong> Zero turnstile entry without verified HR KYC and Safety Form 31 certificate.</li>
+            <li><span class="check-icon">✓</span> <strong>Real-Time Site Muster:</strong> Live head count tracking showing exactly who is inside the plant boundary.</li>
+            <li><span class="check-icon">✓</span> <strong>Material Gate Pass Validation:</strong> Automated RGP/NRGP check against Store Manager dispatches.</li>
+            <li><span class="check-icon">✓</span> <strong>Heavy Transport Vehicle Log:</strong> Multi-axle trailer site gate check-in and weighbridge integration.</li>
+          </ul>
+
+          <div class="pm-card-actions">
+            <a href="BALSONS%20GATE%20ENTRY%20MANAGER/index.html" class="btn-launch-primary" style="background:#d97706;">Launch Portal ➔</a>
+            <a href="https://docs.google.com/spreadsheets/d/1yAuZOXc8WoC2TvTvnEWMrOyLl_50BRuJgDed_pdFT3o/edit" target="_blank" class="btn-launch-secondary">Database Sheet ↗</a>
+            <a href="https://script.google.com/d/1emZvUYjT-hTduELE4lSboVCtndFfGQ8KC2elpQ6Em9TF4RW6d2VF75J-/edit" target="_blank" class="btn-launch-secondary">Apps Script API ↗</a>
+          </div>
+        </div>
+
+        <!-- CARD 5: HUMAN RESOURCES (HR) MANAGER -->
+        <div class="portal-master-card" data-category="HR">
+          <div class="pm-header">
+            <div class="pm-icon-box" style="background: rgba(37, 99, 235, 0.12); color: #2563eb;">👥</div>
+            <div class="pm-title-group">
+              <h3>Human Resources (HR) Manager</h3>
+              <p>Workforce Master Directory, Statutory Compliance & Onboarding</p>
+            </div>
+            <span class="pm-version-badge tag-chip tag-blue">V2.0 / V5.3</span>
+          </div>
+
+          <div class="pm-desc">
+            Master system of record for workforce identities, Aadhaar KYC verification, PF UAN and ESIC IP compliance, wage classifications, police background verification records, contractor allocations, and site colony quarters.
+          </div>
+
+          <div class="pm-telemetry-box">
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>📊</span> Dedicated Sheet DB:</span>
+              <code class="pm-code-id" title="1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw">1so_aH05...3cuw</code>
+              <a href="https://docs.google.com/spreadsheets/d/1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw/edit" target="_blank" class="pm-open-link">Open Sheet ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>⚡</span> Apps Script Gateway:</span>
+              <code class="pm-code-id" title="1_I-scIjBfFbJufFCppzT-fCp-cBC-5BKvk4RwS6UTVwno1KFu5MTxKs_">1_I-scIj...xKs_</code>
+              <a href="https://script.google.com/d/1_I-scIjBfFbJufFCppzT-fCp-cBC-5BKvk4RwS6UTVwno1KFu5MTxKs_/edit" target="_blank" class="pm-open-link">Open Script ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🌐</span> Live Production URL:</span>
+              <a href="https://balsonsportals.github.io/BALSONS%20HR%20MANAGER/index.html" target="_blank" class="pm-open-link" style="font-weight:800;">balsonsportals.github.io/.../hr/index.html ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🐙</span> Git Repository:</span>
+              <a href="https://github.com/balsonsportals/BALSONS_HR_MANAGER.git" target="_blank" class="pm-open-link">BALSONS_HR_MANAGER.git ↗</a>
+7. PURCHASE MANAGER & COMMERCIAL PROCUREMENT (V6.0)
+   - Live URL: https://balsonsportals.github.io/BALSONS%20PURCHASE%20MANAGER/index.html
+   - Dedicated Sheet DB: 1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c
+   - Sheet Link: https://docs.google.com/spreadsheets/d/1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c/edit
+   - Apps Script Gateway: 1BPmt-vDa-pBy07quE1wq7FY6kq8VnQJPUNIx1GrlSBD5UO9v3FflrZZN
+   - Apps Script Link: https://script.google.com/d/1BPmt-vDa-pBy07quE1wq7FY6kq8VnQJPUNIx1GrlSBD5UO9v3FflrZZN/edit
+   - Git Repo: https://github.com/balsonsportals/BALSONS_PURCHASE_PORTAL.git
+
+            </div>
+          </div>
+
+          <ul class="pm-features-list">
+            <li><span class="check-icon">✓</span> <strong>Statutory Governance:</strong> Enforces 100% PF UAN, ESIC IP, and clean police verification before onboarding.</li>
+            <li><span class="check-icon">✓</span> <strong>Unified Employee ID:</strong> Issues <code>EMP-2026-XXXX</code> standard identifiers consumed across all portals.</li>
+            <li><span class="check-icon">✓</span> <strong>Contractor Trade Breakdown:</strong> Tracks riggers, millwrights, hydraulic technicians, and crane operators.</li>
+            <li><span class="check-icon">✓</span> <strong>Site Camp & Colony Allocation:</strong> Manages worker barrack assignments and emergency contact directories.</li>
+          </ul>
+
+          <div class="pm-card-actions">
+            <a href="BALSONS%20HR%20MANAGER/index.html" class="btn-launch-primary" style="background:#2563eb;">Launch Portal ➔</a>
+            <a href="https://docs.google.com/spreadsheets/d/1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw/edit" target="_blank" class="btn-launch-secondary">Database Sheet ↗</a>
+            <a href="https://script.google.com/d/1_I-scIjBfFbJufFCppzT-fCp-cBC-5BKvk4RwS6UTVwno1KFu5MTxKs_/edit" target="_blank" class="btn-launch-secondary">Apps Script API ↗</a>
+          </div>
+        </div>
+
+        <!-- CARD 6: CENTRAL ENTERPRISE LAUNCHER -->
+        <div class="portal-master-card" data-category="ALL">
+          <div class="pm-header">
+            <div class="pm-icon-box" style="background: rgba(124, 58, 237, 0.12); color: #7c3aed;">🚀</div>
+            <div class="pm-title-group">
+              <h3>Central Enterprise Launcher</h3>
+              <p>Single Sign-On (SSO), Role Switching & Ecosystem Gateway</p>
+            </div>
+            <span class="pm-version-badge tag-chip tag-purple">V5.3 ECOSYSTEM</span>
+          </div>
+
+          <div class="pm-desc">
+            Executive launchpad providing unified single sign-on, centralized role switching, synchronized ecosystem navigation, and immediate access to all specialized portals for client executives, project directors, and site supervisors.
+          </div>
+
+          <div class="pm-telemetry-box">
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🌐</span> Live Production URL:</span>
+              <a href="https://balsonsportals.github.io/index.html" target="_blank" class="pm-open-link" style="font-weight:800;">balsonsportals.github.io/index.html ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🐙</span> Master GitHub Pages Repo:</span>
+              <a href="https://github.com/balsonsportals/balsonsportals.github.io.git" target="_blank" class="pm-open-link">balsonsportals.github.io.git ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🛡️</span> Authentication Engine:</span>
+              <code class="pm-code-id">BALSONS-SAM-2026 Session</code>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🎨</span> Design Standard:</span>
+              <code class="pm-code-id">BEDS V1.0 (Strict Light/Dark)</code>
+            </div>
+          </div>
+
+          <ul class="pm-features-list">
+            <li><span class="check-icon">✓</span> <strong>Single Sign-On (SSO):</strong> Seamless authentication token recognized across all 5 domain portals.</li>
+            <li><span class="check-icon">✓</span> <strong>Persistent Login Guarantee:</strong> Retains authorized state in browser storage without logouts on page reload.</li>
+            <li><span class="check-icon">✓</span> <strong>Zero Simulator Intrusions:</strong> All developer simulator bars strictly suppressed in production mode.</li>
+            <li><span class="check-icon">✓</span> <strong>Executive Ribbon Overview:</strong> Real-time high-level KPIs across safety, manpower, and heavy lifting progress.</li>
+          </ul>
+
+          <div class="pm-card-actions">
+            <a href="index.html" class="btn-launch-primary" style="background:#7c3aed;">Launch Central Hub ➔</a>
+            <a href="https://github.com/balsonsportals/balsonsportals.github.io.git" target="_blank" class="btn-launch-secondary">GitHub Pages Repo ↗</a>
+          </div>
+        </div>
+
+        <!-- CARD 7: BALSONS PURCHASE MANAGER (PROCUREMENT SPINE) -->
+        <div class="portal-master-card" data-category="PURCHASE">
+          <div class="pm-header">
+            <div class="pm-icon-box" style="background: rgba(14, 165, 233, 0.12); color: #0ea5e9;">🛒</div>
+            <div class="pm-title-group">
+              <h3>Purchase Manager & Commercial Procurement</h3>
+              <p>Sourcing, RFQs, CS Landed Cost Matrix, PO Generation & ASN Tracking</p>
+            </div>
+            <span class="pm-version-badge tag-chip tag-cyan">V6.0 BASELINE</span>
+          </div>
+
+          <div class="pm-desc">
+            End-to-end commercial procurement engine governing PR approval workflows, RFQ supplier tendering, L1/L2/L3 landed cost comparison (freight, customs, GST, packaging), immutable Purchase Order issuance with formal PDF layout, Advance Shipping Notice (ASN) tracking, and dual-sync with Google Sheet.
+          </div>
+
+          <div class="pm-telemetry-box">
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>📊</span> Dedicated Sheet DB:</span>
+              <code class="pm-code-id" title="1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c">1ANnu4X2...uyj_c</code>
+              <a href="https://docs.google.com/spreadsheets/d/1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c/edit" target="_blank" class="pm-open-link">Open Sheet ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>⚡</span> Apps Script Gateway:</span>
+              <code class="pm-code-id" title="1BPmt-vDa-pBy07quE1wq7FY6kq8VnQJPUNIx1GrlSBD5UO9v3FflrZZN">1BPmt-vD...flrZZN</code>
+              <a href="https://script.google.com/d/1BPmt-vDa-pBy07quE1wq7FY6kq8VnQJPUNIx1GrlSBD5UO9v3FflrZZN/edit" target="_blank" class="pm-open-link">Open Script ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🌐</span> Live Production URL:</span>
+              <a href="https://balsonsportals.github.io/BALSONS%20PURCHASE%20MANAGER/index.html" target="_blank" class="pm-open-link" style="font-weight:800;">balsonsportals.github.io/.../index.html ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🏛️</span> Git Repository:</span>
+              <a href="https://github.com/balsonsportals/BALSONS_PURCHASE_PORTAL.git" target="_blank" class="pm-open-link">BALSONS_PURCHASE_PORTAL.git ↗</a>
+            </div>
+          </div>
+
+          <ul class="pm-features-list">
+            <li><span class="check-icon">✓</span> <strong>15 Relational Tables & Automated Provisioner:</strong> <code>indb.gs</code> & <code>PurchaseService.gs</code> establish automated schema initialization, headers, validations, and seed data.</li>
+            <li><span class="check-icon">✓</span> <strong>4-Tier Delegation of Authority (DoA):</strong> Strict tier approvals (Tier 1: ≤₹50k, Tier 2: ≤₹5L, Tier 3: ≤₹25L, Tier 4: >₹25L Super Admin sign-off).</li>
+            <li><span class="check-icon">✓</span> <strong>Comparative Statement (CS) Matrix:</strong> Normalized landed cost calculation (ex-works, freight, insurance, packaging, customs, GST) with automated L1/L2/L3 rank sorting.</li>
+            <li><span class="check-icon">✓</span> <strong>Traceability Spine & ASN Handshake:</strong> Seamless PR ➔ RFQ ➔ Quote ➔ CS ➔ PO ➔ ASN pipeline with Gate and Store Manager delivery alerts.</li>
+            <li><span class="check-icon">✓</span> <strong>Persistent Login & 360° Dossiers:</strong> Interactive dossiers for every PR, RFQ, PO, and Supplier; session persists across browser reloads.</li>
+          </ul>
+
+          <div class="pm-card-actions">
+            <a href="BALSONS%20PURCHASE%20MANAGER/index.html" class="btn-launch-primary" style="background:#0284c7;">Launch Purchase Portal ➔</a>
+            <a href="https://docs.google.com/spreadsheets/d/1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c/edit" target="_blank" class="btn-launch-secondary">Database Sheet ↗</a>
+            <a href="https://script.google.com/d/1BPmt-vDa-pBy07quE1wq7FY6kq8VnQJPUNIx1GrlSBD5UO9v3FflrZZN/edit" target="_blank" class="btn-launch-secondary">Apps Script API ↗</a>
+          </div>
+        </div>
+
+        <!-- CARD 8: CENTRAL SYNC HUB & REPORTS -->
+        <div class="portal-master-card" data-category="ADMIN">
+          <div class="pm-header">
+            <div class="pm-icon-box" style="background: rgba(16, 185, 129, 0.12); color: #10b981;">📊</div>
+            <div class="pm-title-group">
+              <h3>Central Sync Hub & JTRWF Master Reporting</h3>
+              <p>Cross-Portal Synchronization, 360° Executive Roll-Up & Audit Trail</p>
+            </div>
+            <span class="pm-version-badge tag-chip tag-cyan">V3.0 BASELINE</span>
+          </div>
+
+          <div class="pm-desc">
+            Option A Enterprise Sync Engine orchestrating real-time event bridges between independent operational databases (Gate, Store, Safety, HR, Ops, Purchase) and generating unified executive roll-up dossiers for the JTRWF Khordha Project.
+          </div>
+
+          <div class="pm-telemetry-box">
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🌐</span> Live Production URL:</span>
+              <a href="BALSONS%20REPOTS%20PORTAL/index.html" class="pm-open-link" style="font-weight:800;">BALSONS REPOTS PORTAL/index.html ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>📄</span> Master PDF Reference:</span>
+              <a href="BALSONS%20REPOTS%20PORTAL/BALSONS_CENTRAL_SYNC_HUB_ENTERPRISE_MASTER_ARCHITECTURE_AND_JTRWF_IMPLEMENTATION_BASELINE_V3.0.pdf" target="_blank" class="pm-open-link">Master Architecture PDF V3.0 ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>👑</span> Authority Standard:</span>
+              <span style="font-size:11.5px; font-weight:700; color:var(--beds-charcoal-heading);">Global Super Administrator Policy V1.0</span>
+            </div>
+          </div>
+
+          <ul class="pm-features-list">
+            <li><span class="check-icon">✓</span> <strong>Decentralized DB Authority:</strong> Preserves independent Google Sheet databases for each operational department with zero operational disruption.</li>
+            <li><span class="check-icon">✓</span> <strong>Event-Driven Sync Bridges:</strong> Automated cross-portal updates (Store PRs to Purchase, Gate Inward to Store, HR attendance to Gate roll-call).</li>
+            <li><span class="check-icon">✓</span> <strong>Unified JTRWF Dossier:</strong> Executive single-pane reporting with consolidated manpower muster, heavy lift progress, and procurement commitment ledger.</li>
+          </ul>
+
+          <div class="pm-card-actions">
+            <a href="BALSONS%20REPOTS%20PORTAL/index.html" class="btn-launch-primary" style="background:#10b981;">Launch Reports Portal ➔</a>
+            <a href="BALSONS%20REPOTS%20PORTAL/BALSONS_CENTRAL_SYNC_HUB_ENTERPRISE_MASTER_ARCHITECTURE_AND_JTRWF_IMPLEMENTATION_BASELINE_V3.0.pdf" target="_blank" class="btn-launch-secondary">Architecture PDF ↗</a>
+          </div>
+        </div>
+
+        <!-- CARD 9: GOOGLE DRIVE MASTER STORAGE HUB -->
+        <div class="portal-master-card" data-category="ADMIN">
+          <div class="pm-header">
+            <div class="pm-icon-box" style="background: rgba(56, 189, 248, 0.12); color: #0284c7;">📁</div>
+            <div class="pm-title-group">
+              <h3>Google Drive Master Storage Hub</h3>
+              <p>87 Provisioned Vaults: Reports, Gate Passes, Challans, POs, Vouchers</p>
+            </div>
+            <span class="pm-version-badge tag-chip tag-cyan" style="background:rgba(16,185,129,0.15); color:#10b981; border:1px solid #10b981;">LIVE CLOUD</span>
+          </div>
+
+          <div class="pm-desc">
+            Universal cloud storage repository for all BALSONS enterprise documents. Fully provisioned with 87 structured folders across 7 major functional domains governed by automated Apps Script provisioner.
+          </div>
+
+          <div class="pm-telemetry-box">
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>☁️</span> Google Drive Root ID:</span>
+              <code class="pm-code-id" title="1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde">1p56Z_7_yHC5St...</code>
+              <a href="https://drive.google.com/drive/folders/1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde" target="_blank" class="pm-open-link">Open Root Drive ↗</a>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>⚙️</span> Apps Script Provisioner:</span>
+              <code class="pm-code-id">BalsonsDriveProvisioner.gs (v17)</code>
+            </div>
+            <div class="pm-link-row">
+              <span class="pm-link-lbl"><span>🗺️</span> Structure Map:</span>
+              <a href="docs/specifications/balsons_drive_folder_map.json" target="_blank" class="pm-open-link">balsons_drive_folder_map.json (87 Folders) ↗</a>
+            </div>
+          </div>
+
+          <ul class="pm-features-list">
+            <li><span class="check-icon">✓</span> <strong>87 Pre-Provisioned Folders:</strong> 01_GATE_ENTRY (12), 02_STORE (16), 03_SAFETY (14), 04_HR (13), 05_OPS (15), 06_PURCHASE (13), 07_REPORTS (4).</li>
+            <li><span class="check-icon">✓</span> <strong>Standardized File Naming:</strong> Strict format <code>[DOC_TYPE]_[PORTAL]_[RECORD_ID]_[YYYYMMDD]_[HASH].[EXT]</code>.</li>
+            <li><span class="check-icon">✓</span> <strong>Automated Apps Script Integration:</strong> Direct upload and archiving from Gate Passes, MRNs, PTW Permits, PO PDFs, and Pay Slips.</li>
+          </ul>
+
+          <div class="pm-card-actions">
+            <a href="https://drive.google.com/drive/folders/1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde" target="_blank" class="btn-launch-primary" style="background:#0284c7;">Open Google Drive Vault ↗</a>
+            <a href="docs/specifications/balsons_drive_folder_map.json" target="_blank" class="btn-launch-secondary">Folder Map JSON ↗</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         TAB PANE 2: USER CREDENTIALS & PASSWORDS DIRECTORY (NEW TAB)
+         ========================================================================= -->
+    <div id="tab-pane-credentials" class="master-tab-pane">
+
+      <!-- CREDENTIALS MANAGEMENT PANEL -->
+      <div class="matrix-panel">
+        <div class="matrix-panel-header">
+          <div>
+            <h3><span>🔐</span> Authorized Enterprise User Credentials & Access Directory</h3>
+            <p style="font-size:12px; color:var(--beds-text-secondary); margin-top:4px;">
+              Comprehensive register of authorized User IDs, default passwords, quick turnstile PINs, roles, and ecosystem permissions governed by Global Super Administrator Policy V1.0 (SAM-2026).
+            </p>
+          </div>
+          <div class="cred-toolbar-group">
+            <button class="btn-cred-act" id="btnToggleAllPw" onclick="toggleAllPasswords()">
+              <span>👁️</span> Show All Passwords
+            </button>
+            <button class="btn-cred-act" onclick="copyAllCredentials()">
+              <span>📋</span> Copy Full Register
+            </button>
+            <span class="tag-chip tag-green">12 Accounts Active</span>
+          </div>
+        </div>
+
+        <!-- Filter & Search for Credentials -->
+        <div class="filter-toolbar-row" style="margin-bottom: 16px;">
+          <div class="filter-search-box">
+            <span>🔍</span>
+            <input type="text" id="credSearchInput" placeholder="Filter by User ID, Name, Role, Badge ID, or Scope..." oninput="filterCredentials()">
+          </div>
+          <div class="filter-pills-group">
+            <button class="filter-pill-btn active" onclick="setCredFilter('ALL', this)">All (14)</button>
+            <button class="filter-pill-btn" onclick="setCredFilter('SUPER_ADMIN', this)">Super Admin (1)</button>
+            <button class="filter-pill-btn" onclick="setCredFilter('PORTAL_ADMIN', this)">Portal Admins (5)</button>
+            <button class="filter-pill-btn" onclick="setCredFilter('PURCHASE', this)">Procurement & Purchase (2)</button>
+            <button class="filter-pill-btn" onclick="setCredFilter('OPERATIONS', this)">Operations & Rigging (4)</button>
+            <button class="filter-pill-btn" onclick="setCredFilter('MANAGEMENT', this)">Director & Client (2)</button>
+            <button class="filter-pill-btn" onclick="setCredFilter('CREW', this)">Crew (1)</button>
+          </div>
+        </div>
+
+        <!-- SECURITY NOTICE BANNER -->
+        <div style="background: rgba(0, 151, 167, 0.05); border-left: 4px solid var(--super-cyan); padding: 12px 16px; border-radius: 4px; margin-bottom: 18px; font-size: 12px; color: var(--beds-text-primary); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <strong>🛡️ Global Security Standard:</strong>
+            All accounts support Persistent Browser Login (refreshing does not log out). Password verification accepts both canonical passwords listed below and the ecosystem fallback <code>balsons@2026</code>.
+          </div>
+          <div style="font-family: var(--beds-font-mono); font-size: 11px; color: var(--super-cyan); font-weight: 700;">
+            POLICY: ONE SUPER ADMIN • ROLE-BASED ACCESS CONTROL
+          </div>
+        </div>
+
+        <!-- USER CREDENTIALS DATA TABLE -->
+        <div class="table-responsive">
+          <table class="beds-table" id="credentialsTable">
+            <thead>
+              <tr>
+                <th>Officer / User Name</th>
+                <th>Enterprise User ID</th>
+                <th>Assigned Role & Authority</th>
+                <th>Department / Badge</th>
+                <th>Password</th>
+                <th>PIN</th>
+                <th>Authorized Scope</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <!-- 1. SUPER ADMIN -->
+              <tr data-cred-cat="SUPER_ADMIN">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(0, 151, 167, 0.15); color: #0097a7;">👑</div>
+                    <div>
+                      <strong style="font-size: 13px;">Prashant Muley</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">Executive Super Administrator</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-superadmin">superadmin</span>
+                    <button class="btn-cred-copy" onclick="copyText('superadmin', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">pbmuley@gmail.com</div>
+                </td>
+                <td><span class="tag-chip tag-cyan" style="font-weight: 800;">Super Administrator</span></td>
+                <td>
+                  <div>Executive Directorate</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-ADM-001</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Balsons@Super2026!" id="pw-superadmin">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-superadmin', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Balsons@Super2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #0097a7;">2026</code></td>
+                <td><span class="tag-chip tag-cyan">ALL 7 PORTALS (FULL WRITE)</span></td>
+                <td><span class="tag-chip tag-green">● Active (Locked)</span></td>
+                <td>
+                  <a href="index.html" class="btn-launch-primary" style="padding: 4px 10px; font-size: 11.5px;">Launch Hub ➔</a>
+                </td>
+              </tr>
+
+              <!-- 2. PROJECT DIRECTOR -->
+              <tr data-cred-cat="MANAGEMENT">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(124, 58, 237, 0.15); color: #7c3aed;">🏛️</div>
+                    <div>
+                      <strong style="font-size: 13px;">Satish Chandra</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">Project Director</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-director">director.mgmt</span>
+                    <button class="btn-cred-copy" onclick="copyText('director.mgmt', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">director@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-purple">Management / Director</span></td>
+                <td>
+                  <div>Project Directorate JTRWF</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-DIR-001</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Balsons@Mgmt2026!" id="pw-director">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-director', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Balsons@Mgmt2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #7c3aed;">1001</code></td>
+                <td>
+                  <span class="tag-chip tag-cyan">Operations</span>
+                  <span class="tag-chip tag-green">Store</span>
+                  <span class="tag-chip tag-red">Safety</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="index.html" class="btn-launch-secondary" style="padding: 4px 10px; font-size: 11.5px;">Launch ➔</a>
+                </td>
+              </tr>
+
+              <!-- 3. OPERATIONS AREA MANAGER (DILIP ROUT) -->
+              <tr data-cred-cat="OPERATIONS">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(0, 151, 167, 0.15); color: #0097a7;">🏗️</div>
+                    <div>
+                      <strong style="font-size: 13px;">Dilip Rout</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">Operations Area Manager</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-dilip">dilip.rout</span>
+                    <button class="btn-cred-copy" onclick="copyText('dilip.rout', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">Alias: <code>sup.bay3</code></div>
+                </td>
+                <td><span class="tag-chip tag-cyan">Operations Area Manager</span></td>
+                <td>
+                  <div>Heavy Lifting (Bay 3 / Line Axle)</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-OPS-001</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Ops@Dilip2026!" id="pw-dilip">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-dilip', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Ops@Dilip2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #0097a7;">1002</code></td>
+                <td>
+                  <span class="tag-chip tag-cyan">Operations (Full)</span>
+                  <span class="tag-chip tag-green">Store (Tackle)</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20OPERATIONS%20MANAGER/index.html" class="btn-launch-primary" style="padding: 4px 10px; font-size: 11.5px;">Launch Ops ➔</a>
+                </td>
+              </tr>
+
+              <!-- 4. MACHINE SHOP AREA MANAGER (SARAT MISHRA) -->
+              <tr data-cred-cat="OPERATIONS">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(0, 151, 167, 0.15); color: #0097a7;">⚙️</div>
+                    <div>
+                      <strong style="font-size: 13px;">Sarat Mishra</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">Machine Shop Area Manager</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-sarat">sarat.mishra</span>
+                    <button class="btn-cred-copy" onclick="copyText('sarat.mishra', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">sarat.mishra@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-cyan">Area Manager (Machine Shop)</span></td>
+                <td>
+                  <div>Machine Shop Bay (7 Streams)</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-OPS-002</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Ops@Sarat2026!" id="pw-sarat">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-sarat', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Ops@Sarat2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #0097a7;">1003</code></td>
+                <td>
+                  <span class="tag-chip tag-cyan">Operations (Machine Shop)</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20OPERATIONS%20MANAGER/index.html" class="btn-launch-primary" style="padding: 4px 10px; font-size: 11.5px;">Launch Ops ➔</a>
+                </td>
+              </tr>
+
+              <!-- 5. STORE PORTAL ADMIN (GAGAN BIHARI DAS) -->
+              <tr data-cred-cat="PORTAL_ADMIN">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">📦</div>
+                    <div>
+                      <strong style="font-size: 13px;">Gagan Bihari Das</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">Chief Store In-Charge & Tackle Custodian</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-store">admin.store</span>
+                    <button class="btn-cred-copy" onclick="copyText('admin.store', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">store.admin@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-green">Portal Administrator (Store)</span></td>
+                <td>
+                  <div>Store & Rigging Inventory</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-STR-001</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Store@Admin2026!" id="pw-store">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-store', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Store@Admin2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #059669;">4001</code></td>
+                <td>
+                  <span class="tag-chip tag-green">Store Manager (Admin)</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20STORE%20MANAGER/frontend/index.html" class="btn-launch-primary" style="background:#059669; padding: 4px 10px; font-size: 11.5px;">Launch Store ➔</a>
+                </td>
+              </tr>
+
+              <!-- 6. SAFETY PORTAL ADMIN (GAJENDRA RAO) -->
+              <tr data-cred-cat="PORTAL_ADMIN">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(220, 38, 38, 0.15); color: #dc2626;">🦺</div>
+                    <div>
+                      <strong style="font-size: 13px;">Gajendra Rao</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">HSE Lead & Safety Steward</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-safety">admin.safety</span>
+                    <button class="btn-cred-copy" onclick="copyText('admin.safety', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">safety.admin@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-red">Portal Administrator (Safety)</span></td>
+                <td>
+                  <div>Health, Safety & Environment</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-SAF-001</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Safety@Admin2026!" id="pw-safety">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-safety', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Safety@Admin2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #dc2626;">3001</code></td>
+                <td>
+                  <span class="tag-chip tag-red">Safety Manager (Admin)</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20SAFETY%20MANAGER/index.html" class="btn-launch-primary" style="background:#dc2626; padding: 4px 10px; font-size: 11.5px;">Launch Safety ➔</a>
+                </td>
+              </tr>
+
+              <!-- 7. GATE ENTRY PORTAL ADMIN (BIKASH MOHAPATRA) -->
+              <tr data-cred-cat="PORTAL_ADMIN">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(217, 119, 6, 0.15); color: #d97706;">🚪</div>
+                    <div>
+                      <strong style="font-size: 13px;">Bikash Mohapatra</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">Gate In-Charge & Turnstile Controller</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-gate">admin.gate</span>
+                    <button class="btn-cred-copy" onclick="copyText('admin.gate', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">gate.admin@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-amber">Portal Administrator (Gate)</span></td>
+                <td>
+                  <div>Site Security & Turnstile Access</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-SEC-001</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Gate@Admin2026!" id="pw-gate">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-gate', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Gate@Admin2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #d97706;">5001</code></td>
+                <td>
+                  <span class="tag-chip tag-amber">Gate Entry Manager (Admin)</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20GATE%20ENTRY%20MANAGER/index.html" class="btn-launch-primary" style="background:#d97706; padding: 4px 10px; font-size: 11.5px;">Launch Gate ➔</a>
+                </td>
+              </tr>
+
+              <!-- 8. HR PORTAL ADMIN (PRIYANKA SENAPATI) -->
+              <tr data-cred-cat="PORTAL_ADMIN">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(37, 99, 235, 0.15); color: #2563eb;">👥</div>
+                    <div>
+                      <strong style="font-size: 13px;">Priyanka Senapati</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">HR Manager & Statutory Officer</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-hr">admin.hr</span>
+                    <button class="btn-cred-copy" onclick="copyText('admin.hr', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">hr.admin@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-blue">Portal Administrator (HR)</span></td>
+                <td>
+                  <div>Human Resources & Statutory Ledger</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-HR-001</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="HR@Admin2026!" id="pw-hr">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-hr', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('HR@Admin2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #2563eb;">6001</code></td>
+                <td>
+                  <span class="tag-chip tag-blue">HR Manager (Admin)</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20HR%20MANAGER/index.html" class="btn-launch-primary" style="background:#2563eb; padding: 4px 10px; font-size: 11.5px;">Launch HR ➔</a>
+                </td>
+              </tr>
+
+              <!-- 9. HOD RIGGING (ASHOK MOHANTY) -->
+              <tr data-cred-cat="OPERATIONS">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(0, 151, 167, 0.15); color: #0097a7;">📋</div>
+                    <div>
+                      <strong style="font-size: 13px;">Ashok Mohanty</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">HOD Heavy Rigging & Lifting</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-hod">hod.rigging</span>
+                    <button class="btn-cred-copy" onclick="copyText('hod.rigging', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">ashok.mohanty@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-cyan">HOD / Department Head</span></td>
+                <td>
+                  <div>Heavy Rigging & Lift Engineering</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-ENG-001</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Rig@Hod2026!" id="pw-hod">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-hod', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Rig@Hod2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #0097a7;">7001</code></td>
+                <td>
+                  <span class="tag-chip tag-cyan">Operations</span>
+                  <span class="tag-chip tag-green">Store</span>
+                  <span class="tag-chip tag-red">Safety</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20OPERATIONS%20MANAGER/index.html" class="btn-launch-secondary" style="padding: 4px 10px; font-size: 11.5px;">Launch ➔</a>
+                </td>
+              </tr>
+
+              <!-- 10. LEAD HEAVY RIGGER (MANOJ DAS) -->
+              <tr data-cred-cat="OPERATIONS">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(0, 151, 167, 0.15); color: #0097a7;">👷</div>
+                    <div>
+                      <strong style="font-size: 13px;">Manoj Das</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">Lead Lifting Supervisor / Lead Rigger</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-manoj">manoj.das</span>
+                    <button class="btn-cred-copy" onclick="copyText('manoj.das', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">manoj.das@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-cyan">Lead Heavy Rigger & Supervisor</span></td>
+                <td>
+                  <div>Line Axle Heavy Rigging</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-OPS-003</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Rig@Manoj2026!" id="pw-manoj">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-manoj', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Rig@Manoj2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #0097a7;">1004</code></td>
+                <td>
+                  <span class="tag-chip tag-cyan">Operations (Shift Logs)</span>
+                  <span class="tag-chip tag-red">Safety (Tandem)</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20OPERATIONS%20MANAGER/index.html" class="btn-launch-secondary" style="padding: 4px 10px; font-size: 11.5px;">Launch ➔</a>
+                </td>
+              </tr>
+
+              <!-- 11. SENIOR CERTIFIED RIGGER (RAMESH KUMAR) -->
+              <tr data-cred-cat="CREW">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">👤</div>
+                    <div>
+                      <strong style="font-size: 13px;">Ramesh Kumar</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">Senior Certified Rigger / Crew Lead</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-ramesh">emp.ramesh</span>
+                    <button class="btn-cred-copy" onclick="copyText('emp.ramesh', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">ramesh.kumar@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-green">Employee / Rigging Crew</span></td>
+                <td>
+                  <div>Rigging Crew (Line Wheel / Bay 3)</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-OPS-004</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Rig@Ramesh2026!" id="pw-ramesh">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-ramesh', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Rig@Ramesh2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #059669;">1005</code></td>
+                <td>
+                  <span class="tag-chip tag-amber">Gate (Turnstile)</span>
+                  <span class="tag-chip tag-blue">HR (Self-Service)</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20GATE%20ENTRY%20MANAGER/index.html" class="btn-launch-secondary" style="padding: 4px 10px; font-size: 11.5px;">Gate ➔</a>
+                </td>
+              </tr>
+
+              <!-- 12. CLIENT AUDITOR (JTRWF / SCHULER) -->
+              <tr data-cred-cat="MANAGEMENT">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(124, 58, 237, 0.15); color: #7c3aed;">🔍</div>
+                    <div>
+                      <strong style="font-size: 13px;">Client Inspection Auditor</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">JTRWF & Schuler Erection Auditor</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-client">client.jtrwf</span>
+                    <button class="btn-cred-copy" onclick="copyText('client.jtrwf', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">client.jtrwf@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-purple">Client Observer / Auditor</span></td>
+                <td>
+                  <div>Jupiter Tatravagonka Railwheel</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-AUD-001</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Client@JTRWF2026!" id="pw-client">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-client', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Client@JTRWF2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #7c3aed;">9001</code></td>
+                <td>
+                  <span class="tag-chip tag-cyan">Operations (360° Dossiers Read-Only)</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20OPERATIONS%20MANAGER/index.html" class="btn-launch-secondary" style="padding: 4px 10px; font-size: 11.5px;">Inspect ➔</a>
+                </td>
+              </tr>
+
+                          <!-- 13. PURCHASE LEAD / COMMERCIAL HEAD (ROHAN SHARMA) -->
+              <tr data-cred-cat="PURCHASE PORTAL_ADMIN">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(14, 165, 233, 0.15); color: #0ea5e9;">🛒</div>
+                    <div>
+                      <strong style="font-size: 13px;">Rohan Sharma</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">Purchase Lead & Commercial Head</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-purch">admin.purch</span>
+                    <button class="btn-cred-copy" onclick="copyText('admin.purch', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">purchase.lead@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-cyan">Portal Administrator (Purchase)</span></td>
+                <td>
+                  <div>Commercial Procurement & Contracts</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-PUR-001</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Purch@Admin2026!" id="pw-purch">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-purch', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Purch@Admin2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #0ea5e9;">3001</code></td>
+                <td>
+                  <span class="tag-chip tag-cyan">Purchase Manager (Full Commercial Write)</span>
+                  <span class="tag-chip tag-purple">Launcher</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20PURCHASE%20MANAGER/index.html" class="btn-launch-primary" style="background:#0ea5e9; padding: 4px 10px; font-size: 11.5px;">Launch Purch ➔</a>
+                </td>
+              </tr>
+
+              <!-- 14. INDENTER & TECHNICAL REQUISITIONER (SURESH VERMA) -->
+              <tr data-cred-cat="PURCHASE OPERATIONS">
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar-badge" style="background: rgba(14, 165, 233, 0.15); color: #0ea5e9;">📝</div>
+                    <div>
+                      <strong style="font-size: 13px;">Suresh Verma</strong>
+                      <div style="font-size: 11px; color: var(--beds-text-muted);">Indenter & Erection Engineer</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="pw-badge-box">
+                    <span id="uid-indenter">indenter.ops</span>
+                    <button class="btn-cred-copy" onclick="copyText('indenter.ops', this)" title="Copy User ID">📋</button>
+                  </span>
+                  <div style="font-size: 10.5px; color: var(--beds-text-muted); margin-top: 2px;">suresh.verma@balsons.com</div>
+                </td>
+                <td><span class="tag-chip tag-blue">Indenter / Site Engineer</span></td>
+                <td>
+                  <div>Mechanical Erection & Rigging</div>
+                  <small style="font-family: var(--beds-font-mono); color: var(--beds-text-muted);">BAL-PUR-002</small>
+                </td>
+                <td>
+                  <div class="pw-badge-box">
+                    <span class="pw-val-text masked" data-plain="Indent@Ops2026!" id="pw-indenter">••••••••••••••</span>
+                    <button class="btn-pw-eye" onclick="toggleSinglePassword('pw-indenter', this)" title="Show/Hide">👁️</button>
+                    <button class="btn-cred-copy" onclick="copyText('Indent@Ops2026!', this)" title="Copy Password">📋</button>
+                  </div>
+                </td>
+                <td><code style="font-weight: 700; color: #0ea5e9;">3002</code></td>
+                <td>
+                  <span class="tag-chip tag-cyan">Purchase (PR Drafting & Tech Specs)</span>
+                  <span class="tag-chip tag-blue">Operations</span>
+                </td>
+                <td><span class="tag-chip tag-green">● Active</span></td>
+                <td>
+                  <a href="BALSONS%20PURCHASE%20MANAGER/index.html" class="btn-launch-secondary" style="padding: 4px 10px; font-size: 11.5px;">Launch Purch ➔</a>
+                </td>
+              </tr>
+</tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =========================================================================
+         TAB PANE 3: ARCHITECTURE & RELATIONAL DATABASE MATRIX
+         ========================================================================= -->
+    <div id="tab-pane-architecture" class="master-tab-pane">
+
+      <!-- MASTER RELATIONAL ARCHITECTURE TABLE -->
+      <div class="matrix-panel">
+        <div class="matrix-panel-header">
+          <h3><span>📊</span> Master Ecosystem Data & API Gateway Architecture Matrix</h3>
+          <span class="tag-chip tag-green">All 6 Relational Databases Verified</span>
+        </div>
+        <p style="font-size:12.5px; color:var(--beds-text-secondary); margin-bottom:16px;">
+          Every portal is backed by a dedicated, purpose-built Google Spreadsheet database and Google Apps Script Clasp engine. Cross-portal data exchange occurs via authorized status sharing to preserve strict system boundaries:
+        </p>
+
+        <div class="table-responsive">
+          <table class="beds-table">
+            <thead>
+              <tr>
+                <th>Portal Application</th>
+                <th>Pillar Discipline</th>
+                <th>Dedicated Google Sheet Database</th>
+                <th>Apps Script Clasp API</th>
+                <th>Local Architecture</th>
+                <th>Live Hosted Endpoint</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color:#0097a7;">Operations & Rigging Manager</strong></td>
+                <td><span class="tag-chip tag-cyan">HEAVY ERECTION</span></td>
+                <td>
+                  <a href="https://docs.google.com/spreadsheets/d/1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E/edit" target="_blank" style="text-decoration:none; font-family:var(--beds-font-mono); font-weight:700; color:#0097a7;">
+                    1GeqDDmB...xa-E ↗
+                  </a>
+                </td>
+                <td>
+                  <a href="https://script.google.com/d/1an3LeD6Ich14qtWZ5GFgJMaa3dYQSboZRwFy9g_gf9zWicPDB9KpFNny/edit" target="_blank" style="text-decoration:none; font-family:var(--beds-font-mono); font-weight:700; color:#2563eb;">
+                    1an3LeD6...FNny ↗
+                  </a>
+                </td>
+                <td>IndexedDB <code>balsons_ops_db_v7_2</code></td>
+                <td><a href="https://balsonsportals.github.io/BALSONS%20OPERATIONS%20MANAGER/index.html" target="_blank" style="color:#0097a7; font-weight:700;">GitHub Pages ↗</a></td>
+                <td><span class="tag-chip tag-green">OPERATIONAL V7.2</span></td>
+              </tr>
+              <tr>
+                <td><strong style="color:#059669;">Store & Tackle Manager</strong></td>
+                <td><span class="tag-chip tag-green">TACKLE & TOOLS</span></td>
+                <td>
+                  <a href="https://docs.google.com/spreadsheets/d/1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ/edit" target="_blank" style="text-decoration:none; font-family:var(--beds-font-mono); font-weight:700; color:#059669;">
+                    1u_ZKvvC...P6yQ ↗
+                  </a>
+                </td>
+                <td>
+                  <a href="https://script.google.com/d/1brrNLzFHk-qNEcP60mQEOsnm9kWnyRQNVx9flj8d5vL_DChuajbD0mN-/edit" target="_blank" style="text-decoration:none; font-family:var(--beds-font-mono); font-weight:700; color:#2563eb;">
+                    1brrNLzF...0mN- ↗
+                  </a>
+                </td>
+                <td>IndexedDB Form 11 Store Engine</td>
+                <td><a href="https://balsonsportals.github.io/BALSONS%20STORE%20MANAGER/frontend/index.html" target="_blank" style="color:#059669; font-weight:700;">GitHub Pages ↗</a></td>
+                <td><span class="tag-chip tag-green">OPERATIONAL V3.2</span></td>
+              </tr>
+              <tr>
+                <td><strong style="color:#dc2626;">Safety & Risk Manager</strong></td>
+                <td><span class="tag-chip tag-red">HSE & PTW</span></td>
+                <td>
+                  <a href="https://docs.google.com/spreadsheets/d/1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0/edit" target="_blank" style="text-decoration:none; font-family:var(--beds-font-mono); font-weight:700; color:#dc2626;">
+                    1SyOGt6H...aOP0 ↗
+                  </a>
+                </td>
+                <td>
+                  <a href="https://script.google.com/d/1hDeYHxT2oU3G7i5YLPl5D_hzRiAEwpwKgUKsO1P3N0vMuum2e2Unitfj/edit" target="_blank" style="text-decoration:none; font-family:var(--beds-font-mono); font-weight:700; color:#2563eb;">
+                    1hDeYHxT...itfj ↗
+                  </a>
+                </td>
+                <td>Local-First Risk & PTW Cache</td>
+                <td><a href="https://balsonsportals.github.io/BALSONS%20SAFETY%20MANAGER/index.html" target="_blank" style="color:#dc2626; font-weight:700;">GitHub Pages ↗</a></td>
+                <td><span class="tag-chip tag-green">OPERATIONAL V2.1</span></td>
+              </tr>
+              <tr>
+                <td><strong style="color:#d97706;">Gate Entry & Security Manager</strong></td>
+                <td><span class="tag-chip tag-amber">ACCESS & MUSTER</span></td>
+                <td>
+                  <a href="https://docs.google.com/spreadsheets/d/1yAuZOXc8WoC2TvTvnEWMrOyLl_50BRuJgDed_pdFT3o/edit" target="_blank" style="text-decoration:none; font-family:var(--beds-font-mono); font-weight:700; color:#d97706;">
+                    1yAuZOXc...FT3o ↗
+                  </a>
+                </td>
+                <td>
+                  <a href="https://script.google.com/d/1emZvUYjT-hTduELE4lSboVCtndFfGQ8KC2elpQ6Em9TF4RW6d2VF75J-/edit" target="_blank" style="text-decoration:none; font-family:var(--beds-font-mono); font-weight:700; color:#2563eb;">
+                    1emZvUYj...75J- ↗
+                  </a>
+                </td>
+                <td>Tri-Portal Access Decision Engine</td>
+                <td><a href="https://balsonsportals.github.io/BALSONS%20GATE%20ENTRY%20MANAGER/index.html" target="_blank" style="color:#d97706; font-weight:700;">GitHub Pages ↗</a></td>
+                <td><span class="tag-chip tag-green">OPERATIONAL V2.0</span></td>
+              </tr>
+              <tr>
+                <td><strong style="color:#2563eb;">Human Resources (HR) Manager</strong></td>
+                <td><span class="tag-chip tag-blue">WORKFORCE KYC</span></td>
+                <td>
+                  <a href="https://docs.google.com/spreadsheets/d/1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw/edit" target="_blank" style="text-decoration:none; font-family:var(--beds-font-mono); font-weight:700; color:#2563eb;">
+                    1so_aH05...3cuw ↗
+                  </a>
+                </td>
+                <td>
+                  <a href="https://script.google.com/d/1_I-scIjBfFbJufFCppzT-fCp-cBC-5BKvk4RwS6UTVwno1KFu5MTxKs_/edit" target="_blank" style="text-decoration:none; font-family:var(--beds-font-mono); font-weight:700; color:#2563eb;">
+                    1_I-scIj...xKs_ ↗
+                  </a>
+                </td>
+                <td>Aadhaar KYC & Statutory Ledger</td>
+                <td><a href="https://balsonsportals.github.io/BALSONS%20HR%20MANAGER/index.html" target="_blank" style="color:#2563eb; font-weight:700;">GitHub Pages ↗</a></td>
+                <td><span class="tag-chip tag-green">OPERATIONAL V2.0</span></td>
+              </tr>
+              <tr>
+                <td><strong style="color:#7c3aed;">Central Enterprise Launcher</strong></td>
+                <td><span class="tag-chip tag-purple">GLOBAL SSO HUB</span></td>
+                <td>Federated Tri-Portal Sync</td>
+                <td>Global Orchestrator</td>
+                <td>BEDS Session Storage Engine</td>
+                <td><a href="https://balsonsportals.github.io/index.html" target="_blank" style="color:#7c3aed; font-weight:700;">GitHub Pages ↗</a></td>
+                <td><span class="tag-chip tag-green">OPERATIONAL V5.3</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- 4. ENTERPRISE FOOTER -->
+  <footer class="hub-footer">
+    <div><strong>BALSONS Heavy Lift & Shift</strong> • Enterprise Ecosystem Master Directory & Architecture Baseline</div>
+    <div style="font-style: italic; color: rgb(223, 35, 14); font-weight: 700; margin-top: 4px;">
+      “Difficult We Do Easily, Impossible Takes Little Time...!”
+    </div>
+    <div style="font-size: 11px; color: var(--beds-text-muted); margin-top: 4px;">
+      Jupiter Tatravagonka Railwheel Factory (JTRWF) • Governed by Global Super Administrator Policy V1.0 • SAM-2026 / BEDS V1.0
+    </div>
+  </footer>
+
+  <script>
+    // 1. THEME TOGGLE
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('balsons_theme', isDark ? 'light' : 'dark');
+      const themeBtn = document.getElementById('themeBtn');
+      if (themeBtn) themeBtn.textContent = isDark ? '🌙 Dark' : '☀️ Light';
+    }
+
+    // 2. MASTER TAB SWITCHING
+    function switchMasterTab(tabKey) {
+      document.querySelectorAll('.master-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.master-tab-pane').forEach(pane => pane.classList.remove('active'));
+
+      if (tabKey === 'portals') {
+        document.getElementById('btnTabPortals')?.classList.add('active');
+        document.getElementById('tab-pane-portals')?.classList.add('active');
+      } else if (tabKey === 'credentials') {
+        document.getElementById('btnTabCredentials')?.classList.add('active');
+        document.getElementById('tab-pane-credentials')?.classList.add('active');
+      } else if (tabKey === 'architecture') {
+        document.getElementById('btnTabArchitecture')?.classList.add('active');
+        document.getElementById('tab-pane-architecture')?.classList.add('active');
+      }
+      localStorage.setItem('balsons_directory_active_tab', tabKey);
+    }
+
+    // 3. PORTALS TAB FILTERS & SEARCH
+    function setFilter(cat, btn) {
+      document.querySelectorAll('#tab-pane-portals .filter-pill-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.portal-master-card');
+      cards.forEach(card => {
+        if (cat === 'ALL' || card.getAttribute('data-category') === cat || card.getAttribute('data-category') === 'ALL') {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function filterPortals() {
+      const q = (document.getElementById('portalSearchInput')?.value || '').toLowerCase();
+      const cards = document.querySelectorAll('.portal-master-card');
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (!q || text.includes(q)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // 4. CREDENTIALS TAB FILTERS & SEARCH
+    function setCredFilter(cat, btn) {
+      document.querySelectorAll('#tab-pane-credentials .filter-pill-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const rows = document.querySelectorAll('#credentialsTable tbody tr');
+      rows.forEach(row => {
+        const rowCat = row.getAttribute('data-cred-cat');
+        if (cat === 'ALL' || rowCat === cat) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    function filterCredentials() {
+      const q = (document.getElementById('credSearchInput')?.value || '').toLowerCase();
+      const rows = document.querySelectorAll('#credentialsTable tbody tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        if (!q || text.includes(q)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    // 5. PASSWORD VISIBILITY TOGGLE (SINGLE & ALL)
+    let allPasswordsVisible = false;
+    function toggleSinglePassword(spanId, btn) {
+      const span = document.getElementById(spanId);
+      if (!span) return;
+      const plain = span.getAttribute('data-plain');
+      if (span.classList.contains('masked')) {
+        span.textContent = plain;
+        span.classList.remove('masked');
+        if (btn) btn.textContent = '🙈';
+      } else {
+        span.textContent = '••••••••••••••';
+        span.classList.add('masked');
+        if (btn) btn.textContent = '👁️';
+      }
+    }
+
+    function toggleAllPasswords() {
+      allPasswordsVisible = !allPasswordsVisible;
+      const spans = document.querySelectorAll('.pw-val-text');
+      const eyeBtns = document.querySelectorAll('.btn-pw-eye');
+      const mainBtn = document.getElementById('btnToggleAllPw');
+
+      spans.forEach(span => {
+        const plain = span.getAttribute('data-plain');
+        if (allPasswordsVisible) {
+          span.textContent = plain;
+          span.classList.remove('masked');
+        } else {
+          span.textContent = '••••••••••••••';
+          span.classList.add('masked');
+        }
+      });
+
+      eyeBtns.forEach(btn => {
+        btn.textContent = allPasswordsVisible ? '🙈' : '👁️';
+      });
+
+      if (mainBtn) {
+        mainBtn.innerHTML = allPasswordsVisible ? '<span>🙈</span> Hide All Passwords' : '<span>👁️</span> Show All Passwords';
+        if (allPasswordsVisible) {
+          mainBtn.classList.add('active-toggle');
+        } else {
+          mainBtn.classList.remove('active-toggle');
+        }
+      }
+    }
+
+    // 6. CLIPBOARD HELPERS
+    function copyText(txt, btn) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(txt).then(() => {
+          if (btn) {
+            const original = btn.textContent;
+            btn.textContent = '✓';
+            setTimeout(() => { btn.textContent = original; }, 1500);
+          }
+        });
+      } else {
+        prompt('Copy credential value:', txt);
+      }
+    }
+
+    function copyAllCredentials() {
+      const credData = `BALSONS ENTERPRISE ECOSYSTEM - AUTHORIZED USER CREDENTIALS REGISTER
+Project: Jupiter Tatravagonka Railwheel Factory (JTRWF)
+Governance: Global Super Administrator Policy V1.0 (SAM-2026 Standard)
+Accepts: Canonical Password or Global Fallback: balsons@2026
+
+1. SUPER ADMINISTRATOR
+   - Full Name: Prashant Muley (BAL-ADM-001)
+   - User ID: superadmin (pbmuley@gmail.com)
+   - Role: Super Administrator (Global Executive Access)
+   - Password: Balsons@Super2026!
+   - PIN: 2026
+   - Scope: ALL 7 PORTALS (Unrestricted Write)
+
+2. PROJECT DIRECTOR
+   - Full Name: Satish Chandra (BAL-DIR-001)
+   - User ID: director.mgmt (director@balsons.com)
+   - Role: Management / Director
+   - Password: Balsons@Mgmt2026!
+   - PIN: 1001
+   - Scope: Operations, Store, Safety, Launcher
+
+3. OPERATIONS AREA MANAGER (LIFTING IN-CHARGE)
+   - Full Name: Dilip Rout (BAL-OPS-001)
+   - User ID: dilip.rout (Alias: sup.bay3)
+   - Role: Operations Area Manager (Lifting In-Charge)
+   - Password: Ops@Dilip2026!
+   - PIN: 1002
+   - Scope: Operations Manager, Store Manager, Launcher
+
+4. MACHINE SHOP AREA MANAGER
+   - Full Name: Sarat Mishra (BAL-OPS-002)
+   - User ID: sarat.mishra
+   - Role: Area Manager (Machine Shop Bay - 7 Streams)
+   - Password: Ops@Sarat2026!
+   - PIN: 1003
+   - Scope: Operations Manager, Launcher
+
+5. STORE & TACKLE PORTAL ADMINISTRATOR
+   - Full Name: Gagan Bihari Das (BAL-STR-001)
+   - User ID: admin.store (store.admin@balsons.com)
+   - Role: Portal Administrator (Store & Tackle Custodian)
+   - Password: Store@Admin2026!
+   - PIN: 4001
+   - Scope: Store Manager (Form 11 Registry), Launcher
+
+6. SAFETY & HSE PORTAL ADMINISTRATOR
+   - Full Name: Gajendra Rao (BAL-SAF-001)
+   - User ID: admin.safety (safety.admin@balsons.com)
+   - Role: Portal Administrator (HSE & PTW Risk)
+   - Password: Safety@Admin2026!
+   - PIN: 3001
+   - Scope: Safety Manager (High-Risk PTW & Form 31), Launcher
+
+7. GATE ENTRY & MUSTER PORTAL ADMINISTRATOR
+   - Full Name: Bikash Mohapatra (BAL-SEC-001)
+   - User ID: admin.gate (gate.admin@balsons.com)
+   - Role: Portal Administrator (Site Security & Access)
+   - Password: Gate@Admin2026!
+   - PIN: 5001
+   - Scope: Gate Entry Manager (Tri-Portal Turnstiles), Launcher
+
+8. HUMAN RESOURCES (HR) PORTAL ADMINISTRATOR
+   - Full Name: Priyanka Senapati (BAL-HR-001)
+   - User ID: admin.hr (hr.admin@balsons.com)
+   - Role: Portal Administrator (HR & Statutory KYC)
+   - Password: HR@Admin2026!
+   - PIN: 6001
+   - Scope: HR Manager (Aadhaar / PF / ESIC), Launcher
+
+9. HOD RIGGING & HEAVY LIFT
+   - Full Name: Ashok Mohanty (BAL-ENG-001)
+   - User ID: hod.rigging (ashok.mohanty@balsons.com)
+   - Role: HOD / Department Head
+   - Password: Rig@Hod2026!
+   - PIN: 7001
+   - Scope: Operations, Store, Safety, Launcher
+
+10. LEAD HEAVY RIGGER & LIFTING SUPERVISOR
+    - Full Name: Manoj Das (BAL-OPS-003)
+    - User ID: manoj.das
+    - Role: Lead Heavy Rigger & Lifting Supervisor
+    - Password: Rig@Manoj2026!
+    - PIN: 1004
+    - Scope: Operations Shift Logs, Safety Tandem Clearance, Launcher
+
+11. SENIOR CERTIFIED RIGGER / CREW LEAD
+    - Full Name: Ramesh Kumar (BAL-OPS-004)
+    - User ID: emp.ramesh (ramesh.kumar@balsons.com)
+    - Role: Employee / Rigging Crew
+    - Password: Rig@Ramesh2026!
+    - PIN: 1005
+    - Scope: Gate Entry (Turnstiles), HR Self-Service, Launcher
+
+12. CLIENT INSPECTION AUDITOR (JTRWF / SCHULER)
+    - Full Name: Client Inspection Auditor (BAL-AUD-001)
+    - User ID: client.jtrwf
+    - Role: Client Observer / Auditor
+    - Password: Client@JTRWF2026!
+    - PIN: 9001
+    - Scope: Operations (360° Dossiers Read-Only), Launcher, Reports
+
+13. PURCHASE LEAD & COMMERCIAL HEAD
+    - Full Name: Rohan Sharma (BAL-PUR-001)
+    - User ID: admin.purch (purchase.lead@balsons.com)
+    - Role: Portal Administrator (Purchase & Procurement)
+    - Password: Purch@Admin2026!
+    - PIN: 3001
+    - Scope: Purchase Manager (Commercial Procurement & Contracts), Launcher
+
+14. INDENTER & SITE ERECTION ENGINEER
+    - Full Name: Suresh Verma (BAL-PUR-002)
+    - User ID: indenter.ops (suresh.verma@balsons.com)
+    - Role: Indenter / Site Engineer
+    - Password: Indent@Ops2026!
+    - PIN: 3002
+    - Scope: Purchase Requisitions (PR Drafting & Tech Specs), Operations
+`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(credData).then(() => {
+          alert('✓ All 14 User Credentials, Passwords, and PINs copied to clipboard!');
+        });
+      } else {
+        prompt('Copy all credentials:', credData);
+      }
+    }
+
+    function copyAllEcosystemLinks() {
+      const summaryText = `BALSONS ENTERPRISE ECOSYSTEM - MASTER PORTALS DIRECTORY
+Project: JTRWF Khordha, Odisha • Brand: "Difficult We Do Easily, Impossible Takes Little Time...!"
+
+1. CENTRAL ENTERPRISE LAUNCHER
+   - Live URL: https://balsonsportals.github.io/index.html
+   - GitHub Repo: https://github.com/balsonsportals/balsonsportals.github.io.git
+
+2. OPERATIONS & HEAVY RIGGING MANAGER (V7.2)
+   - Live URL: https://balsonsportals.github.io/BALSONS%20OPERATIONS%20MANAGER/index.html
+   - Dedicated Sheet DB: 1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E
+   - Sheet Link: https://docs.google.com/spreadsheets/d/1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E/edit
+   - Apps Script Gateway: 1an3LeD6Ich14qtWZ5GFgJMaa3dYQSboZRwFy9g_gf9zWicPDB9KpFNny
+   - Apps Script Link: https://script.google.com/d/1an3LeD6Ich14qtWZ5GFgJMaa3dYQSboZRwFy9g_gf9zWicPDB9KpFNny/edit
+   - Git Repo: https://github.com/balsonsportals/BALSONS_OPERATIONS_PORTAL.git
+
+3. STORE & TACKLE INVENTORY MANAGER (V3.2)
+   - Live URL: https://balsonsportals.github.io/BALSONS%20STORE%20MANAGER/frontend/index.html
+   - Dedicated Sheet DB: 1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ
+   - Sheet Link: https://docs.google.com/spreadsheets/d/1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ/edit
+   - Apps Script Gateway: 1brrNLzFHk-qNEcP60mQEOsnm9kWnyRQNVx9flj8d5vL_DChuajbD0mN-
+   - Apps Script Link: https://script.google.com/d/1brrNLzFHk-qNEcP60mQEOsnm9kWnyRQNVx9flj8d5vL_DChuajbD0mN-/edit
+   - Git Repo: https://github.com/balsonsportals/BALSONS_STORE_MANAGER.git
+
+4. SAFETY & RISK MANAGER (V2.1)
+   - Live URL: https://balsonsportals.github.io/BALSONS%20SAFETY%20MANAGER/index.html
+   - Dedicated Sheet DB: 1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0
+   - Sheet Link: https://docs.google.com/spreadsheets/d/1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0/edit
+   - Apps Script Gateway: 1hDeYHxT2oU3G7i5YLPl5D_hzRiAEwpwKgUKsO1P3N0vMuum2e2Unitfj
+   - Apps Script Link: https://script.google.com/d/1hDeYHxT2oU3G7i5YLPl5D_hzRiAEwpwKgUKsO1P3N0vMuum2e2Unitfj/edit
+   - Git Repo: https://github.com/balsonsportals/BALSONS_SAFETY_MANAGER.git
+
+5. GATE ENTRY & SECURITY MANAGER (V2.0)
+   - Live URL: https://balsonsportals.github.io/BALSONS%20GATE%20ENTRY%20MANAGER/index.html
+   - Dedicated Sheet DB: 1yAuZOXc8WoC2TvTvnEWMrOyLl_50BRuJgDed_pdFT3o
+   - Sheet Link: https://docs.google.com/spreadsheets/d/1yAuZOXc8WoC2TvTvnEWMrOyLl_50BRuJgDed_pdFT3o/edit
+   - Apps Script Gateway: 1emZvUYjT-hTduELE4lSboVCtndFfGQ8KC2elpQ6Em9TF4RW6d2VF75J-
+   - Apps Script Link: https://script.google.com/d/1emZvUYjT-hTduELE4lSboVCtndFfGQ8KC2elpQ6Em9TF4RW6d2VF75J-/edit
+   - Git Repo: https://github.com/balsonsportals/BALSONS_GATE_ENTRY_MANAGER.git
+
+6. HUMAN RESOURCES (HR) MANAGER (V2.0)
+   - Live URL: https://balsonsportals.github.io/BALSONS%20HR%20MANAGER/index.html
+   - Dedicated Sheet DB: 1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw
+   - Sheet Link: https://docs.google.com/spreadsheets/d/1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw/edit
+   - Apps Script Gateway: 1_I-scIjBfFbJufFCppzT-fCp-cBC-5BKvk4RwS6UTVwno1KFu5MTxKs_
+   - Apps Script Link: https://script.google.com/d/1_I-scIjBfFbJufFCppzT-fCp-cBC-5BKvk4RwS6UTVwno1KFu5MTxKs_/edit
+   - Git Repo: https://github.com/balsonsportals/BALSONS_HR_MANAGER.git
+
+7. PURCHASE & PROCUREMENT MANAGER (V6.0)
+   - Live URL: https://balsonsportals.github.io/BALSONS%20PURCHASE%20MANAGER/index.html
+   - Dedicated Sheet DB: 1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c
+   - Sheet Link: https://docs.google.com/spreadsheets/d/1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c/edit
+   - Apps Script Gateway: 1BPmt-vDa-pBy07quE1wq7FY6kq8VnQJPUNIx1GrlSBD5UO9v3FflrZZN
+   - Apps Script Link: https://script.google.com/d/1BPmt-vDa-pBy07quE1wq7FY6kq8VnQJPUNIx1GrlSBD5UO9v3FflrZZN/edit
+   - Git Repo: https://github.com/balsonsportals/BALSONS_PURCHASE_PORTAL.git
+`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(summaryText).then(() => {
+          alert('✓ All 7 portal live links, 6 database sheet links, and script IDs copied to clipboard!');
+        });
+      } else {
+        alert('All links ready. See the on-screen directory or use Print A4.');
+      }
+    }
+
+    // INITIALIZATION
+    document.addEventListener('DOMContentLoaded', () => {
+      // Restore Theme
+      const savedTheme = localStorage.getItem('balsons_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      const themeBtn = document.getElementById('themeBtn');
+      if (themeBtn) themeBtn.textContent = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+
+      // Restore User Session Display if available
+      try {
+        const raw = localStorage.getItem('balsons_global_auth_session');
+        if (raw) {
+          const sess = JSON.parse(raw);
+          const badge = document.getElementById('headerUserBadge');
+          const nameEl = document.getElementById('menuUserFullName');
+          if (badge && sess.name) {
+            badge.innerHTML = `👤 <strong>${sess.name.split(' ')[0]}</strong> · ${sess.role || 'Super Admin'} <span style="font-size:10px; margin-left:2px;">▾</span>`;
+          }
+          if (nameEl && sess.name) {
+            nameEl.textContent = `${sess.name} (${sess.role || 'User'})`;
+          }
+        }
+      } catch (e) {}
+
+      // Header Dropdowns Outside-Click Handler
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('#portalSwitcherWrap')) {
+          var w = document.getElementById('portalSwitcherWrap');
+          if (w) w.classList.remove('open');
+        }
+        if (!e.target.closest('#userPillWrap')) {
+          var u = document.getElementById('userPillWrap');
+          if (u) u.classList.remove('open');
+        }
+      });
+
+      // Restore Active Tab
+      const savedTab = localStorage.getItem('balsons_directory_active_tab');
+      if (savedTab) {
+        switchMasterTab(savedTab);
+      }
+    });
+  </script>
+</body>
+</html>

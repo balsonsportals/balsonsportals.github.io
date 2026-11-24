@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BALSONS Central Sync Hub • Enterprise Master Architecture & Reports</title>
+  <link rel="stylesheet" href="beds.css">
+  <style>
+    :root {
+      --primary: #0097B2;
+      --charcoal: #0B192C;
+    }
+    body {
+      background-color: var(--beds-bg-page, #F4F6F9);
+      color: var(--beds-text-primary, #1E293B);
+      font-family: var(--beds-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: var(--beds-bg-panel, #FFFFFF);
+      border-bottom: 1px solid var(--beds-border, #E2E8F0);
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-wrap img {
+      height: 38px !important;
+      max-height: 38px !important;
+      width: auto !important;
+      object-fit: contain !important;
+    }
+    .brand-titles h1 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading, #0B192C);
+      margin: 0;
+      line-height: 1.2;
+    }
+    .brand-titles p {
+      font-size: 11px;
+      color: var(--beds-teal-primary, #0097B2);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0;
+    }
+    .brand-slogan {
+      font-size: 10.5px;
+      font-style: italic;
+      color: var(--beds-teal-primary, #0097B2);
+      font-weight: 600;
+      margin-top: 1px;
+    }
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    main {
+      padding: 24px 28px;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      flex: 1;
+    }
+    .hero-panel {
+      background: var(--beds-bg-panel, #FFFFFF);
+      border: 1px solid var(--beds-border, #E2E8F0);
+      border-radius: var(--beds-radius-lg, 8px);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--beds-card-shadow, 0 1px 3px rgba(0,0,0,0.06));
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--beds-radius-full, 9999px);
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(0, 151, 178, 0.12);
+      color: var(--beds-teal-primary, #0097B2);
+      border: 1px solid var(--beds-teal-primary, #0097B2);
+      text-transform: uppercase;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: var(--beds-bg-panel, #FFFFFF);
+      border: 1px solid var(--beds-border, #E2E8F0);
+      border-radius: var(--beds-radius-md, 6px);
+      padding: 20px;
+      box-shadow: var(--beds-card-shadow, 0 1px 3px rgba(0,0,0,0.06));
+    }
+    .card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--beds-charcoal-heading, #0B192C);
+      margin-top: 0;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p {
+      font-size: 12px;
+      color: var(--beds-text-secondary, #475569);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+    .spec-table th, .spec-table td {
+      border: 1px solid var(--beds-border, #E2E8F0);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .spec-table th {
+      background: var(--beds-bg-page, #F4F6F9);
+      font-weight: 700;
+      color: var(--beds-charcoal-heading, #0B192C);
+    }
+    footer {
+      background: var(--beds-bg-panel, #FFFFFF);
+      border-top: 1px solid var(--beds-border, #E2E8F0);
+      padding: 20px 32px;
+      font-size: 11px;
+      color: var(--beds-text-secondary, #475569);
+      text-align: center;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header>
+    <div class="brand-wrap">
+      <a href="../index.html" title="Return to Enterprise Launcher" style="display: flex; align-items: center; text-decoration: none;">
+        <img src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1HB7sGaQ4f2qq0NNzgBQrSpUe2DJWV4uh'" alt="BALSONS Logo">
+      </a>
+      <div class="brand-titles">
+        <h1>BALSONS HEAVY LIFT & SHIFT</h1>
+        <p>Central Sync Hub & JTRWF Master Reporting Portal</p>
+        <div class="brand-slogan">“Difficult We Do Easily, Impossible Takes Little Time...!”</div>
+      </div>
+    </div>
+    <div class="header-controls">
+      <a href="../index.html" class="beds-btn beds-btn-secondary beds-btn-sm" title="Return to Launcher">
+        🚀 Enterprise Launcher
+      </a>
+      <span class="status-badge">BAL-ENT-SYNC-MASTER-003 • V3.0</span>
+      <button class="beds-btn beds-btn-secondary beds-btn-sm" id="btn-theme-toggle" onclick="toggleTheme()">🌙 Theme</button>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main>
+    <section class="hero-panel">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <span class="status-badge" style="background:#0B192C; color:#38BDF8; border-color:#0097B2; margin-bottom: 8px;">Option A Architecture Locked • Enterprise Sync Engine</span>
+          <h2 style="font-size: 20px; font-weight: 800; color: var(--beds-charcoal-heading, #0B192C); margin: 6px 0;">
+            Central Sync Hub & JTRWF Project Report Portal Baseline
+          </h2>
+          <p style="font-size: 13px; color: var(--beds-text-secondary, #475569); max-width: 800px; margin: 4px 0 14px 0;">
+            Enterprise master integration hub providing real-time data orchestration across all independent operational databases (Gate Entry, Store, Safety, HR & Payroll, Operations, and Purchase) with consolidated executive roll-up reporting for the JTRWF project.
+          </p>
+          <div style="font-size: 11px; font-weight: 600; color: var(--beds-teal-primary, #0097B2);">
+            Secure Login | Authorized Access Only • Governed by Global Super Administrator Policy V1.0 & BEDS V1.0
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="BALSONS_CENTRAL_SYNC_HUB_ENTERPRISE_MASTER_ARCHITECTURE_AND_JTRWF_IMPLEMENTATION_BASELINE_V3.0.pdf" target="_blank" class="beds-btn beds-btn-primary" style="display: flex; align-items: center; gap: 6px;">
+            📄 View Master Architecture PDF (V3.0)
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 PILLARS OF CENTRAL SYNC HUB -->
+    <h3 style="font-size: 15px; font-weight: 800; color: var(--beds-charcoal-heading, #0B192C); margin-bottom: 12px;">
+      Architectural Foundations (Option A Implementation Baseline)
+    </h3>
+    <div class="grid-3">
+      <div class="card" style="border-top: 3px solid var(--beds-teal-primary, #0097B2);">
+        <h3>🌐 Decentralized Operational Authority</h3>
+        <p><strong>Independent Portal Databases Preserved</strong></p>
+        <p>Every operational portal retains its dedicated Google Sheet database, local schema, and domain business rules without forced consolidation.</p>
+        <div style="font-size: 11px; color: var(--beds-teal-primary, #0097B2); font-weight: 700;">Status: Option A Standard Locked</div>
+      </div>
+
+      <div class="card" style="border-top: 3px solid #10B981;">
+        <h3>🔄 Event-Driven Data Synchronization</h3>
+        <p><strong>Cross-Portal Workflow Bridges</strong></p>
+        <p>Automated bi-directional sync: Store PRs flow to Purchase; Gate Inward movements notify Store & Purchase; HR attendance cross-references Gate roll-call.</p>
+        <div style="font-size: 11px; color: #10B981; font-weight: 700;">Status: Option A Standard Locked</div>
+      </div>
+
+      <div class="card" style="border-top: 3px solid #F59E0B;">
+        <h3>📈 Unified JTRWF Executive Dossier</h3>
+        <p><strong>Single-Pane Executive Reporting</strong></p>
+        <p>Consolidated 360° workforce dossiers, site muster verification, erection milestones, procurement commitments, and compliance audit trail.</p>
+        <div style="font-size: 11px; color: #F59E0B; font-weight: 700;">Status: Option A Standard Locked</div>
+      </div>
+    </div>
+
+    <!-- DOCUMENT CONTROL & METADATA -->
+    <div class="card">
+      <h3>📋 Document Control & Enterprise Compliance Register</h3>
+      <table class="spec-table">
+        <tr>
+          <th>Control Attribute</th>
+          <th>Governing Value</th>
+          <th>Enterprise Standard Alignment</th>
+        </tr>
+        <tr>
+          <td><strong>Document ID</strong></td>
+          <td><code>BAL-ENT-SYNC-MASTER-003</code></td>
+          <td>Antigravity Global Governance Baseline</td>
+        </tr>
+        <tr>
+          <td><strong>Version</strong></td>
+          <td>V3.0 — Full Master Baseline</td>
+          <td>Approved Master Reference</td>
+        </tr>
+        <tr>
+          <td><strong>Reference Date</strong></td>
+          <td>20 November 2026</td>
+          <td>SAM-2026 / Enterprise Ecosystem V6.0</td>
+        </tr>
+        <tr>
+          <td><strong>Architecture Direction</strong></td>
+          <td>Option A: Central Sync Hub with Independent Portal Databases</td>
+          <td>Zero Disruption to Active Systems</td>
+        </tr>
+        <tr>
+          <td><strong>Super Admin Authority</strong></td>
+          <td>Global Super Administrator Policy (Version 1.0)</td>
+          <td>BalsonsSAMAuth Single Super Admin Control</td>
+        </tr>
+        <tr>
+          <td><strong>Connected Nodes</strong></td>
+          <td>Gate Entry, Store Inventory, Safety PTW, HR & Payroll, Operations, Purchase</td>
+          <td>Unified SAM-2026 Ecosystem</td>
+        </tr>
+      </table>
+    </div>
+  
+    <!-- GOOGLE DRIVE DOCUMENTS & GOVERNANCE VAULT -->
+    <div class="card" style="margin-top:20px; padding:0; overflow:hidden;">
+      <div id="tab-documents"></div>
+    </div>
+  </main>
+
+  <!-- ENTERPRISE FOOTER -->
+  <footer>
+    <div><strong>BALSONS Heavy Lift & Shift</strong> • Enterprise Portal Ecosystem (SAM-2026 / BEDS V1.0 Locked Baseline)</div>
+    <div style="font-style: italic; color: var(--beds-teal-primary, #0097B2); font-weight: 600; margin-top: 4px;">
+      “Difficult We Do Easily, Impossible Takes Little Time...!”
+    </div>
+    <div style="font-size: 10px; color: var(--beds-text-muted, #94A3B8); margin-top: 2px;">
+      Secure Login | Authorized Access Only • Document Reference: BAL-ENT-SYNC-MASTER-003 V3.0
+    </div>
+  </footer>
+
+  <script src="assets/js/balsons-sam-auth.js"></script>
+  <script src="assets/js/beds-superadmin.js"></script>
+  <script src="assets/js/qrcode.min.js"></script>
+  <script src="assets/js/dossier-360.js"></script>
+  <script src="assets/js/balsons-docs-manager.js"></script>
+  <script src="assets/js/beds-portal-login.js"></script>
+  <script src="assets/js/beds-workspace.js"></script>
+  <script>
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle('dark-theme');
+      localStorage.setItem('beds-theme', isDark ? 'dark' : 'light');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem('beds-theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+      }
+      if (window.BalsonsDocs) {
+        window.BalsonsDocs.renderDocumentsTab('tab-documents');
+      }
+      if (window.BalsonsSAMAuth) {
+        BalsonsSAMAuth.renderGlobalSuperAdminBar('reports', () => window.location.reload());
+      }
+    });
+  </script>
+  <!-- Unified BEDS Statutory Print Stage -->
+  <div id="bedsPrintStage" style="display: none;"></div>
+</body>
+</html>

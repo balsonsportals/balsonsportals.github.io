@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BALSONS Enterprise Playwright Verification Report</title>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F3F6F8; color: #1E293B; margin: 0; padding: 24px; }
+    .container { max-width: 1200px; margin: 0 auto; background: #FFFFFF; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(16,45,53,0.08); padding: 32px; border: 1px solid #E2E8F0; }
+    .header { border-bottom: 2px solid #0097B2; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { color: #102D35; margin: 0; font-size: 24px; font-weight: 800; }
+    .meta { font-size: 12px; color: #64748B; margin-top: 6px; }
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .kpi-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 16px; text-align: center; }
+    .kpi-val { font-size: 28px; font-weight: 800; color: #102D35; }
+    .kpi-label { font-size: 11px; text-transform: uppercase; font-weight: 700; color: #64748B; margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12.5px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #E2E8F0; }
+    th { background: #102D35; color: #FFFFFF; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+    tr:nth-child(even) { background: #F8FAFC; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; }
+    .badge.pass { background: #ECFDF5; color: #10B981; border: 1px solid #A7F3D0; }
+    .badge.fail { background: #FEF2F2; color: #E64646; border: 1px solid #FECACA; }
+    .details { font-family: monospace; font-size: 11px; color: #475569; }
+    .section-title { font-size: 16px; font-weight: 700; color: #102D35; margin-top: 28px; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>🛡️ BALSONS ENTERPRISE PLAYWRIGHT VERIFICATION REPORT</h1>
+        <div class="meta">Standard: SAM-2026 / BEDS V2.0 · Executed: 2026-11-24T16:26:44.973550 · Environment: Windows 11 x64 · Microsoft Edge / Chromium Headless · SAM-2026 / BEDS V2.0</div>
+      </div>
+      <div>
+        <span class="badge pass" style="font-size: 14px; padding: 8px 16px;">94.3% SUCCESS RATE</span>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-val">35</div>
+        <div class="kpi-label">Total Tests Executed</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color: #10B981;">33</div>
+        <div class="kpi-label">Passed Tests</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color: #E64646;">2</div>
+        <div class="kpi-label">Failed / Observations</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color: #0097B2;">7</div>
+        <div class="kpi-label">Components Covered</div>
+      </div>
+    </div>
+
+    <div class="section-title">📊 Enterprise Component Verification Matrix</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Test ID</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Execution Evidence / Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+            <tr>
+              <td><strong>Enterprise Launcher</strong></td>
+              <td><code>LAUNCH-01</code></td>
+              <td>Application launch and page title</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Title: BALSONS Central Portal — Super Administrator Control Center</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Enterprise Launcher</strong></td>
+              <td><code>LAUNCH-02</code></td>
+              <td>All 6 operational portals referenced in directory</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Found references to all 6 domain portals</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Enterprise Launcher</strong></td>
+              <td><code>LAUNCH-03</code></td>
+              <td>Mobile viewport rendering (375x812)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\launcher_mobile_375.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Enterprise Launcher</strong></td>
+              <td><code>LAUNCH-04</code></td>
+              <td>Desktop viewport rendering (1440x900)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\launcher_desktop_1440.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>HR-01</code></td>
+              <td>HR Manager launch & BEDS title</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Title: BALSONS HR & Payroll Manager • Enterprise Platform</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>HR-02</code></td>
+              <td>Dedicated HR database pointer reconciliation (1so_aH05...)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Pill Text: HR DB Sync: SYNCING 1so_aH05... Auto: 26s</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>HR-03</code></td>
+              <td>Employee Master table data rendering</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Employee records verified in DOM</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>HR-04</code></td>
+              <td>Bidirectional Dual-Sync trigger execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>HR-05</code></td>
+              <td>Offline Outbox Mutation Queuing (localStorage)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Queue state: {'success': True, 'queueLength': 1}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>HR-06</code></td>
+              <td>Mobile hamburger and off-canvas drawer opening</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Drawer result: {'hasBtn': True, 'isOpen': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>HR-07</code></td>
+              <td>Candidate 6-step registration onboarding wizard rendering</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Wizard loaded: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\hr_registration_wizard.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GATE-01</code></td>
+              <td>Gate Entry launch & BEDS title</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Title: BALSONS Gate Entry & Site Access Portal</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GATE-02</code></td>
+              <td>Gate database pointer reconciliation (1yAuZOXc... vs clasp scriptId)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Pill Text: Gate DB Sync: SYNCING 1yAuZOXc... Auto: 29s</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GATE-03</code></td>
+              <td>Gate transactions & clearance records rendering in DOM</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Gate records found</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GATE-04</code></td>
+              <td>Gate bidirectional Dual-Sync execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GATE-05</code></td>
+              <td>Emergency Evacuation Muster & Headcount Radar presence</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Emergency muster controls verified</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GATE-06</code></td>
+              <td>Desktop and Mobile visual screenshot capture</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshots: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\gate_desktop_1440.png, D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\gate_mobile_375.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Safety Manager</strong></td>
+              <td><code>SAFETY-01</code></td>
+              <td>Safety database pointer reconciliation (1SyOGt6H...)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Pill: Safety DB Sync: SYNCING 1SyOGt6H... Auto: 25s</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Safety Manager</strong></td>
+              <td><code>SAFETY-02</code></td>
+              <td>Sample PTW-JTRWF-2026-9901 record parity check</td>
+              <td><span class="badge fail">FAILED</span></td>
+              <td class="details">Sample PTW-9901 not found in default DOM view (Live database or filter active)</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Safety Manager</strong></td>
+              <td><code>SAFETY-03</code></td>
+              <td>Safety bi-directional Dual-Sync trigger execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Safety Manager</strong></td>
+              <td><code>SAFETY-04</code></td>
+              <td>Safety desktop UI rendering screenshot</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\safety_desktop_1440.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Store Manager</strong></td>
+              <td><code>STORE-01</code></td>
+              <td>264-Tool Rigging Tackle Master dataset loaded (BAL-LF-HYJ-001)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Found master lifting jack BAL-LF-HYJ-001</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Store Manager</strong></td>
+              <td><code>STORE-02</code></td>
+              <td>Mobile Viewport Pinch-to-Zoom accessibility check (UI-01)</td>
+              <td><span class="badge fail">FAILED</span></td>
+              <td class="details">Viewport content: width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Store Manager</strong></td>
+              <td><code>STORE-03</code></td>
+              <td>Store Dual-Sync trigger execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Store Manager</strong></td>
+              <td><code>STORE-04</code></td>
+              <td>Store desktop UI rendering screenshot</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\store_desktop_1440.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Purchase Manager</strong></td>
+              <td><code>PURCH-01</code></td>
+              <td>Purchase dedicated DB pointer reconciliation (1ANnu4X2...)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Pill: Purchase DB Sync: LIVE 1ANnu4X2... Auto: 27s</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Purchase Manager</strong></td>
+              <td><code>PURCH-02</code></td>
+              <td>Purchase requisition data table rendering</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Found PR records</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Purchase Manager</strong></td>
+              <td><code>PURCH-03</code></td>
+              <td>Purchase Dual-Sync trigger execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Purchase Manager</strong></td>
+              <td><code>PURCH-04</code></td>
+              <td>Purchase desktop UI rendering screenshot</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\purchase_desktop_1440.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Operations Manager</strong></td>
+              <td><code>OPS-01</code></td>
+              <td>Operations dedicated DB pointer reconciliation (1GeqDDmB...)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Pill: Operations DB Sync: LIVE 1GeqDDmB... Auto: 10s</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Operations Manager</strong></td>
+              <td><code>OPS-02</code></td>
+              <td>Operations heavy erection work package table rendering</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Found WP records</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Operations Manager</strong></td>
+              <td><code>OPS-03</code></td>
+              <td>Operations Dual-Sync trigger execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Operations Manager</strong></td>
+              <td><code>OPS-04</code></td>
+              <td>Operations desktop UI rendering screenshot</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\operations_desktop_1440.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Central Sync Hub</strong></td>
+              <td><code>SYNC-01</code></td>
+              <td>Scheduled 30-Second Auto-Reload countdown ticker (decrements every 1s)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Initial: Auto: 16s -> After 2s: Auto: 11s</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Central Sync Hub</strong></td>
+              <td><code>SYNC-02</code></td>
+              <td>Global department switcher dropdown contains all portals</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Found 8 department links in topbar</td>
+            </tr>
+            
+      </tbody>
+    </table>
+
+    <div class="section-title">⚠️ Defect & Technical Hold Register</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Test ID</th>
+          <th>Component</th>
+          <th>Severity</th>
+          <th>Verified Mechanism / Observation</th>
+          <th>Proposed Remediation (Under Strict Hold)</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><code>SAFETY-02</code></td>
+          <td><strong>Safety Manager</strong></td>
+          <td><span class="badge fail">P2</span></td>
+          <td>PTW-JTRWF-2026-9901 sample permit not loaded in default table DOM without query filter</td>
+          <td>Standardize default sample PTW pre-fetch in BalsonsSafetyApp initialization.</td>
+        </tr>
+        
+        <tr>
+          <td><code>STORE-02</code></td>
+          <td><strong>Store Manager</strong></td>
+          <td><span class="badge fail">P2</span></td>
+          <td>maximum-scale=1.0 user-scalable=no still present in Store Manager index.html</td>
+          <td>Update viewport meta tag to width=device-width, initial-scale=1.0</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

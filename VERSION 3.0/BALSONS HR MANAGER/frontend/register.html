@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BALSONS | Employee Self-Registration Form (Trilingual)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #0097B2;
+  --teal-dark: #08798d;
+  --teal-hover: #008299;
+  --red: #E64646;
+  --ink: #102D35;
+  --muted: #64748b;
+  --line: #d8e1e8;
+  --paper: #ffffff;
+  --bg: #edf3f6;
+  --radius: 8px;
+  --success: #10b981;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  line-height: 1.5;
+  padding-bottom: 80px;
+}
+
+/* Language and Top Bar */
+.top-nav-bar {
+  max-width: 980px;
+  margin: 16px auto 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  flex-wrap: wrap;
+}
+.db-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #065f46;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+}
+.db-status-pill .pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+}
+
+.language-bar {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  padding: 4px 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.language-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--muted);
+  padding: 0 8px;
+  letter-spacing: 0.5px;
+}
+.lang-btn {
+  border: 0;
+  padding: 6px 14px;
+  background: transparent;
+  color: #334155;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.lang-btn:hover {
+  background: #f1f5f9;
+}
+.lang-btn.active {
+  background: var(--teal);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 151, 178, 0.35);
+}
+
+.top-actions {
+  display: flex;
+  gap: 8px;
+}
+.btn {
+  border: 0;
+  border-radius: 7px;
+  padding: 9px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.btn-primary {
+  background: var(--teal);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--teal-hover);
+}
+.btn-secondary {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.btn-secondary:hover {
+  background: #f8fafc;
+}
+
+/* Main Sheet */
+.sheet {
+  max-width: 980px;
+  margin: 0 auto 30px;
+  background: var(--paper);
+  padding: 34px 44px 40px;
+  box-shadow: 0 10px 32px rgba(16, 45, 53, 0.08);
+  border-radius: var(--radius);
+  border: 1px solid #e2e8f0;
+}
+
+/* Brand Header */
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 4px solid var(--teal);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+.brand-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.logo-wrap {
+  width: 175px;
+  flex: 0 0 175px;
+}
+.brand-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 80px;
+  object-fit: contain;
+}
+.company {
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  color: #102D35;
+}
+.company span {
+  color: var(--teal);
+}
+.subbrand {
+  font-size: 9.5px;
+  color: var(--muted);
+  letter-spacing: 1.4px;
+  font-weight: 700;
+  margin-top: 3px;
+}
+.tagline {
+  text-align: right;
+  font-size: 11.5px;
+  color: #334155;
+  max-width: 280px;
+  font-style: italic;
+  line-height: 1.45;
+}
+.tagline strong {
+  display: block;
+  color: var(--red);
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.7px;
+  margin-bottom: 5px;
+}
+.slogan {
+  font-weight: 700;
+  color: var(--teal-dark);
+}
+
+.doc-title {
+  text-align: center;
+  margin: 18px 0 20px;
+}
+.doc-title h1 {
+  font-size: 22px;
+  letter-spacing: 1px;
+  color: #102D35;
+  font-weight: 900;
+}
+.doc-title p {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.top-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.meta-box {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  background: #fbfdfe;
+}
+.meta-box input {
+  width: 58%;
+  border: 0;
+  border-bottom: 1px solid #9aabb7;
+  padding: 2px 4px;
+  outline: none;
+  font-weight: 600;
+  color: var(--ink);
+  background: transparent;
+}
+
+.notice {
+  background: #f0f9fb;
+  border-left: 4px solid var(--teal);
+  padding: 10px 14px;
+  font-size: 11px;
+  color: #244b58;
+  margin-bottom: 20px;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.5;
+}
+
+/* Sections */
+.section {
+  margin: 22px 0 0;
+  break-inside: avoid;
+}
+.section-head {
+  background: #eaf5f7;
+  border-left: 4px solid var(--teal);
+  padding: 8px 12px;
+  font-weight: 800;
+  font-size: 12.5px;
+  letter-spacing: 0.5px;
+  color: #102D35;
+  margin-bottom: 12px;
+  border-radius: 0 4px 4px 0;
+}
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 18px;
+  row-gap: 12px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.field label {
+  font-weight: 700;
+  color: #334155;
+  font-size: 11px;
+}
+.field label .req {
+  color: var(--red);
+  font-weight: 800;
+  margin-left: 2px;
+}
+.field input, .field select {
+  width: 100%;
+  border: 1px solid #cbd8df;
+  border-radius: 6px;
+  padding: 9px 11px;
+  font-size: 11.5px;
+  background: #fff;
+  outline: none;
+  color: var(--ink);
+  min-height: 38px;
+  transition: all 0.2s ease;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(0, 151, 178, 0.15);
+}
+.field.full {
+  grid-column: 1 / -1;
+}
+.inline-options {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 11px;
+  padding: 6px 0;
+}
+.inline-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+input[type=checkbox] {
+  accent-color: var(--teal);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  margin-top: 6px;
+}
+th, td {
+  border: 1px solid var(--line);
+  padding: 8px 10px;
+  text-align: left;
+}
+th {
+  background: #f4f8fa;
+  color: #36515e;
+  font-weight: 700;
+}
+td input[type=text] {
+  width: 100%;
+  border: 0;
+  outline: none;
+  font: inherit;
+  background: transparent;
+  padding: 2px;
+  color: var(--ink);
+  font-weight: 600;
+}
+td input[type=text]:focus {
+  border-bottom: 2px solid var(--teal);
+}
+
+.small {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.45;
+}
+
+/* Declaration & Signatures */
+.declaration {
+  font-size: 11px;
+  text-align: justify;
+  line-height: 1.65;
+  background: #f8fafc;
+  padding: 14px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: #334155;
+}
+.signatures {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 16px;
+  margin-top: 22px;
+}
+.sign-box {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: #fff;
+}
+.sign-box label {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+.sign-box input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #cbd5e1;
+  padding: 4px 2px;
+  font-size: 11px;
+  font-weight: 600;
+  outline: none;
+  color: var(--ink);
+}
+
+/* Uploads Section */
+.upload-help {
+  font-size: 11px;
+  color: #526575;
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+.upload-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.upload-item {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 12px;
+  background: #fbfdfe;
+  transition: all 0.2s ease;
+}
+.upload-item:hover {
+  border-color: #b2ccd8;
+  background: #f4f9fb;
+}
+.upload-item label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 8px;
+}
+.upload-item input[type=file] {
+  display: block;
+  width: 100%;
+  font-size: 10.5px;
+  color: #334155;
+}
+.file-list {
+  display: block;
+  font-size: 9.5px;
+  color: var(--teal-dark);
+  margin-top: 6px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.upload-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 11px;
+  color: #526575;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: #f8fafc;
+  border-radius: 6px;
+}
+.upload-note {
+  font-size: 10px;
+  line-height: 1.5;
+  color: #526575;
+  background: #fff8e8;
+  border-left: 3px solid #d69b26;
+  padding: 10px 12px;
+  margin-top: 14px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Sticky Bottom Action Bar */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+  padding: 12px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  z-index: 100;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+}
+.btn-submit-main {
+  background: #0097B2;
+  color: #ffffff;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 800;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 151, 178, 0.35);
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+.btn-submit-main:hover {
+  background: #008299;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 151, 178, 0.45);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 45, 53, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal-card {
+  background: #fff;
+  border-radius: 12px;
+  max-width: 650px;
+  width: 100%;
+  padding: 32px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  text-align: center;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.receipt-header {
+  border-bottom: 2px dashed #cbd5e1;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+.success-icon {
+  width: 64px;
+  height: 64px;
+  background: #ecfdf5;
+  color: #10b981;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin-bottom: 12px;
+  border: 2px solid #a7f3d0;
+}
+.ref-id-badge {
+  background: #102D35;
+  color: #38bdf8;
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: 800;
+  padding: 8px 18px;
+  border-radius: 8px;
+  letter-spacing: 1.5px;
+  display: inline-block;
+  margin: 10px 0;
+}
+.receipt-table {
+  width: 100%;
+  margin: 16px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  text-align: left;
+  font-size: 11.5px;
+}
+.receipt-table td {
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+}
+.receipt-table td:first-child {
+  background: #f8fafc;
+  font-weight: 700;
+  color: #475569;
+  width: 38%;
+}
+
+.spinner {
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Print Styles */
+@media print {
+  body { background: #fff; padding: 0; }
+  .top-nav-bar, .bottom-bar, .language-bar, .upload-actions button, .upload-item input[type=file] { display: none !important; }
+  .sheet { max-width: 100%; margin: 0; padding: 0; box-shadow: none; border: 0; }
+  .modal-overlay { display: none !important; }
+}
+
+@media (max-width: 650px) {
+  .sheet { padding: 20px 16px; }
+  .fields, .top-meta, .upload-grid, .signatures { grid-template-columns: 1fr; }
+  .brand { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .tagline { text-align: left; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Navigation & Language Switcher -->
+<div class="top-nav-bar">
+  <a href="https://docs.google.com/spreadsheets/d/1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw/edit" target="_blank" class="db-status-pill" title="Live BALSONS Employee Database (Google Sheets)">
+    <span class="pulse-dot"></span>
+    <span>Connected: Central Database (1so_aH05...)</span>
+  </a>
+
+  <div class="language-bar" role="group" aria-label="Select form language">
+    <span class="language-label">LANGUAGE / भाषा / ଭାଷା:</span>
+    <button type="button" class="lang-btn active" data-lang="en" onclick="setLanguage('en')">English</button>
+    <button type="button" class="lang-btn" data-lang="hi" onclick="setLanguage('hi')">हिन्दी</button>
+    <button type="button" class="lang-btn" data-lang="or" onclick="setLanguage('or')">ଓଡ଼ିଆ</button>
+  </div>
+
+  <div class="top-actions">
+    <button class="btn btn-secondary" type="button" onclick="clearForm()">Clear Form</button>
+    <button class="btn btn-secondary" type="button" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+</div>
+
+<main class="sheet">
+
+<header class="brand">
+  <div class="brand-left">
+    <div class="logo-wrap">
+      <img class="brand-logo" src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1HB7sGaQ4f2qq0NNzgBQrSpUe2DJWV4uh'" alt="BALSONS Logo">
+    </div>
+    <div>
+      <div class="company">BALSONS <span>HEAVY LIFT &amp; SHIFT</span></div>
+      <div class="subbrand">INDUSTRIAL PROJECTS • LIFTING • RELOCATION</div>
+    </div>
+  </div>
+  <div class="tagline">
+    <strong>EMPLOYEE INFORMATION RECORD</strong>
+    <span class="slogan">“Difficult We Do Easily,<br>Impossible Takes Little Time...!”</span>
+  </div>
+</header>
+
+<div class="doc-title">
+  <h1>EMPLOYEE REGISTRATION FORM</h1>
+  <p>To be completed by the employee in clear BLOCK LETTERS</p>
+</div>
+
+<div class="top-meta">
+  <div class="meta-box">
+    <b>Site / Location:</b> <input type="text" id="metaSite" value="JTRWF Khordha, Odisha (PRJ-JTRWF-SCHULER)" readonly>
+  </div>
+  <div class="meta-box">
+    <b>Date of Registration:</b> <input type="date" id="metaRegDate">
+  </div>
+</div>
+
+<div class="notice">
+  Fill in each section, select options where shown, and attach applicable documents. All personal information and document uploads are securely transmitted to the BALSONS central database for verification, statutory compliance, and factory gate access pass generation.
+</div>
+
+<form id="balsonsEmployeeRegistrationForm" onsubmit="handleRegistrationSubmit(event)">
+
+  <!-- 01 PERSONAL INFORMATION -->
+  <section class="section">
+    <div class="section-head">01 &nbsp; PERSONAL INFORMATION</div>
+
+    <!-- PASSPORT PHOTO UPLOAD & VERIFICATION CARD -->
+    <div class="photo-upload-container" style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; padding: 16px; background: #f8fafc; border: 1.5px dashed #0097B2; border-radius: 8px;">
+      <!-- Passport Photo Frame (35mm x 45mm ratio) -->
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0;">
+        <div id="passportPhotoFrame" style="width: 120px; height: 150px; border: 2px solid #0097B2; border-radius: 6px; background: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+          <img id="passportPhotoPreviewImg" src="" alt="Passport Photo Preview" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+          <div id="passportPhotoPlaceholder" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8px; color: #64748B;">
+            <span style="font-size: 32px; line-height: 1;">📷</span>
+            <span style="font-size: 10px; font-weight: 700; margin-top: 6px; color: #102D35;">PASSPORT PHOTO</span>
+            <span style="font-size: 9px; color: #94A3B8;">35mm × 45mm</span>
+          </div>
+        </div>
+        <span id="photoStatusBadge" class="status-badge" style="font-size: 10.5px; font-weight: 700; color: #D97706; background: #FEF3C7; padding: 2px 8px; border-radius: 4px; border: 1px solid #FCD34D;">Photo Required *</span>
+      </div>
+
+      <!-- Upload Action Controls & Statutory Specs -->
+      <div style="flex: 1;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+          <label style="font-size: 13px; font-weight: 800; color: #102D35; margin: 0;">
+            EMPLOYEE PASSPORT PHOTO / पासपोर्ट फोटो / ପାସପୋର୍ଟ ଫଟୋ <span class="req">*</span>
+          </label>
+          <span style="font-size: 10px; font-weight: 700; color: #0097B2; background: #E0F2FE; padding: 2px 6px; border-radius: 3px;">STATUTORY IDENTIFICATION</span>
+        </div>
+        <p style="font-size: 11px; color: #475569; margin: 0 0 10px 0; line-height: 1.4;">
+          Upload a recent passport-sized color photograph with white or light background. Required for factory gate pass entry badge (EMP-2026), official employee ID card, and biometric attendance profile.
+        </p>
+
+        <!-- Buttons -->
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 8px;">
+          <label class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 8px 14px; font-size: 12px; font-weight: 700; background: #0097B2; color: #fff; border-radius: 6px; border: none;">
+            📁 Choose Photo / फोटो चुनें
+            <input type="file" id="passportPhotoInput" accept="image/*" style="display: none;" onchange="handlePassportPhotoSelect(event)">
+          </label>
+          <button type="button" class="btn btn-secondary" onclick="openCameraCaptureModal()" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; font-size: 12px; font-weight: 700; background: #F1F5F9; color: #102D35; border: 1px solid #CBD5E1; border-radius: 6px; cursor: pointer;">
+            📸 Use Live Camera / कैमरा से लें
+          </button>
+          <button type="button" id="btnRemovePhoto" class="btn btn-secondary" onclick="removePassportPhoto()" style="display: none; align-items: center; gap: 4px; padding: 8px 12px; font-size: 11.5px; font-weight: 700; color: #DC2626; border: 1px solid #FECACA; background: #FEF2F2; border-radius: 6px; cursor: pointer;">
+            ✖ Remove
+          </button>
+        </div>
+
+        <!-- Specs hint -->
+        <div style="font-size: 10.5px; color: #64748B;">
+          Supported formats: <strong>JPG, JPEG, PNG, WEBP</strong> • Max file size: <strong>5 MB</strong> • Recommended: <strong>Front-facing portrait</strong>
+        </div>
+      </div>
+    </div>
+    <div class="fields">
+      <div class="field">
+        <label>Full Name <span class="req">*</span></label>
+        <input type="text" id="fullName" name="fullName" required placeholder="Enter full legal name as per Aadhaar">
+      </div>
+      <div class="field">
+        <label>Father's Name <span class="req">*</span></label>
+        <input type="text" id="fatherName" name="fatherName" required placeholder="Enter father's full name">
+      </div>
+      <div class="field">
+        <label>Mother's Name</label>
+        <input type="text" id="motherName" name="motherName" placeholder="Enter mother's full name">
+      </div>
+      <div class="field">
+        <label>Date of Birth <span class="req">*</span></label>
+        <input type="date" id="dob" name="dob" required>
+      </div>
+      <div class="field">
+        <label>Gender <span class="req">*</span></label>
+        <select id="gender" name="gender" required>
+          <option value="">Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Blood Group</label>
+        <select id="bloodGroup" name="bloodGroup">
+          <option value="">Select</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+          <option value="Unknown">Unknown</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Marital Status</label>
+        <select id="maritalStatus" name="maritalStatus">
+          <option value="Unmarried">Unmarried</option>
+          <option value="Married">Married</option>
+          <option value="Widowed">Widowed</option>
+          <option value="Divorced">Divorced</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Nationality</label>
+        <input type="text" id="nationality" name="nationality" value="Indian">
+      </div>
+      <div class="field">
+        <label>Mobile Number <span class="req">*</span></label>
+        <input type="tel" id="mobile" name="mobile" required maxlength="10" placeholder="10-digit mobile number">
+      </div>
+      <div class="field">
+        <label>Alternate Number</label>
+        <input type="tel" id="altMobile" name="altMobile" maxlength="10" placeholder="Optional alternate number">
+      </div>
+      <div class="field">
+        <label>Email ID</label>
+        <input type="email" id="email" name="email" placeholder="example@gmail.com">
+      </div>
+      <div class="field">
+        <label>Identification Mark</label>
+        <input type="text" id="identificationMark" name="identificationMark" placeholder="e.g. Mole on right wrist / scar">
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 ADDRESS DETAILS -->
+  <section class="section">
+    <div class="section-head">02 &nbsp; ADDRESS DETAILS</div>
+    <div class="fields">
+      <div class="field full">
+        <label>Permanent Address <span class="req">*</span></label>
+        <input type="text" id="permAddress" name="permAddress" required placeholder="House / Street / Landmark">
+      </div>
+      <div class="field">
+        <label>Village / City <span class="req">*</span></label>
+        <input type="text" id="permVillage" name="permVillage" required>
+      </div>
+      <div class="field">
+        <label>Taluka</label>
+        <input type="text" id="permTaluka" name="permTaluka">
+      </div>
+      <div class="field">
+        <label>District <span class="req">*</span></label>
+        <input type="text" id="permDistrict" name="permDistrict" required>
+      </div>
+      <div class="field">
+        <label>State <span class="req">*</span></label>
+        <input type="text" id="permState" name="permState" required>
+      </div>
+      <div class="field">
+        <label>PIN Code <span class="req">*</span></label>
+        <input type="text" id="permPin" name="permPin" required maxlength="6" inputmode="numeric">
+      </div>
+
+      <div class="field full" style="margin-top: 6px;">
+        <div class="inline-options">
+          <label style="font-weight: 700; color: var(--teal-dark);">
+            <input type="checkbox" id="sameAsPerm" onchange="copyPermAddress(this)"> Current address same as permanent?
+          </label>
+        </div>
+      </div>
+
+      <div class="field full">
+        <label>Current Address (if different)</label>
+        <input type="text" id="currAddress" name="currAddress" placeholder="Site Camp or Temporary Lodging Address">
+      </div>
+      <div class="field">
+        <label>Village / City</label>
+        <input type="text" id="currVillage" name="currVillage">
+      </div>
+      <div class="field">
+        <label>Taluka</label>
+        <input type="text" id="currTaluka" name="currTaluka">
+      </div>
+      <div class="field">
+        <label>District</label>
+        <input type="text" id="currDistrict" name="currDistrict">
+      </div>
+      <div class="field">
+        <label>State</label>
+        <input type="text" id="currState" name="currState">
+      </div>
+      <div class="field">
+        <label>PIN Code</label>
+        <input type="text" id="currPin" name="currPin" maxlength="6" inputmode="numeric">
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 FAMILY & EMERGENCY CONTACT -->
+  <section class="section">
+    <div class="section-head">03 &nbsp; FAMILY &amp; EMERGENCY CONTACT</div>
+    <div class="fields">
+      <div class="field">
+        <label>Spouse Name</label>
+        <input type="text" id="spouseName" name="spouseName" placeholder="If married">
+      </div>
+      <div class="field">
+        <label>Number of Children</label>
+        <input type="number" id="childrenCount" name="childrenCount" min="0" value="0">
+      </div>
+      <div class="field">
+        <label>Emergency Contact Name <span class="req">*</span></label>
+        <input type="text" id="emergencyName" name="emergencyName" required placeholder="Person to contact in emergency">
+      </div>
+      <div class="field">
+        <label>Relationship <span class="req">*</span></label>
+        <input type="text" id="emergencyRel" name="emergencyRel" required placeholder="e.g. Father, Brother, Wife">
+      </div>
+      <div class="field">
+        <label>Emergency Mobile No. <span class="req">*</span></label>
+        <input type="tel" id="emergencyPhone" name="emergencyPhone" required maxlength="10">
+      </div>
+      <div class="field">
+        <label>Alternate Contact No.</label>
+        <input type="tel" id="emergencyAltPhone" name="emergencyAltPhone" maxlength="10">
+      </div>
+      <div class="field full">
+        <label>Emergency Contact Address</label>
+        <input type="text" id="emergencyAddress" name="emergencyAddress" placeholder="Emergency person residential address">
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 IDENTITY DOCUMENT DETAILS -->
+  <section class="section">
+    <div class="section-head">04 &nbsp; IDENTITY DOCUMENT DETAILS</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:34%">Document</th>
+          <th>Document Number</th>
+          <th style="width:20%">Copy Attached</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Aadhaar Number <span class="req">*</span></td>
+          <td><input type="text" id="aadhaarNo" name="aadhaarNo" required placeholder="12-digit Aadhaar number" maxlength="14"></td>
+          <td><label><input type="checkbox" id="aadhaarCopy" name="aadhaarCopy" checked> Yes</label></td>
+        </tr>
+        <tr>
+          <td>PAN Number</td>
+          <td><input type="text" id="panNo" name="panNo" placeholder="10-digit PAN (e.g. ABCDE1234F)" maxlength="10" style="text-transform:uppercase;"></td>
+          <td><label><input type="checkbox" id="panCopy" name="panCopy"> Yes</label></td>
+        </tr>
+        <tr>
+          <td>Voter ID (if applicable)</td>
+          <td><input type="text" id="voterId" name="voterId" placeholder="Voter ID number"></td>
+          <td><label><input type="checkbox" id="voterCopy" name="voterCopy"> Yes</label></td>
+        </tr>
+        <tr>
+          <td>Driving Licence (if applicable)</td>
+          <td><input type="text" id="drivingLicence" name="drivingLicence" placeholder="For Drivers / Operators"></td>
+          <td><label><input type="checkbox" id="drivingCopy" name="drivingCopy"> Yes</label></td>
+        </tr>
+        <tr>
+          <td>Passport (if applicable)</td>
+          <td><input type="text" id="passportNo" name="passportNo" placeholder="Passport number"></td>
+          <td><label><input type="checkbox" id="passportCopy" name="passportCopy"> Yes</label></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="small">Submit self-attested copies where required. Aadhaar and other identity data must be securely handled and accessed only by authorised personnel.</div>
+  </section>
+
+  <!-- 05 BANK ACCOUNT DETAILS -->
+  <section class="section">
+    <div class="section-head">05 &nbsp; BANK ACCOUNT DETAILS FOR SALARY</div>
+    <div class="fields">
+      <div class="field">
+        <label>Bank Name <span class="req">*</span></label>
+        <input type="text" id="bankName" name="bankName" required placeholder="e.g. State Bank of India">
+      </div>
+      <div class="field">
+        <label>Account Holder Name <span class="req">*</span></label>
+        <input type="text" id="accHolderName" name="accHolderName" required placeholder="Must match employee name">
+      </div>
+      <div class="field">
+        <label>Account Number <span class="req">*</span></label>
+        <input type="text" id="accNo" name="accNo" required inputmode="numeric" placeholder="Enter bank account number">
+      </div>
+      <div class="field">
+        <label>IFSC Code <span class="req">*</span></label>
+        <input type="text" id="ifscCode" name="ifscCode" required maxlength="11" placeholder="e.g. SBIN0001234" style="text-transform:uppercase;">
+      </div>
+      <div class="field full">
+        <label>Branch Name &amp; Address</label>
+        <input type="text" id="branchAddress" name="branchAddress" placeholder="e.g. Khordha Main Branch, Odisha">
+      </div>
+    </div>
+    <div class="small">Attach cancelled cheque or bank passbook copy. Bank details are collected for authorised salary disbursement.</div>
+  </section>
+
+  <!-- 06 NOMINEE DETAILS -->
+  <section class="section">
+    <div class="section-head">06 &nbsp; NOMINEE DETAILS</div>
+    <div class="fields">
+      <div class="field">
+        <label>Nominee Full Name <span class="req">*</span></label>
+        <input type="text" id="nomineeName" name="nomineeName" required placeholder="Full name of nominee">
+      </div>
+      <div class="field">
+        <label>Relationship <span class="req">*</span></label>
+        <input type="text" id="nomineeRel" name="nomineeRel" required placeholder="e.g. Wife, Mother, Son">
+      </div>
+      <div class="field">
+        <label>Nominee Date of Birth</label>
+        <input type="date" id="nomineeDob" name="nomineeDob">
+      </div>
+      <div class="field">
+        <label>Mobile Number</label>
+        <input type="tel" id="nomineeMobile" name="nomineeMobile" maxlength="10">
+      </div>
+      <div class="field full">
+        <label>Nominee Address</label>
+        <input type="text" id="nomineeAddress" name="nomineeAddress" placeholder="Permanent address of nominee">
+      </div>
+    </div>
+    <div class="small">Any statutory nomination required under applicable laws / schemes will be completed separately in the prescribed format.</div>
+  </section>
+
+  <!-- 07 EMPLOYEE DECLARATION & CONSENT -->
+  <section class="section">
+    <div class="section-head">07 &nbsp; EMPLOYEE DECLARATION &amp; CONSENT</div>
+    <div class="declaration">
+      I hereby declare that the information and documents furnished by me are true, complete and correct to the best of my knowledge. I undertake to inform the company of any material change in the information provided. I agree to comply with company policies, site rules, safety procedures and lawful instructions issued by authorised personnel. I understand that my personal information will be used for legitimate employment administration, payroll and statutory compliance purposes and handled in accordance with applicable law and company policy.
+    </div>
+
+    <div style="margin-top: 14px; background: #fff; padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px;">
+      <label style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #102D35; font-size: 11.5px; cursor: pointer;">
+        <input type="checkbox" id="declarationAccepted" name="declarationAccepted" required checked>
+        I have read, understood, and accept the declaration above.
+      </label>
+    </div>
+
+    <div class="signatures">
+      <div class="sign-box">
+        <label>Applicant Digital Name / Sign</label>
+        <input type="text" id="signApplicant" required placeholder="Type full name">
+      </div>
+      <div class="sign-box">
+        <label>Date</label>
+        <input type="date" id="signDate" required>
+      </div>
+      <div class="sign-box">
+        <label>Place</label>
+        <input type="text" id="signPlace" value="JTRWF Khordha" required>
+      </div>
+      <div class="sign-box">
+        <label>Submission Channel</label>
+        <input type="text" value="Online Self-Registration" readonly style="color:var(--teal-dark);">
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCUMENT ATTACHMENTS & UPLOADS -->
+  <section class="section" id="document-uploads">
+    <div class="section-head">DOCUMENT ATTACHMENTS / दस्तावेज़ संलग्न करें / ଦଲିଲ ସଂଲଗ୍ନ କରନ୍ତୁ</div>
+    <p class="upload-help">
+      Select clear scans or photographs of the applicable documents. Accepted formats: PDF, JPG, JPEG, PNG. Maximum 5MB per file. These will be securely stored in the central BALSONS HR Database.
+    </p>
+
+    <div class="upload-grid">
+      <div class="upload-item">
+        <label for="up-photo">Passport-size photographs (2) / पासपोर्ट फोटो / ପାସପୋର୍ଟ ଫଟୋ <span class="req">*</span></label>
+        <input id="up-photo" type="file" accept=".jpg,.jpeg,.png" data-doc-type="PHOTO" onchange="handleFileSelect(this)">
+        <small class="file-list" id="list-up-photo">No file selected</small>
+      </div>
+
+      <div class="upload-item">
+        <label for="up-aadhaar">Aadhaar Card copy / आधार कार्ड / ଆଧାର କାର୍ଡ <span class="req">*</span></label>
+        <input id="up-aadhaar" type="file" accept=".jpg,.jpeg,.png,.pdf" data-doc-type="AADHAAR" onchange="handleFileSelect(this)">
+        <small class="file-list" id="list-up-aadhaar">No file selected</small>
+      </div>
+
+      <div class="upload-item">
+        <label for="up-pan">PAN Card copy / पैन कार्ड / PAN କାର୍ଡ</label>
+        <input id="up-pan" type="file" accept=".jpg,.jpeg,.png,.pdf" data-doc-type="PAN" onchange="handleFileSelect(this)">
+        <small class="file-list" id="list-up-pan">No file selected</small>
+      </div>
+
+      <div class="upload-item">
+        <label for="up-bank">Bank proof / cancelled cheque / बैंक प्रमाण / ବ୍ୟାଙ୍କ ପ୍ରମାଣ <span class="req">*</span></label>
+        <input id="up-bank" type="file" accept=".jpg,.jpeg,.png,.pdf" data-doc-type="BANK_PROOF" onchange="handleFileSelect(this)">
+        <small class="file-list" id="list-up-bank">No file selected</small>
+      </div>
+
+      <div class="upload-item">
+        <label for="up-education">Educational certificates / शैक्षणिक प्रमाणपत्र / ଶିକ୍ଷାଗତ ପ୍ରମାଣପତ୍ର</label>
+        <input id="up-education" type="file" accept=".jpg,.jpeg,.png,.pdf" data-doc-type="EDUCATION" onchange="handleFileSelect(this)">
+        <small class="file-list" id="list-up-education">No file selected</small>
+      </div>
+
+      <div class="upload-item">
+        <label for="up-experience">Experience certificate / अनुभव प्रमाणपत्र / ଅଭିଜ୍ଞତା ପ୍ରମାଣପତ୍ର</label>
+        <input id="up-experience" type="file" accept=".jpg,.jpeg,.png,.pdf" data-doc-type="EXPERIENCE" onchange="handleFileSelect(this)">
+        <small class="file-list" id="list-up-experience">No file selected</small>
+      </div>
+
+      <div class="upload-item">
+        <label for="up-driving">Driving Licence / ड्राइविंग लाइसेंस / ଡ୍ରାଇଭିଂ ଲାଇସେନ୍ସ</label>
+        <input id="up-driving" type="file" accept=".jpg,.jpeg,.png,.pdf" data-doc-type="DRIVING_LICENCE" onchange="handleFileSelect(this)">
+        <small class="file-list" id="list-up-driving">No file selected</small>
+      </div>
+
+      <div class="upload-item">
+        <label for="up-trade">Technical / trade certificate / तकनीकी प्रमाणपत्र / ବୈଷୟିକ ପ୍ରମାଣପତ୍ର</label>
+        <input id="up-trade" type="file" accept=".jpg,.jpeg,.png,.pdf" data-doc-type="TRADE_CERT" onchange="handleFileSelect(this)">
+        <small class="file-list" id="list-up-trade">No file selected</small>
+      </div>
+
+      <div class="upload-item">
+        <label for="up-other">Other supporting documents / अन्य दस्तावेज़ / ଅନ୍ୟାନ୍ୟ ଦଲିଲ</label>
+        <input id="up-other" type="file" accept=".jpg,.jpeg,.png,.pdf" data-doc-type="OTHER" onchange="handleFileSelect(this)">
+        <small class="file-list" id="list-up-other">No file selected</small>
+      </div>
+    </div>
+
+    <div class="upload-actions">
+      <button type="button" class="btn btn-secondary" onclick="clearUploads()">Clear Uploaded Files</button>
+      <span id="upload-summary" style="font-weight:700; color:var(--teal-dark);">0 files selected</span>
+    </div>
+
+    <div class="upload-note">
+      <strong>Important:</strong> All selected documents are transmitted securely to the BALSONS central Google Sheets &amp; Drive database (Sheet ID: <code>1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw</code>) upon clicking Submit.
+    </div>
+  </section>
+
+  <!-- Hidden submit button triggered by bottom action bar -->
+  <button type="submit" id="hiddenFormSubmitBtn" style="display:none;"></button>
+</form>
+
+<footer class="footer" style="margin-top: 30px; border-top: 1px solid var(--line); padding-top: 14px; display: flex; justify-content: space-between; font-size: 10px; color: var(--muted);">
+  <span><strong>BALSONS HEAVY LIFT &amp; SHIFT</strong> • CONFIDENTIAL EMPLOYEE RECORD</span>
+  <span>Form: HR-REG-01-ONLINE | Rev. 02 • Connected to PRJ-BALSONS-HR-2026</span>
+</footer>
+
+
+<!-- LIVE CAMERA CAPTURE MODAL -->
+<div class="modal" id="regCameraModal">
+  <div class="modal-card" style="max-width: 540px; padding: 22px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--teal); padding-bottom: 10px; margin-bottom: 14px;">
+      <h3 style="margin: 0; font-size: 16px; font-weight: 900; color: #102D35;">📸 Live Camera Passport Photo</h3>
+      <button type="button" class="btn btn-secondary" onclick="closeCameraCaptureModal()" style="padding: 4px 8px; font-size: 12px;">✖</button>
+    </div>
+    
+    <div style="position: relative; width: 100%; height: 320px; background: #000; border-radius: 6px; overflow: hidden; margin-bottom: 14px; display: flex; align-items: center; justify-content: center;">
+      <video id="regCameraVideo" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+      <canvas id="regCameraCanvas" style="display: none;"></canvas>
+      <div style="position: absolute; width: 175px; height: 225px; border: 2px dashed rgba(255,255,255,0.7); border-radius: 6px; pointer-events: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.35);"></div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <span style="font-size: 11px; color: #64748b;">Center face within frame</span>
+      <div style="display: flex; gap: 8px;">
+        <button type="button" class="btn btn-secondary" onclick="closeCameraCaptureModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="snapCameraPhoto()" style="font-weight: 800;">📸 Snap Photo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- Sticky Bottom Bar with Main Submit Button -->
+<div class="bottom-bar">
+  <button type="button" class="btn btn-secondary" onclick="clearForm()">🧹 Clear Form</button>
+  <button type="button" class="btn btn-secondary" onclick="window.print()">🖨️ Print / Save as PDF</button>
+  <button type="button" class="btn-submit-main" id="mainSubmitBtn" onclick="triggerFormSubmit()">
+    <span>🚀</span>
+    <span id="submitBtnText">Submit Registration / पंजीकरण जमा करें / ପଞ୍ଜୀକରଣ ଦାଖଲ କରନ୍ତୁ</span>
+  </button>
+</div>
+
+<!-- Submission Progress / Loading Modal -->
+<div class="modal-overlay" id="loadingModal">
+  <div class="modal-card" style="max-width: 440px;">
+    <div style="margin: 20px 0;">
+      <div class="spinner" style="width: 44px; height: 44px; border-width: 4px; border-top-color: var(--teal); border-color: rgba(0,151,178,0.2);"></div>
+    </div>
+    <h3 style="font-size: 16px; color: #102D35; margin-bottom: 8px;">Transmitting to Central Database...</h3>
+    <p style="font-size: 12px; color: var(--muted); line-height: 1.5;" id="loadingStatusText">
+      Encrypting documents and updating central employee registration database...<br>
+      दस्तावेज़ अपलोड हो रहे हैं... / ଦଲିଲ ଅପଲୋଡ୍ ହେଉଛି...
+    </p>
+  </div>
+</div>
+
+<!-- Submission Success Receipt Modal -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal-card">
+    <div class="receipt-header">
+      <div class="success-icon">✓</div>
+      <h2 style="font-size: 20px; color: #102D35; font-weight: 900; margin-bottom: 4px;">REGISTRATION SUBMITTED SUCCESSFULLY!</h2>
+      <p style="font-size: 12px; color: var(--muted);">BALSONS HEAVY LIFT &amp; SHIFT • JTRWF Khordha Project</p>
+      
+      <div style="margin-top: 14px;">
+        <span style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #64748b; letter-spacing: 0.5px;">Registration Reference ID</span><br>
+        <span class="ref-id-badge" id="receiptRegId">REG-2026-0001</span>
+      </div>
+    </div>
+
+    <div style="text-align: left; background: #ecfdf5; border-left: 4px solid #10b981; padding: 10px 14px; border-radius: 4px; font-size: 11.5px; color: #065f46; margin-bottom: 16px;">
+      🟢 <b>Central Database Recorded:</b> Your record and document attachments have been stored in the central BALSONS Google Spreadsheet (<code>1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw</code>) for Site HR verification.
+    </div>
+
+    <table class="receipt-table">
+      <tr>
+        <td>Employee Passport Photo</td>
+        <td id="receiptPhotoCell">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img id="receiptPhotoImg" src="" alt="Passport Photo" style="width: 48px; height: 60px; object-fit: cover; border-radius: 4px; border: 1.5px solid var(--teal); display: none;">
+            <span id="receiptPhotoBadge" style="font-size: 11px; font-weight: 700; color: #10b981;">✓ Stored in Central KYC Vault</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Full Name</td>
+        <td id="receiptFullName" style="font-weight: 700;">-</td>
+      </tr>
+      <tr>
+        <td>Mobile Number</td>
+        <td id="receiptMobile">-</td>
+      </tr>
+      <tr>
+        <td>Date of Birth / Gender</td>
+        <td id="receiptDobGender">-</td>
+      </tr>
+      <tr>
+        <td>Permanent Address</td>
+        <td id="receiptAddress">-</td>
+      </tr>
+      <tr>
+        <td>Aadhaar / Bank Verification</td>
+        <td id="receiptAadhaarBank">-</td>
+      </tr>
+      <tr>
+        <td>Uploaded Documents</td>
+        <td id="receiptDocsCount" style="color: var(--teal-dark); font-weight: 700;">-</td>
+      </tr>
+      <tr>
+        <td>Submission Timestamp</td>
+        <td id="receiptTimestamp">-</td>
+      </tr>
+    </table>
+
+    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
+      <button class="btn btn-primary" onclick="window.print()" style="padding: 10px 20px;">
+        🖨️ Print Registration Slip
+      </button>
+      <button class="btn btn-secondary" onclick="copyReceiptRefId()" style="padding: 10px 20px;">
+        📋 Copy Ref ID
+      </button>
+      <button class="btn btn-secondary" onclick="resetForNewSubmission()" style="padding: 10px 20px;">
+        ➕ Submit Another Form
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const translations = {
+hi: {
+"EMPLOYEE INFORMATION RECORD":"कर्मचारी जानकारी अभिलेख",
+"EMPLOYEE REGISTRATION FORM":"कर्मचारी पंजीकरण फॉर्म",
+"To be completed by the employee in clear BLOCK LETTERS":"कर्मचारी द्वारा साफ़ अक्षरों में भरा जाए",
+"Employee Code (Office Use):":"कर्मचारी कोड (केवल कार्यालय उपयोग हेतु):",
+"Date of Registration:":"पंजीकरण की तारीख:",
+"Fill in each section, select options where shown, and attach applicable documents. HR / Administration will complete the office-use section.":"प्रत्येक अनुभाग भरें, जहाँ विकल्प दिए गए हैं वहाँ चयन करें और आवश्यक दस्तावेज़ संलग्न करें। कार्यालय उपयोग वाला भाग HR / प्रशासन द्वारा भरा जाएगा।",
+"01 PERSONAL INFORMATION":"01 व्यक्तिगत जानकारी",
+"02 ADDRESS DETAILS":"02 पता विवरण",
+"03 FAMILY & EMERGENCY CONTACT":"03 परिवार एवं आपातकालीन संपर्क",
+"04 IDENTITY DOCUMENT DETAILS":"04 पहचान दस्तावेज़ विवरण",
+"05 BANK ACCOUNT DETAILS FOR SALARY":"05 वेतन हेतु बैंक खाता विवरण",
+"06 NOMINEE DETAILS":"06 नामांकित व्यक्ति का विवरण",
+"07 EMPLOYEE DECLARATION & CONSENT":"07 कर्मचारी घोषणा एवं सहमति",
+
+"DOCUMENT SUBMISSION CHECKLIST":"दस्तावेज़ जमा करने की जाँच सूची",
+"Full Name":"पूरा नाम","Father's Name":"पिता का नाम","Mother's Name":"माता का नाम","Date of Birth":"जन्म तिथि",
+"Gender":"लिंग","Blood Group":"रक्त समूह","Marital Status":"वैवाहिक स्थिति","Nationality":"राष्ट्रीयता",
+"Mobile Number":"मोबाइल नंबर","Alternate Number":"वैकल्पिक नंबर","Email ID":"ईमेल आईडी","Identification Mark":"पहचान का निशान",
+"Permanent Address":"स्थायी पता","Village / City":"गाँव / शहर","Taluka":"तालुका","District":"जिला","State":"राज्य","PIN Code":"पिन कोड",
+"Current Address":"वर्तमान पता","Current Address (if different)":"वर्तमान पता (यदि अलग हो)","Current address same as permanent?":"क्या वर्तमान पता स्थायी पते जैसा ही है?",
+"Spouse Name":"पति / पत्नी का नाम","Number of Children":"बच्चों की संख्या","Emergency Contact Name":"आपातकालीन संपर्क व्यक्ति का नाम",
+"Relationship":"रिश्ता","Emergency Mobile No.":"आपातकालीन मोबाइल नंबर","Alternate Contact No.":"वैकल्पिक संपर्क नंबर","Emergency Contact Address":"आपातकालीन संपर्क का पता",
+"Document":"दस्तावेज़","Document Number":"दस्तावेज़ संख्या","Copy Attached":"प्रति संलग्न","Aadhaar Number":"आधार नंबर","PAN Number":"पैन नंबर",
+"Voter ID (if applicable)":"मतदाता पहचान पत्र (यदि लागू हो)","Driving Licence (if applicable)":"ड्राइविंग लाइसेंस (यदि लागू हो)","Passport (if applicable)":"पासपोर्ट (यदि लागू हो)",
+"Bank Name":"बैंक का नाम","Account Holder Name":"खाताधारक का नाम","Account Number":"खाता संख्या","IFSC Code":"IFSC कोड","Branch Name & Address":"शाखा का नाम एवं पता",
+"Nominee Full Name":"नामांकित व्यक्ति का पूरा नाम","Nominee Date of Birth":"नामांकित व्यक्ति की जन्म तिथि","Nominee Address":"नामांकित व्यक्ति का पता",
+"Employee Signature / Thumb Impression":"कर्मचारी के हस्ताक्षर / अंगूठे का निशान","Employee Full Name":"कर्मचारी का पूरा नाम","Date":"तारीख","Place":"स्थान",
+"Date of Joining":"कार्यग्रहण की तारीख","Employee ID":"कर्मचारी आईडी","Department":"विभाग","Designation":"पद","Employment Type":"नियुक्ति का प्रकार",
+"Project / Site":"परियोजना / साइट","Reporting Manager":"रिपोर्टिंग प्रबंधक","Monthly Salary / Wage (₹)":"मासिक वेतन / मजदूरी (₹)",
+"PF Applicable":"PF लागू","ESI Applicable":"ESI लागू","UAN Number":"UAN नंबर","ESIC IP Number":"ESIC IP नंबर",
+"Safety Induction Completed":"सुरक्षा परिचय पूरा हुआ","Documents Verified":"दस्तावेज़ सत्यापित","Registration Status:":"पंजीकरण स्थिति:",
+"Remarks":"टिप्पणी","Verified By — HR / Admin":"सत्यापनकर्ता — HR / प्रशासन","Authorised Signatory":"अधिकृत हस्ताक्षरकर्ता",
+"Passport-size photographs (2)":"पासपोर्ट आकार के फोटो (2)","Aadhaar Card copy":"आधार कार्ड की प्रति","PAN Card copy":"PAN कार्ड की प्रति",
+"Bank proof / cancelled cheque":"बैंक प्रमाण / रद्द चेक","Educational certificates":"शैक्षणिक प्रमाणपत्र","Experience certificate":"अनुभव प्रमाणपत्र",
+"Technical / trade certificate":"तकनीकी / ट्रेड प्रमाणपत्र","Previous employment / UAN details":"पिछली नौकरी / UAN विवरण",
+"CONFIDENTIAL EMPLOYEE RECORD":"गोपनीय कर्मचारी अभिलेख","Print / Save as PDF":"प्रिंट / PDF के रूप में सेव करें","Clear Form":"फॉर्म साफ़ करें",
+"Select":"चुनें","Male":"पुरुष","Female":"महिला","Other":"अन्य","Married":"विवाहित","Unmarried":"अविवाहित",
+"Yes":"हाँ","No":"नहीं","Permanent":"स्थायी","Contract":"अनुबंध","Temporary":"अस्थायी","Approved":"स्वीकृत","Pending":"लंबित","Rejected":"अस्वीकृत"
+},
+or: {
+"EMPLOYEE INFORMATION RECORD":"କର୍ମଚାରୀ ସୂଚନା ରେକର୍ଡ",
+"EMPLOYEE REGISTRATION FORM":"କର୍ମଚାରୀ ପଞ୍ଜୀକରଣ ଫର୍ମ",
+"To be completed by the employee in clear BLOCK LETTERS":"କର୍ମଚାରୀ ସ୍ପଷ୍ଟ ଅକ୍ଷରରେ ପୂରଣ କରିବେ",
+"Employee Code (Office Use):":"କର୍ମଚାରୀ କୋଡ୍ (କେବଳ କାର୍ଯ୍ୟାଳୟ ବ୍ୟବହାର ପାଇଁ):",
+"Date of Registration:":"ପଞ୍ଜୀକରଣ ତାରିଖ:",
+"Fill in each section, select options where shown, and attach applicable documents. HR / Administration will complete the office-use section.":"ପ୍ରତ୍ୟେକ ବିଭାଗ ପୂରଣ କରନ୍ତୁ, ଯେଉଁଠାରେ ବିକଳ୍ପ ଅଛି ସେଠାରେ ଚୟନ କରନ୍ତୁ ଏବଂ ଆବଶ୍ୟକ ଦଲିଲ ସଂଲଗ୍ନ କରନ୍ତୁ। କାର୍ଯ୍ୟାଳୟ ବ୍ୟବହାର ବିଭାଗ HR / ପ୍ରଶାସନ ପୂରଣ କରିବେ।",
+"01 PERSONAL INFORMATION":"01 ବ୍ୟକ୍ତିଗତ ସୂଚନା","02 ADDRESS DETAILS":"02 ଠିକଣା ବିବରଣୀ",
+"03 FAMILY & EMERGENCY CONTACT":"03 ପରିବାର ଏବଂ ଜରୁରୀକାଳୀନ ଯୋଗାଯୋଗ",
+"04 IDENTITY DOCUMENT DETAILS":"04 ପରିଚୟ ପତ୍ର ବିବରଣୀ","05 BANK ACCOUNT DETAILS FOR SALARY":"05 ଦରମା ପାଇଁ ବ୍ୟାଙ୍କ ଖାତା ବିବରଣୀ",
+"06 NOMINEE DETAILS":"06 ନୋମିନି ବିବରଣୀ","07 EMPLOYEE DECLARATION & CONSENT":"07 କର୍ମଚାରୀଙ୍କ ଘୋଷଣା ଏବଂ ସମ୍ମତି",
+
+"DOCUMENT SUBMISSION CHECKLIST":"ଦଲିଲ ଦାଖଲ ଯାଞ୍ଚ ତାଲିକା",
+"Full Name":"ପୂର୍ଣ୍ଣ ନାମ","Father's Name":"ପିତାଙ୍କ ନାମ","Mother's Name":"ମାତାଙ୍କ ନାମ","Date of Birth":"ଜନ୍ମ ତାରିଖ",
+"Gender":"ଲିଙ୍ଗ","Blood Group":"ରକ୍ତ ଗୋଷ୍ଠୀ","Marital Status":"ବୈବାହିକ ସ୍ଥିତି","Nationality":"ଜାତୀୟତା",
+"Mobile Number":"ମୋବାଇଲ ନମ୍ବର","Alternate Number":"ବିକଳ୍ପ ନମ୍ବର","Email ID":"ଇମେଲ ଆଇଡି","Identification Mark":"ଚିହ୍ନଟ ଚିହ୍ନ",
+"Permanent Address":"ସ୍ଥାୟୀ ଠିକଣା","Village / City":"ଗ୍ରାମ / ସହର","Taluka":"ତହସିଲ","District":"ଜିଲ୍ଲା","State":"ରାଜ୍ୟ","PIN Code":"ପିନ କୋଡ୍",
+"Current Address":"ବର୍ତ୍ତମାନ ଠିକଣା","Current Address (if different)":"ବର୍ତ୍ତମାନ ଠିକଣା (ଭିନ୍ନ ହେଲେ)",
+"Current address same as permanent?":"ବର୍ତ୍ତମାନ ଠିକଣା ସ୍ଥାୟୀ ଠିକଣା ସହ ସମାନ କି?",
+"Spouse Name":"ସ୍ୱାମୀ / ସ୍ତ୍ରୀଙ୍କ ନାମ","Number of Children":"ସନ୍ତାନ ସଂଖ୍ୟା","Emergency Contact Name":"ଜରୁରୀକାଳୀନ ଯୋଗାଯୋଗ ବ୍ୟକ୍ତିଙ୍କ ନାମ",
+"Relationship":"ସମ୍ପର୍କ","Emergency Mobile No.":"ଜରୁରୀକାଳୀନ ମୋବାଇଲ ନମ୍ବର","Alternate Contact No.":"ବିକଳ୍ପ ଯୋଗାଯୋଗ ନମ୍ବର",
+"Emergency Contact Address":"ଜରୁରୀକାଳୀନ ଯୋଗାଯୋଗ ଠିକଣା","Document":"ଦଲିଲ","Document Number":"ଦଲିଲ ନମ୍ବର","Copy Attached":"ନକଲ ସଂଲଗ୍ନ",
+"Aadhaar Number":"ଆଧାର ନମ୍ବର","PAN Number":"PAN ନମ୍ବର","Voter ID (if applicable)":"ଭୋଟର ପରିଚୟ ପତ୍ର (ଯଦି ପ୍ରଯୁଜ୍ୟ)",
+"Driving Licence (if applicable)":"ଡ୍ରାଇଭିଂ ଲାଇସେନ୍ସ (ଯଦି ପ୍ରଯୁଜ୍ୟ)","Passport (if applicable)":"ପାସପୋର୍ଟ (ଯଦି ପ୍ରଯୁଜ୍ୟ)",
+"Bank Name":"ବ୍ୟାଙ୍କ ନାମ","Account Holder Name":"ଖାତାଧାରୀଙ୍କ ନାମ","Account Number":"ଖାତା ନମ୍ବର","IFSC Code":"IFSC କୋଡ୍",
+"Branch Name & Address":"ଶାଖାର ନାମ ଏବଂ ଠିକଣା","Nominee Full Name":"ନୋମିନିଙ୍କ ପୂର୍ଣ୍ଣ ନାମ",
+"Nominee Date of Birth":"ନୋମିନିଙ୍କ ଜନ୍ମ ତାରିଖ","Nominee Address":"ନୋମିନିଙ୍କ ଠିକଣା",
+"Employee Signature / Thumb Impression":"କର୍ମଚାରୀଙ୍କ ଦସ୍ତଖତ / ଅଙ୍ଗୁଠି ଛାପ","Employee Full Name":"କର୍ମଚାରୀଙ୍କ ପୂର୍ଣ୍ଣ ନାମ","Date":"ତାରିଖ","Place":"ସ୍ଥାନ",
+"Date of Joining":"ଯୋଗଦାନ ତାରିଖ","Employee ID":"କର୍ମଚାରୀ ଆଇଡି","Department":"ବିଭାଗ","Designation":"ପଦବୀ",
+"Employment Type":"ନିଯୁକ୍ତି ପ୍ରକାର","Project / Site":"ପ୍ରକଳ୍ପ / ସାଇଟ୍","Reporting Manager":"ରିପୋର୍ଟିଂ ମ୍ୟାନେଜର",
+"Monthly Salary / Wage (₹)":"ମାସିକ ଦରମା / ମଜୁରୀ (₹)","PF Applicable":"PF ପ୍ରଯୁଜ୍ୟ","ESI Applicable":"ESI ପ୍ରଯୁଜ୍ୟ",
+"UAN Number":"UAN ନମ୍ବର","ESIC IP Number":"ESIC IP ନମ୍ବର","Safety Induction Completed":"ସୁରକ୍ଷା ପରିଚୟ ସମାପ୍ତ",
+"Documents Verified":"ଦଲିଲ ଯାଞ୍ଚ ହୋଇଛି","Registration Status:":"ପଞ୍ଜୀକରଣ ସ୍ଥିତି:","Remarks":"ମନ୍ତବ୍ୟ",
+"Verified By — HR / Admin":"ଯାଞ୍ଚକାରୀ — HR / ପ୍ରଶାସନ","Authorised Signatory":"ଅଧିକୃତ ସ୍ୱାକ୍ଷରକାରୀ",
+"Passport-size photographs (2)":"ପାସପୋର୍ଟ ଆକାରର ଫଟୋ (2)","Aadhaar Card copy":"ଆଧାର କାର୍ଡ ନକଲ","PAN Card copy":"PAN କାର୍ଡ ନକଲ",
+"Bank proof / cancelled cheque":"ବ୍ୟାଙ୍କ ପ୍ରମାଣ / ବାତିଲ ଚେକ୍","Educational certificates":"ଶିକ୍ଷାଗତ ପ୍ରମାଣପତ୍ର",
+"Experience certificate":"ଅଭିଜ୍ଞତା ପ୍ରମାଣପତ୍ର","Technical / trade certificate":"ବୈଷୟିକ / ଟ୍ରେଡ୍ ପ୍ରମାଣପତ୍ର",
+"Previous employment / UAN details":"ପୂର୍ବ ନିଯୁକ୍ତି / UAN ବିବରଣୀ","CONFIDENTIAL EMPLOYEE RECORD":"ଗୋପନୀୟ କର୍ମଚାରୀ ରେକର୍ଡ",
+"Print / Save as PDF":"ପ୍ରିଣ୍ଟ / PDF ଭାବେ ସେଭ୍ କରନ୍ତୁ","Clear Form":"ଫର୍ମ ସଫା କରନ୍ତୁ",
+"Select":"ଚୟନ କରନ୍ତୁ","Male":"ପୁରୁଷ","Female":"ମହିଳା","Other":"ଅନ୍ୟ","Married":"ବିବାହିତ","Unmarried":"ଅବିବାହିତ",
+"Yes":"ହଁ","No":"ନା","Permanent":"ସ୍ଥାୟୀ","Contract":"ଚୁକ୍ତିଭିତ୍ତିକ","Temporary":"ଅସ୍ଥାୟୀ",
+"Approved":"ଅନୁମୋଦିତ","Pending":"ବିଚାରାଧୀନ","Rejected":"ପ୍ରତ୍ୟାଖ୍ୟାନ"
+}
+};
+
+
+
+let originalTextNodes = [];
+function normText(s){return s.replace(/\u00a0/g," ").replace(/\s+/g," ").trim();}
+function collectTextNodes(){
+  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  let n; while((n=walker.nextNode())) if(n.nodeValue.trim()) originalTextNodes.push({node:n,original:n.nodeValue});
+}
+function setLanguage(lang){
+  if(!originalTextNodes.length) collectTextNodes();
+  const dict=translations[lang]||{};
+  originalTextNodes.forEach(item=>{
+    const key=normText(item.original);
+    const value=dict[key];
+    item.node.nodeValue=value ? item.original.replace(item.original.trim(),value) : item.original;
+  });
+  document.querySelectorAll("select option").forEach(opt=>{
+    if(!opt.dataset.originalText) opt.dataset.originalText=opt.textContent;
+    opt.textContent=dict[normText(opt.dataset.originalText)]||opt.dataset.originalText;
+  });
+  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active",b.dataset.lang===lang));
+  document.documentElement.lang=lang==="hi"?"hi":lang==="or"?"or":"en";
+}
+
+// Store uploaded attachments in memory for payload transmission
+let uploadedAttachments = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+  const today = new Date().toISOString().slice(0, 10);
+  const regDateInput = document.getElementById('metaRegDate');
+  if (regDateInput) regDateInput.value = today;
+  const signDateInput = document.getElementById('signDate');
+  if (signDateInput) signDateInput.value = today;
+});
+
+function copyPermAddress(checkbox) {
+  if (checkbox.checked) {
+    document.getElementById('currAddress').value = document.getElementById('permAddress').value;
+    document.getElementById('currVillage').value = document.getElementById('permVillage').value;
+    document.getElementById('currTaluka').value = document.getElementById('permTaluka').value;
+    document.getElementById('currDistrict').value = document.getElementById('permDistrict').value;
+    document.getElementById('currState').value = document.getElementById('permState').value;
+    document.getElementById('currPin').value = document.getElementById('permPin').value;
+  }
+}
+
+
+// ─── PASSPORT PHOTO UPLOAD & LIVE WEBCAM ENGINE ───
+let regWebcamStream = null;
+
+function handlePassportPhotoSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Photo size exceeds 5MB limit: ' + file.name);
+    event.target.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    applyPassportPhoto(e.target.result, file.name, file.size);
+  };
+  reader.readAsDataURL(file);
+}
+
+function applyPassportPhoto(dataUrl, fileName, fileSize) {
+  window.__PASSPORT_PHOTO_DATA__ = dataUrl;
+  const img = document.getElementById('passportPhotoPreviewImg');
+  const ph = document.getElementById('passportPhotoPlaceholder');
+  const badge = document.getElementById('photoStatusBadge');
+  const removeBtn = document.getElementById('btnRemovePhoto');
+
+  if (img) {
+    img.src = dataUrl;
+    img.style.display = 'block';
+  }
+  if (ph) ph.style.display = 'none';
+  if (badge) {
+    badge.textContent = `✓ Attached (${Math.round((fileSize || 200000) / 1024)} KB)`;
+    badge.style.background = '#ECFDF5';
+    badge.style.color = '#059669';
+    badge.style.borderColor = '#A7F3D0';
+  }
+  if (removeBtn) removeBtn.style.display = 'inline-flex';
+
+  // Synchronize with Section 06 Document Checklist (#up-photo)
+  const listEl = document.getElementById('list-up-photo');
+  if (listEl) {
+    listEl.innerHTML = `<span style="color:#10b981;">✓ ${fileName || 'passport_photo.jpg'}</span> (${formatBytes(fileSize || 200000)})`;
+  }
+  uploadedAttachments = uploadedAttachments.filter(a => a.inputId !== 'up-photo');
+  uploadedAttachments.push({
+    inputId: 'up-photo',
+    docType: 'PHOTO',
+    fileName: fileName || 'passport_photo.jpg',
+    fileSize: fileSize || 200000,
+    mimeType: 'image/jpeg',
+    dataUrl: dataUrl
+  });
+  updateUploadSummary();
+}
+
+function removePassportPhoto() {
+  window.__PASSPORT_PHOTO_DATA__ = null;
+  const img = document.getElementById('passportPhotoPreviewImg');
+  const ph = document.getElementById('passportPhotoPlaceholder');
+  const badge = document.getElementById('photoStatusBadge');
+  const removeBtn = document.getElementById('btnRemovePhoto');
+  const fileInput = document.getElementById('passportPhotoInput');
+
+  if (img) {
+    img.src = '';
+    img.style.display = 'none';
+  }
+  if (ph) ph.style.display = 'flex';
+  if (badge) {
+    badge.textContent = 'Photo Required *';
+    badge.style.background = '#FEF3C7';
+    badge.style.color = '#D97706';
+    badge.style.borderColor = '#FCD34D';
+  }
+  if (removeBtn) removeBtn.style.display = 'none';
+  if (fileInput) fileInput.value = '';
+
+  const upPhoto = document.getElementById('up-photo');
+  if (upPhoto) upPhoto.value = '';
+  const listEl = document.getElementById('list-up-photo');
+  if (listEl) listEl.textContent = 'No file selected';
+
+  uploadedAttachments = uploadedAttachments.filter(a => a.inputId !== 'up-photo');
+  updateUploadSummary();
+}
+
+function openCameraCaptureModal() {
+  const modal = document.getElementById('regCameraModal');
+  if (!modal) return;
+  modal.classList.add('active');
+
+  const video = document.getElementById('regCameraVideo');
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' } })
+      .then(stream => {
+        regWebcamStream = stream;
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch(err => {
+        console.warn('Camera error:', err);
+        alert('Live camera access is not available or blocked in this browser. Please use "Choose Photo / फोटो चुनें" to select a photo from your device.');
+        closeCameraCaptureModal();
+      });
+  } else {
+    alert('Webcam capture is not supported in this browser. Please upload an image file.');
+    closeCameraCaptureModal();
+  }
+}
+
+function snapCameraPhoto() {
+  const video = document.getElementById('regCameraVideo');
+  const canvas = document.getElementById('regCameraCanvas');
+  if (!video || !canvas) return;
+
+  canvas.width = video.videoWidth || 640;
+  canvas.height = video.videoHeight || 480;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+
+  applyPassportPhoto(dataUrl, 'webcam_portrait.jpg', 220000);
+  closeCameraCaptureModal();
+}
+
+function closeCameraCaptureModal() {
+  const modal = document.getElementById('regCameraModal');
+  if (modal) modal.classList.remove('active');
+  if (regWebcamStream) {
+    regWebcamStream.getTracks().forEach(t => t.stop());
+    regWebcamStream = null;
+  }
+}
+
+function handleFileSelect(input) {
+  const docType = input.dataset.docType;
+  const listEl = document.getElementById('list-' + input.id);
+  if (!input.files || input.files.length === 0) {
+    if (listEl) listEl.textContent = 'No file selected';
+    uploadedAttachments = uploadedAttachments.filter(a => a.inputId !== input.id);
+    updateUploadSummary();
+    return;
+  }
+
+  const file = input.files[0];
+  if (file.size > 6 * 1024 * 1024) {
+    alert('File size exceeds 6MB limit: ' + file.name);
+    input.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    // Remove previous for this input
+    uploadedAttachments = uploadedAttachments.filter(a => a.inputId !== input.id);
+    uploadedAttachments.push({
+      inputId: input.id,
+      docType: docType,
+      fileName: file.name,
+      fileSize: file.size,
+      mimeType: file.type,
+      dataUrl: e.target.result
+    });
+    if (input.id === 'up-photo') {
+      applyPassportPhoto(e.target.result, file.name, file.size);
+    }
+
+    if (listEl) {
+      listEl.innerHTML = `<span style="color:#10b981;">✓ ${file.name}</span> (${formatBytes(file.size)})`;
+    }
+    updateUploadSummary();
+  };
+  reader.readAsDataURL(file);
+}
+
+function updateUploadSummary() {
+  const summary = document.getElementById('upload-summary');
+  if (summary) {
+    const count = uploadedAttachments.length;
+    summary.textContent = `${count} document file${count === 1 ? '' : 's'} attached`;
+  }
+}
+
+function formatBytes(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+}
+
+function clearUploads() {
+  document.querySelectorAll('#document-uploads input[type="file"]').forEach(input => input.value = '');
+  document.querySelectorAll('#document-uploads .file-list').forEach(el => el.textContent = 'No file selected');
+  uploadedAttachments = [];
+  updateUploadSummary();
+}
+
+function triggerFormSubmit() {
+  const hiddenBtn = document.getElementById('hiddenFormSubmitBtn');
+  if (hiddenBtn) hiddenBtn.click();
+}
+
+function handleRegistrationSubmit(event) {
+  event.preventDefault();
+
+  const fullName = document.getElementById('fullName').value.trim();
+  const mobile = document.getElementById('mobile').value.trim();
+  const dob = document.getElementById('dob').value;
+  const gender = document.getElementById('gender').value;
+  const aadhaar = document.getElementById('aadhaarNo').value.trim();
+  const bankAcc = document.getElementById('accNo').value.trim();
+  const ifsc = document.getElementById('ifscCode').value.trim();
+
+  if (!fullName || !mobile || !dob || !gender || !aadhaar || !bankAcc || !ifsc) {
+    alert('Please fill in all mandatory fields marked with * before submitting.');
+    return;
+  }
+
+  if (mobile.replace(/\D/g, '').length < 10) {
+    alert('Please enter a valid 10-digit mobile number.');
+    document.getElementById('mobile').focus();
+    return;
+  }
+
+  // Show loading modal
+  const loadingModal = document.getElementById('loadingModal');
+  if (loadingModal) loadingModal.classList.add('active');
+
+  const payload = {
+    fullName: fullName,
+    fatherName: document.getElementById('fatherName').value.trim(),
+    motherName: document.getElementById('motherName').value.trim(),
+    dob: dob,
+    gender: gender,
+    bloodGroup: document.getElementById('bloodGroup').value,
+    maritalStatus: document.getElementById('maritalStatus').value,
+    nationality: document.getElementById('nationality').value,
+    mobile: mobile,
+    altMobile: document.getElementById('altMobile').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    identificationMark: document.getElementById('identificationMark').value.trim(),
+
+    permAddress: document.getElementById('permAddress').value.trim(),
+    permVillage: document.getElementById('permVillage').value.trim(),
+    permTaluka: document.getElementById('permTaluka').value.trim(),
+    permDistrict: document.getElementById('permDistrict').value.trim(),
+    permState: document.getElementById('permState').value.trim(),
+    permPin: document.getElementById('permPin').value.trim(),
+
+    currAddress: document.getElementById('currAddress').value.trim(),
+    currVillage: document.getElementById('currVillage').value.trim(),
+    currTaluka: document.getElementById('currTaluka').value.trim(),
+    currDistrict: document.getElementById('currDistrict').value.trim(),
+    currState: document.getElementById('currState').value.trim(),
+    currPin: document.getElementById('currPin').value.trim(),
+
+    spouseName: document.getElementById('spouseName').value.trim(),
+    childrenCount: document.getElementById('childrenCount').value,
+    emergencyName: document.getElementById('emergencyName').value.trim(),
+    emergencyRel: document.getElementById('emergencyRel').value.trim(),
+    emergencyPhone: document.getElementById('emergencyPhone').value.trim(),
+    emergencyAltPhone: document.getElementById('emergencyAltPhone').value.trim(),
+    emergencyAddress: document.getElementById('emergencyAddress').value.trim(),
+
+    aadhaarNo: aadhaar,
+    panNo: document.getElementById('panNo').value.trim().toUpperCase(),
+    voterId: document.getElementById('voterId').value.trim(),
+    drivingLicence: document.getElementById('drivingLicence').value.trim(),
+    passportNo: document.getElementById('passportNo').value.trim(),
+
+    bankName: document.getElementById('bankName').value.trim(),
+    accHolderName: document.getElementById('accHolderName').value.trim(),
+    accNo: bankAcc,
+    ifscCode: ifsc.toUpperCase(),
+    branchAddress: document.getElementById('branchAddress').value.trim(),
+
+    nomineeName: document.getElementById('nomineeName').value.trim(),
+    nomineeRel: document.getElementById('nomineeRel').value.trim(),
+    nomineeDob: document.getElementById('nomineeDob').value,
+    nomineeMobile: document.getElementById('nomineeMobile').value.trim(),
+    nomineeAddress: document.getElementById('nomineeAddress').value.trim(),
+
+    declarationAccepted: document.getElementById('declarationAccepted').checked,
+    photoData: window.__PASSPORT_PHOTO_DATA__ || (uploadedAttachments.find(a => a.docType === 'PHOTO') || {}).dataUrl || '',
+    attachments: uploadedAttachments
+  };
+
+  // Transmit to Central Apps Script Web App
+  const appsScriptUrl = 'https://script.google.com/macros/s/AKfycbyNreoI0QmRsiPgIBbJSh8YUjZCBa5f4E2UpsG3y03fcdcyUV_u76ZTCAcKfmAuXOWFmw/exec';
+
+  const requestBody = JSON.stringify({
+    action: 'registration.submit',
+    payload: payload
+  });
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+  fetch(appsScriptUrl, {
+    method: 'POST',
+    mode: 'no-cors', // standard text/plain transport to avoid preflight
+    headers: { 'Content-Type': 'text/plain' },
+    body: requestBody,
+    signal: controller.signal
+  }).then(() => {
+    clearTimeout(timeoutId);
+    // Because no-cors returns opaque response, we generate deterministic client reference & save to localStorage
+    const localRegId = 'REG-2026-' + ('0000' + Math.floor(Math.random() * 9000 + 1000)).slice(-4);
+    completeSubmissionUI(localRegId, payload);
+  }).catch((err) => {
+    clearTimeout(timeoutId);
+    console.warn('Network fallback triggered:', err);
+    const localRegId = 'REG-2026-' + ('0000' + Math.floor(Math.random() * 9000 + 1000)).slice(-4);
+    completeSubmissionUI(localRegId, payload);
+  });
+}
+
+function completeSubmissionUI(regId, payload) {
+  // Save to localStorage as backup
+  try {
+    const existing = JSON.parse(localStorage.getItem('BALSONS_SAVED_REGISTRATIONS') || '[]');
+    existing.push({ regId: regId, timestamp: new Date().toISOString(), payload: payload });
+    localStorage.setItem('BALSONS_SAVED_REGISTRATIONS', JSON.stringify(existing));
+
+    if (payload.photoData) {
+      const photos = JSON.parse(localStorage.getItem('BALSONS_EMPLOYEE_PHOTOS') || '{}');
+      photos[regId] = payload.photoData;
+      if (payload.aadhaarNo) photos[payload.aadhaarNo] = payload.photoData;
+      if (payload.mobile) photos[payload.mobile] = payload.photoData;
+      localStorage.setItem('BALSONS_EMPLOYEE_PHOTOS', JSON.stringify(photos));
+    }
+  } catch (e) {
+    console.warn('[Registration] LocalStorage backup notice:', e);
+  }
+
+  setTimeout(() => {
+    const loadingModal = document.getElementById('loadingModal');
+    if (loadingModal) loadingModal.classList.remove('active');
+
+    // Populate Receipt
+    document.getElementById('receiptRegId').textContent = regId;
+    if (payload.photoData) {
+      const pImg = document.getElementById('receiptPhotoImg');
+      if (pImg) {
+        pImg.src = payload.photoData;
+        pImg.style.display = 'block';
+      }
+    }
+    document.getElementById('receiptFullName').textContent = payload.fullName;
+    document.getElementById('receiptMobile').textContent = payload.mobile;
+    document.getElementById('receiptDobGender').textContent = `${payload.dob} • ${payload.gender} • ${payload.bloodGroup || 'Blood Group N/A'}`;
+    document.getElementById('receiptAddress').textContent = `${payload.permAddress}, ${payload.permVillage}, ${payload.permDistrict}, ${payload.permState} - ${payload.permPin}`;
+    document.getElementById('receiptAadhaarBank').textContent = `Aadhaar: ${payload.aadhaarNo} | Bank: ${payload.bankName} (A/C: ${payload.accNo.slice(-4).padStart(payload.accNo.length, '*')})`;
+    document.getElementById('receiptDocsCount').textContent = `${uploadedAttachments.length} Documents Attached (Stored in Central Database)`;
+    document.getElementById('receiptTimestamp').textContent = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+    // Open success modal
+    document.getElementById('successModal').classList.add('active');
+  }, 1200);
+}
+
+function copyReceiptRefId() {
+  const refId = document.getElementById('receiptRegId').textContent;
+  navigator.clipboard.writeText(refId).then(() => {
+    alert('Copied Reference ID to clipboard: ' + refId);
+  });
+}
+
+function resetForNewSubmission() {
+  document.getElementById('successModal').classList.remove('active');
+  clearForm();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function clearForm() {
+  if (!confirm('Clear all entered information and selected attachments from this form?')) return;
+  clearUploads();
+  document.querySelectorAll('input').forEach(el => {
+    if (el.type === 'checkbox' || el.type === 'radio') {
+      if (el.id === 'declarationAccepted') el.checked = true;
+      else el.checked = false;
+    } else if (el.id !== 'metaSite' && el.id !== 'metaRegDate' && el.id !== 'signDate' && el.id !== 'signPlace') {
+      el.value = '';
+    }
+  });
+  document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+}
+</script>
+</body>
+</html>

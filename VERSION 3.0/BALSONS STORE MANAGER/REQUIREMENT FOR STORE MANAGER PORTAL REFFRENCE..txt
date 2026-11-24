@@ -1,0 +1,954 @@
+# BALSONS STORE MANAGER
+## REQUIREMENTS REFERENCE MASTER
+
+**Company:** BALSONS HEAVY LIFT & SHIFT  
+**System Name:** BALSONS STORE MANAGER  
+**Document Type:** Business Requirements Document (BRD) + Functional & Technical Requirements Baseline  
+**Version:** Draft V1.0  
+**Status:** For Review, Confirmation and Approval  
+**Operating Model:** Single-Project Store Management  
+**Prepared For:** BALSONS HEAVY LIFT & SHIFT
+
+---
+
+# 1. DOCUMENT PURPOSE
+
+This document defines the complete business, functional, operational and technical requirements for the BALSONS STORE MANAGER.
+
+The system shall provide a centralised workspace for managing project inventory, tools and tackles, procurement, vendor quotations, purchase orders, material receipts, stock movements, maintenance, QR/barcode identification and management reporting.
+
+This document shall serve as the authoritative reference for:
+
+- System architecture and development.
+- Inventory and stock management.
+- Tool and equipment identification.
+- Procurement and purchase management.
+- Vendor management.
+- Material receipt and issue workflows.
+- Maintenance and repair tracking.
+- Reports and registers.
+- User roles and permissions.
+- Audit, backup and recovery.
+- Testing, acceptance and deployment.
+
+The existing approved Excel master database shall be treated as the primary business reference wherever applicable. Its existing sheet names, structure, formulas, mappings, relationships and workflows shall be preserved unless a change is specifically approved.
+
+**No unauthorised redesign of the master database or business workflow shall be permitted.**
+
+# 2. PROJECT OBJECTIVE
+
+Develop a professional BALSONS-branded Store Management System that:
+
+1. Maintains accurate project inventory.
+2. Provides real-time stock visibility.
+3. Controls receipt, issue, return and transfer of materials.
+4. Maintains a complete tool and equipment master.
+5. Provides unique QR/barcode identification for tools.
+6. Manages purchase requests and procurement.
+7. Maintains vendor and supplier information.
+8. Records vendor enquiries and quotations.
+9. Supports purchase orders and delivery tracking.
+10. Tracks maintenance, repair and calibration requirements.
+11. Identifies shortages, low stock and overdue actions.
+12. Generates professional inventory and procurement reports.
+13. Maintains user accountability and transaction history.
+14. Provides controlled Excel import/export and backup.
+15. Minimises manual registers and duplicate data entry.
+
+# 3. PROJECT SCOPE AND OPERATING MODEL
+
+## 3.1 Operating Scope
+
+The system shall operate on a **single-project basis**.
+
+The system shall not introduce:
+
+- Multi-project inventory management.
+- Central-store and sub-store hierarchy.
+- Company-wide procurement management.
+- Multi-project stock transfers.
+- Enterprise-wide asset management.
+- Unapproved multi-project consolidation.
+
+All inventory, procurement, vendor transactions, material movements and reports shall be associated with the configured project.
+
+## 3.2 Business Coverage
+
+The system shall cover:
+
+- Consumables.
+- Tools and tackles.
+- Lifting equipment.
+- Hydraulic equipment.
+- Mechanical tools.
+- Electrical tools.
+- Measuring instruments.
+- Safety-related equipment.
+- Spare parts.
+- Materials and accessories.
+- Repairable tools and equipment.
+- Other project-specific inventory.
+
+## 3.3 Core Operating Cycle
+
+**Requirement → Purchase Request → Vendor Enquiry → Quotation → Approval → Purchase Order → Material Receipt → Inspection → Stock Entry → Issue → Return / Consumption → Maintenance / Closure**
+
+The workflow shall be configurable according to the authorised purchasing and store procedures.
+
+# 4. PLATFORM AND TECHNICAL BASELINE
+
+The latest recorded offline-first architecture direction shall be used as the working technical baseline, subject to final confirmation against the applicable master workbook.
+
+| Parameter | Working Baseline |
+|---|---|
+| System | BALSONS STORE MANAGER |
+| Frontend | HTML5, CSS3, Vanilla JavaScript |
+| Excel processing | SheetJS |
+| Local database | IndexedDB |
+| Dashboard charts | Chart.js |
+| Backup / interchange | JSON |
+| Operation | Offline-first, local-first |
+| Server | Zero-server architecture |
+| External database | Not permitted |
+| UI | Responsive desktop and mobile |
+| Theme | Light and dark modes |
+| Language readiness | English / Hindi-ready |
+| Printing | A4 print-optimised |
+| Data source | Approved Excel master workbook |
+
+The approved stack excludes React, Angular, Vue, jQuery, Bootstrap, PHP, ASP.NET, Node.js runtime, SQL, Firebase, Supabase and Electron.
+
+**Baseline control:** An earlier project discussion also referenced Google Sheets + Apps Script + HTML. That architecture shall not be combined with this offline-first baseline without a formal platform change approval. The exact governing workbook and deployment direction must be identified before implementation is frozen.
+
+# 5. BRANDING AND USER INTERFACE
+
+The application shall follow BALSONS corporate branding.
+
+| Design Element | Requirement |
+|---|---|
+| Company | BALSONS HEAVY LIFT & SHIFT |
+| Primary colour | Teal Blue – #0097B2 |
+| Accent colour | Red – #E64646 |
+| Secondary colour | Charcoal – #102D35 |
+| Design style | Premium industrial corporate |
+| Theme | Light and Dark |
+| Layout | Responsive dashboard with sidebar |
+| Forms | Full-screen or structured modals |
+| Tables | Searchable, sortable and filterable |
+| Reports | A4 print-ready |
+| User experience | Simple, clear and operationally focused |
+
+The dashboard shall provide a professional overview of stock, procurement, issues, maintenance and pending activities.
+
+# 6. USER MANAGEMENT AND ACCESS CONTROL
+
+## 6.1 Proposed User Roles
+
+| Role | Responsibility |
+|---|---|
+| Admin | Full configuration and system control |
+| Store | Inventory, receipts, issues, returns and stock registers |
+| Purchase | Purchase requests, vendor enquiries, quotations and purchase orders |
+| Maintenance | Maintenance, repair and inspection records |
+| Viewer | Read-only access to authorised information |
+
+## 6.2 Permission Requirements
+
+The system shall support permissions for:
+
+- View.
+- Create.
+- Edit.
+- Submit.
+- Approve, where authorised.
+- Receive.
+- Issue.
+- Return.
+- Adjust stock.
+- Export.
+- Print.
+- Configure.
+- Archive.
+
+Admin access shall be protected through an authorised administration mechanism, including the previously specified admin PIN control where applicable.
+
+All sensitive actions shall be recorded in the audit history.
+
+# 7. CORE SYSTEM MODULES
+
+## MODULE 01 – MANAGEMENT DASHBOARD
+
+Purpose: Provide a consolidated overview of the project's store operations.
+
+Required dashboard information:
+
+- Total inventory items.
+- Total tool and equipment count.
+- Available stock.
+- Issued stock.
+- Under-repair stock.
+- Inactive and retired tools.
+- Low-stock items.
+- Pending purchase requests.
+- Pending vendor quotations.
+- Pending purchase orders.
+- Expected deliveries.
+- Pending material inspection.
+- Recent material receipts.
+- Recent issues and returns.
+- Maintenance due.
+- Calibration due.
+- Overdue compliance items.
+
+Dashboard filters:
+
+- Date range.
+- Item category.
+- Tool section.
+- Stock status.
+- Procurement status.
+- Vendor.
+- Maintenance status.
+
+All dashboard figures shall be calculated from the underlying transaction records, not manually entered summary values.
+
+## MODULE 02 – INVENTORY MASTER
+
+Purpose: Maintain the complete project inventory database.
+
+Required fields, subject to the approved workbook structure:
+
+- Item ID.
+- Item description.
+- Item category.
+- Item type.
+- Unit of measurement.
+- Make / manufacturer.
+- Model.
+- Specification.
+- Opening quantity.
+- Received quantity.
+- Issued quantity.
+- Returned quantity.
+- Consumed quantity, where applicable.
+- Available quantity.
+- Reorder level, where applicable.
+- Stock status.
+- Remarks.
+
+Required functions:
+
+- Add inventory item.
+- Edit authorised item details.
+- Search inventory.
+- Filter by category.
+- View stock balance.
+- View transaction history.
+- Import approved Excel data.
+- Export inventory register.
+- Print inventory reports.
+
+The system shall prevent unauthorised stock changes.
+
+## MODULE 03 – MATERIAL RECEIPT AND GRN
+
+Purpose: Record all incoming project materials.
+
+Required functions:
+
+- Record purchase order reference.
+- Select vendor.
+- Enter delivery reference.
+- Enter receipt date.
+- Record item details.
+- Record ordered quantity.
+- Record received quantity.
+- Record accepted quantity.
+- Record rejected / damaged quantity.
+- Record inspection status.
+- Upload or reference delivery documents.
+- Generate Goods Receipt Note (GRN).
+- Update stock after authorised acceptance.
+
+Receipt workflow:
+
+**Delivery Received → Quantity Verification → Inspection → Acceptance / Rejection → GRN → Stock Update**
+
+Partial deliveries shall be supported.
+
+Rejected or damaged material shall not be added to available stock.
+
+## MODULE 04 – MATERIAL ISSUE AND RETURN
+
+Purpose: Control issue and return of project inventory.
+
+Required functions:
+
+- Material issue.
+- Tool issue.
+- Issue reference number.
+- Item selection.
+- Quantity.
+- Issue date.
+- Issue purpose.
+- Authorised recipient reference.
+- Returnable / consumable classification.
+- Expected return date, where applicable.
+- Actual return date.
+- Returned quantity.
+- Condition on return.
+- Remarks.
+
+The system shall distinguish:
+
+- Consumable material.
+- Returnable tools.
+- Reusable equipment.
+- Repairable equipment.
+
+Stock balances shall be updated through controlled transactions.
+
+A return shall not automatically restore an item to Available status if inspection or repair is required.
+
+## MODULE 05 – PROCUREMENT MANAGEMENT
+
+Purpose: Manage the purchasing lifecycle.
+
+Required functions:
+
+1. Purchase Requisition (PR).
+2. Requirement description.
+3. Quantity and specification.
+4. Required delivery date.
+5. Justification.
+6. Requesting department / authorised requester.
+7. Approval status.
+8. Vendor enquiry.
+9. Quotation receipt.
+10. Quotation evaluation.
+11. Purchase approval.
+12. Purchase Order generation.
+13. Delivery tracking.
+14. Purchase closure.
+
+Procurement workflow:
+
+**Purchase Request → Review → Approval → Vendor Enquiry → Quotation Evaluation → Purchase Approval → Purchase Order → Delivery → GRN → Closure**
+
+The system shall maintain links between the purchase request, vendor quotations, purchase order and material receipt.
+
+## MODULE 06 – VENDOR MANAGEMENT
+
+Purpose: Maintain supplier and vendor information.
+
+Required vendor details:
+
+- Vendor ID.
+- Vendor name.
+- Contact person.
+- Mobile number.
+- Email.
+- Address.
+- GST details, where applicable.
+- Product / service category.
+- Supplied items.
+- Payment terms.
+- Delivery terms.
+- Vendor status.
+- Remarks.
+
+Required functions:
+
+- Add vendor.
+- Edit vendor.
+- Search vendor.
+- Vendor-wise purchase history.
+- Vendor-wise quotation history.
+- Vendor performance information.
+- Document references.
+- Active / inactive status.
+
+Vendor evaluation may consider:
+
+- Price.
+- Technical compliance.
+- Delivery commitment.
+- Quality.
+- Commercial terms.
+- Past performance.
+
+The system shall not automatically select a vendor without the authorised purchasing decision.
+
+## MODULE 07 – VENDOR QUOTATION AND COMPARISON
+
+Purpose: Maintain and evaluate vendor quotations.
+
+Required functions:
+
+- Create enquiry.
+- Record enquiry reference.
+- Select vendor.
+- Record enquiry date.
+- Enter requested specifications.
+- Attach quotation reference.
+- Record quoted unit price.
+- Record quantity.
+- Record taxes.
+- Record freight and other charges.
+- Record delivery period.
+- Record payment terms.
+- Record quotation validity.
+- Record technical compliance.
+- Record commercial remarks.
+
+Quotation comparison shall support:
+
+- Vendor-wise pricing.
+- Item-wise comparison.
+- Technical compliance.
+- Commercial comparison.
+- Delivery comparison.
+- Final recommendation.
+- Approval record.
+
+The system shall preserve the original quotation details and maintain a history of revisions.
+
+## MODULE 08 – TOOL AND EQUIPMENT MANAGEMENT
+
+Purpose: Maintain the dedicated tool and equipment master.
+
+This module shall use the approved BALSONS tool tagging standard.
+
+### 8.1 Approved Tool Identification Format
+
+**BAL-[2-character section]-[3-character tool type]-[3-digit serial]**
+
+Example:
+
+**BAL-LF-HYJ-001**
+
+Electrical section code shall be `ELE`, not `EL`.
+
+### 8.2 Locked Tool Inventory Baseline
+
+<text> </text>
+
+| Section | Tool Count |
+|---|---:|
+| LF | 41 |
+| PT | 25 |
+| MT | 13 |
+| HF | 155 |
+| CC | 6 |
+| ELE | 11 |
+| SF | 9 |
+| HT | 4 |
+| **Total** | **264** |
+
+### 8.3 Mandatory Tool Tag Fields
+
+The tag shall contain:
+
+- BALSONS branding.
+- Physical Tag ID.
+- Tool Type.
+- QR Code.
+- Key Specification.
+- Make.
+- Model.
+- Serial Number.
+- Status.
+- Inspection Due Date or Calibration Due Date, where applicable.
+
+Inspection and calibration fields shall be omitted where they do not apply.
+
+The tag shall contain only the approved Level 1 and Level 2 information.
+
+The tag shall not include project, location, employee, issue or return information.
+
+### 8.4 Tool Status
+
+Approved operational statuses:
+
+- Available.
+- Issued.
+- Under Repair.
+- Inactive.
+- Retired.
+
+Compliance status shall be calculated separately from operational status.
+
+The compliance engine shall support the five computed compliance states and the approved `DATE_NOT_SET` handling.
+
+The due-soon threshold shall be 30 days. No hard-coded default due date shall be introduced.
+
+### 8.5 QR Tag Generator
+
+Required functions:
+
+- Select tools from the master register.
+- Generate unique QR codes.
+- Generate physical tag IDs.
+- Automatically arrange tags on A4 sheets.
+- Display QR code, ID and tool type.
+- Print tags.
+- Export print-ready PDF.
+- Prevent duplicate tag IDs.
+- Support reprinting with existing identity.
+- Maintain tag generation history.
+
+The QR code shall resolve to the relevant tool identity or controlled record lookup. It shall not expose confidential data without authentication.
+
+## MODULE 09 – MAINTENANCE AND REPAIR MANAGEMENT
+
+Purpose: Track maintenance and repair of tools and equipment.
+
+Required functions:
+
+- Maintenance request.
+- Breakdown reporting.
+- Repair status.
+- Equipment condition.
+- Repair description.
+- Assigned maintenance responsibility.
+- Repair date.
+- Parts or consumables used.
+- Repair cost, where recorded.
+- Completion date.
+- Inspection after repair.
+- Return-to-service approval.
+
+Workflow:
+
+**Available / Issued → Maintenance Required → Under Repair → Inspection → Available / Inactive / Retired**
+
+The system shall maintain historical maintenance records.
+
+## MODULE 10 – INSPECTION AND CALIBRATION MANAGEMENT
+
+Purpose: Track equipment inspection and calibration compliance.
+
+Required information:
+
+- Tool ID.
+- Inspection type.
+- Calibration requirement.
+- Last inspection date.
+- Next due date.
+- Certificate reference.
+- Inspection result.
+- Inspection agency, where applicable.
+- Supporting evidence.
+- Compliance status.
+
+The system shall identify:
+
+- Valid.
+- Due Soon.
+- Overdue.
+- Date Not Set.
+- Not Applicable.
+
+The exact five-state calculation and display rules shall be maintained in the approved compliance specification.
+
+An overdue or otherwise non-compliant tool shall not be presented as compliant merely because its operational status is Available.
+
+## MODULE 11 – REPORTS AND ANALYTICS
+
+Purpose: Provide operational, inventory and procurement reporting.
+
+Required reports:
+
+**Inventory**
+- Complete Inventory Register.
+- Stock Balance Report.
+- Category-wise Stock.
+- Low Stock Report.
+- Stock Movement Report.
+- Material Receipt Register.
+- Material Issue Register.
+- Material Return Register.
+
+**Tools and Equipment**
+- Tool Master Register.
+- Section-wise Tool Register.
+- Tool Availability Report.
+- Tool Issue / Return Register.
+- Tool Repair Register.
+- Inspection Due Report.
+- Calibration Due Report.
+- Compliance Status Report.
+- QR Tag Register.
+
+**Procurement**
+- Purchase Request Register.
+- Pending Purchase Request Report.
+- Vendor Enquiry Register.
+- Vendor Quotation Comparison.
+- Purchase Order Register.
+- Pending Delivery Report.
+- GRN Register.
+- Vendor-wise Purchase Report.
+
+**Maintenance**
+- Maintenance Register.
+- Breakdown Report.
+- Repair Cost Report, where data exists.
+- Equipment Service History.
+
+Export options:
+
+- Excel-compatible format.
+- PDF.
+- A4 print-ready format.
+- JSON backup where applicable.
+
+Reports shall display BALSONS branding, report title, date, filters, project identification and generation details.
+
+## MODULE 12 – DOCUMENTS, SETTINGS, BACKUP AND AUDIT
+
+Purpose: Provide centralised control over supporting records and system administration.
+
+### 12.1 Document Management
+
+The system shall maintain references or controlled copies of:
+
+- Vendor quotations.
+- Purchase orders.
+- Delivery challans.
+- Invoices.
+- GRNs.
+- Inspection certificates.
+- Calibration certificates.
+- Equipment manuals.
+- Repair reports.
+- Technical specifications.
+
+### 12.2 Settings
+
+Required settings:
+
+- Company information.
+- Project information.
+- Item categories.
+- Tool sections.
+- Tool types.
+- Units of measurement.
+- Vendor categories.
+- Stock classifications.
+- Status masters.
+- Reorder levels.
+- User permissions.
+- Numbering formats.
+- Print settings.
+- Theme preferences.
+
+### 12.3 Backup and Restore
+
+The system shall support:
+
+- Automatic local backup.
+- Manual backup.
+- JSON backup and restore.
+- Excel import/export.
+- Data validation before restoration.
+- Backup history.
+- Restore confirmation.
+- Error reporting.
+- Recovery procedure.
+
+A failed import or restore shall not overwrite valid working data.
+
+### 12.4 Audit Trail
+
+The system shall record:
+
+- Login and logout.
+- Inventory creation and modification.
+- Stock receipt.
+- Stock issue.
+- Material return.
+- Stock adjustment.
+- Purchase request.
+- Vendor quotation update.
+- Purchase approval.
+- Purchase order creation.
+- Tool status change.
+- Maintenance update.
+- Inspection update.
+- Data import/export.
+- Backup and restore.
+- Configuration changes.
+
+Audit entries shall include user, timestamp, action, record reference and relevant before/after values where applicable.
+
+# 8. COMMON INVENTORY AND TRANSACTION RULES
+
+## 8.1 Stock Calculation
+
+Stock shall be calculated through controlled transactions.
+
+The system shall maintain the distinction between:
+
+- Opening balance.
+- Receipts.
+- Accepted quantity.
+- Issues.
+- Returns.
+- Consumption.
+- Rejections.
+- Adjustments.
+- Closing balance.
+
+A user shall not be able to manipulate closing stock without an authorised transaction or adjustment record.
+
+## 8.2 Transaction References
+
+The system shall generate unique references for transactions.
+
+Proposed examples:
+
+- PR-00001 – Purchase Request.
+- RFQ-00001 – Vendor Enquiry.
+- PO-00001 – Purchase Order.
+- GRN-00001 – Goods Receipt.
+- MI-00001 – Material Issue.
+- MR-00001 – Material Return.
+- MT-00001 – Maintenance.
+- BAL-LF-HYJ-001 – Physical Tool Tag.
+
+Final numbering formats shall be configurable.
+
+## 8.3 Data Integrity
+
+The system shall:
+
+- Prevent duplicate master IDs.
+- Validate mandatory fields.
+- Validate numeric quantities.
+- Maintain item references across transactions.
+- Prevent invalid stock balances.
+- Preserve historical transactions.
+- Identify incomplete records.
+- Validate Excel imports before committing changes.
+
+# 9. EXCEL IMPORT AND EXPORT REQUIREMENTS
+
+The existing approved Excel workbook shall remain the primary business reference.
+
+The import engine shall:
+
+1. Read workbook sheets.
+2. Validate required sheet names.
+3. Validate column headers.
+4. Preserve existing mappings.
+5. Check duplicate identifiers.
+6. Validate data types.
+7. Identify missing mandatory values.
+8. Display an import summary.
+9. Report rejected records.
+10. Commit only validated records.
+
+The export engine shall preserve required column structures and produce clean Excel-compatible reports.
+
+The application shall not silently rename sheets, move columns, replace formulas or modify existing business mappings.
+
+# 10. SECURITY AND DATA PROTECTION
+
+The system shall include:
+
+- Role-based access.
+- Protected administrative controls.
+- Input validation.
+- Transaction validation.
+- Controlled data exports.
+- Local backup and restore.
+- Audit history.
+- Protection against accidental data deletion.
+- Safe handling of imported files.
+- Clear data recovery procedures.
+
+Sensitive vendor, purchasing and commercial information shall be accessible only to authorised users.
+
+# 11. PERFORMANCE AND USABILITY
+
+The system shall be designed for reliable operation with the project's actual inventory and transaction volume.
+
+Minimum design expectations:
+
+- Responsive dashboard.
+- Fast search and filtering.
+- Efficient workbook import.
+- Efficient transaction processing.
+- No unnecessary external dependencies.
+- Offline operation after the application and required libraries are available.
+- Clear error messages.
+- Reliable local data persistence.
+- A4 print layouts.
+- Simple navigation for store and purchase personnel.
+
+Performance acceptance thresholds shall be established using the actual master workbook and expected record volume.
+
+# 12. DATABASE AND DATA ARCHITECTURE
+
+The final data architecture shall preserve the approved Excel master structure.
+
+The following are logical data groups, not permission to rename or redesign existing workbook sheets:
+
+| Data Group | Purpose |
+|---|---|
+| Inventory Master | Item and stock identity |
+| Tool Master | Tool and equipment details |
+| Section Master | Tool section classification |
+| Vendor Master | Vendor information |
+| Purchase Requests | Procurement demand |
+| Vendor Enquiries | RFQ and enquiry details |
+| Quotations | Vendor quotation data |
+| Purchase Orders | Approved purchases |
+| Goods Receipts | Received materials |
+| Material Issues | Stock issue transactions |
+| Material Returns | Return transactions |
+| Maintenance | Repair and service history |
+| Inspection | Inspection and calibration records |
+| Users and Roles | Access management |
+| Audit | Activity history |
+| Settings | Configuration |
+| Backup Register | Backup history |
+
+The final sheet/table dictionary shall identify exact sheet names, column names, formulas, keys, validation rules and relationships from the approved workbook.
+
+# 13. ACCEPTANCE TESTING REQUIREMENTS
+
+The completed system shall pass documented functional and data-integrity tests.
+
+| Test Group | Acceptance Requirement |
+|---|---|
+| Dashboard | Summary figures match transaction data |
+| Inventory | Master records and stock balances are correct |
+| Excel Import | Workbook structure and mappings preserved |
+| Material Receipt | Accepted quantities update stock correctly |
+| Material Issue | Issue transactions reduce stock correctly |
+| Material Return | Return quantities are correctly recorded |
+| Procurement | PR-to-PO workflow functions correctly |
+| Vendor | Vendor master and history work correctly |
+| Quotations | Comparisons preserve source quotation values |
+| GRN | Receipt and inspection records are maintained |
+| Tool Master | 264-tool baseline is validated |
+| Tagging | Approved BALSONS tag format enforced |
+| QR Generator | Unique QR tags generate and print correctly |
+| Tool Status | Five operational statuses are supported |
+| Compliance | Due, overdue and DATE_NOT_SET logic works |
+| Maintenance | Repair history and return-to-service work |
+| Reports | Filters and exports produce correct results |
+| Permissions | Unauthorised functions are restricted |
+| Audit | Important transactions are recorded |
+| Backup | Backup and restore work correctly |
+| Offline | Core workflows operate without internet |
+| Print | A4 output is readable and correctly formatted |
+
+Every acceptance test shall contain a test ID, requirement reference, scenario, expected result, actual result, evidence and Pass/Fail status.
+
+# 14. IMPLEMENTATION PHASES
+
+| Phase | Description |
+|---|---|
+| Phase 0 | Requirement and master workbook audit |
+| Phase 1 | Data mapping and application architecture |
+| Phase 2 | UI framework and dashboard |
+| Phase 3 | Inventory and stock management |
+| Phase 4 | Material receipt, issue and return |
+| Phase 5 | Procurement and vendor management |
+| Phase 6 | Tool and equipment master |
+| Phase 7 | QR tag generator and printing |
+| Phase 8 | Maintenance and compliance |
+| Phase 9 | Reports, audit and backup |
+| Phase 10 | Testing, data validation and final release |
+
+Each phase shall produce working source code, test evidence and documented deliverables.
+
+# 15. FINAL DELIVERY REQUIREMENTS
+
+The complete delivery package shall include:
+
+1. Complete BALSONS Store Manager application.
+2. HTML, CSS and JavaScript source.
+3. Excel import/export engine.
+4. Local IndexedDB database implementation.
+5. Inventory and transaction modules.
+6. Procurement and vendor modules.
+7. Tool and equipment master.
+8. QR/barcode tag generator.
+9. A4 printable tag sheets.
+10. Maintenance and compliance modules.
+11. Dashboard and analytics.
+12. PDF/Excel-compatible reports.
+13. User and role controls.
+14. Audit trail.
+15. Backup and restore.
+16. Technical documentation.
+17. User manual.
+18. Administrator manual.
+19. Acceptance test report.
+20. Complete source ZIP.
+
+# 16. OPEN DECISIONS – APPROVAL REGISTER
+
+| ID | Decision Required | Current Position |
+|---|---|---|
+| D-01 | Governing master workbook | Exact final workbook/version to be identified |
+| D-02 | Platform | Offline-first stack is latest working direction; confirm against governing project baseline |
+| D-03 | Project identity | Single-project operation established; project name and reference required |
+| D-04 | Inventory categories | Final categories and item classification required |
+| D-05 | Stock control | Confirm whether negative stock is always blocked |
+| D-06 | Approval workflow | Confirm purchase request and purchase order approval authorities |
+| D-07 | Vendor quotations | Confirm minimum comparison requirements and authorised selection authority |
+| D-08 | Tool baseline | 264 tools and section distribution recorded |
+| D-09 | Tool tagging | BAL-[SECTION]-[TYPE]-[SERIAL] format established |
+| D-10 | QR behaviour | Confirm whether QR opens a local lookup screen or another approved lookup mechanism |
+| D-11 | Stock issue | Confirm whether employee-wise issue acknowledgement is required |
+| D-12 | Maintenance | Confirm inspection and repair approval responsibilities |
+| D-13 | User access | Confirm final user accounts and permissions |
+| D-14 | Language | English/Hindi-ready interface |
+| D-15 | Backup | Confirm local backup frequency and retention |
+| D-16 | Import policy | Confirm governing workbook and permitted import/update behaviour |
+| D-17 | Commercial controls | Confirm purchase limits, tax treatment and approval thresholds |
+
+# 17. GOVERNANCE AND CHANGE CONTROL
+
+This document shall be the master requirements reference for the BALSONS STORE MANAGER.
+
+All approved changes shall be recorded through a formal change request.
+
+Each change request shall identify:
+
+- Change reference.
+- Existing requirement.
+- Proposed change.
+- Business justification.
+- Impact on workbook structure.
+- Impact on data.
+- Impact on application modules.
+- Impact on reports.
+- Testing requirements.
+- Approval authority.
+- Implementation status.
+
+No changes shall be made to locked workbook structures or tool-tagging standards without approval.
+
+# 18. APPROVAL AND BASELINE FREEZE
+
+Upon approval, this document shall become the authorised requirements baseline for the BALSONS STORE MANAGER.
+
+**Prepared For:** BALSONS HEAVY LIFT & SHIFT
+
+**Document:** BALSONS STORE MANAGER – REQUIREMENTS REFERENCE MASTER
+
+**Version:** Draft V1.0
+
+**Approval Status:** Pending Review and Authorisation
+
+**Development Status:** Subject to baseline approval.
+
+---
+
+**END OF REQUIREMENTS REFERENCE MASTER – DRAFT V1.0**

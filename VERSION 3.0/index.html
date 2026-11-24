@@ -1,0 +1,2256 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BALSONS Central Portal — Super Administrator Control Center</title>
+  <link rel="icon" type="image/png" href="assets/images/balsons-logo.png" />
+  <link rel="stylesheet" href="beds.css">
+  <style>
+    /* STRICT SUPPRESSION OF DEVELOPER BARS ACROSS PORTALS */
+    #sam-global-topbar,
+    .sam-gov-bar,
+    .sam-gov-policy,
+    #beds-enterprise-topbar,
+    .beds-enterprise-topbar {
+      display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      pointer-events: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    :root {
+      --super-navy: #0d1e27;
+      --super-teal: #102a35;
+      --super-teal-light: #163847;
+      --super-cyan: #0097a7;
+      --super-cyan-glow: rgba(0, 151, 167, 0.35);
+      --super-gold: #d97706;
+      --super-gold-light: #fef3c7;
+      --super-border: #e2e8f0;
+      --super-bg: #f8fafc;
+      --super-card: #ffffff;
+      --super-shadow: 0 4px 20px rgba(16, 42, 53, 0.06);
+    }
+
+    [data-theme="dark"] {
+      --super-navy: #060e13;
+      --super-teal: #08161c;
+      --super-teal-light: #0d222b;
+      --super-cyan: #00b4d8;
+      --super-cyan-glow: rgba(0, 180, 216, 0.35);
+      --super-gold: #fbbf24;
+      --super-gold-light: rgba(251, 191, 36, 0.15);
+      --super-border: #1e3a45;
+      --super-bg: #071015;
+      --super-card: #0d222b;
+      --super-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    body {
+      background-color: var(--super-bg);
+      color: var(--beds-text-primary, #1e293b);
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* KEYFRAME ANIMATIONS */
+    @keyframes superFadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes ribbonEntrance {
+      from { opacity: 0; transform: translateY(-12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes cardStagger {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+      }
+    }
+
+    @keyframes ambientShimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 1. MASTER EXECUTIVE HEADER */
+    header.exec-header {
+      background: var(--beds-bg-panel, #ffffff);
+      border-bottom: 1px solid var(--super-border);
+      padding: 12px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--super-shadow);
+      animation: superFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .header-brand img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+      transition: transform 0.25s ease;
+    }
+    .header-brand:hover img {
+      transform: scale(1.04);
+    }
+    .brand-text h1 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading, #102a35);
+      margin: 0;
+      line-height: 1.2;
+      letter-spacing: -0.2px;
+    }
+    .brand-text p {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--super-cyan);
+      margin: 1px 0 0 0;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .brand-slogan {
+      font-size: 10.5px;
+      font-style: italic;
+      color: var(--beds-text-muted, rgb(223, 35, 14));
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      padding: 4px 8px;
+      border-radius: 9900px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--beds-text-secondary, #475569);
+      transition: all 0.2s ease;
+    }
+    .badge-pill:hover {
+      border-color: var(--super-cyan);
+    }
+    .online-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+    .user-session-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 151, 167, 0.08);
+      border: 1px solid rgba(0, 151, 167, 0.25);
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--super-cyan);
+    }
+    .btn-signout {
+      background: transparent;
+      border: 1px solid var(--super-border);
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--beds-text-secondary, #475569);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-signout:hover {
+      background: #fee2e2;
+      border-color: #ef4444;
+      color: #b91c1c;
+      transform: translateY(-1px);
+    }
+
+    /* ═══ USER PILL DROPDOWN ════════════════════════════════════════ */
+    .user-pill-wrap { position: relative; display: inline-block; }
+    .user-pill { cursor: pointer; user-select: none; }
+    .user-pill-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 220px;
+      background: var(--super-card, #ffffff);
+      border: 1px solid var(--super-border, #e2e8f0);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(16,45,53,0.18);
+      z-index: 500;
+      padding: 6px;
+      animation: dropdownSlide 0.15s ease-out;
+    }
+    .user-pill-wrap.open .user-pill-menu { display: block; }
+    .user-pill-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--beds-text-primary, #102d35);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .user-pill-menu-item:hover { background: rgba(0,151,178,0.08); }
+    .user-pill-menu-divider { height: 1px; background: var(--super-border, #e2e8f0); margin: 4px 0; }
+    .user-pill-menu-item.danger { color: #dc2626; }
+    .user-pill-menu-item.danger:hover { background: rgba(220,38,38,0.08); }
+
+    /* ═══ PORTAL SWITCHER DROPDOWN ══════════════════════════════════ */
+    .portal-switcher-wrap { position: relative; display: inline-block; }
+    .portal-switcher-btn {
+      background: var(--super-bg, #f8fafc);
+      border: 1px solid var(--super-border, #e2e8f0);
+      color: var(--beds-text-primary, #102d35);
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: inherit;
+    }
+    .portal-switcher-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 230px;
+      background: var(--super-card, #ffffff);
+      border: 1px solid var(--super-border, #e2e8f0);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(16,45,53,0.18);
+      z-index: 500;
+      padding: 6px;
+      animation: dropdownSlide 0.15s ease-out;
+    }
+    .portal-switcher-wrap.open .portal-switcher-menu { display: block; }
+    .portal-switcher-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--beds-text-primary, #102d35);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .portal-switcher-item:hover { background: rgba(0,151,178,0.08); }
+    .portal-switcher-item.current { background: rgba(0,151,178,0.12); border-left: 3px solid #0097a7; }
+
+    /* KPI Card Standards */
+    .super-stat-card:hover, .card-panel:hover, .shortcut-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(16,45,53,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* 2. EXECUTIVE SUPER VIEW RIBBON (STUNNING ANIMATED) */
+    .super-view-ribbon {
+      background: linear-gradient(135deg, #0d1e27 0%, #102a35 45%, #163847 100%);
+      background-size: 200% 200%;
+      animation: ribbonEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) both, ambientShimmer 18s ease infinite;
+      color: #ffffff;
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(0, 151, 167, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .super-view-ribbon::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0, 151, 167, 0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .super-view-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .super-view-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .super-view-title h2 {
+      font-size: 21px;
+      font-weight: 800;
+      margin: 0;
+      color: #ffffff;
+      letter-spacing: 0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .super-view-title p {
+      font-size: 12.5px;
+      color: #94a3b8;
+      margin: 4px 0 0 0;
+    }
+    .super-view-tag {
+      background: rgba(0, 151, 167, 0.25);
+      border: 1px solid rgba(0, 151, 167, 0.5);
+      color: #38bdf8;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      letter-spacing: 0.4px;
+      box-shadow: 0 0 12px rgba(0, 151, 167, 0.25);
+    }
+    .super-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .super-stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 16px 20px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .super-stat-card:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(0, 180, 216, 0.45);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.2px;
+    }
+    .stat-sub {
+      font-size: 11.5px;
+      color: #38bdf8;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* 3. MAIN WORKSPACE CONTENT */
+    main.workspace-main {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 32px 56px;
+      box-sizing: border-box;
+      flex: 1;
+    }
+
+    /* Toolbar */
+    .workspace-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .search-box-wrap {
+      position: relative;
+      flex: 1;
+      max-width: 480px;
+      min-width: 280px;
+    }
+    .search-box-wrap input {
+      width: 100%;
+      padding: 11px 16px 11px 40px;
+      border-radius: 8px;
+      border: 1px solid var(--super-border);
+      background: var(--beds-bg-panel, #ffffff);
+      color: var(--beds-text-primary, #1e293b);
+      font-size: 13px;
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .search-box-wrap input:focus {
+      border-color: var(--super-cyan);
+      box-shadow: 0 0 0 3px var(--super-cyan-glow);
+    }
+    .search-box-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+    .filter-tabs-wrap {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border);
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--beds-text-secondary, #475569);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .filter-btn:hover {
+      background: var(--super-bg);
+      color: var(--super-teal);
+      border-color: var(--super-cyan);
+    }
+    .filter-btn.active {
+      background: var(--super-cyan);
+      border-color: var(--super-cyan);
+      color: #ffffff;
+      box-shadow: 0 2px 8px var(--super-cyan-glow);
+    }
+
+    /* Section Headings */
+    .section-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      margin-top: 10px;
+    }
+    .section-header-row h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading, #102a35);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-header-row span {
+      font-size: 12px;
+      color: var(--beds-text-muted, #64748b);
+      font-weight: 500;
+    }
+
+    /* Quick Shortcuts Strip */
+    .quick-shortcuts-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .shortcut-card {
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border);
+      border-radius: 10px;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .shortcut-card:hover {
+      border-color: var(--super-cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(0, 151, 167, 0.12);
+    }
+    .shortcut-icon {
+      font-size: 24px;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.08));
+    }
+    .shortcut-info .shortcut-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading, #102a35);
+    }
+    .shortcut-info .shortcut-tag {
+      font-size: 11px;
+      color: var(--beds-text-muted, #64748b);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* 4. SMART PORTAL DIRECTORY GRID (STUNNING ANIMATED) */
+    .portal-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .clean-portal-card {
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border);
+      border-radius: 14px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--super-shadow);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      animation: cardStagger 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .clean-portal-card:hover {
+      border-color: var(--super-cyan);
+      transform: translateY(-6px) scale(1.008);
+      box-shadow: 0 20px 38px -12px rgba(0, 151, 167, 0.22), 0 0 0 1px rgba(0, 151, 167, 0.35);
+    }
+
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .card-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(0, 151, 167, 0.08);
+      border: 1px solid rgba(0, 151, 167, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transition: transform 0.25s ease;
+    }
+    .clean-portal-card:hover .card-icon-box {
+      transform: scale(1.1) rotate(2deg);
+      background: rgba(0, 151, 167, 0.15);
+    }
+    .card-title-text h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--beds-charcoal-heading, #102a35);
+      margin: 0;
+      line-height: 1.25;
+    }
+    .card-title-text .card-domain-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--super-cyan);
+      display: inline-block;
+      margin-top: 2px;
+      letter-spacing: 0.3px;
+    }
+
+    .operational-pill {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .operational-pill::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulseGlow 1.8s infinite;
+    }
+
+    /* PERSONNEL MATRIX BOX (Admin, Area Mgr, Max 3 Supervisors) */
+    .personnel-matrix-box {
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      border-radius: 10px;
+      padding: 13px 15px;
+      margin-top: 8px;
+      margin-bottom: 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      transition: background 0.2s ease;
+    }
+    .clean-portal-card:hover .personnel-matrix-box {
+      background: rgba(0, 151, 167, 0.03);
+    }
+    .personnel-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 12px;
+    }
+    .tier-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 7px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+      width: 76px;
+      text-align: center;
+    }
+    .tier-admin {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+    .tier-area {
+      background: #e0f2fe;
+      color: #075985;
+      border: 1px solid #bae6fd;
+    }
+    .personnel-details {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .personnel-name {
+      font-weight: 700;
+      color: var(--beds-text-primary, #1e293b);
+      font-size: 12.5px;
+    }
+    .personnel-desig {
+      font-size: 11px;
+      color: var(--beds-text-muted, #64748b);
+    }
+
+    .supervisors-container {
+      margin-top: 4px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--super-border);
+    }
+    .supervisors-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--beds-text-secondary, #475569);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .supervisors-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .sup-chip {
+      background: var(--beds-bg-panel, #ffffff);
+      border: 1px solid var(--super-border);
+      border-radius: 5px;
+      padding: 3px 8px;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #334155;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+      transition: all 0.2s ease;
+    }
+    .sup-chip:hover {
+      border-color: var(--super-cyan);
+      transform: translateY(-1px);
+    }
+    .sup-chip span.dot {
+      width: 5px;
+      height: 5px;
+      background: #0ea5e9;
+      border-radius: 50%;
+    }
+
+    /* Action Buttons */
+    .card-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-portal-primary {
+      flex: 1;
+      background: linear-gradient(135deg, #102a35 0%, #163847 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 6px rgba(16, 42, 53, 0.15);
+    }
+    .btn-portal-primary span.arrow {
+      transition: transform 0.2s ease;
+    }
+    .btn-portal-primary:hover {
+      background: linear-gradient(135deg, #163847 0%, #0097a7 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 151, 167, 0.3);
+    }
+    .btn-portal-primary:hover span.arrow {
+      transform: translateX(3px);
+    }
+    .btn-portal-secondary {
+      background: var(--super-bg);
+      border: 1px solid var(--super-border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--beds-text-secondary, #475569);
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .btn-portal-secondary:hover {
+      background: #e2e8f0;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+    .btn-fav {
+      background: transparent;
+      border: 1px solid var(--super-border);
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #94a3b8;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+    .btn-fav.active, .btn-fav:hover {
+      color: #eab308;
+      border-color: #fde047;
+      background: #fefce8;
+      transform: scale(1.08);
+    }
+
+    /* 5. MASTER FOOTER */
+    footer.exec-footer {
+      background: var(--beds-bg-panel, #ffffff);
+      border-top: 1px solid var(--super-border);
+      padding: 24px 32px;
+      font-size: 12px;
+      color: var(--beds-text-muted, #64748b);
+      text-align: center;
+      margin-top: auto;
+    }
+    footer.exec-footer strong {
+      color: var(--beds-text-primary, #1e293b);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. MASTER EXECUTIVE HEADER -->
+  <header class="exec-header">
+    <div class="header-brand">
+      <img src="assets/images/balsons-logo.png" alt="BALSONS Logo">
+      <div class="brand-text">
+        <h2 style="font-size: 20px; font-weight: 900; color: #ffffff; letter-spacing: 0.5px; margin: 0;">BALSONS ENTERPRISE ECOSYSTEM V3.0</h2>
+        <p>👑 Super Administrator Control Center &bull; SAM-2026 Tier-4 Architecture</p>
+        <div class="brand-slogan">“Difficult We Do Easily, Impossible Takes Little Time...!”</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="badge-pill">📍 JTRWF PROJECT • Odisha</span>
+      <span class="badge-pill">
+        <span class="online-indicator"></span>Online
+      </span>
+      <a href="balsons-master-ecosystem-directory.html" class="badge-pill" style="background: rgba(0, 151, 167, 0.12); border-color: #0097a7; color: #0097a7; font-weight: 800; text-decoration: none;" title="Master Ecosystem Directory">
+        🌐 Master Directory
+      </a>
+      <a href="mobile/index.html" class="badge-pill" style="background: rgba(0, 151, 167, 0.15); border-color: #0097a7; color: #0097a7; font-weight: 800; text-decoration: none;" title="Launch Mobile & Tablet Ecosystem Hub">
+        📱 Mobile Hub
+      </a>
+      <!-- Portal Switcher Dropdown -->
+      <div class="portal-switcher-wrap" id="portalSwitcherWrap">
+        <button class="portal-switcher-btn" type="button" onclick="document.getElementById('portalSwitcherWrap').classList.toggle('open')">
+          🚀 Portals <span style="font-size:10px;">▾</span>
+        </button>
+        <div class="portal-switcher-menu">
+          <a class="portal-switcher-item current" href="index.html">🏢 Enterprise Launcher</a>
+          <a class="portal-switcher-item" href="BALSONS GATE ENTRY MANAGER/frontend/index.html">🚪 Gate Entry Manager</a>
+          <a class="portal-switcher-item" href="BALSONS HR MANAGER/frontend/index.html">👥 HR &amp; Payroll Manager</a>
+          <a class="portal-switcher-item" href="BALSONS OPERATIONS MANAGER/index.html">🏗️ Operations Manager</a>
+          <a class="portal-switcher-item" href="BALSONS PURCHASE MANAGER/index.html">🛒 Purchase Manager</a>
+          <a class="portal-switcher-item" href="BALSONS SAFETY MANAGER/frontend/index.html">🦺 Safety Manager</a>
+          <a class="portal-switcher-item" href="BALSONS STORE MANAGER/frontend/index.html">📦 Store Manager</a>
+          <a class="portal-switcher-item" href="BALSONS REPOTS PORTAL/index.html">📊 Central Sync Hub &amp; Reports</a>
+          <a class="portal-switcher-item" href="uat_signoff_certificate.html">📜 UAT Handover Certificate V3.0</a>
+          <a class="portal-switcher-item" href="https://drive.google.com/drive/folders/1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde" target="_blank">📁 Google Drive Master Storage (87 Folders) ↗</a>
+        </div>
+      </div>
+
+      <button class="badge-pill" id="themeBtn" onclick="toggleTheme()" style="cursor: pointer;" title="Toggle Light/Dark Theme">
+        🌙 Dark
+      </button>
+
+      <!-- User Pill Wrap with Dropdown -->
+      <div class="user-pill-wrap" id="userPillWrap">
+        <div id="headerUserBadge" class="user-session-chip user-pill" onclick="document.getElementById('userPillWrap').classList.toggle('open')">
+          👑 <strong>Prashant Muley</strong> · Super Administrator <span style="font-size:10px; margin-left:2px;">▾</span>
+        </div>
+        <div class="user-pill-menu">
+          <div class="user-pill-menu-item">👑 <span id="menuUserFullName">Prashant Muley (Super Admin)</span></div>
+          <div class="user-pill-menu-divider"></div>
+          <a class="user-pill-menu-item" href="balsons-master-ecosystem-directory.html">🌐 Master Directory</a>
+          <div class="user-pill-menu-divider"></div>
+          <div class="user-pill-menu-item danger" onclick="handleLauncherSignOut()">🔓 Sign Out</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. EXECUTIVE SUPER VIEW RIBBON -->
+  <section class="super-view-ribbon">
+    <div class="super-view-container">
+      <div class="super-view-header">
+        <div class="super-view-title">
+          <h2><span>⚡</span> Central Enterprise Super View</h2>
+          <p>Real-time operational status, key personnel matrix, and unified portal governance across all active divisions.</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <span style="background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#34d399; font-size:11.5px; font-weight:700; padding:4px 12px; border-radius:9999px; display:inline-flex; align-items:center; gap:6px;">
+            <span style="width:8px; height:8px; background:#10b981; border-radius:50%; box-shadow:0 0 8px #10b981;"></span>
+            LIVE ENVIRONMENT ACTIVE
+          </span>
+          <span class="super-view-tag"> BALSONS JTRWF PROJECT </span>
+        </div>
+      </div>
+
+      <!-- LIVE ENTERPRISE TELEMETRY GRID -->
+      <div class="super-stats-grid">
+        <div class="super-stat-card">
+          <div class="stat-label"><span>🌐</span> Portal Ecosystem</div>
+          <div class="stat-value">6 / 6 Operational</div>
+          <div class="stat-sub">Gate, Store, Safety, HR, Ops, Purchase</div>
+        </div>
+        <div class="super-stat-card">
+          <div class="stat-label"><span>☁️</span> Google Drive Cloud Vault</div>
+          <div class="stat-value">87 Master Folders</div>
+          <div class="stat-sub"><a href="https://drive.google.com/drive/folders/1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde" target="_blank" style="color:#38bdf8; text-decoration:none;">Root: 1p56Z_7_yHC5St... ↗</a></div>
+        </div>
+        <div class="super-stat-card">
+          <div class="stat-label"><span>📊</span> Cloud Sheet DBs</div>
+          <div class="stat-value">6 Dedicated Workbooks</div>
+          <div class="stat-sub">Strict System-Boundary Segregation</div>
+        </div>
+        <div class="super-stat-card">
+          <div class="stat-label"><span>⚡</span> Apps Script Gateways</div>
+          <div class="stat-value">Production v1.2 Active</div>
+          <div class="stat-sub">Bi-Directional JSON & REST Endpoints</div>
+        </div>
+      </div>
+
+      
+    </div>
+  </section>
+
+  <!-- 3. MAIN WORKSPACE CONTENT -->
+  <main class="workspace-main">
+
+    <!-- Master View Switcher (Super Admin Exclusive) -->
+    <div style="display: flex; gap: 12px; margin-bottom: 24px; border-bottom: 2px solid var(--super-border); padding-bottom: 12px; flex-wrap: wrap;">
+      <button id="viewTabPortals" class="filter-btn active" style="font-size: 13.5px; padding: 10px 22px; font-weight: 800; border-radius: 8px; cursor: pointer;" onclick="switchSuperAdminView('portals')">
+        🏢 Portal Workspaces (Super Admin Access)
+      </button>
+      <button id="viewTabUsers" class="filter-btn" style="font-size: 13.5px; padding: 10px 22px; font-weight: 800; border-radius: 8px; cursor: pointer;" onclick="switchSuperAdminView('users')">
+        👑 User &amp; Credential Management Console
+      </button>
+    </div>
+
+    <!-- ═══ USER & CREDENTIAL MANAGEMENT CONSOLE (SUPER ADMIN EXCLUSIVE) ═══ -->
+    <div id="superAdminUserConsole" style="display: none; margin-bottom: 40px; animation: superFadeIn 0.3s ease;">
+      <div style="background: var(--super-card, #ffffff); border: 1px solid var(--super-border, #e2e8f0); border-radius: 16px; padding: 24px; box-shadow: var(--super-shadow);">
+        
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <h2 style="margin: 0; font-size: 18px; font-weight: 800; color: var(--beds-charcoal-heading, #102a35); display: flex; align-items: center; gap: 8px;">
+              <span>👑</span> Master User &amp; Credential Management Console
+            </h2>
+            <p style="margin: 4px 0 0; font-size: 12px; color: var(--beds-text-secondary, #475569);">
+              Add, edit, change passwords, assign portal scopes, and delete user accounts across all 6 BALSONS portals.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="btn-portal-primary" style="padding: 9px 18px; font-size: 12.5px; font-weight: 800; border-radius: 8px; cursor: pointer;" onclick="openAddUserModal()">
+              ➕ Add Enterprise User
+            </button>
+            <button class="btn-signout" style="padding: 8px 14px; font-size: 12px; font-weight: 700;" onclick="confirmResetRoster()">
+              🔄 Reset Baseline
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI Mini Stats -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 22px;">
+          <div style="background: var(--super-bg, #f8fafc); border: 1px solid var(--super-border, #e2e8f0); border-radius: 10px; padding: 14px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-muted, #64748b); text-transform: uppercase;">Total Accounts</div>
+            <div id="statTotalUsers" style="font-size: 24px; font-weight: 800; color: var(--super-cyan, #0097a7); margin-top: 4px;">14</div>
+            <div style="font-size: 10.5px; color: var(--beds-text-secondary, #475569);">Ecosystem user directory</div>
+          </div>
+          <div style="background: var(--super-bg, #f8fafc); border: 1px solid var(--super-border, #e2e8f0); border-radius: 10px; padding: 14px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-muted, #64748b); text-transform: uppercase;">Active Users</div>
+            <div id="statActiveUsers" style="font-size: 24px; font-weight: 800; color: #10b981; margin-top: 4px;">14</div>
+            <div style="font-size: 10.5px; color: var(--beds-text-secondary, #475569);">Authorized site personnel</div>
+          </div>
+          <div style="background: var(--super-bg, #f8fafc); border: 1px solid var(--super-border, #e2e8f0); border-radius: 10px; padding: 14px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-muted, #64748b); text-transform: uppercase;">Portals Managed</div>
+            <div style="font-size: 24px; font-weight: 800; color: #f59e0b; margin-top: 4px;">6</div>
+            <div style="font-size: 10.5px; color: var(--beds-text-secondary, #475569);">Gate, HR, Ops, Purch, Safe, Store</div>
+          </div>
+          <div style="background: var(--super-bg, #f8fafc); border: 1px solid var(--super-border, #e2e8f0); border-radius: 10px; padding: 14px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--beds-text-muted, #64748b); text-transform: uppercase;">Security Tier</div>
+            <div style="font-size: 16px; font-weight: 800; color: #8b5cf6; margin-top: 6px;">Tier 1 Executive</div>
+            <div style="font-size: 10.5px; color: var(--beds-text-secondary, #475569);">Super Admin exclusive</div>
+          </div>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div style="display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 240px; position: relative;">
+            <input type="text" id="userConsoleSearch" placeholder="Filter users by name, username, department or role..." style="width: 100%; height: 40px; padding: 0 14px; border: 1px solid var(--super-border); border-radius: 8px; font-size: 13px; font-family: inherit; background: var(--super-bg); box-sizing: border-box;" oninput="filterUserTable()">
+          </div>
+          <select id="userConsolePortalFilter" style="height: 40px; padding: 0 14px; border: 1px solid var(--super-border); border-radius: 8px; font-size: 12.5px; font-family: inherit; font-weight: 600; background: var(--super-bg); cursor: pointer;" onchange="filterUserTable()">
+            <option value="all">🌐 All Portals</option>
+            <option value="gate">🚪 Gate Entry</option>
+            <option value="hr">👥 HR &amp; Payroll</option>
+            <option value="operations">🏗️ Operations &amp; Rigging</option>
+            <option value="purchase">🛒 Purchase &amp; Commercial</option>
+            <option value="safety">🦺 Safety &amp; Risk</option>
+            <option value="store">📦 Store &amp; Tackle</option>
+          </select>
+          <select id="userConsoleStatusFilter" style="height: 40px; padding: 0 14px; border: 1px solid var(--super-border); border-radius: 8px; font-size: 12.5px; font-family: inherit; font-weight: 600; background: var(--super-bg); cursor: pointer;" onchange="filterUserTable()">
+            <option value="all">● All Status</option>
+            <option value="Active">● Active Only</option>
+            <option value="Deactivated">● Deactivated Only</option>
+          </select>
+        </div>
+
+        <!-- User Accounts Table -->
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left;">
+            <thead>
+              <tr style="background: var(--super-bg, #f8fafc); border-bottom: 2px solid var(--super-border, #e2e8f0); color: var(--beds-text-secondary, #475569); font-size: 11.5px; text-transform: uppercase;">
+                <th style="padding: 12px 14px;">User Identity</th>
+                <th style="padding: 12px 14px;">Role &amp; Department</th>
+                <th style="padding: 12px 14px;">Assigned Portal</th>
+                <th style="padding: 12px 14px;">Password Credential</th>
+                <th style="padding: 12px 14px;">Account Status</th>
+                <th style="padding: 12px 14px; text-align: right;">Governance Actions</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody">
+              <!-- Rendered Dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Search & Filter Toolbar -->
+    <div class="workspace-toolbar">
+      <div class="search-box-wrap">
+        <span class="search-box-icon">🔍</span>
+        <input type="text" id="portalSearch" placeholder="Search portals by name, keyword, admin or supervisor..." oninput="filterPortals()">
+      </div>
+      <div class="filter-tabs-wrap">
+        <button class="filter-btn active" onclick="setCategory('all', this)">All Workspaces (8)</button>
+        <button class="filter-btn" onclick="setCategory('operations', this)">Operations & Rigging</button>
+        <button class="filter-btn" onclick="setCategory('safety', this)">HSE & Access Control</button>
+        <button class="filter-btn" onclick="setCategory('admin', this)">Commercial & HR</button>
+      </div>
+    </div>
+
+    <!-- Quick Shortcuts Row -->
+    <div class="section-header-row">
+      <h3><span>⚡</span> Quick Launch Shortcuts</h3>
+      <span>Frequently Accessed Workspaces</span>
+    </div>
+    <div class="quick-shortcuts-row">
+      <a href="BALSONS GATE ENTRY MANAGER/frontend/index.html" class="shortcut-card">
+        <span class="shortcut-icon">🚧</span>
+        <div class="shortcut-info">
+          <div class="shortcut-title">Gate Entry & Site Access</div>
+          <div class="shortcut-tag">Turnstiles & Material Clearance</div>
+        </div>
+      </a>
+      <a href="BALSONS STORE MANAGER/frontend/index.html" class="shortcut-card">
+        <span class="shortcut-icon">📦</span>
+        <div class="shortcut-info">
+          <div class="shortcut-title">Store & Rigging Tools</div>
+          <div class="shortcut-tag">Tool Master & Lifting Tackles</div>
+        </div>
+      </a>
+      <a href="BALSONS SAFETY MANAGER/frontend/index.html" class="shortcut-card">
+        <span class="shortcut-icon">🦺</span>
+        <div class="shortcut-info">
+          <div class="shortcut-title">Safety & PTW Manager</div>
+          <div class="shortcut-tag">Permit-to-Work & HSE Audits</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="quick-shortcuts-row">
+      <a href="BALSONS HR MANAGER/frontend/index.html" class="shortcut-card">
+        <span class="shortcut-icon">👥</span>
+        <div class="shortcut-info">
+          <div class="shortcut-title">HR &amp; Payroll Manager</div>
+          <div class="shortcut-tag">Biometric Attendance &amp; Wages</div>
+        </div>
+      </a>
+      <a href="BALSONS PURCHASE MANAGER/index.html" class="shortcut-card">
+        <span class="shortcut-icon">🛒</span>
+        <div class="shortcut-info">
+          <div class="shortcut-title">Purchase Manager</div>
+          <div class="shortcut-tag">Commercial Procurement &amp; POs</div>
+        </div>
+      </a>
+      <a href="BALSONS OPERATIONS MANAGER/index.html" class="shortcut-card">
+        <span class="shortcut-icon">🏗️</span>
+        <div class="shortcut-info">
+          <div class="shortcut-title">Operations Manager</div>
+          <div class="shortcut-tag">Heavy Lifting &amp; Erection Bays</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="quick-shortcuts-row">
+      <a href="https://drive.google.com/drive/folders/1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde" target="_blank" class="shortcut-card" style="border-left: 3px solid #38bdf8;">
+        <span class="shortcut-icon">📁</span>
+        <div class="shortcut-info">
+          <div class="shortcut-title">Google Drive Master Storage</div>
+          <div class="shortcut-tag">87 Master Folders · Root Storage Hub ↗</div>
+        </div>
+      </a>
+      <a href="BALSONS REPOTS PORTAL/index.html" class="shortcut-card" style="border-left: 3px solid #10b981;">
+        <span class="shortcut-icon">📊</span>
+        <div class="shortcut-info">
+          <div class="shortcut-title">Central Sync Hub &amp; Reports</div>
+          <div class="shortcut-tag">Cross-Portal Analytics &amp; Audit Dossier</div>
+        </div>
+      </a>
+      <a href="balsons-master-ecosystem-directory.html" class="shortcut-card" style="border-left: 3px solid #0097a7;">
+        <span class="shortcut-icon">🌐</span>
+        <div class="shortcut-info">
+          <div class="shortcut-title">Master Ecosystem Directory</div>
+          <div class="shortcut-tag">Live Architecture &amp; Credentials Gateway</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Portal Cards Grid -->
+    <div class="section-header-row">
+      <h3><span>🏢</span> Enterprise Application Directory</h3>
+      <span id="portalCountText">Showing 9 of 9 applications</span>
+    </div>
+
+    <div class="portal-cards-grid" id="portalGrid">
+
+      <!-- 1. GATE ENTRY & SITE ACCESS -->
+      <div class="clean-portal-card" style="--i: 0;" data-portal-id="gate_entry" data-category="safety" data-title="Gate Entry Site Access Visitor Vehicle Muster Clearance RGP NRGP Bikash Mohapatra Pradeep Nayak Manoj Das Subhashree Jena">
+        <div class="card-top-row">
+          <div class="card-title-group">
+            <div class="card-icon-box">🚧</div>
+            <div class="card-title-text">
+              <h4>Gate Entry & Site Access</h4>
+              <span class="card-domain-tag">Site Logistics & Clearance</span>
+            </div>
+          </div>
+          <span class="operational-pill">AVAILABLE</span>
+        </div>
+
+        <div class="personnel-matrix-box">
+          <div class="personnel-row">
+            <span class="tier-badge tier-admin">👑 Admin</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Bikash Mohapatra</span>
+              <span class="personnel-desig">(Gate In-Charge)</span>
+            </div>
+          </div>
+          <div class="personnel-row">
+            <span class="tier-badge tier-area">🏛️ Area Mgr</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Satish Chandra</span>
+              <span class="personnel-desig">(Project Directorate)</span>
+            </div>
+          </div>
+          <div class="supervisors-container">
+            <div class="supervisors-label">👷 Shift Supervisors (Max 3):</div>
+            <div class="supervisors-chips">
+              <span class="sup-chip"><span class="dot"></span>Pradeep Nayak (Main Gate)</span>
+              <span class="sup-chip"><span class="dot"></span>Manoj Das (Turnstiles)</span>
+              <span class="sup-chip"><span class="dot"></span>Subhashree Jena (Material)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions-row">
+          <a href="BALSONS GATE ENTRY MANAGER/frontend/index.html" class="btn-portal-primary portal-launch-btn">
+            Open workspace <span class="arrow">→</span>
+          </a>
+          <a href="BALSONS GATE ENTRY MANAGER/frontend/index.html#gate-dossier-360" class="btn-portal-secondary" title="View 360 Dossier">
+            Dossier 360
+          </a>
+          <button class="btn-fav" onclick="toggleFav(this)" title="Toggle Favorite">★</button>
+        </div>
+      </div>
+
+      <!-- 2. STORE & INVENTORY MANAGER -->
+      <div class="clean-portal-card" style="--i: 1;" data-portal-id="store_tools" data-category="operations" data-title="Store Inventory Tools Rigging Lifting Tackles Form 11 Gagan Bihari Das Ashok Mohanty Kailash Sahu Bijay Barik">
+        <div class="card-top-row">
+          <div class="card-title-group">
+            <div class="card-icon-box">📦</div>
+            <div class="card-title-text">
+              <h4>Store & Inventory Manager</h4>
+              <span class="card-domain-tag">Rigging Tool Master & Tackles</span>
+            </div>
+          </div>
+          <span class="operational-pill">AVAILABLE</span>
+        </div>
+
+        <div class="personnel-matrix-box">
+          <div class="personnel-row">
+            <span class="tier-badge tier-admin">👑 Admin</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Gagan Bihari Das</span>
+              <span class="personnel-desig">(Store In-Charge)</span>
+            </div>
+          </div>
+          <div class="personnel-row">
+            <span class="tier-badge tier-area">🏛️ Area Mgr</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Satish Chandra</span>
+              <span class="personnel-desig">(Project Directorate)</span>
+            </div>
+          </div>
+          <div class="supervisors-container">
+            <div class="supervisors-label">👷 Shift Supervisors (Max 3):</div>
+            <div class="supervisors-chips">
+              <span class="sup-chip"><span class="dot"></span>Ashok Mohanty (Rigging)</span>
+              <span class="sup-chip"><span class="dot"></span>Kailash Sahu (Yard Tools)</span>
+              <span class="sup-chip"><span class="dot"></span>Bijay Barik (Issue & Return)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions-row">
+          <a href="BALSONS STORE MANAGER/frontend/index.html" class="btn-portal-primary portal-launch-btn">
+            Open workspace <span class="arrow">→</span>
+          </a>
+          <a href="BALSONS STORE MANAGER/frontend/index.html#store-dossier-360" class="btn-portal-secondary" title="View 360 Dossier">
+            Dossier 360
+          </a>
+          <button class="btn-fav" onclick="toggleFav(this)" title="Toggle Favorite">★</button>
+        </div>
+      </div>
+
+      <!-- 3. SAFETY & PTW MANAGER -->
+      <div class="clean-portal-card" style="--i: 2;" data-portal-id="safety_ptw" data-category="safety" data-title="Safety PTW Permit Work JSA HSE Compliance Gajendra Rao Dilip Rout Niranjan Sahu Rakesh Panda">
+        <div class="card-top-row">
+          <div class="card-title-group">
+            <div class="card-icon-box">🦺</div>
+            <div class="card-title-text">
+              <h4>Safety & PTW Manager</h4>
+              <span class="card-domain-tag">HSE Permits & Rigging Safety</span>
+            </div>
+          </div>
+          <span class="operational-pill">AVAILABLE</span>
+        </div>
+
+        <div class="personnel-matrix-box">
+          <div class="personnel-row">
+            <span class="tier-badge tier-admin">👑 Admin</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Gajendra Rao</span>
+              <span class="personnel-desig">(HSE Lead)</span>
+            </div>
+          </div>
+          <div class="personnel-row">
+            <span class="tier-badge tier-area">🏛️ Area Mgr</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Satish Chandra</span>
+              <span class="personnel-desig">(Project Directorate)</span>
+            </div>
+          </div>
+          <div class="supervisors-container">
+            <div class="supervisors-label">👷 Shift Supervisors (Max 3):</div>
+            <div class="supervisors-chips">
+              <span class="sup-chip"><span class="dot"></span>Dilip Rout (Bay-3 Safety)</span>
+              <span class="sup-chip"><span class="dot"></span>Niranjan Sahu (Height HSE)</span>
+              <span class="sup-chip"><span class="dot"></span>Rakesh Panda (Permits)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions-row">
+          <a href="BALSONS SAFETY MANAGER/frontend/index.html" class="btn-portal-primary portal-launch-btn">
+            Open workspace <span class="arrow">→</span>
+          </a>
+          <a href="BALSONS SAFETY MANAGER/frontend/index.html#view-dossier-360" class="btn-portal-secondary" title="View 360 Dossier">
+            Dossier 360
+          </a>
+          <button class="btn-fav" onclick="toggleFav(this)" title="Toggle Favorite">★</button>
+        </div>
+      </div>
+
+      <!-- 4. HR & PAYROLL MANAGER -->
+      <div class="clean-portal-card" style="--i: 3;" data-portal-id="hr_payroll" data-category="admin" data-title="HR Payroll Employee Attendance Wages Biometrics Priyanka Senapati Rashmi Ranjan Alok Patra Snehalata Mishra">
+        <div class="card-top-row">
+          <div class="card-title-group">
+            <div class="card-icon-box">👥</div>
+            <div class="card-title-text">
+              <h4>HR & Payroll Manager</h4>
+              <span class="card-domain-tag">Workforce & Dual-Wage Payroll</span>
+            </div>
+          </div>
+          <span class="operational-pill">AVAILABLE</span>
+        </div>
+
+        <div class="personnel-matrix-box">
+          <div class="personnel-row">
+            <span class="tier-badge tier-admin">👑 Admin</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Priyanka Senapati</span>
+              <span class="personnel-desig">(HR Manager)</span>
+            </div>
+          </div>
+          <div class="personnel-row">
+            <span class="tier-badge tier-area">🏛️ Area Mgr</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Satish Chandra</span>
+              <span class="personnel-desig">(Project Directorate)</span>
+            </div>
+          </div>
+          <div class="supervisors-container">
+            <div class="supervisors-label">👷 Shift Supervisors (Max 3):</div>
+            <div class="supervisors-chips">
+              <span class="sup-chip"><span class="dot"></span>Rashmi Ranjan (Timekeeping)</span>
+              <span class="sup-chip"><span class="dot"></span>Alok Patra (Daily Crew)</span>
+              <span class="sup-chip"><span class="dot"></span>Snehalata Mishra (Statutory)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions-row">
+          <a href="BALSONS HR MANAGER/frontend/index.html" class="btn-portal-primary portal-launch-btn">
+            Open workspace <span class="arrow">→</span>
+          </a>
+          <a href="BALSONS HR MANAGER/frontend/register.html" target="_blank" class="btn-portal-secondary" title="Employee Self-Registration Portal">
+            Self-Register
+          </a>
+          <button class="btn-fav" onclick="toggleFav(this)" title="Toggle Favorite">★</button>
+        </div>
+      </div>
+
+      <!-- 5. OPERATIONS & HEAVY LIFT PORTAL -->
+      <div class="clean-portal-card" style="--i: 4;" data-portal-id="operations" data-category="operations" data-title="Operations Heavy Lift Crane SPMT Erection Haulage Satish Chandra Ashok Mohanty Dilip Rout Suresh Behera Kartik Nayak">
+        <div class="card-top-row">
+          <div class="card-title-group">
+            <div class="card-icon-box">🏗️</div>
+            <div class="card-title-text">
+              <h4>Operations & Heavy Lift Portal</h4>
+              <span class="card-domain-tag">Crane Logistics & Heavy Erection</span>
+            </div>
+          </div>
+          <span class="operational-pill">AVAILABLE</span>
+        </div>
+
+        <div class="personnel-matrix-box">
+          <div class="personnel-row">
+            <span class="tier-badge tier-admin">👑 Admin</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Satish Chandra</span>
+              <span class="personnel-desig">(Management Director)</span>
+            </div>
+          </div>
+          <div class="personnel-row">
+            <span class="tier-badge tier-area">🏛️ Area Mgr</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Ashok Mohanty</span>
+              <span class="personnel-desig">(HOD Heavy Rigging)</span>
+            </div>
+          </div>
+          <div class="supervisors-container">
+            <div class="supervisors-label">👷 Shift Supervisors (Max 3):</div>
+            <div class="supervisors-chips">
+              <span class="sup-chip"><span class="dot"></span>Dilip Rout (Bay-3 Cranes)</span>
+              <span class="sup-chip"><span class="dot"></span>Suresh Behera (SPMT Haulage)</span>
+              <span class="sup-chip"><span class="dot"></span>Kartik Nayak (Rigging Lead)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions-row">
+          <a href="BALSONS OPERATIONS MANAGER/" class="btn-portal-primary portal-launch-btn">
+            Open workspace <span class="arrow">→</span>
+          </a>
+          <button class="btn-fav" onclick="toggleFav(this)" title="Toggle Favorite">★</button>
+        </div>
+      </div>
+
+      <!-- 6. PURCHASE & PROCUREMENT MANAGER -->
+      <div class="clean-portal-card" style="--i: 5;" data-portal-id="purchase" data-category="admin" data-title="Purchase Procurement Vendor RFQ GRN Commercial Gagan Bihari Das Sanjay Verma Amit Pradhan Pravat Rout">
+        <div class="card-top-row">
+          <div class="card-title-group">
+            <div class="card-icon-box">🛒</div>
+            <div class="card-title-text">
+              <h4>Purchase & Procurement Manager</h4>
+              <span class="card-domain-tag">Vendor RFQ & Commercial GRN</span>
+            </div>
+          </div>
+          <span class="operational-pill">AVAILABLE</span>
+        </div>
+
+        <div class="personnel-matrix-box">
+          <div class="personnel-row">
+            <span class="tier-badge tier-admin">👑 Admin</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Gagan Bihari Das</span>
+              <span class="personnel-desig">(Commercial In-Charge)</span>
+            </div>
+          </div>
+          <div class="personnel-row">
+            <span class="tier-badge tier-area">🏛️ Area Mgr</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Satish Chandra</span>
+              <span class="personnel-desig">(Project Directorate)</span>
+            </div>
+          </div>
+          <div class="supervisors-container">
+            <div class="supervisors-label">👷 Shift Supervisors (Max 3):</div>
+            <div class="supervisors-chips">
+              <span class="sup-chip"><span class="dot"></span>Sanjay Verma (Commercial)</span>
+              <span class="sup-chip"><span class="dot"></span>Amit Pradhan (Vendor Sourcing)</span>
+              <span class="sup-chip"><span class="dot"></span>Pravat Rout (Material Audit)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions-row">
+          <a href="BALSONS PURCHASE MANAGER/" class="btn-portal-primary portal-launch-btn">
+            Open workspace <span class="arrow">→</span>
+          </a>
+          <button class="btn-fav" onclick="toggleFav(this)" title="Toggle Favorite">★</button>
+        </div>
+      </div>
+
+      <!-- 7. CENTRAL SYNC HUB & REPORTS -->
+      <div class="clean-portal-card" style="--i: 6;" data-portal-id="sync_reports" data-category="admin" data-title="Central Sync Hub Reporting Cross-Portal Analytics Audit Prashant Mohanty Gajendra Rao Priyanka Senapati Gagan Bihari Das">
+        <div class="card-top-row">
+          <div class="card-title-group">
+            <div class="card-icon-box">📊</div>
+            <div class="card-title-text">
+              <h4>Central Sync Hub & Reports</h4>
+              <span class="card-domain-tag">Cross-Portal Analytics & Audit</span>
+            </div>
+          </div>
+          <span class="operational-pill">AVAILABLE</span>
+        </div>
+
+        <div class="personnel-matrix-box">
+          <div class="personnel-row">
+            <span class="tier-badge tier-admin">👑 Admin</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Prashant Mohanty</span>
+              <span class="personnel-desig">(Executive Super Admin)</span>
+            </div>
+          </div>
+          <div class="personnel-row">
+            <span class="tier-badge tier-area">🏛️ Area Mgr</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Satish Chandra</span>
+              <span class="personnel-desig">(Project Directorate)</span>
+            </div>
+          </div>
+          <div class="supervisors-container">
+            <div class="supervisors-label">👷 Shift Supervisors (Max 3):</div>
+            <div class="supervisors-chips">
+              <span class="sup-chip"><span class="dot"></span>Gajendra Rao (Safety Data)</span>
+              <span class="sup-chip"><span class="dot"></span>Priyanka Senapati (Manpower)</span>
+              <span class="sup-chip"><span class="dot"></span>Gagan Bihari Das (Assets)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions-row">
+          <a href="BALSONS REPOTS PORTAL/" class="btn-portal-primary portal-launch-btn">
+            Open workspace <span class="arrow">→</span>
+          </a>
+          <button class="btn-fav" onclick="toggleFav(this)" title="Toggle Favorite">★</button>
+        </div>
+      </div>
+
+      <!-- 8. GOOGLE DRIVE MASTER STORAGE HUB -->
+      <div class="clean-portal-card" style="--i: 7;" data-portal-id="document_hub" data-category="admin" data-title="Google Drive Document Hub Vault 87 Folders Reports Gate Pass Challan PO Vouchers Storage Prashant Muley Satish Chandra">
+        <div class="card-top-row">
+          <div class="card-title-group">
+            <div class="card-icon-box">📁</div>
+            <div class="card-title-text">
+              <h4>Master Document Hub &amp; Cloud Vault</h4>
+              <span class="card-domain-tag">Google Drive Master Storage · 87 Folders</span>
+            </div>
+          </div>
+          <span class="operational-pill" style="background:rgba(16,185,129,0.15); color:#10b981; border:1px solid #10b981;">LIVE CLOUD</span>
+        </div>
+
+        <div class="personnel-matrix-box">
+          <div class="personnel-row">
+            <span class="tier-badge tier-admin">👑 Super Admin</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Prashant Muley</span>
+              <span class="personnel-desig">(Super Administrator)</span>
+            </div>
+          </div>
+          <div class="personnel-row">
+            <span class="tier-badge tier-area">🏛️ Project Director</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Satish Chandra</span>
+              <span class="personnel-desig">(Project Directorate)</span>
+            </div>
+          </div>
+          <div class="supervisors-container">
+            <div class="supervisors-label">📂 Master Storage Vaults (87 Folders):</div>
+            <div class="supervisors-chips">
+              <span class="sup-chip"><span class="dot"></span>01_GATE_ENTRY (12)</span>
+              <span class="sup-chip"><span class="dot"></span>02_STORE (16)</span>
+              <span class="sup-chip"><span class="dot"></span>03_SAFETY (14)</span>
+              <span class="sup-chip"><span class="dot"></span>04_HR (13)</span>
+              <span class="sup-chip"><span class="dot"></span>05_OPS (15)</span>
+              <span class="sup-chip"><span class="dot"></span>06_PURCHASE (13)</span>
+              <span class="sup-chip"><span class="dot"></span>07_REPORTS (4)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions-row">
+          <a href="https://drive.google.com/drive/folders/1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde" target="_blank" class="btn-portal-primary portal-launch-btn">
+            Open Drive Vault <span class="arrow">↗</span>
+          </a>
+          <a href="docs/specifications/balsons_drive_folder_map.json" target="_blank" class="btn-portal-secondary" title="View 87-Folder JSON Architecture">
+            Folder Map (87)
+          </a>
+          <button class="btn-fav" onclick="toggleFav(this)" title="Toggle Favorite">★</button>
+        </div>
+      </div>
+
+      <!-- 9. SITE EXPENSE & IMPREST MANAGER -->
+      <div class="clean-portal-card" style="--i: 7;" data-portal-id="expenses" data-category="admin" data-title="Site Expense Imprest Petty Cash Fuel Diesel Vouchers Reconciliation Bikash Mohapatra Dilip Rout Kailash Sahu Rashmi Ranjan">
+        <div class="card-top-row">
+          <div class="card-title-group">
+            <div class="card-icon-box">💳</div>
+            <div class="card-title-text">
+              <h4>Site Expense & Imprest Manager</h4>
+              <span class="card-domain-tag">Site Imprest Cash & Diesel Logs</span>
+            </div>
+          </div>
+          <span class="operational-pill">AVAILABLE</span>
+        </div>
+
+        <div class="personnel-matrix-box">
+          <div class="personnel-row">
+            <span class="tier-badge tier-admin">👑 Admin</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Bikash Mohapatra</span>
+              <span class="personnel-desig">(Site Accounts)</span>
+            </div>
+          </div>
+          <div class="personnel-row">
+            <span class="tier-badge tier-area">🏛️ Area Mgr</span>
+            <div class="personnel-details">
+              <span class="personnel-name">Satish Chandra</span>
+              <span class="personnel-desig">(Project Directorate)</span>
+            </div>
+          </div>
+          <div class="supervisors-container">
+            <div class="supervisors-label">👷 Shift Supervisors (Max 3):</div>
+            <div class="supervisors-chips">
+              <span class="sup-chip"><span class="dot"></span>Dilip Rout (Fuel Logistics)</span>
+              <span class="sup-chip"><span class="dot"></span>Kailash Sahu (Consumables)</span>
+              <span class="sup-chip"><span class="dot"></span>Rashmi Ranjan (Site Vouchers)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions-row">
+          <a href="#" class="btn-portal-primary portal-launch-btn">
+            Open workspace <span class="arrow">→</span>
+          </a>
+          <button class="btn-fav" onclick="toggleFav(this)" title="Toggle Favorite">★</button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- 4. MASTER EXECUTIVE FOOTER -->
+  <footer class="exec-footer">
+    <p>
+      <strong>BALSONS Heavy Lift & Shift</strong> • Enterprise Portal Ecosystem · JTRWF Khordha Base
+    </p>
+    <p style="font-style: italic; color: var(--super-cyan); margin: 4px 0; font-weight: 600;">
+      “Difficult We Do Easily, Impossible Takes Little Time...!”
+    </p>
+    <p style="font-size: 11px; margin: 4px 0 0 0;">
+      Authorized Access Only · Role Enforced: 1 Admin · 1 Area Manager · Max 3 Supervisors per Domain
+    </p>
+  </footer>
+
+  <!-- CONTROLLER SCRIPTS -->
+  <script>
+    // Theme Toggle
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('beds_theme_preference', next);
+      const btn = document.getElementById('themeBtn');
+      if (btn) btn.textContent = next === 'light' ? '🌙 Dark' : '☀️ Light';
+    }
+    const savedTheme = localStorage.getItem('beds_theme_preference') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    const themeBtn = document.getElementById('themeBtn');
+    if (themeBtn) themeBtn.textContent = savedTheme === 'light' ? '🌙 Dark' : '☀️ Light';
+
+    // Sign Out Handler
+    function handleLauncherSignOut() {
+      if (window.BalsonsPortalLogin && typeof window.BalsonsPortalLogin.logout === 'function') {
+        window.BalsonsPortalLogin.logout();
+      } else {
+        localStorage.removeItem('balsons_global_auth_session');
+        window.location.reload();
+      }
+    }
+
+    // Category Filter
+    let activeCategory = 'all';
+    function setCategory(cat, btn) {
+      activeCategory = cat;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterPortals();
+    }
+
+    // Live Search Filter
+    function filterPortals() {
+      const query = document.getElementById('portalSearch').value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.clean-portal-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        const text = (card.getAttribute('data-title') + ' ' + card.innerText).toLowerCase();
+        const matchesCat = (activeCategory === 'all' || cat === activeCategory);
+        const matchesQuery = query === '' || text.includes(query);
+
+        if (matchesCat && matchesQuery) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('portalCountText').textContent = `Showing ${visibleCount} of 9 applications`;
+    }
+
+    // Toggle Favorite star
+    function toggleFav(star) {
+      star.classList.toggle('active');
+    }
+
+    // Sync User Profile in Header
+    function updateHeaderUser() {
+      const chip = document.getElementById('headerUserBadge');
+      if (!chip) return;
+      if (window.BalsonsSuperAdmin && window.BalsonsSuperAdmin.currentUser) {
+        const u = window.BalsonsSuperAdmin.currentUser;
+        const icon = u.isSuperAdmin ? '👑' : (u.avatar || '👤');
+        chip.innerHTML = `${icon} <strong>${u.fullName.split(' ')[0]}</strong> · ${u.role}`;
+      } else {
+        chip.innerHTML = `👑 <strong>Prashant Mohanty</strong> · Super Administrator`;
+      }
+    }
+
+    // Ensure any stray simulator bar is obliterated from DOM
+    function obliterateSimulatorBars() {
+      ['sam-global-topbar', 'beds-enterprise-topbar', 'sam-gov-bar'].forEach(id => {
+        const el = document.getElementById(id) || document.querySelector('.' + id);
+        if (el) el.remove();
+      });
+    }
+
+    // GitHub Pages Multi-Repo Link Resolution
+    window.addEventListener('DOMContentLoaded', () => {
+      updateHeaderUser();
+      obliterateSimulatorBars();
+
+      // Super Admin Exclusive Access Enforcement for Centralized Portal
+      if (window.BalsonsSuperAdmin) {
+        const u = window.BalsonsSuperAdmin.getCurrentUser();
+        const isSuper = Boolean(u && (u.isSuperAdmin === true || u.role === 'Super Administrator'));
+        if (!isSuper) {
+          console.warn('Non-SuperAdmin accessed centralized launcher. Restricting view.');
+          const mainContent = document.querySelector('.workspace-main');
+          if (mainContent) {
+            mainContent.innerHTML = `
+              <div style="max-width: 640px; margin: 60px auto; padding: 32px; background: var(--super-card); border: 2px solid #ef4444; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(239,68,68,0.15);">
+                <div style="font-size: 48px; margin-bottom: 12px;">🚫</div>
+                <h2 style="color: #b91c1c; margin: 0 0 10px 0; font-size: 22px; font-weight: 800;">Super Administrator Authority Required</h2>
+                <p style="color: var(--beds-text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 24px;">
+                  The Centralised Portal is strictly reserved for the <strong>Master Super Administrator</strong>. Ordinary users and portal administrators must log in directly through their assigned portal.
+                </p>
+                <div style="padding: 12px; background: rgba(239,68,68,0.06); border-radius: 8px; font-size: 12.5px; color: var(--beds-charcoal-heading); margin-bottom: 24px;">
+                  Currently identified as: <strong>${u ? u.fullName : 'Guest'}</strong> (Role: ${u ? u.role : 'Unassigned'})
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                  <button onclick="handleLauncherSignOut()" style="padding: 10px 20px; background: #0097a7; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">
+                    👑 Sign In as Super Administrator
+                  </button>
+                  <a href="${u && u.assignedPortal ? ('BALSONS ' + u.assignedPortal.toUpperCase() + ' MANAGER/frontend/index.html') : 'BALSONS GATE ENTRY MANAGER/frontend/index.html'}" style="padding: 10px 20px; background: var(--super-bg); border: 1px solid var(--super-border); color: var(--beds-text-primary); border-radius: 8px; font-weight: 700; text-decoration: none;">
+                    Return to My Assigned Portal
+                  </a>
+                </div>
+              </div>
+            `;
+          }
+        }
+      }
+    
+
+      if (window.location.hostname.includes('github.io')) {
+        document.querySelectorAll('a[href]').forEach(a => {
+          const href = a.getAttribute('href');
+          if (!href) return;
+          if (href.includes('BALSONS GATE ENTRY MANAGER/frontend/index.html')) {
+            a.href = href.replace('BALSONS GATE ENTRY MANAGER/frontend/index.html', '/BALSONS_GATE_ENTRY_PORTAL/frontend/index.html');
+          } else if (href.includes('BALSONS HR MANAGER/frontend/index.html')) {
+            a.href = href.replace('BALSONS HR MANAGER/frontend/index.html', '/BALSONS_HR_PORTAL/frontend/index.html');
+          } else if (href.includes('BALSONS HR MANAGER/frontend/register.html')) {
+            a.href = href.replace('BALSONS HR MANAGER/frontend/register.html', '/BALSONS_HR_PORTAL/frontend/register.html');
+          } else if (href.includes('BALSONS SAFETY MANAGER/frontend/index.html')) {
+            a.href = href.replace('BALSONS SAFETY MANAGER/frontend/index.html', '/BALSONS_SAFETY_PORTAL/frontend/index.html');
+          } else if (href.includes('BALSONS STORE MANAGER/frontend/index.html')) {
+            a.href = href.replace('BALSONS STORE MANAGER/frontend/index.html', '/BALSONS_STORE_MANAGER/frontend/index.html');
+          } else if (href === 'BALSONS GATE ENTRY MANAGER/frontend/index.html') {
+            a.href = '/BALSONS_GATE_ENTRY_PORTAL/frontend/index.html';
+          } else if (href === 'BALSONS HR MANAGER/frontend/index.html') {
+            a.href = '/BALSONS_HR_PORTAL/frontend/index.html';
+          } else if (href === 'BALSONS STORE MANAGER/') {
+            a.href = '/BALSONS_STORE_MANAGER/frontend/index.html';
+          } else if (href === 'BALSONS SAFETY MANAGER/') {
+            a.href = '/BALSONS_SAFETY_PORTAL/frontend/index.html';
+          }
+        });
+      }
+    });
+  </script>
+
+  <!-- Core Security & Login Controller with Smart Role Dropdown -->
+  <script src="assets/js/beds-superadmin.js"></script>
+  <script src="assets/js/balsons-docs-manager.js"></script>
+  <script src="assets/js/beds-portal-login.js"></script>
+  <script>
+    // Header Dropdowns Outside-Click Handler
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#portalSwitcherWrap')) {
+        var w = document.getElementById('portalSwitcherWrap');
+        if (w) w.classList.remove('open');
+      }
+      if (!e.target.closest('#userPillWrap')) {
+        var u = document.getElementById('userPillWrap');
+        if (u) u.classList.remove('open');
+      }
+    });
+  </script>
+
+  <!-- ═══ USER MANAGEMENT MODALS (SUPER ADMIN) ═══ -->
+  <!-- 1. Add User Modal -->
+  <div id="addUserModal" style="display:none; position:fixed; inset:0; z-index:1000; background:rgba(16,45,53,0.65); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+    <div style="background:var(--super-card, #ffffff); border:1px solid var(--super-border, #e2e8f0); border-radius:14px; width:90%; max-width:520px; box-shadow:0 20px 40px rgba(0,0,0,0.25); overflow:hidden; animation:superFadeIn 0.2s ease;">
+      <div style="padding:16px 20px; background:#102D35; color:#fff; display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="margin:0; font-size:15px; font-weight:800; display:flex; align-items:center; gap:8px;">
+          <span>➕</span> Add New Enterprise User
+        </h3>
+        <button onclick="closeAddUserModal()" style="background:transparent; border:none; color:#fff; font-size:20px; cursor:pointer;">&times;</button>
+      </div>
+      <form onsubmit="submitAddUser(event)" style="padding:20px;">
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">Full Name</label>
+          <input type="text" id="addFullName" required placeholder="e.g. Ramesh Chandra (Rigging Supervisor)" style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 10px; font-size:13px; font-family:inherit; box-sizing:border-box;">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div>
+            <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">User ID / Username</label>
+            <input type="text" id="addUsername" required placeholder="e.g. ramesh.chandra" style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 10px; font-size:13px; font-family:inherit; box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">Password</label>
+            <div style="position:relative; display:flex; align-items:center; width:100%;">
+              <input type="password" id="addPassword" required placeholder="e.g. Balsons@2026!" style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 36px 0 10px; font-size:13px; font-family:inherit; box-sizing:border-box;">
+              <button type="button" onclick="toggleInputFieldPassword('addPassword', this)" title="Show Password" style="position:absolute; right:6px; background:transparent; border:none; cursor:pointer; color:var(--beds-text-muted); padding:4px; display:inline-flex; align-items:center;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div>
+            <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">Assigned Portal</label>
+            <select id="addPortal" required style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 10px; font-size:12.5px; font-family:inherit; font-weight:600; box-sizing:border-box;">
+              <option value="gate">🚪 Gate Entry</option>
+              <option value="hr">👥 HR &amp; Payroll</option>
+              <option value="operations">🏗️ Operations &amp; Rigging</option>
+              <option value="purchase">🛒 Purchase &amp; Commercial</option>
+              <option value="safety">🦺 Safety &amp; Risk</option>
+              <option value="store">📦 Store &amp; Tackle</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">Role Level</label>
+            <select id="addRole" required style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 10px; font-size:12.5px; font-family:inherit; font-weight:600; box-sizing:border-box;">
+              <option value="Portal Administrator">⚙️ Portal Administrator</option>
+              <option value="Management / Director">🏛️ Management / Director</option>
+              <option value="Operations Area Manager">🏗️ Area Manager</option>
+              <option value="HOD / Department Head">📋 HOD / Department Head</option>
+              <option value="Manager / Supervisor">👷 Manager / Supervisor</option>
+              <option value="Indenter / Site Engineer">📝 Indenter / Site Engineer</option>
+              <option value="Employee / General User">👤 Employee / Crew</option>
+              <option value="Client Observer / Auditor">🔍 Client Auditor</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">Department</label>
+          <input type="text" id="addDept" placeholder="e.g. Heavy Rigging Bay-3 / Logistics" style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 10px; font-size:13px; font-family:inherit; box-sizing:border-box;">
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn-signout" onclick="closeAddUserModal()">Cancel</button>
+          <button type="submit" class="btn-portal-primary" style="padding:8px 18px; font-size:12.5px; font-weight:700;">Save User</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Edit User Modal -->
+  <div id="editUserModal" style="display:none; position:fixed; inset:0; z-index:1000; background:rgba(16,45,53,0.65); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+    <div style="background:var(--super-card, #ffffff); border:1px solid var(--super-border, #e2e8f0); border-radius:14px; width:90%; max-width:520px; box-shadow:0 20px 40px rgba(0,0,0,0.25); overflow:hidden; animation:superFadeIn 0.2s ease;">
+      <div style="padding:16px 20px; background:#102D35; color:#fff; display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="margin:0; font-size:15px; font-weight:800; display:flex; align-items:center; gap:8px;">
+          <span>✏️</span> Edit User Account &amp; Permissions
+        </h3>
+        <button onclick="closeEditUserModal()" style="background:transparent; border:none; color:#fff; font-size:20px; cursor:pointer;">&times;</button>
+      </div>
+      <form onsubmit="submitEditUser(event)" style="padding:20px;">
+        <input type="hidden" id="editUsernameHidden">
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">User ID (Immutable)</label>
+          <input type="text" id="editUsernameDisplay" disabled style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 10px; font-size:13px; font-family:monospace; background:rgba(0,0,0,0.04); box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">Full Name</label>
+          <input type="text" id="editFullName" required style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 10px; font-size:13px; font-family:inherit; box-sizing:border-box;">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div>
+            <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">Assigned Portal</label>
+            <select id="editPortal" required style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 10px; font-size:12.5px; font-family:inherit; font-weight:600; box-sizing:border-box;">
+              <option value="gate">🚪 Gate Entry</option>
+              <option value="hr">👥 HR &amp; Payroll</option>
+              <option value="operations">🏗️ Operations &amp; Rigging</option>
+              <option value="purchase">🛒 Purchase &amp; Commercial</option>
+              <option value="safety">🦺 Safety &amp; Risk</option>
+              <option value="store">📦 Store &amp; Tackle</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">Role Level</label>
+            <select id="editRole" required style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 10px; font-size:12.5px; font-family:inherit; font-weight:600; box-sizing:border-box;">
+              <option value="Portal Administrator">⚙️ Portal Administrator</option>
+              <option value="Management / Director">🏛️ Management / Director</option>
+              <option value="Operations Area Manager">🏗️ Area Manager</option>
+              <option value="HOD / Department Head">📋 HOD / Department Head</option>
+              <option value="Manager / Supervisor">👷 Manager / Supervisor</option>
+              <option value="Indenter / Site Engineer">📝 Indenter / Site Engineer</option>
+              <option value="Employee / General User">👤 Employee / Crew</option>
+              <option value="Client Observer / Auditor">🔍 Client Auditor</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+          <div>
+            <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">Department</label>
+            <input type="text" id="editDept" style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 10px; font-size:13px; font-family:inherit; box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">Account Status</label>
+            <select id="editStatus" style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 10px; font-size:12.5px; font-family:inherit; font-weight:700; box-sizing:border-box;">
+              <option value="Active">● Active</option>
+              <option value="Deactivated">● Deactivated</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn-signout" onclick="closeEditUserModal()">Cancel</button>
+          <button type="submit" class="btn-portal-primary" style="padding:8px 18px; font-size:12.5px; font-weight:700;">Update Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Change Password Modal -->
+  <div id="changePasswordModal" style="display:none; position:fixed; inset:0; z-index:1000; background:rgba(16,45,53,0.65); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+    <div style="background:var(--super-card, #ffffff); border:1px solid var(--super-border, #e2e8f0); border-radius:14px; width:90%; max-width:440px; box-shadow:0 20px 40px rgba(0,0,0,0.25); overflow:hidden; animation:superFadeIn 0.2s ease;">
+      <div style="padding:16px 20px; background:#102D35; color:#fff; display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="margin:0; font-size:15px; font-weight:800; display:flex; align-items:center; gap:8px;">
+          <span>🔑</span> Reset User Password
+        </h3>
+        <button onclick="closeChangePasswordModal()" style="background:transparent; border:none; color:#fff; font-size:20px; cursor:pointer;">&times;</button>
+      </div>
+      <form onsubmit="submitChangePassword(event)" style="padding:20px;">
+        <input type="hidden" id="pwUsernameHidden">
+        <div style="margin-bottom:14px; padding:10px; background:rgba(0,151,178,0.08); border-radius:8px; border:1px solid rgba(0,151,178,0.2);">
+          <div style="font-size:11px; color:var(--beds-text-muted); text-transform:uppercase; font-weight:700;">Target Account</div>
+          <div id="pwUserDisplay" style="font-size:13px; font-weight:800; color:var(--beds-charcoal-heading); margin-top:2px;">User</div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">New Password</label>
+          <div style="position:relative; display:flex; align-items:center; width:100%;">
+            <input type="password" id="newPassword" required placeholder="Minimum 4 characters" style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 36px 0 10px; font-size:13px; font-family:inherit; box-sizing:border-box;">
+            <button type="button" onclick="toggleInputFieldPassword('newPassword', this)" title="Show Password" style="position:absolute; right:6px; background:transparent; border:none; cursor:pointer; color:var(--beds-text-muted); padding:4px; display:inline-flex; align-items:center;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--beds-text-secondary); margin-bottom:4px; text-transform:uppercase;">Confirm New Password</label>
+          <div style="position:relative; display:flex; align-items:center; width:100%;">
+            <input type="password" id="confirmPassword" required placeholder="Re-type password" style="width:100%; height:38px; border:1px solid var(--super-border); border-radius:6px; padding:0 36px 0 10px; font-size:13px; font-family:inherit; box-sizing:border-box;">
+            <button type="button" onclick="toggleInputFieldPassword('confirmPassword', this)" title="Show Password" style="position:absolute; right:6px; background:transparent; border:none; cursor:pointer; color:var(--beds-text-muted); padding:4px; display:inline-flex; align-items:center;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn-signout" onclick="closeChangePasswordModal()">Cancel</button>
+          <button type="submit" class="btn-portal-primary" style="padding:8px 18px; font-size:12.5px; font-weight:700;">Set Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Super Admin View Switcher (Portals vs User Console)
+    function switchSuperAdminView(view) {
+      const tabPortals = document.getElementById('viewTabPortals');
+      const tabUsers = document.getElementById('viewTabUsers');
+      const userConsole = document.getElementById('superAdminUserConsole');
+      const toolbar = document.querySelector('.workspace-toolbar');
+      const quickShortcuts = document.querySelector('.quick-shortcuts-row');
+      const shortcutsHeader = document.querySelector('.section-header-row');
+      const portalGrid = document.querySelector('.portal-grid');
+      const portalCountBar = document.querySelector('.results-count-bar');
+
+      if (view === 'users') {
+        if (tabUsers) tabUsers.classList.add('active');
+        if (tabPortals) tabPortals.classList.remove('active');
+        if (userConsole) userConsole.style.display = 'block';
+        if (toolbar) toolbar.style.display = 'none';
+        if (quickShortcuts) quickShortcuts.style.display = 'none';
+        if (shortcutsHeader) shortcutsHeader.style.display = 'none';
+        if (portalGrid) portalGrid.style.display = 'none';
+        if (portalCountBar) portalCountBar.style.display = 'none';
+        renderUserManagementTable();
+      } else {
+        if (tabPortals) tabPortals.classList.add('active');
+        if (tabUsers) tabUsers.classList.remove('active');
+        if (userConsole) userConsole.style.display = 'none';
+        if (toolbar) toolbar.style.display = 'flex';
+        if (quickShortcuts) quickShortcuts.style.display = 'grid';
+        if (shortcutsHeader) shortcutsHeader.style.display = 'flex';
+        if (portalGrid) portalGrid.style.display = 'grid';
+        if (portalCountBar) portalCountBar.style.display = 'flex';
+      }
+    }
+
+    // Render User Management Table
+    function renderUserManagementTable() {
+      if (!window.BalsonsSuperAdmin) return;
+      const users = window.BalsonsSuperAdmin.users || [];
+      const tbody = document.getElementById('userTableBody');
+      if (!tbody) return;
+
+      const q = (document.getElementById('userConsoleSearch')?.value || '').toLowerCase().trim();
+      const portalFilter = document.getElementById('userConsolePortalFilter')?.value || 'all';
+      const statusFilter = document.getElementById('userConsoleStatusFilter')?.value || 'all';
+
+      let activeCount = 0;
+      users.forEach(u => { if (u.status === 'Active') activeCount++; });
+
+      const statTotal = document.getElementById('statTotalUsers');
+      const statActive = document.getElementById('statActiveUsers');
+      if (statTotal) statTotal.textContent = users.length;
+      if (statActive) statActive.textContent = activeCount;
+
+      const portalIcons = {
+        'gate': '🚪 Gate Entry',
+        'hr': '👥 HR & Payroll',
+        'operations': '🏗️ Operations',
+        'purchase': '🛒 Purchase',
+        'safety': '🦺 Safety',
+        'store': '📦 Store',
+        'all': '👑 All Portals'
+      };
+
+      const filtered = users.filter(u => {
+        const text = `${u.fullName} ${u.username} ${u.dept} ${u.role}`.toLowerCase();
+        const matchesQuery = !q || text.includes(q);
+        const assigned = (u.assignedPortal || (u.permittedPortals && u.permittedPortals[0]) || 'gate').toLowerCase();
+        const matchesPortal = (portalFilter === 'all') || assigned === portalFilter || (u.isSuperAdmin);
+        const matchesStatus = (statusFilter === 'all') || u.status === statusFilter;
+        return matchesQuery && matchesPortal && matchesStatus;
+      });
+
+      tbody.innerHTML = filtered.map(u => {
+        const assigned = u.assignedPortal || (u.permittedPortals && u.permittedPortals[0]) || 'gate';
+        const portalLabel = u.isSuperAdmin ? '👑 All Portals (Global)' : (portalIcons[assigned] || assigned.toUpperCase());
+        const isMaster = u.isSuperAdmin || u.username === 'superadmin' || u.locked;
+        const pass = u.password || 'Balsons@2026!';
+
+        return `
+          <tr style="border-bottom: 1px solid var(--super-border, #e2e8f0); transition: background 0.15s;" onmouseover="this.style.background='var(--super-bg)'" onmouseout="this.style.background='transparent'">
+            <td style="padding: 12px 14px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:20px;">${u.avatar || '👤'}</span>
+                <div>
+                  <div style="font-weight:700; color:var(--beds-charcoal-heading, #102a35);">${u.fullName}</div>
+                  <div style="font-family:monospace; font-size:11px; color:var(--super-cyan, #0097a7);">@${u.username}</div>
+                </div>
+              </div>
+            </td>
+            <td style="padding: 12px 14px;">
+              <span class="role-badge" style="font-size:11px; font-weight:700;">${u.role}</span>
+              <div style="font-size:11px; color:var(--beds-text-secondary); margin-top:2px;">${u.dept || 'Site Management'}</div>
+            </td>
+            <td style="padding: 12px 14px;">
+              <span style="display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; padding:3px 8px; border-radius:6px; background:rgba(0,151,178,0.08); color:var(--beds-teal-primary, #0097a7); border:1px solid rgba(0,151,178,0.2);">
+                ${portalLabel}
+              </span>
+            </td>
+            <td style="padding: 12px 14px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span id="pw-mask-${u.username}" style="font-family:monospace; font-weight:700; letter-spacing:1px; color:var(--beds-text-secondary);">••••••••</span>
+                <span id="pw-text-${u.username}" style="display:none; font-family:monospace; font-weight:700; font-size:12px; color:#059669; background:#ecfdf5; padding:1px 6px; border-radius:4px;">${pass}</span>
+                <button type="button" onclick="togglePasswordVisibility('${u.username}')" style="background:transparent; border:none; cursor:pointer; font-size:13px; color:var(--beds-text-muted);" title="Toggle View Password">👁</button>
+                <button type="button" onclick="openChangePasswordModal('${u.username}')" style="background:transparent; border:1px solid var(--super-border); border-radius:4px; padding:2px 6px; cursor:pointer; font-size:10.5px; font-weight:700; color:var(--beds-teal-primary);" title="Change Password">🔑</button>
+              </div>
+            </td>
+            <td style="padding: 12px 14px;">
+              ${isMaster ? `
+                <span style="font-size:11px; font-weight:800; color:#10b981;">● Always Active</span>
+              ` : `
+                <button onclick="toggleUserStatusQuick('${u.username}')" style="background:${u.status === 'Active' ? '#ecfdf5' : '#fef2f2'}; color:${u.status === 'Active' ? '#059669' : '#dc2626'}; border:1px solid ${u.status === 'Active' ? '#a7f3d0' : '#fecaca'}; border-radius:12px; padding:3px 10px; font-size:11px; font-weight:700; cursor:pointer;" title="Click to toggle status">
+                  ● ${u.status}
+                </button>
+              `}
+            </td>
+            <td style="padding: 12px 14px; text-align:right;">
+              <div style="display:inline-flex; gap:6px;">
+                <button onclick="openEditUserModal('${u.username}')" style="padding:4px 9px; font-size:11px; font-weight:700; border:1px solid var(--super-border); border-radius:6px; background:var(--super-bg); color:var(--beds-text-primary); cursor:pointer;" title="Edit Profile & Permissions">
+                  ✏️ Edit
+                </button>
+                ${isMaster ? `
+                  <button disabled style="padding:4px 9px; font-size:11px; font-weight:700; border:1px solid var(--super-border); border-radius:6px; background:#f1f5f9; color:#94a3b8; cursor:not-allowed;" title="Super Admin is protected">
+                    🔒 Protected
+                  </button>
+                ` : `
+                  <button onclick="confirmDeleteUser('${u.username}')" style="padding:4px 9px; font-size:11px; font-weight:700; border:1px solid #fecaca; border-radius:6px; background:#fff1f2; color:#e11d48; cursor:pointer;" title="Delete User">
+                    🗑️ Delete
+                  </button>
+                `}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterUserTable() {
+      renderUserManagementTable();
+    }
+
+    
+    function toggleInputFieldPassword(fieldId, btn) {
+      const input = document.getElementById(fieldId);
+      if (!input) return;
+      const isPw = (input.type === 'password');
+      input.type = isPw ? 'text' : 'password';
+      if (btn) {
+        btn.title = isPw ? 'Hide Password' : 'Show Password';
+        btn.innerHTML = isPw 
+          ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>'
+          : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+      }
+    }
+
+    function togglePasswordVisibility(username) {
+      const mask = document.getElementById(`pw-mask-${username}`);
+      const text = document.getElementById(`pw-text-${username}`);
+      if (!mask || !text) return;
+      if (text.style.display === 'none') {
+        text.style.display = 'inline-block';
+        mask.style.display = 'none';
+      } else {
+        text.style.display = 'none';
+        mask.style.display = 'inline-block';
+      }
+    }
+
+    // Modal Triggers
+    function openAddUserModal() {
+      document.getElementById('addUserModal').style.display = 'flex';
+      document.getElementById('addFullName').focus();
+    }
+    function closeAddUserModal() {
+      document.getElementById('addUserModal').style.display = 'none';
+    }
+    function submitAddUser(e) {
+      e.preventDefault();
+      try {
+        const fullName = document.getElementById('addFullName').value.trim();
+        const username = document.getElementById('addUsername').value.trim().toLowerCase();
+        const password = document.getElementById('addPassword').value;
+        const role = document.getElementById('addRole').value;
+        const assignedPortal = document.getElementById('addPortal').value;
+        const dept = document.getElementById('addDept').value.trim() || 'Operations';
+
+        window.BalsonsSuperAdmin.createUser({
+          fullName,
+          username,
+          password,
+          role,
+          assignedPortal,
+          dept,
+          permittedPortals: [assignedPortal]
+        });
+
+        closeAddUserModal();
+        renderUserManagementTable();
+        alert(`✔ User @${username} (${fullName}) created successfully with access to ${assignedPortal.toUpperCase()} portal.`);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
+    function openEditUserModal(username) {
+      const u = window.BalsonsSuperAdmin.users.find(x => x.username.toLowerCase() === username.toLowerCase());
+      if (!u) return;
+
+      document.getElementById('editUsernameHidden').value = u.username;
+      document.getElementById('editUsernameDisplay').value = `@${u.username}`;
+      document.getElementById('editFullName').value = u.fullName;
+      document.getElementById('editRole').value = u.role;
+      document.getElementById('editPortal').value = u.assignedPortal || (u.permittedPortals && u.permittedPortals[0]) || 'gate';
+      document.getElementById('editDept').value = u.dept || '';
+      document.getElementById('editStatus').value = u.status || 'Active';
+
+      document.getElementById('editUserModal').style.display = 'flex';
+    }
+    function closeEditUserModal() {
+      document.getElementById('editUserModal').style.display = 'none';
+    }
+    function submitEditUser(e) {
+      e.preventDefault();
+      try {
+        const username = document.getElementById('editUsernameHidden').value;
+        const fullName = document.getElementById('editFullName').value;
+        const role = document.getElementById('editRole').value;
+        const assignedPortal = document.getElementById('editPortal').value;
+        const dept = document.getElementById('editDept').value;
+        const status = document.getElementById('editStatus').value;
+
+        window.BalsonsSuperAdmin.updateUser(username, {
+          fullName,
+          role,
+          assignedPortal,
+          dept,
+          status
+        });
+
+        closeEditUserModal();
+        renderUserManagementTable();
+        alert(`✔ Account @${username} updated successfully.`);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
+    function openChangePasswordModal(username) {
+      const u = window.BalsonsSuperAdmin.users.find(x => x.username.toLowerCase() === username.toLowerCase());
+      if (!u) return;
+      document.getElementById('pwUsernameHidden').value = u.username;
+      document.getElementById('pwUserDisplay').innerHTML = `<strong>${u.fullName}</strong> (@${u.username})`;
+      document.getElementById('newPassword').value = '';
+      document.getElementById('confirmPassword').value = '';
+      document.getElementById('changePasswordModal').style.display = 'flex';
+    }
+    function closeChangePasswordModal() {
+      document.getElementById('changePasswordModal').style.display = 'none';
+    }
+    function submitChangePassword(e) {
+      e.preventDefault();
+      const username = document.getElementById('pwUsernameHidden').value;
+      const p1 = document.getElementById('newPassword').value;
+      const p2 = document.getElementById('confirmPassword').value;
+      if (p1 !== p2) {
+        alert('❌ Passwords do not match. Please re-enter.');
+        return;
+      }
+      try {
+        window.BalsonsSuperAdmin.updateUserPassword(username, p1);
+        closeChangePasswordModal();
+        renderUserManagementTable();
+        alert(`✔ Password for @${username} changed successfully.`);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
+    function toggleUserStatusQuick(username) {
+      if (window.BalsonsSuperAdmin) {
+        window.BalsonsSuperAdmin.toggleUserStatus(username);
+        renderUserManagementTable();
+      }
+    }
+
+    function confirmDeleteUser(username) {
+      if (!confirm(`Are you sure you want to permanently delete user account @${username}? This action is immediate and irrevocable.`)) {
+        return;
+      }
+      try {
+        window.BalsonsSuperAdmin.deleteUser(username);
+        renderUserManagementTable();
+        alert(`✔ Account @${username} has been deleted.`);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
+    function confirmResetRoster() {
+      if (!confirm('Reset all enterprise accounts back to the standard baseline roster? Custom users will be reset.')) {
+        return;
+      }
+      window.BalsonsSuperAdmin.resetDefaultUsers();
+      renderUserManagementTable();
+      alert('✔ Ecosystem user directory reset to standard baseline.');
+    }
+  </script>
+
+</body>
+</html>

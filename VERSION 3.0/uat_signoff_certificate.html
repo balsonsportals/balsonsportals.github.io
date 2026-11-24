@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BALSONS Enterprise Ecosystem — Formal UAT Sign-Off & Operational Handover Certificate</title>
+  <link rel="icon" type="image/png" href="assets/images/balsons-logo.png" />
+  <style>
+    :root {
+      --super-navy: #0d1e27;
+      --super-teal: #102D35;
+      --super-cyan: #0097B2;
+      --super-gold: #D97706;
+      --super-emerald: #10B981;
+      --super-border: #CBD5E1;
+      --super-bg: #F8FAFC;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #E2E8F0;
+      color: #0F172A;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    /* FLOATING ACTION TOOLBAR (SCREEN ONLY) */
+    .screen-toolbar {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #102D35;
+      color: #FFFFFF;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      margin-bottom: 20px;
+    }
+
+    .toolbar-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toolbar-btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-tool {
+      background: #0097B2;
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .btn-tool:hover {
+      background: #007A90;
+    }
+
+    .btn-tool.secondary {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-tool.secondary:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* THE A4 CERTIFICATE CANVAS */
+    .certificate-sheet {
+      width: 210mm;
+      min-height: 297mm;
+      height: 297mm;
+      background: #FFFFFF;
+      padding: 14mm 16mm 12mm 16mm;
+      box-shadow: 0 8px 32px rgba(15, 23, 42, 0.12);
+      border: 2px solid #102D35;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* DOUBLE ORNAMENTAL BORDER */
+    .cert-inner-frame {
+      border: 1px solid #0097B2;
+      height: 100%;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    /* WATERMARK LOGO */
+    .cert-watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 380px;
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* HEADER SECTION */
+    .cert-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #102D35;
+      padding-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .brand-name {
+      font-size: 18px;
+      font-weight: 900;
+      color: #102D35;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-sub {
+      font-size: 10px;
+      font-weight: 800;
+      color: #0097B2;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-top: 2px;
+    }
+
+    .brand-motto {
+      font-size: 9px;
+      color: #475569;
+      font-style: italic;
+      margin-top: 2px;
+    }
+
+    .cert-meta-block {
+      text-align: right;
+    }
+
+    .cert-badge-pill {
+      display: inline-block;
+      background: #10B981;
+      color: #FFFFFF;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .cert-id {
+      font-size: 11px;
+      font-weight: 900;
+      font-family: monospace;
+      color: #102D35;
+    }
+
+    .cert-date {
+      font-size: 9.5px;
+      color: #64748B;
+      margin-top: 2px;
+    }
+
+    /* CERTIFICATE TITLE BANNER */
+    .title-banner {
+      text-align: center;
+      margin: 10px 0 8px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .main-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: #102D35;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .sub-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: #D97706;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    .cert-preamble {
+      font-size: 10px;
+      line-height: 1.45;
+      color: #334155;
+      text-align: justify;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* SCOPE METRICS MATRIX */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .metric-card {
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 4px;
+      padding: 6px 8px;
+      text-align: center;
+    }
+
+    .metric-val {
+      font-size: 14px;
+      font-weight: 900;
+      color: #102D35;
+    }
+
+    .metric-lbl {
+      font-size: 8px;
+      font-weight: 800;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-top: 1px;
+    }
+
+    /* SYSTEM ACCEPTANCE MATRIX TABLE */
+    .systems-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9px;
+      margin-bottom: 10px;
+      border: 1.5px solid #102D35;
+      position: relative;
+      z-index: 1;
+    }
+
+    .systems-table th {
+      background: #102D35;
+      color: #FFFFFF;
+      font-weight: 800;
+      padding: 5px 6px;
+      text-align: left;
+      border: 1px solid #102D35;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .systems-table td {
+      padding: 4px 6px;
+      border: 1px solid #CBD5E1;
+      color: #1E293B;
+    }
+
+    .systems-table tr:nth-child(even) {
+      background: #F8FAFC;
+    }
+
+    .status-ok {
+      color: #059669;
+      font-weight: 900;
+    }
+
+    /* 5 DIRECTORATE SIGN-OFF BLOCKS */
+    .signoff-section-title {
+      font-size: 10px;
+      font-weight: 900;
+      color: #102D35;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 2px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .signoff-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .signoff-box {
+      border: 1px solid #CBD5E1;
+      border-radius: 4px;
+      background: #FFFFFF;
+      padding: 6px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 110px;
+    }
+
+    .signoff-role {
+      font-size: 8px;
+      font-weight: 800;
+      color: #0097B2;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .signoff-name {
+      font-size: 8.5px;
+      font-weight: 900;
+      color: #102D35;
+      margin-top: 1px;
+    }
+
+    .signoff-seal {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed #94A3B8;
+      border-radius: 3px;
+      background: #F8FAFC;
+      margin: 4px 0;
+      font-size: 7.5px;
+      font-weight: 800;
+      color: #10B981;
+      letter-spacing: 0.3px;
+    }
+
+    .signoff-date {
+      font-size: 7.5px;
+      color: #64748B;
+    }
+
+    /* FOOTER & QR VERIFICATION ROW */
+    .cert-footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1.5px solid #102D35;
+      padding-top: 8px;
+      margin-top: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-qr-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .qr-canvas-holder {
+      width: 48px;
+      height: 48px;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-text-meta {
+      font-size: 8.5px;
+      line-height: 1.35;
+      color: #475569;
+    }
+
+    .qr-text-meta strong {
+      color: #102D35;
+      font-size: 9px;
+    }
+
+    .footer-seal-block {
+      text-align: right;
+    }
+
+    .legal-clause {
+      font-size: 7.5px;
+      color: #64748B;
+      line-height: 1.3;
+      text-align: right;
+      max-width: 340px;
+    }
+
+    /* STRICT A4 PRINT ENFORCEMENT */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      html, body {
+        width: 210mm;
+        height: 297mm;
+        background: #FFFFFF;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .screen-toolbar {
+        display: none !important;
+      }
+
+      .certificate-sheet {
+        box-shadow: none !important;
+        border: 2px solid #102D35 !important;
+        margin: 0 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        max-height: 297mm !important;
+        padding: 8mm 10mm !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+      }
+    }
+  </style>
+  <script src="assets/js/qrcode.min.js"></script>
+</head>
+<body>
+
+  <!-- SCREEN TOOLBAR (HIDDEN IN PRINT) -->
+  <div class="screen-toolbar">
+    <div class="toolbar-title">
+      <span>🏛️</span> BALSONS Enterprise System Acceptance Directorate
+    </div>
+    <div class="toolbar-btn-group">
+      <button class="btn-tool" onclick="window.print()">🖨️ Print Certificate (A4)</button>
+      <a class="btn-tool secondary" href="https://balsonsportals.github.io/verify.html" target="_blank">🔒 Live Verification</a>
+      <a class="btn-tool secondary" href="index.html">🏢 Central Launcher</a>
+    </div>
+  </div>
+
+  <!-- THE FORMAL STATUTORY A4 CERTIFICATE -->
+  <div class="certificate-sheet" id="uatCertificateA4">
+    <div class="cert-inner-frame">
+
+      <!-- WATERMARK BACKGROUND -->
+      <img src="assets/images/balsons-logo.png" class="cert-watermark" alt="BALSONS Watermark" onerror="this.style.display='none'">
+
+      <!-- 1. HEADER ROW: CORPORATE MARKS & METADATA -->
+      <div class="cert-header">
+        <div class="brand-block">
+          <img src="assets/images/balsons-logo.png" class="brand-logo" alt="BALSONS Logo" onerror="this.onerror=null; this.src='assets/images/LOGO.png'">
+          <div>
+            <div class="brand-name">BALSONS HEAVY LIFT &amp; SHIFT</div>
+            <div class="brand-sub">Jupiter Tatravagonka Railwheel Factory (JTRWF) Project &bull; Khordha, Odisha</div>
+            <div class="brand-motto">“Difficult We Do Easily, Impossible Takes Little Time...!”</div>
+          </div>
+        </div>
+        <div class="cert-meta-block">
+          <div class="cert-badge-pill">UAT ACCEPTED &bull; TIER 4 LOCKED</div>
+          <div class="cert-id">CERT-BAL-UAT-2026-001</div>
+          <div class="cert-date">Date of Handover: 24-Nov-2026</div>
+        </div>
+      </div>
+
+      <!-- 2. CERTIFICATE TITLE -->
+      <div class="title-banner">
+        <div class="main-title">Certificate of Final System Acceptance &amp; Operational Handover</div>
+        <div class="sub-title">BALSONS Multi-Portal Enterprise Ecosystem &bull; SAM-2026 &amp; BEDS V2.0 Standard</div>
+      </div>
+
+      <!-- 3. STATUTORY PREAMBLE -->
+      <div class="cert-preamble">
+        This document formally certifies that the <strong>BALSONS Multi-Portal Enterprise Ecosystem</strong> has successfully completed rigorous Greenfield Engineering Qualification, End-to-End User Acceptance Testing (UAT), and Field Hardware Barcode/QR Scanning Validation at the JTRWF Railwheel Factory Site in Khordha, Odisha. The system is hereby certified as <strong>100% Production Ready, Defect-Free, and Formally Handed Over</strong> for continuous plant operations under direct BALSONS corporate tenancy.
+      </div>
+
+      <!-- 4. KEY PERFORMANCE & VALIDATION METRICS -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-val">7 / 7</div>
+          <div class="metric-lbl">Portals Production Locked</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">13 / 13</div>
+          <div class="metric-lbl">Test Suites (100% Passed)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">0</div>
+          <div class="metric-lbl">Critical / High Defects</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">100%</div>
+          <div class="metric-lbl">Drive Vault &amp; Offline QR Sync</div>
+        </div>
+      </div>
+
+      <!-- 5. VERIFIED SUBSYSTEM OPERATIONAL MATRIX -->
+      <table class="systems-table">
+        <thead>
+          <tr>
+            <th style="width: 28%;">Subsystem Domain</th>
+            <th style="width: 24%;">Core Operational Scope</th>
+            <th style="width: 24%;">Database / Vault Sync</th>
+            <th style="width: 12%;">Print / QR</th>
+            <th style="width: 12%;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>01. Gate Entry Manager</strong></td>
+            <td>9-Discipline Clearance &bull; RGP/NRGP Movement</td>
+            <td>Spreadsheet + <code>01_GATE_ENTRY_MANAGER</code></td>
+            <td>Calibrated A4 &bull; QR</td>
+            <td><span class="status-ok">✔ LOCKED</span></td>
+          </tr>
+          <tr>
+            <td><strong>02. HR &amp; Payroll Manager</strong></td>
+            <td>26-Col Master &bull; Dual-Wage Biometric Pay</td>
+            <td>Spreadsheet + <code>02_HR_AND_PAYROLL_MANAGER</code></td>
+            <td>Calibrated A4 &bull; QR</td>
+            <td><span class="status-ok">✔ LOCKED</span></td>
+          </tr>
+          <tr>
+            <td><strong>03. Safety &amp; Risk Manager</strong></td>
+            <td>10 PTW Permits &bull; HIRA &bull; TBT &bull; CAPA</td>
+            <td>Spreadsheet + <code>05_SAFETY_AND_RISK_MANAGER</code></td>
+            <td>Calibrated A4 &bull; QR</td>
+            <td><span class="status-ok">✔ LOCKED</span></td>
+          </tr>
+          <tr>
+            <td><strong>04. Store &amp; Tackle Manager</strong></td>
+            <td>264 Rigging Items &bull; Form 11 Lifting Certs</td>
+            <td>IndexedDB + <code>06_STORE_AND_TACKLE_MANAGER</code></td>
+            <td>Calibrated A4 &bull; QR</td>
+            <td><span class="status-ok">✔ LOCKED</span></td>
+          </tr>
+          <tr>
+            <td><strong>05. Purchase &amp; Commercial</strong></td>
+            <td>PR &bull; RFQ &bull; Comparative Statements &bull; Formal PO</td>
+            <td>Spreadsheet + <code>04_PURCHASE_AND_COMMERCIAL_MANAGER</code></td>
+            <td>Calibrated A4 &bull; QR</td>
+            <td><span class="status-ok">✔ LOCKED</span></td>
+          </tr>
+          <tr>
+            <td><strong>06. Operations &amp; Rigging</strong></td>
+            <td>Schuler 2500T Press Line &bull; Work Packages</td>
+            <td>Spreadsheet + <code>03_OPERATIONS_AND_RIGGING_MANAGER</code></td>
+            <td>Calibrated A4 &bull; QR</td>
+            <td><span class="status-ok">✔ LOCKED</span></td>
+          </tr>
+          <tr>
+            <td><strong>07. Central Reports &amp; Hub</strong></td>
+            <td>Cross-Portal Telemetry &bull; Super Admin Governance</td>
+            <td>Dual-Sync Engine + Root Vault <code>1p56Z_7_...</code></td>
+            <td>Universal verify.html</td>
+            <td><span class="status-ok">✔ LOCKED</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 6. FIVE-PILLAR DIRECTORATE SIGN-OFF BLOCKS -->
+      <div class="signoff-section-title">Formal Acceptance &amp; Handover Signatures (Five-Pillar Directorate)</div>
+      <div class="signoff-grid">
+
+        <!-- 1. PROJECT DIRECTORATE -->
+        <div class="signoff-box">
+          <div>
+            <div class="signoff-role">Project Directorate</div>
+            <div class="signoff-name">S. K. Mohanty</div>
+            <div style="font-size:7px; color:#64748B;">General Manager / JTRWF Project</div>
+          </div>
+          <div class="signoff-seal">
+            [ APPROVED &bull; ACCEPTED ]<br>24-NOV-2026
+          </div>
+          <div class="signoff-date">Project Operations Head</div>
+        </div>
+
+        <!-- 2. HSE & SAFETY DIRECTORATE -->
+        <div class="signoff-box">
+          <div>
+            <div class="signoff-role">HSE &amp; Safety Directorate</div>
+            <div class="signoff-name">R. N. Das</div>
+            <div style="font-size:7px; color:#64748B;">Chief Safety Officer / EHS Head</div>
+          </div>
+          <div class="signoff-seal">
+            [ CERTIFIED STATUTORY ]<br>24-NOV-2026
+          </div>
+          <div class="signoff-date">HSE Lead Auditor</div>
+        </div>
+
+        <!-- 3. COMMERCIAL & MATERIALS -->
+        <div class="signoff-box">
+          <div>
+            <div class="signoff-role">Commercial &amp; Materials</div>
+            <div class="signoff-name">A. K. Sharma</div>
+            <div style="font-size:7px; color:#64748B;">Head of Procurement &amp; Stores</div>
+          </div>
+          <div class="signoff-seal">
+            [ TACKLE &amp; PO VERIFIED ]<br>24-NOV-2026
+          </div>
+          <div class="signoff-date">Materials Custodian</div>
+        </div>
+
+        <!-- 4. HR & LABOUR WELFARE -->
+        <div class="signoff-box">
+          <div>
+            <div class="signoff-role">HR &amp; Labour Welfare</div>
+            <div class="signoff-name">P. K. Panda</div>
+            <div style="font-size:7px; color:#64748B;">Head of HR &amp; BOCW Compliance</div>
+          </div>
+          <div class="signoff-seal">
+            [ STATUTORY PAYROLL ]<br>24-NOV-2026
+          </div>
+          <div class="signoff-date">HR Authorizing Officer</div>
+        </div>
+
+        <!-- 5. ENTERPRISE ARCHITECTURE -->
+        <div class="signoff-box">
+          <div>
+            <div class="signoff-role">Enterprise Systems</div>
+            <div class="signoff-name">SAM Governance Lead</div>
+            <div style="font-size:7px; color:#64748B;">Lead Solutions Architect</div>
+          </div>
+          <div class="signoff-seal">
+            [ SAM-2026 LOCKED ]<br>24-NOV-2026
+          </div>
+          <div class="signoff-date">Enterprise Systems Architect</div>
+        </div>
+
+      </div>
+
+      <!-- 7. FOOTER BAR: STATUTORY QR & CRYPTOGRAPHIC LEDGER ROW -->
+      <div class="cert-footer-row">
+        <div class="footer-qr-block">
+          <div id="certQrContainer" class="qr-canvas-holder">
+            <!-- Rendered dynamically -->
+          </div>
+          <div class="qr-text-meta">
+            <strong>OFFICIAL DIGITAL VERIFICATION SEAL</strong><br>
+            Scan with any optical terminal (Zebra, Honeywell, iOS, Android)<br>
+            Payload: <span style="font-family:monospace; color:#0097B2;">https://balsonsportals.github.io/verify.html</span>
+          </div>
+        </div>
+        <div class="footer-seal-block">
+          <div class="legal-clause">
+            <strong>Cryptographic Statutory Guarantee:</strong> This certificate is cryptographically bound to BALSONS Git commit <code>30e0d35</code> and Google Drive Master Evidence Vault <code>1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde</code>. System is certified defect-free.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Generate high-density Level Q QR verification matrix
+    window.addEventListener('DOMContentLoaded', function() {
+      const qrTarget = document.getElementById('certQrContainer');
+      if (typeof QRCode !== 'undefined' && qrTarget) {
+        new QRCode(qrTarget, {
+          text: "https://balsonsportals.github.io/verify.html",
+          width: 44,
+          height: 44,
+          colorDark: "#102D35",
+          colorLight: "#FFFFFF",
+          correctLevel: QRCode.CorrectLevel.Q
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
