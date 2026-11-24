@@ -974,6 +974,10 @@
     <button class="beds-nav-tab" data-target="view-dossier-360" data-i18n="nav_dossier">
       📄 360° Workforce Dossier
     </button>
+    <!-- Documents & Google Drive Vault Button -->
+    <button class="beds-nav-tab" id="tab-nav-documents" data-target="view-documents" onclick="BalsonsStoreApp.switchView('view-documents')" style="font-weight: 800; color: #008080;" title="Open Official Documents & Google Drive Vault">
+      📁 Documents &amp; Drive Vault
+    </button>
   </nav>
 
   <!-- Mobile Swipeable Quick-Pill Bar (Smartphone & Tablet Optimized) -->
@@ -1465,6 +1469,15 @@
       </div>
     </div>
 
+  
+    <!-- ======================================================== -->
+    <!-- VIEW 10: OFFICIAL DOCUMENTS & GOOGLE DRIVE VAULT          -->
+    <!-- ======================================================== -->
+    <div id="view-documents" class="beds-view-panel">
+      <section id="tab-documents" class="section-view">
+        <!-- Injected dynamically by BalsonsDocs.renderDocumentsTab('tab-documents') -->
+      </section>
+    </div>
   </main>
 
   <!-- ======================================================== -->

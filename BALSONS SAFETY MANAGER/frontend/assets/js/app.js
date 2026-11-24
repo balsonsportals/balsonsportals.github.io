@@ -208,6 +208,11 @@ const BalsonsSafetyApp = {
 
     // Load module-specific data
     switch (viewId) {
+      case 'view-documents':
+        if (window.BalsonsDocs) {
+          window.BalsonsDocs.renderDocumentsTab('tab-documents');
+        }
+        break;
       case 'view-dashboard':
         this.loadDashboardData();
         break;
@@ -2986,5 +2991,14 @@ window.BalsonsPortalSync = {
 window.syncWithLiveSafetyDb = async function() {
   if (window.BalsonsSafetyApp && typeof window.BalsonsSafetyApp.syncWithLiveSafetyDb === 'function') {
     await window.BalsonsSafetyApp.syncWithLiveSafetyDb(true);
+  }
+};
+
+// Universal switchTab bridge for document vault & cross-portal workflows
+window.switchTab = function(tabId) {
+  if (tabId === 'documents' || tabId === 'tab-documents' || tabId === 'view-documents') {
+    if (window.BalsonsSafetyApp && window.BalsonsSafetyApp.switchView) {
+      window.BalsonsSafetyApp.switchView('view-documents');
+    }
   }
 };

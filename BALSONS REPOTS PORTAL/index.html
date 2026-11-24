@@ -266,6 +266,11 @@
         </tr>
       </table>
     </div>
+  
+    <!-- GOOGLE DRIVE DOCUMENTS & GOVERNANCE VAULT -->
+    <div class="card" style="margin-top:20px; padding:0; overflow:hidden;">
+      <div id="tab-documents"></div>
+    </div>
   </main>
 
   <!-- ENTERPRISE FOOTER -->
@@ -292,6 +297,9 @@
     document.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem('beds-theme') === 'dark') {
         document.body.classList.add('dark-theme');
+      }
+      if (window.BalsonsDocs) {
+        window.BalsonsDocs.renderDocumentsTab('tab-documents');
       }
       if (window.BalsonsSAMAuth) {
         BalsonsSAMAuth.renderGlobalSuperAdminBar('reports', () => window.location.reload());

@@ -301,6 +301,10 @@ const BalsonsStoreApp = {
       this.render360DossierPage();
     }
 
+    if (viewId === 'view-documents' && window.BalsonsDocs) {
+      window.BalsonsDocs.renderDocumentsTab('tab-documents');
+    }
+
     BalsonsStoreI18n.applyTranslations();
   },
 
@@ -1573,6 +1577,15 @@ window.BalsonsPortalSync = {
       await window.BalsonsStoreApi.syncWithLiveDb();
     } else if (window.BalsonsStoreApp && typeof window.BalsonsStoreApp.refreshData === 'function') {
       await window.BalsonsStoreApp.refreshData();
+    }
+  }
+};
+
+// Universal switchTab bridge for document vault & cross-portal workflows
+window.switchTab = function(tabId) {
+  if (tabId === 'documents' || tabId === 'tab-documents' || tabId === 'view-documents') {
+    if (window.BalsonsStoreApp && window.BalsonsStoreApp.switchView) {
+      window.BalsonsStoreApp.switchView('view-documents');
     }
   }
 };

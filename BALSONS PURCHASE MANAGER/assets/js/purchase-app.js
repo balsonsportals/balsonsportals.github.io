@@ -199,6 +199,9 @@ const BalsonsPurchaseApp = {
     if (btn) btn.classList.add('active');
     if (pane) pane.classList.add('active');
 
+    if (tabKey === 'docs' && window.BalsonsDocs) {
+      window.BalsonsDocs.renderDocumentsTab('tab-documents');
+    }
     localStorage.setItem('balsons_purchase_active_tab', tabKey);
   },
 
@@ -1285,6 +1288,15 @@ window.BalsonsPortalSync = {
   reload: async function() {
     if (window.BalsonsPurchaseApp && typeof window.BalsonsPurchaseApp.autoSyncWithCloud === 'function') {
       await window.BalsonsPurchaseApp.autoSyncWithCloud();
+    }
+  }
+};
+
+// Universal switchTab bridge for document vault & cross-portal workflows
+window.switchTab = function(tabId) {
+  if (tabId === 'documents' || tabId === 'docs' || tabId === 'tab-documents') {
+    if (window.BalsonsPurchaseApp && window.BalsonsPurchaseApp.switchTab) {
+      window.BalsonsPurchaseApp.switchTab('docs');
     }
   }
 };

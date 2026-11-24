@@ -1384,6 +1384,10 @@
     <button class="beds-nav-tab" onclick="Balsons360Dossier.openModal()" style="font-weight: 800; color: #0097B2; background: rgba(0, 151, 178, 0.08); border-left: 2px solid #0097B2;" title="Open 360° Safety Dossiers for Workforce, Permits, Equipment, Areas, Incidents & TBTs">
       🌐 360° Safety Dossiers
     </button>
+    <!-- Documents & Google Drive Vault Button -->
+    <button class="beds-nav-tab" id="tab-nav-documents" data-target="view-documents" onclick="BalsonsSafetyApp.switchView('view-documents')" style="font-weight: 800; color: #008080;" title="Open Official Documents & Google Drive Vault">
+      📁 Documents &amp; Drive Vault
+    </button>
   </nav>
 
   <!-- Mobile Swipeable Quick-Pill Bar (Smartphone & Tablet Optimized) -->
@@ -2151,6 +2155,15 @@
       </div>
     </div>
 
+  
+    <!-- ======================================================== -->
+    <!-- VIEW 16: OFFICIAL DOCUMENTS & GOOGLE DRIVE VAULT          -->
+    <!-- ======================================================== -->
+    <div id="view-documents" class="beds-view-panel">
+      <section id="tab-documents" class="section-view">
+        <!-- Injected dynamically by BalsonsDocs.renderDocumentsTab('tab-documents') -->
+      </section>
+    </div>
   </main>
 
   <!-- ======================================================== -->

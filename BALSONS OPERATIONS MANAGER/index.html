@@ -1247,6 +1247,9 @@
       <button class="nav-tab-btn" onclick="switchTab('tab-holds', this)">
         ⚠️ Site Holds & Bottlenecks (4 Active)
       </button>
+      <button class="nav-tab-btn" id="tab-btn-documents" onclick="switchTab('tab-documents', this)">
+        📁 Documents &amp; Drive Vault
+      </button>
     </div>
   </nav>
 
@@ -1917,6 +1920,13 @@
       </div>
     </div>
 
+  
+    <!-- ========================================== -->
+    <!-- TAB 9: DOCUMENTS & GOOGLE DRIVE VAULT      -->
+    <!-- ========================================== -->
+    <div id="tab-documents" class="tab-pane">
+      <!-- Populated dynamically by BalsonsDocs.renderDocumentsTab('tab-documents') -->
+    </div>
   </main>
 
   <!-- ========================================== -->

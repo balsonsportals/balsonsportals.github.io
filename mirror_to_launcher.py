@@ -9,6 +9,7 @@ files_to_mirror = [
     ("BALSONS SAFETY MANAGER/frontend/assets/js/app.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS SAFETY MANAGER/frontend/assets/js/app.js"),
     ("BALSONS SAFETY MANAGER/frontend/assets/js/dossier-360.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS SAFETY MANAGER/frontend/assets/js/dossier-360.js"),
     ("BALSONS SAFETY MANAGER/frontend/assets/js/beds-workspace.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS SAFETY MANAGER/frontend/assets/js/beds-workspace.js"),
+    ("BALSONS SAFETY MANAGER/frontend/assets/js/balsons-docs-manager.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS SAFETY MANAGER/frontend/assets/js/balsons-docs-manager.js"),
     ("BALSONS SAFETY MANAGER/frontend/index.html", "BALSONS ENTERPRISE LAUNCHER/BALSONS SAFETY MANAGER/frontend/index.html"),
 
     # Store Manager
@@ -19,31 +20,42 @@ files_to_mirror = [
     ("BALSONS STORE MANAGER/frontend/assets/js/qrcode.min.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/assets/js/qrcode.min.js"),
     ("BALSONS STORE MANAGER/frontend/assets/js/tool-data.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/assets/js/tool-data.js"),
     ("BALSONS STORE MANAGER/frontend/assets/js/beds-workspace.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/assets/js/beds-workspace.js"),
+    ("BALSONS STORE MANAGER/frontend/assets/js/balsons-docs-manager.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/assets/js/balsons-docs-manager.js"),
     ("BALSONS STORE MANAGER/frontend/index.html", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/index.html"),
 
     # HR Manager
     ("BALSONS HR MANAGER/frontend/index.html", "BALSONS ENTERPRISE LAUNCHER/BALSONS HR MANAGER/frontend/index.html"),
     ("BALSONS HR MANAGER/frontend/assets/js/beds-workspace.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS HR MANAGER/frontend/assets/js/beds-workspace.js"),
+    ("BALSONS HR MANAGER/frontend/assets/js/balsons-docs-manager.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS HR MANAGER/frontend/assets/js/balsons-docs-manager.js"),
 
     # Gate Entry Manager
     ("BALSONS GATE ENTRY MANAGER/frontend/index.html", "BALSONS ENTERPRISE LAUNCHER/BALSONS GATE ENTRY MANAGER/frontend/index.html"),
     ("BALSONS GATE ENTRY MANAGER/frontend/assets/js/beds-workspace.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS GATE ENTRY MANAGER/frontend/assets/js/beds-workspace.js"),
+    ("BALSONS GATE ENTRY MANAGER/frontend/assets/js/balsons-docs-manager.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS GATE ENTRY MANAGER/frontend/assets/js/balsons-docs-manager.js"),
 
     # Purchase Manager
     ("BALSONS PURCHASE MANAGER/index.html", "BALSONS ENTERPRISE LAUNCHER/BALSONS PURCHASE MANAGER/index.html"),
     ("BALSONS PURCHASE MANAGER/assets/js/purchase-app.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS PURCHASE MANAGER/assets/js/purchase-app.js"),
     ("BALSONS PURCHASE MANAGER/assets/js/qrcode.min.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS PURCHASE MANAGER/assets/js/qrcode.min.js"),
     ("BALSONS PURCHASE MANAGER/assets/js/beds-workspace.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS PURCHASE MANAGER/assets/js/beds-workspace.js"),
+    ("BALSONS PURCHASE MANAGER/assets/js/balsons-docs-manager.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS PURCHASE MANAGER/assets/js/balsons-docs-manager.js"),
 
     # Operations Manager
     ("BALSONS OPERATIONS MANAGER/index.html", "BALSONS ENTERPRISE LAUNCHER/BALSONS OPERATIONS MANAGER/index.html"),
     ("BALSONS OPERATIONS MANAGER/assets/js/operations-app.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS OPERATIONS MANAGER/assets/js/operations-app.js"),
     ("BALSONS OPERATIONS MANAGER/assets/js/qrcode.min.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS OPERATIONS MANAGER/assets/js/qrcode.min.js"),
     ("BALSONS OPERATIONS MANAGER/assets/js/beds-workspace.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS OPERATIONS MANAGER/assets/js/beds-workspace.js"),
+    ("BALSONS OPERATIONS MANAGER/assets/js/balsons-docs-manager.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS OPERATIONS MANAGER/assets/js/balsons-docs-manager.js"),
 
-    # Central beds-workspace
+    # Reports Portal
+    ("BALSONS REPOTS PORTAL/index.html", "BALSONS ENTERPRISE LAUNCHER/BALSONS REPOTS PORTAL/index.html"),
+    ("BALSONS REPOTS PORTAL/assets/js/balsons-docs-manager.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS REPOTS PORTAL/assets/js/balsons-docs-manager.js"),
+
+    # Central Libraries & Maps
+    ("assets/js/balsons-docs-manager.js", "BALSONS ENTERPRISE LAUNCHER/assets/js/balsons-docs-manager.js"),
     ("assets/js/beds-workspace.js", "BALSONS ENTERPRISE LAUNCHER/assets/js/beds-workspace.js"),
     ("assets/js/beds-workspace.js", "docs/assets/js/beds-workspace.js"),
+    ("docs/specifications/balsons_drive_folder_map.json", "BALSONS ENTERPRISE LAUNCHER/docs/specifications/balsons_drive_folder_map.json"),
 
     # Verification Portal
     ("verify.html", "BALSONS ENTERPRISE LAUNCHER/verify.html"),
