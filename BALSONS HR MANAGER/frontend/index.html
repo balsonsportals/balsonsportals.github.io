@@ -4326,6 +4326,20 @@
           res = await response.json();
         }
 
+        
+        // Direct Live Google Sheet Fallback via Gviz
+        if ((!res || !res.success || !res.data || !res.data.employees || res.data.employees.length === 0) &&
+            window.BalsonsWorkspace && typeof window.BalsonsWorkspace.fetchSheetData === 'function') {
+          try {
+            const sheetRows = await window.BalsonsWorkspace.fetchSheetData('1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw', 'EMPLOYEE_MASTER');
+            if (sheetRows && sheetRows.length > 0) {
+              res = { success: true, data: { employees: sheetRows } };
+            }
+          } catch(e) {
+            console.warn('[HrSync] Gviz direct fallback note:', e);
+          }
+        }
+
         if (res && res.success && res.data && Array.isArray(res.data.employees) && res.data.employees.length > 0) {
           const dbEmployees = res.data.employees;
           
@@ -4445,6 +4459,16 @@
         if (syncIcon) syncIcon.style.animation = 'none';
       }
     }
+
+// Global Dual-Sync Wire for BEDS Auto-Reload Sync Engine
+window.BalsonsPortalSync = {
+  reload: async function() {
+    if (typeof syncWithHrDatabase === 'function') {
+      await syncWithHrDatabase(true);
+    }
+  }
+};
+
 
     // Global Print Mode Automator
     window.addEventListener('beforeprint', () => {

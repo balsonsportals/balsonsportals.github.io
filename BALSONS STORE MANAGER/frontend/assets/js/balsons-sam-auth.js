@@ -877,8 +877,9 @@
       // Policy notice is strictly preserved on the Admin Login Screen only.
       const existing = document.getElementById("sam-global-topbar");
       if (existing) existing.remove();
-      const existingBeds = document.getElementById("beds-enterprise-topbar");
-      if (existingBeds) existingBeds.remove();
+      // Preserving beds-enterprise-topbar for live DB sync pill & countdown
+      // const existingBeds = document.getElementById("beds-enterprise-topbar");
+      // if (existingBeds) existingBeds.remove();
       // Enforce access permission for this portal
       this.enforceAccess(currentPortalId);
       if (typeof onSessionChanged === 'function') {

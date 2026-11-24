@@ -224,7 +224,7 @@ const BalsonsPurchaseApp = {
         </td>
         <td>${pr.date}</td>
         <td>
-          <strong>${pr.requester.split('(')[0]}</strong><br>
+          <strong>${(pr.requester || 'User').split('(')[0]}</strong><br>
           <small style="color:var(--beds-text-muted);">${pr.dept}</small>
         </td>
         <td>
@@ -289,7 +289,7 @@ const BalsonsPurchaseApp = {
         <td><strong style="color:var(--super-cyan);">${cs.id}</strong></td>
         <td><span class="tag-chip tag-purple">${cs.rfqId}</span></td>
         <td>${cs.evalDate}</td>
-        <td>${cs.evaluator.split('(')[0]}</td>
+        <td>${(cs.evaluator || 'Dilip Rout').split('(')[0]}</td>
         <td>
           <strong style="color:#059669;">👑 ${cs.l1Vendor}</strong><br>
           <small style="color:var(--beds-text-muted);">L1 Technically Qualified</small>
@@ -746,13 +746,23 @@ const BalsonsPurchaseApp = {
 
   restoreUserSession: function () {
     try {
-      const raw = localStorage.getItem('balsons_purchase_user') || localStorage.getItem('balsons_global_auth_session');
+      const raw = localStorage.getItem('balsons_purchase_user');
       if (raw) {
         this.currentUser = JSON.parse(raw);
       } else {
-        this.currentUser = { username: 'admin.purchase', name: 'Gagan Bihari Das', role: 'Procurement Lead', pin: '4001' };
+        const globalAuth = localStorage.getItem('balsons_global_auth_session');
+        const parsed = globalAuth ? JSON.parse(globalAuth) : null;
+        this.currentUser = {
+          username: parsed ? (parsed.username || 'admin.purchase') : 'admin.purchase',
+          name: parsed ? (parsed.name || parsed.role || 'Gagan Bihari Das') : 'Gagan Bihari Das',
+          role: parsed ? (parsed.role || 'Procurement Lead') : 'Procurement Lead',
+          pin: '4001'
+        };
       }
     } catch (e) {
+      this.currentUser = { username: 'admin.purchase', name: 'Gagan Bihari Das', role: 'Procurement Lead', pin: '4001' };
+    }
+    if (!this.currentUser || !this.currentUser.name) {
       this.currentUser = { username: 'admin.purchase', name: 'Gagan Bihari Das', role: 'Procurement Lead', pin: '4001' };
     }
     this.updateUserBadge();
@@ -761,7 +771,8 @@ const BalsonsPurchaseApp = {
   updateUserBadge: function () {
     const badge = document.getElementById('activeUserBadge');
     if (badge && this.currentUser) {
-      badge.textContent = `👤 ${this.currentUser.name.split(' ')[0]} (${this.currentUser.pin})`;
+      const uName = (this.currentUser && this.currentUser.name) ? this.currentUser.name : 'Gagan Bihari Das';
+      badge.textContent = `👤 ${uName.split(' ')[0]} (${this.currentUser ? this.currentUser.pin : '4001'})`;
     }
   },
 
@@ -792,6 +803,34 @@ const BalsonsPurchaseApp = {
         }).catch(() => {});
       }
     } catch (e) {}
+
+    
+    // Direct Live Google Sheet Query via Gviz
+    if (window.BalsonsWorkspace && typeof window.BalsonsWorkspace.fetchSheetData === 'function') {
+      try {
+        const prRows = await window.BalsonsWorkspace.fetchSheetData(this.SHEET_ID, 'PR_HEADER');
+        if (prRows && prRows.length > 0) {
+          this.data.prs = prRows.map(r => ({
+            id: r.PR_ID || r.id,
+            displayNo: r.DisplayNo || r.displayNo || r.PR_ID,
+            date: r.Date || r.date || '2026-11-20',
+            requester: r.Requester || r.requester,
+            dept: r.Department || r.dept,
+            costCenter: r.CostCenter || r.costCenter,
+            purpose: r.Purpose || r.purpose,
+            linesCount: Number(r.LinesCount || r.linesCount) || 1,
+            estValue: Number(r.EstValue || r.estValue) || 100000,
+            status: r.Status || r.status || 'SUBMITTED',
+            priority: r.Priority || r.priority || 'MEDIUM',
+            needBy: r.NeedBy || r.needBy || '2026-12-10'
+          }));
+          this.renderPRTable();
+          this.renderSummaryMetrics();
+        }
+      } catch (e) {
+        console.warn('[PurchaseLiveSync] Gviz direct fallback note:', e);
+      }
+    }
 
     setTimeout(() => {
       if (syncBadge) {
@@ -838,3 +877,13 @@ function toggleTheme() {
 document.addEventListener('DOMContentLoaded', () => {
   BalsonsPurchaseApp.init();
 });
+
+
+// Global Dual-Sync Wire for BEDS Auto-Reload Sync Engine
+window.BalsonsPortalSync = {
+  reload: async function() {
+    if (window.BalsonsPurchaseApp && typeof window.BalsonsPurchaseApp.autoSyncWithCloud === 'function') {
+      await window.BalsonsPurchaseApp.autoSyncWithCloud();
+    }
+  }
+};

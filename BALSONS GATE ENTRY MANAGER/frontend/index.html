@@ -6404,6 +6404,16 @@ Bay: ${item.targetArea}`);
     }
   });
 
+
+// Global Dual-Sync Wire for BEDS Auto-Reload Sync Engine
+window.BalsonsPortalSync = {
+  reload: async function() {
+    if (typeof syncWithGateDatabase === 'function') {
+      await syncWithGateDatabase(true);
+    }
+  }
+};
+
 </script>
 </body>
 </html>

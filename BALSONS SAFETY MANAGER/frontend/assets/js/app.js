@@ -20,10 +20,16 @@ const BalsonsSafetyApp = {
     this.initAuth();
     this.initNavigation();
     this.initLanguage();
-    this.initModals();
-    await this.syncWithLiveSafetyDb(false);
+        this.initModals();
+    // Instant zero-latency render of database permits on startup
+    if (window.BalsonsSafetyApi && window.BalsonsSafetyApi._localStore && Array.isArray(window.BalsonsSafetyApi._localStore.permits)) {
+      this.cachedPermits = window.BalsonsSafetyApi._localStore.permits;
+      this.renderPermitRows(this.cachedPermits, 'ptw-table-body');
+      this.renderPermitRows(this.cachedPermits, 'dash-active-permits-body');
+    }
     this.renderAreaOptions();
     this.renderTemplateOptions();
+    await this.syncWithLiveSafetyDb(false);
   },
 
   // ==========================================
@@ -2830,6 +2836,41 @@ const BalsonsSafetyApp = {
         this.cachedCapas = capaRes.value.data.capas;
       }
 
+      
+      // Direct Live Google Sheet Fallback via Gviz
+      if (livePermits.length === 0 && window.BalsonsWorkspace && typeof window.BalsonsWorkspace.fetchSheetData === 'function') {
+        try {
+          const sheetRows = await window.BalsonsWorkspace.fetchSheetData('1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0', 'PTW_REGISTER');
+          if (sheetRows && sheetRows.length > 0) {
+            livePermits = sheetRows.map(r => ({
+              PermitID: r.PermitID || r.PermitId || 'PTW-GEN',
+              TemplateCode: r.TemplateCode || 'PTW-GEN',
+              Category: r.Category || (r.TemplateCode === 'PTW-HOT' ? 'HOT WORK' : r.TemplateCode === 'PTW-SPEC' ? 'SPECIAL / HIGH-RISK' : 'GENERAL'),
+              AreaCode: r.AreaCode || 'AREA-01',
+              WorkDescription: r.WorkDescription || 'Work under Permit',
+              Contractor: r.Contractor || 'BALSONS HEAVY LIFT & SHIFT',
+              SupervisorID: r.SupervisorID || 'Ramesh Kumar',
+              PlannedStart: r.PlannedStart || new Date().toISOString(),
+              PlannedEnd: r.PlannedEnd || new Date().toISOString(),
+              RiskLevel: r.RiskLevel || 'MEDIUM',
+              Status: r.Status || 'ISSUED',
+              IssuedTimestamp: r.IssuedTimestamp || '',
+              ClosedTimestamp: r.ClosedTimestamp || ''
+            }));
+            BalsonsSafetyApi._localStore.permits = livePermits;
+            this.cachedPermits = livePermits;
+          }
+        } catch (e) {
+          console.warn('[SafetyLiveSync] Gviz direct fallback exception:', e);
+        }
+      }
+
+      // Universal Table Refresh - Render both tables immediately
+      if (this.cachedPermits && this.cachedPermits.length > 0) {
+        this.renderPermitRows(this.cachedPermits, 'ptw-table-body');
+        this.renderPermitRows(this.cachedPermits, 'dash-active-permits-body');
+      }
+
       // Update Live DB Status Pill
       const totalPermits = (BalsonsSafetyApi._localStore.permits || []).length;
       if (syncText) syncText.textContent = `Live DB Synced (${totalPermits})`;
@@ -2858,3 +2899,18 @@ const BalsonsSafetyApp = {
 };
 
 window.BalsonsSafetyApp = BalsonsSafetyApp;
+
+
+// Global Dual-Sync Wire for BEDS Auto-Reload Sync Engine
+window.BalsonsPortalSync = {
+  reload: async function() {
+    if (window.BalsonsSafetyApp && typeof window.BalsonsSafetyApp.syncWithLiveSafetyDb === 'function') {
+      await window.BalsonsSafetyApp.syncWithLiveSafetyDb(false);
+    }
+  }
+};
+window.syncWithLiveSafetyDb = async function() {
+  if (window.BalsonsSafetyApp && typeof window.BalsonsSafetyApp.syncWithLiveSafetyDb === 'function') {
+    await window.BalsonsSafetyApp.syncWithLiveSafetyDb(true);
+  }
+};

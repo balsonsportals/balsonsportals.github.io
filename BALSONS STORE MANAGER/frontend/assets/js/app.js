@@ -184,6 +184,7 @@ const BalsonsStoreApp = {
   refreshData: async function() {
     this.loadData();
     this.renderAll();
+    if (window.BalsonsStoreApi && typeof BalsonsStoreApi.syncWithLiveDb === 'function') { setTimeout(() => BalsonsStoreApi.syncWithLiveDb(), 500); }
     console.log('🔄 BalsonsStoreApp data refreshed from dedicated store registers');
   },
 
@@ -1462,6 +1463,18 @@ window.handleStoreLogin = function(e) {
     if (errEl) {
       errEl.textContent = res ? res.message : 'Invalid credentials';
       errEl.style.display = 'block';
+    }
+  }
+};
+
+
+// Global Dual-Sync Wire for BEDS Auto-Reload Sync Engine
+window.BalsonsPortalSync = {
+  reload: async function() {
+    if (window.BalsonsStoreApi && typeof window.BalsonsStoreApi.syncWithLiveDb === 'function') {
+      await window.BalsonsStoreApi.syncWithLiveDb();
+    } else if (window.BalsonsStoreApp && typeof window.BalsonsStoreApp.refreshData === 'function') {
+      await window.BalsonsStoreApp.refreshData();
     }
   }
 };

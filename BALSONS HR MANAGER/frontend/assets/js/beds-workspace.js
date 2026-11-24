@@ -1,8 +1,9 @@
 /**
- * BALSONS ENTERPRISE WORKSPACE CONTROLLER (BEDS V1.0)
+ * BALSONS ENTERPRISE WORKSPACE CONTROLLER (BEDS V2.0)
  * Universal Department Switcher, Dedicated Dual-Sync Google Sheet Engine, 
+ * Scheduled Auto-Reload Bi-Directional Parity Engine,
  * & Global Super Administrator Access Governance Integration (Policy V1.0)
- * Applicable to all BALSONS operational portals (Safety, HR, Gate Entry, Store, Launcher)
+ * Applicable to all BALSONS operational portals (Safety, HR, Gate Entry, Store, Purchase, Operations, Launcher)
  */
 
 (function() {
@@ -10,32 +11,38 @@
     'store': {
       id: '1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ',
       name: 'Store',
-      fullName: 'Store & Heavy Rigging Inventory Master'
+      fullName: 'Store & Heavy Rigging Inventory Master',
+      scriptUrl: 'https://script.google.com/macros/s/AKfycbyT6wmujgCq92wK1qUtiZLCTiajMfD8gXlmAoz1iJwDE92JStSTt0o80QX-7pRgI27u/exec'
     },
     'safety': {
       id: '1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0',
       name: 'Safety',
-      fullName: 'Safety, EHS & PTW Governance'
+      fullName: 'Safety, EHS & PTW Governance',
+      scriptUrl: 'https://script.google.com/macros/s/AKfycbwgutbfm18PJPhsj_3-0C9Kt5AeaLqvGzoP8RMPab6ESzfm5SBkEPf8YslN8tJhOZJL/exec'
     },
     'hr': {
       id: '1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw',
       name: 'HR',
-      fullName: 'HR & Dual-Wage Payroll Master'
+      fullName: 'HR & Dual-Wage Payroll Master',
+      scriptUrl: 'https://script.google.com/macros/s/AKfycbyNreoI0QmRsiPgIBbJSh8YUjZCBa5f4E2UpsG3y03fcdcyUV_u76ZTCAcKfmAuXOWFmw/exec'
     },
     'gate': {
-      id: '1emZvUYjT-hTduELE4lSboVCtndFfGQ8KC2elpQ6Em9TF4RW6d2VF75J-',
+      id: '1yAuZOXc8WoC2TvTvnEWMrOyLl_50BRuJgDed_pdFT3o',
       name: 'Gate',
-      fullName: 'Gate Entry & Turnstile Access Master'
+      fullName: 'Gate Entry & Turnstile Access Master',
+      scriptUrl: 'https://script.google.com/macros/s/AKfycbzqG6THkjhA-8324dOg9cbMAc3IWCZdmp9sT6zTdPINUWAgB0cOm4H4TFCWprYmT9lXNg/exec'
     },
     'operations': {
       id: '1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E',
       name: 'Operations',
-      fullName: 'Operations Erection & Heavy Lift Master'
+      fullName: 'Operations Erection & Heavy Lift Master',
+      scriptUrl: 'https://script.google.com/macros/s/1an3LeD6Ich14qtWZ5GFgJMaa3dYQSboZRwFy9g_gf9zWicPDB9KpFNny/exec'
     },
     'purchase': {
-      id: '1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ',
+      id: '1ANnu4X2dR0EITq5RvkyfMv1Xfz30Ba26IKjc40uyj_c',
       name: 'Purchase',
-      fullName: 'Commercial Procurement & Vendor Master'
+      fullName: 'Commercial Procurement & Vendor Master',
+      scriptUrl: 'https://script.google.com/macros/s/1BPmt-vDa-pBy07quE1wq7FY6kq8VnQJPUNIx1GrlSBD5UO9v3FflrZZN/exec'
     },
     'reports': {
       id: '1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ',
@@ -62,6 +69,10 @@
 
   const BalsonsWorkspace = {
     isDualSyncing: false,
+    autoSyncIntervalSeconds: 30,
+    autoSyncCountdown: 30,
+    autoSyncTimerId: null,
+    OUTBOX_STORAGE_KEY: 'beds_pending_mutations_queue',
 
     init: function() {
       this.injectEnterpriseTopbar();
@@ -69,7 +80,8 @@
       this.injectToastContainer();
       this.bindGlobalEvents();
       this.updateAuthorityDisplay();
-      console.log('✅ BALSONS Enterprise Workspace, Dual-Sync Engine & Authority Governance Initialized');
+      this.initScheduledAutoReload();
+      console.log('✅ BALSONS Enterprise Workspace, Scheduled Bi-Directional Auto-Reload Dual-Sync Engine Initialized');
     },
 
     getRootPrefix: function() {
@@ -148,52 +160,24 @@
         container.innerHTML = `
           <span>👑</span>
           <span><strong>SUPER ADMINISTRATOR</strong> · ALL PORTALS · ALL DATA · COMPLETE CONTROL</span>
-          <span style="font-size: 9px; background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 4px; margin-left: 2px;">GOVERNANCE ▾</span>
-        `;
-      } else if (user.role.includes('Director') || user.role.includes('Management')) {
-        container.className = 'beds-topbar-authority management';
-        container.title = 'Management Role: Assigned Portals Only';
-        container.innerHTML = `
-          <span>🏛️</span>
-          <span><strong>MANAGEMENT</strong> · ASSIGNED PORTALS</span>
-          <span style="font-size: 9px; background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 4px; margin-left: 2px;">SWITCH ▾</span>
-        `;
-      } else if (user.role.includes('Administrator')) {
-        container.className = 'beds-topbar-authority portaladmin';
-        container.title = 'Portal Administrator: Assigned Portal Authority Only';
-        container.innerHTML = `
-          <span>⚙️</span>
-          <span><strong>PORTAL ADMIN</strong> [${(user.assignedPortal || 'PORTAL').toUpperCase()}]</span>
-          <span style="font-size: 9px; background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 4px; margin-left: 2px;">SWITCH ▾</span>
         `;
       } else {
-        container.className = 'beds-topbar-authority employee';
-        container.title = `${user.role}: Assigned Scope Only`;
+        const role = user.role || 'GUEST';
+        const roleName = user.roleName || 'Portal Operator';
+        const dept = user.department || 'General';
+        container.className = 'beds-topbar-authority';
+        container.title = `Current Access: ${role} (${dept}). Click to switch role.`;
         container.innerHTML = `
-          <span>${user.avatar || '👤'}</span>
-          <span><strong>${user.role.toUpperCase()}</strong> · ASSIGNED SCOPE</span>
-          <span style="font-size: 9px; background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 4px; margin-left: 2px;">SWITCH ▾</span>
+          <span>🛡️</span>
+          <span><strong>${role}</strong> · ${roleName} (${dept})</span>
         `;
-      }
-
-      // Also update header user profile if it exists on page
-      const headerUserDisplay = document.getElementById('header-user-display');
-      const headerRoleBadge = document.getElementById('header-role-badge');
-      if (headerUserDisplay) headerUserDisplay.innerText = user.fullName;
-      if (headerRoleBadge) {
-        headerRoleBadge.innerText = user.role;
-        headerRoleBadge.className = 'role-badge ' + (isSuper ? 'role-SuperAdmin' : 'role-' + user.role.replace(/[^a-zA-Z]/g, ''));
       }
     },
 
     injectEnterpriseTopbar: function() {
-      const existing = document.getElementById('beds-enterprise-topbar');
-      if (existing) existing.remove();
-      // Suppress redundant second topbar to keep clean executive master header
-      return;
+      if (document.getElementById('beds-enterprise-topbar')) return;
 
       const currentPortal = this.getCurrentPortalCode();
-      const prefix = this.getRootPrefix();
       const db = this.getCurrentPortalDb();
       const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/' + db.id + '/edit';
 
@@ -249,8 +233,9 @@
             <span class="pulse-dot"></span>
             <span class="sync-text">${db.name} DB Sync: <strong>LIVE</strong></span>
             <span class="sheet-id-chip" style="font-family: monospace; font-size: 9.5px; opacity: 0.85;">${db.id.substring(0, 8)}...</span>
+            <span class="auto-sync-chip" id="bedsAutoSyncChip" style="font-size: 9.5px; background: rgba(0,0,0,0.25); padding: 1.5px 5px; border-radius: 3px; font-weight: 700; margin-left: 4px;">Auto: 30s</span>
           </a>
-          <button class="beds-topbar-sync-btn" onclick="BalsonsWorkspace.triggerDualSync()" type="button" title="Force Bi-Directional Dual Sync for ${db.name}">
+          <button class="beds-topbar-sync-btn" onclick="BalsonsWorkspace.triggerDualSync(false)" type="button" title="Force Immediate Bi-Directional Dual Sync for ${db.name}">
             ⚡ Sync ${db.name} Database
           </button>
         </div>
@@ -306,7 +291,6 @@
           </div>
 
           <div class="beds-drawer-body">
-            <!-- Authority & Governance Controls in Mobile Drawer -->
             <div>
               <div class="beds-drawer-group-title">👑 Authority & Governance</div>
               <div style="display: flex; flex-direction: column; gap: 6px;">
@@ -321,11 +305,10 @@
               </div>
             </div>
 
-            <!-- Quick Actions -->
             <div>
               <div class="beds-drawer-group-title">⚡ Quick Access</div>
               <div style="display: flex; flex-direction: column; gap: 6px;">
-                <button class="beds-drawer-nav-item" onclick="BalsonsWorkspace.triggerDualSync(); BalsonsWorkspace.closeMobileDrawer();" style="background: rgba(16, 185, 129, 0.1); color: #059669; border-color: rgba(16, 185, 129, 0.3);">
+                <button class="beds-drawer-nav-item" onclick="BalsonsWorkspace.triggerDualSync(false); BalsonsWorkspace.closeMobileDrawer();" style="background: rgba(16, 185, 129, 0.1); color: #059669; border-color: rgba(16, 185, 129, 0.3);">
                   <span>⚡</span>
                   <strong>Dual-Sync ${db.name} DB Now</strong>
                 </button>
@@ -336,15 +319,11 @@
               </div>
             </div>
 
-            <!-- Portal Navigation Items -->
             <div id="drawer-dynamic-nav-container">
               <div class="beds-drawer-group-title">📑 Portal Navigation Modules</div>
-              <div id="drawer-dynamic-links" style="display: flex; flex-direction: column; gap: 4px;">
-                <!-- Populated dynamically from current page navigation -->
-              </div>
+              <div id="drawer-dynamic-links" style="display: flex; flex-direction: column; gap: 4px;"></div>
             </div>
 
-            <!-- Department Switcher -->
             <div>
               <div class="beds-drawer-group-title">🏢 Switch Department Portal</div>
               <div style="display: flex; flex-direction: column; gap: 4px;">
@@ -352,9 +331,8 @@
               </div>
             </div>
 
-            <!-- Footer Controls in Drawer -->
             <div style="padding-top: 12px; border-top: 1px solid var(--beds-border-subtle); display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 11px; color: var(--beds-text-muted);">BEDS V1.0 · Locked SAM-2026</span>
+              <span style="font-size: 11px; color: var(--beds-text-muted);">BEDS V2.0 · Locked SAM-2026</span>
               <a href="${spreadsheetUrl}" target="_blank" style="font-size: 11px; color: #10B981; font-weight: 700; text-decoration: none;">
                 📊 Open ${db.name} Sheet ↗
               </a>
@@ -362,7 +340,7 @@
           </div>
         `;
         document.body.appendChild(drawer);
-        this.populateDrawerNavLinks();
+        this.populateDrawerDynamicNav();
       }
     },
 
@@ -372,33 +350,36 @@
         const targetHref = this.getDeptHref(d);
         const isActive = d.code === currentPortal;
         return `
-          <a href="${targetHref}" onclick="return BalsonsWorkspace.handleDeptClick(event, '${d.code}', '${targetHref}')" class="beds-drawer-nav-item ${isActive ? 'active' : ''}">
+          <a href="${targetHref}" onclick="BalsonsWorkspace.closeMobileDrawer(); return BalsonsWorkspace.handleDeptClick(event, '${d.code}', '${targetHref}')" class="beds-drawer-nav-item ${isActive ? 'active' : ''}">
             <span>${d.name}</span>
+            ${isActive ? '<span style="font-size:10px; color:#10B981; margin-left:auto;">● Active</span>' : ''}
           </a>
         `;
       }).join('');
     },
 
-    populateDrawerNavLinks: function() {
+    populateDrawerDynamicNav: function() {
       const container = document.getElementById('drawer-dynamic-links');
       if (!container) return;
 
-      const links = [];
-      document.querySelectorAll('button.beds-nav-tab[data-target], a.beds-dropdown-item[data-target]').forEach(el => {
-        const target = el.getAttribute('data-target');
-        const text = el.innerText.trim().replace(/\n/g, ' · ');
-        if (target && !links.some(l => l.target === target)) {
-          links.push({ target, text });
-        }
-      });
+      const mainNav = document.querySelector('nav') || document.querySelector('.main-nav');
+      if (!mainNav) {
+        container.innerHTML = `<span style="font-size: 12px; color: var(--beds-text-muted); padding: 6px;">Portal modules ready.</span>`;
+        return;
+      }
 
-      if (links.length > 0) {
-        container.innerHTML = links.map(l => `
-          <button class="beds-drawer-nav-item" onclick="BalsonsWorkspace.navigateToTarget('${l.target}')" type="button">
-            <span>●</span>
-            <span>${l.text}</span>
-          </button>
-        `).join('');
+      const buttons = mainNav.querySelectorAll('button[data-target], button[data-view], a[data-target], a[data-view]');
+      if (buttons && buttons.length > 0) {
+        container.innerHTML = Array.from(buttons).map(b => {
+          const target = b.getAttribute('data-target') || b.getAttribute('data-view') || '';
+          const label = b.innerText.trim();
+          return `
+            <button class="beds-drawer-nav-item" onclick="BalsonsWorkspace.navigateToTarget('${target}')">
+              <span>👉</span>
+              <span>${label}</span>
+            </button>
+          `;
+        }).join('');
       } else {
         container.innerHTML = `<span style="font-size: 12px; color: var(--beds-text-muted); padding: 6px;">Portal navigation loaded.</span>`;
       }
@@ -478,48 +459,182 @@
       }, 4200);
     },
 
-    triggerDualSync: async function() {
+    // =========================================================================
+    // SCHEDULED AUTO-RELOAD BI-DIRECTIONAL DUAL-SYNC ENGINE
+    // =========================================================================
+    initScheduledAutoReload: function() {
+      // 1. Initial sync after 1500ms
+      setTimeout(() => {
+        this.triggerDualSync(true);
+      }, 1500);
+
+      // 2. Scheduled 30-second loop with live second-by-second countdown
+      if (this.autoSyncTimerId) clearInterval(this.autoSyncTimerId);
+      this.autoSyncCountdown = this.autoSyncIntervalSeconds;
+
+      this.autoSyncTimerId = setInterval(() => {
+        this.autoSyncCountdown--;
+        this.updateAutoSyncPillCountdown();
+
+        if (this.autoSyncCountdown <= 0) {
+          this.autoSyncCountdown = this.autoSyncIntervalSeconds;
+          this.triggerDualSync(true);
+        }
+      }, 1000);
+
+      // 3. Tab visibility change & Online triggers
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          console.log('[BEDS Auto-Sync] Tab activated, running instant parity sync...');
+          this.autoSyncCountdown = this.autoSyncIntervalSeconds;
+          this.triggerDualSync(true);
+        }
+      });
+
+      window.addEventListener('online', () => {
+        console.log('[BEDS Auto-Sync] Network online, flushing outbox & syncing database...');
+        this.autoSyncCountdown = this.autoSyncIntervalSeconds;
+        this.triggerDualSync(false);
+      });
+    },
+
+    updateAutoSyncPillCountdown: function() {
+      const chip = document.getElementById('bedsAutoSyncChip');
+      if (chip) {
+        chip.textContent = `Auto: ${this.autoSyncCountdown}s`;
+      }
+    },
+
+    queueMutation: function(portal, action, payload) {
+      try {
+        const queue = JSON.parse(localStorage.getItem(this.OUTBOX_STORAGE_KEY) || '[]');
+        const mutation = {
+          id: 'MUT-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+          portal: portal || this.getCurrentPortalCode(),
+          action: action,
+          payload: payload,
+          timestamp: new Date().toISOString(),
+          status: 'PENDING'
+        };
+        queue.push(mutation);
+        localStorage.setItem(this.OUTBOX_STORAGE_KEY, JSON.stringify(queue));
+        console.log(`[BEDS Auto-Sync] Outbox mutation queued (${mutation.id}): ${action}`);
+        this.flushMutationQueue();
+      } catch (e) {
+        console.warn('[BEDS Auto-Sync] Failed to queue mutation:', e);
+      }
+    },
+
+    flushMutationQueue: async function() {
+      try {
+        const raw = localStorage.getItem(this.OUTBOX_STORAGE_KEY);
+        if (!raw) return;
+        const queue = JSON.parse(raw);
+        if (!Array.isArray(queue) || queue.length === 0) return;
+
+        const currentPortal = this.getCurrentPortalCode();
+        const pendingForThis = queue.filter(item => item.portal === currentPortal);
+        if (pendingForThis.length === 0) return;
+
+        console.log(`[BEDS Auto-Sync] Flushing ${pendingForThis.length} pending mutation(s) for ${currentPortal}...`);
+        const remaining = queue.filter(item => item.portal !== currentPortal);
+
+        const db = this.getCurrentPortalDb();
+        for (const item of pendingForThis) {
+          try {
+            if (db && db.scriptUrl) {
+              const res = await fetch(db.scriptUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                  action: item.action,
+                  payload: item.payload,
+                  clientTimestamp: item.timestamp,
+                  requestId: item.id
+                }),
+                redirect: 'follow'
+              });
+              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+              console.log(`[BEDS Auto-Sync] Flushed mutation ${item.id} successfully to Google Sheet.`);
+            }
+          } catch (itemErr) {
+            console.warn(`[BEDS Auto-Sync] Mutation flush deferred for ${item.id}:`, itemErr.message);
+            remaining.push(item);
+          }
+        }
+        localStorage.setItem(this.OUTBOX_STORAGE_KEY, JSON.stringify(remaining));
+      } catch (err) {
+        console.warn('[BEDS Auto-Sync] Error during flushMutationQueue:', err);
+      }
+    },
+
+    triggerDualSync: async function(isSilent = false) {
       if (this.isDualSyncing) return;
       this.isDualSyncing = true;
+      this.autoSyncCountdown = this.autoSyncIntervalSeconds;
 
       const currentPortal = this.getCurrentPortalCode();
       const db = this.getCurrentPortalDb();
       const pill = document.getElementById('bedsSheetSyncPill');
+      const autoChip = document.getElementById('bedsAutoSyncChip');
+
       if (pill) {
         pill.style.background = 'rgba(245, 158, 11, 0.2)';
         pill.style.borderColor = '#F59E0B';
         pill.style.color = '#D97706';
-        pill.innerHTML = `<span class="pulse-dot" style="background:#F59E0B;"></span> Syncing ${db.name} Database...`;
+        pill.innerHTML = `
+          <span class="pulse-dot" style="background:#F59E0B;"></span>
+          <span class="sync-text">${db.name} DB Sync: <strong>SYNCING</strong></span>
+          <span class="sheet-id-chip" style="font-family: monospace; font-size: 9.5px; opacity: 0.85;">${db.id.substring(0, 8)}...</span>
+          <span class="auto-sync-chip" id="bedsAutoSyncChip" style="font-size: 9.5px; background: rgba(0,0,0,0.25); padding: 1.5px 5px; border-radius: 3px; font-weight: 700; margin-left: 4px;">Syncing...</span>
+        `;
       }
 
-      this.showToast(`⏳ Initiating Dual Sync with ${db.fullName} (${db.id.substring(0, 8)}...)...`, 'info');
+      if (!isSilent) {
+        this.showToast(`⏳ Initiating Dual Sync with ${db.fullName} (${db.id.substring(0, 8)}...)...`, 'info');
+      }
 
       try {
-        if (currentPortal === 'safety') {
-          if (window.BalsonsSafetyApp && typeof window.BalsonsSafetyApp.loadDashboardData === 'function') {
+        // 1. Flush any pending outbound mutations first (Portal -> Database)
+        await this.flushMutationQueue();
+
+        // 2. Delegate to portal-specific reload handler (Database -> Portal)
+        if (window.BalsonsPortalSync && typeof window.BalsonsPortalSync.reload === 'function') {
+          await window.BalsonsPortalSync.reload();
+        } else if (currentPortal === 'safety') {
+          if (typeof window.syncWithLiveSafetyDb === 'function') {
+            await window.syncWithLiveSafetyDb();
+          } else if (window.BalsonsSafetyApp && typeof window.BalsonsSafetyApp.loadDashboardData === 'function') {
             await window.BalsonsSafetyApp.loadDashboardData();
-            if (typeof window.BalsonsSafetyApp.loadPermits === 'function') window.BalsonsSafetyApp.loadPermits();
-            if (typeof window.BalsonsSafetyApp.loadInductions === 'function') window.BalsonsSafetyApp.loadInductions();
-          }
-        } else if (currentPortal === 'hr') {
-          if (typeof window.loadEmployeesData === 'function') {
-            await window.loadEmployeesData();
-          }
-        } else if (currentPortal === 'gate') {
-          if (typeof window.loadGateDashboard === 'function') {
-            await window.loadGateDashboard();
+            if (typeof window.BalsonsSafetyApp.loadPermits === 'function') await window.BalsonsSafetyApp.loadPermits();
+            if (typeof window.BalsonsSafetyApp.loadInductions === 'function') await window.BalsonsSafetyApp.loadInductions();
           }
         } else if (currentPortal === 'store') {
-          if (window.BalsonsStoreApp && typeof window.BalsonsStoreApp.refreshData === 'function') {
+          if (window.BalsonsStoreApi && typeof window.BalsonsStoreApi.syncWithLiveDb === 'function') {
+            await window.BalsonsStoreApi.syncWithLiveDb();
+          } else if (window.BalsonsStoreApp && typeof window.BalsonsStoreApp.refreshData === 'function') {
             await window.BalsonsStoreApp.refreshData();
           }
+        } else if (currentPortal === 'hr') {
+          if (typeof window.initHrApp === 'function') {
+            window.initHrApp();
+          }
+        } else if (currentPortal === 'gate') {
+          if (typeof window.initGateTransactions === 'function') window.initGateTransactions();
+          if (typeof window.initMasterRegistries === 'function') window.initMasterRegistries();
+        } else if (currentPortal === 'purchase') {
+          if (window.BalsonsPurchaseApp && typeof window.BalsonsPurchaseApp.autoSyncWithCloud === 'function') {
+            await window.BalsonsPurchaseApp.autoSyncWithCloud();
+          }
         } else if (currentPortal === 'operations') {
-          if (window.BalsonsOpsApp && typeof window.BalsonsOpsApp.init === 'function') {
+          if (typeof window.refreshDashboard === 'function') {
+            await window.refreshDashboard();
+          } else if (window.BalsonsOpsApp && typeof window.BalsonsOpsApp.init === 'function') {
             await window.BalsonsOpsApp.init();
           }
         }
 
-        await new Promise(r => setTimeout(r, 600));
+        await new Promise(r => setTimeout(r, 400));
 
         const now = new Date().toLocaleTimeString();
         if (pill) {
@@ -530,13 +645,18 @@
             <span class="pulse-dot"></span>
             <span class="sync-text">${db.name} DB Sync: <strong>LIVE</strong></span>
             <span class="sheet-id-chip" style="font-family: monospace; font-size: 9.5px; opacity: 0.85;">${db.id.substring(0, 8)}...</span>
+            <span class="auto-sync-chip" id="bedsAutoSyncChip" style="font-size: 9.5px; background: rgba(0,0,0,0.25); padding: 1.5px 5px; border-radius: 3px; font-weight: 700; margin-left: 4px;">Auto: ${this.autoSyncCountdown}s</span>
           `;
         }
 
-        this.showToast(`✅ ${db.name} Dual-Sync Complete: Dedicated Database (${db.id.substring(0, 8)}...) synchronized with registers at ${now}!`, 'success');
+        if (!isSilent) {
+          this.showToast(`✅ ${db.name} Dual-Sync Complete: Dedicated Database (${db.id.substring(0, 8)}...) synchronized with registers at ${now}!`, 'success');
+        }
       } catch (err) {
         console.error('Dual Sync Error:', err);
-        this.showToast(`⚠️ Dual-Sync fallback engaged at ${new Date().toLocaleTimeString()}`, 'warning');
+        if (!isSilent) {
+          this.showToast(`⚠️ Dual-Sync fallback engaged at ${new Date().toLocaleTimeString()}`, 'warning');
+        }
       } finally {
         this.isDualSyncing = false;
       }
@@ -551,9 +671,6 @@
       });
     },
 
-    /**
-     * V5.0 Class B Enhancement: Global HTML Sanitization for XSS Prevention
-     */
     escapeHtml: function(str) {
       if (str === null || str === undefined) return '';
       return String(str)
@@ -564,9 +681,53 @@
         .replace(/'/g, '&#039;');
     },
 
-    /**
-     * V5.0 Class B Enhancement: AbortController-bounded Fetch with configurable timeout (default 10s)
-     */
+    
+    parseCsv: function(text) {
+      if (!text) return [];
+      const lines = [];
+      let row = [''];
+      let inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+        const next = text[i + 1];
+        if (c === '"') {
+          if (inQuotes && next === '"') { row[row.length - 1] += '"'; i++; }
+          else { inQuotes = !inQuotes; }
+        } else if (c === ',' && !inQuotes) {
+          row.push('');
+        } else if ((c === '\r' || c === '\n') && !inQuotes) {
+          if (c === '\r' && next === '\n') i++;
+          lines.push(row);
+          row = [''];
+        } else {
+          row[row.length - 1] += c;
+        }
+      }
+      if (row.length > 1 || row[0] !== '') lines.push(row);
+      if (lines.length < 2) return [];
+      const headers = lines[0].map(h => h.trim().replace(/^"|"$/g, ''));
+      return lines.slice(1).filter(r => r.some(cell => cell.trim().length > 0)).map(r => {
+        const obj = {};
+        headers.forEach((h, idx) => {
+          obj[h] = (r[idx] !== undefined ? r[idx] : '').trim();
+        });
+        return obj;
+      });
+    },
+
+    fetchSheetData: async function(sheetId, tabName, timeoutMs = 8000) {
+      try {
+        const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}&tq=${Date.now()}`;
+        const res = await this.fetchWithTimeout(url, { method: 'GET', headers: { 'Cache-Control': 'no-cache' } }, timeoutMs);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const text = await res.text();
+        return this.parseCsv(text);
+      } catch (err) {
+        console.warn(`[BEDS Workspace] Gviz live fetch failed for ${tabName}:`, err.message);
+        return null;
+      }
+    },
+
     fetchWithTimeout: async function(url, options = {}, timeoutMs = 10000) {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -586,9 +747,6 @@
       }
     },
 
-    /**
-     * V5.0 Class B Enhancement: In-Flight Duplicate Request Prevention
-     */
     _activeGuards: new Set(),
     runGuarded: async function(key, asyncFn) {
       if (this._activeGuards.has(key)) {
@@ -604,7 +762,6 @@
     }
   };
 
-  // Expose global shorthand for convenience across all portal scripts
   window.bedsEscapeHtml = BalsonsWorkspace.escapeHtml;
   window.BalsonsWorkspace = BalsonsWorkspace;
 

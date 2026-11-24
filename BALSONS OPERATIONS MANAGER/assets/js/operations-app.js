@@ -1,3 +1,39 @@
+
+// Direct Live Google Sheet Query via Gviz for Operations Portal
+async function syncWithLiveOpsDb() {
+  if (window.BalsonsWorkspace && typeof window.BalsonsWorkspace.fetchSheetData === 'function') {
+    try {
+      const sheetId = '1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E';
+      const wpRows = await window.BalsonsWorkspace.fetchSheetData(sheetId, 'WORK_PACKAGES');
+      if (wpRows && wpRows.length > 0 && dbInstance) {
+        const tx = dbInstance.transaction('work_packages', 'readwrite');
+        const store = tx.objectStore('work_packages');
+        for (const r of wpRows) {
+          store.put({
+            id: r.id || r.WorkPackageID,
+            workspaceId: r.workspaceId || 'LINE-AXLE',
+            workstreamId: r.workstreamId || 'AXLE-PRESS',
+            title: r.title || r.Title || 'Erection Work Package',
+            description: r.description || r.Description,
+            assignedTeam: r.assignedTeam || r.AssignedTeam,
+            targetCompletion: r.targetCompletion || r.TargetCompletion,
+            state: r.state || r.State || 'In progress',
+            progressPercentage: Number(r.progressPercentage || r.ProgressPercentage) || 50,
+            activeHold: r.activeHold === 'true' || r.activeHold === true,
+            craneLogsCount: Number(r.craneLogsCount) || 1,
+            punchlistPending: Number(r.punchlistPending) || 0
+          });
+        }
+      }
+      if (typeof refreshDashboard === 'function') {
+        await refreshDashboard();
+      }
+    } catch(e) {
+      console.warn('[OpsSync] Gviz live sync note:', e);
+    }
+  }
+}
+
 /**
  * BALSONS OPERATIONS MANAGER • DOMAIN APPLICATION CONTROLLER (V7.2)
  * Governing Reference: BAL-OPS-E2E-007 V7.2
@@ -2223,3 +2259,16 @@
     window.BalsonsOpsApp.init();
   });
 })();
+
+
+// Global Dual-Sync Wire for BEDS Auto-Reload Sync Engine
+window.BalsonsPortalSync = {
+  reload: async function() {
+    if (typeof syncWithLiveOpsDb === 'function') {
+      await syncWithLiveOpsDb();
+    }
+    if (typeof refreshDashboard === 'function') {
+      await refreshDashboard();
+    }
+  }
+};

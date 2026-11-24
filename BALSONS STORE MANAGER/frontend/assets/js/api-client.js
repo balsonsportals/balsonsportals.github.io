@@ -150,6 +150,47 @@ const BalsonsStoreApi = {
         }
       }
 
+      
+      // Direct Live Google Sheet Fallback via Gviz
+      if (window.BalsonsWorkspace && typeof window.BalsonsWorkspace.fetchSheetData === 'function') {
+        try {
+          if (!invRes || invRes.status !== 'fulfilled' || !invRes.value || !invRes.value.success) {
+            const invRows = await window.BalsonsWorkspace.fetchSheetData('1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ', 'INVENTORY_MASTER');
+            if (invRows && invRows.length > 0 && window.BalsonsStoreApp) {
+              BalsonsStoreApp.tools = invRows;
+              BalsonsStoreApp.saveTools();
+              updatedCount = invRows.length;
+            }
+          }
+          if (!loansRes || loansRes.status !== 'fulfilled' || !loansRes.value || !loansRes.value.success) {
+            const loanRows = await window.BalsonsWorkspace.fetchSheetData('1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ', 'TOOL_LOANS_REGISTER');
+            if (loanRows && loanRows.length > 0 && window.BalsonsStoreApp) {
+              BalsonsStoreApp.transactions = loanRows.map(r => ({
+                txId: r.TxID,
+                toolId: r.ToolID,
+                toolDesc: r.ToolDescription,
+                empId: r.BorrowerEmpID,
+                empName: r.BorrowerName,
+                empTrade: r.BorrowerTrade,
+                dept: r.Department,
+                area: r.JobLocationArea,
+                issueDate: r.IssueDateTime,
+                expectedReturn: r.ExpectedReturn,
+                actualReturn: r.ActualReturn || null,
+                status: r.LoanStatus,
+                purpose: r.WorkPurpose,
+                conditionIssued: r.ConditionIssued,
+                conditionReturned: r.ConditionReturned || null,
+                issuedBy: r.IssuedBy
+              }));
+              BalsonsStoreApp.saveTransactions();
+            }
+          }
+        } catch (e) {
+          console.warn('[StoreLiveSync] Gviz direct fallback exception:', e);
+        }
+      }
+
       // Re-render UI
       if (window.BalsonsStoreApp && typeof BalsonsStoreApp.renderAll === 'function') {
         BalsonsStoreApp.renderAll();
