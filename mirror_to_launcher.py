@@ -14,6 +14,9 @@ files_to_mirror = [
     # Store Manager
     ("BALSONS STORE MANAGER/frontend/assets/js/api-client.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/assets/js/api-client.js"),
     ("BALSONS STORE MANAGER/frontend/assets/js/app.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/assets/js/app.js"),
+    ("BALSONS STORE MANAGER/frontend/assets/js/qr-generator.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/assets/js/qr-generator.js"),
+    ("BALSONS STORE MANAGER/frontend/assets/js/dossier-360.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/assets/js/dossier-360.js"),
+    ("BALSONS STORE MANAGER/frontend/assets/js/qrcode.min.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/assets/js/qrcode.min.js"),
     ("BALSONS STORE MANAGER/frontend/assets/js/tool-data.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/assets/js/tool-data.js"),
     ("BALSONS STORE MANAGER/frontend/assets/js/beds-workspace.js", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/assets/js/beds-workspace.js"),
     ("BALSONS STORE MANAGER/frontend/index.html", "BALSONS ENTERPRISE LAUNCHER/BALSONS STORE MANAGER/frontend/index.html"),

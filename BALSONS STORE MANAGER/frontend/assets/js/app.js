@@ -22,9 +22,53 @@ const BalsonsStoreApp = {
   searchQuery: '',
 
   escapeHtml: function(str) {
-    if (typeof window.bedsEscapeHtml === 'function') return window.bedsEscapeHtml(str);
-    if (str === null || str === undefined) return '';
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  },
+
+  enqueueMutation: function(action, entityId, payload) {
+    try {
+      const mutation = {
+        id: 'mut_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+        domain: 'store',
+        action: action,
+        entityId: entityId,
+        payload: payload,
+        timestamp: new Date().toISOString()
+      };
+      let queue = [];
+      try {
+        queue = JSON.parse(localStorage.getItem('beds_pending_mutations_queue') || '[]');
+      } catch(e) {}
+      queue.push(mutation);
+      localStorage.setItem('beds_pending_mutations_queue', JSON.stringify(queue));
+      console.log('[Store Mutation Enqueued]:', action, entityId);
+    } catch (err) {
+      console.warn('[Store Mutation Queue Error]:', err);
+    }
+    if (window.BalsonsWorkspace && typeof window.BalsonsWorkspace.triggerDualSync === 'function') {
+      window.BalsonsWorkspace.triggerDualSync(true);
+    }
+  },
+
+  activatePrintStage: function(htmlContent) {
+    let stage = document.getElementById('beds-store-print-stage');
+    if (!stage) {
+      stage = document.createElement('div');
+      stage.id = 'beds-store-print-stage';
+      document.body.appendChild(stage);
+    }
+    stage.innerHTML = htmlContent;
+    document.body.classList.add('beds-printing-mode');
+    window.print();
+    setTimeout(() => {
+      document.body.classList.remove('beds-printing-mode');
+    }, 1000);
   },
 
   init: function() {
@@ -360,7 +404,8 @@ const BalsonsStoreApp = {
             <small>${this.escapeHtml(t.issuedTo || 'In Store Bins')}</small>
           </td>
           <td style="text-align: right; white-space: nowrap;">
-            <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="BalsonsStoreApp.openToolDetailModal('${this.escapeHtml(t.id)}')" title="View Dossier">Specs</button>
+            <button class="beds-btn beds-btn-sm beds-btn-secondary" style="background: rgba(0, 151, 178, 0.1); color: #0097B2; border-color: #0097B2; font-weight: 800;" onclick="Balsons360Dossier.openToolModal('${this.escapeHtml(t.id)}')" title="360° Equipment Dossier">📄 360°</button>
+            <button class="beds-btn beds-btn-sm beds-btn-secondary" onclick="BalsonsStoreApp.openToolDetailModal('${this.escapeHtml(t.id)}')" title="View Specs">Specs</button>
             ${t.status === 'AVAILABLE' ? `
               <button class="beds-btn beds-btn-sm beds-btn-primary" onclick="BalsonsStoreApp.openIssueModal('${this.escapeHtml(t.id)}')">Issue →</button>
             ` : (t.status === 'ISSUED' ? `
@@ -553,6 +598,14 @@ const BalsonsStoreApp = {
 
     this.transactions.unshift(newTx);
     this.saveTransactions();
+    this.enqueueMutation('loans.issue', toolId, {
+      toolId: toolId,
+      empId: empId,
+      empName: empName.split('-')[0].trim(),
+      workArea: area,
+      purpose: purpose,
+      expectedReturn: expectedReturn
+    });
 
     this.renderRadarDashboard();
     this.renderToolMasterTable();
@@ -659,11 +712,19 @@ const BalsonsStoreApp = {
     this.renderTransactionsTable();
     this.renderQuarantineTable();
 
+    this.enqueueMutation('loans.return', toolId, {
+      txId: txId,
+      returnCondition: condition,
+      conditionReturned: tool ? tool.condition : condition,
+      status: tool ? tool.status : 'AVAILABLE',
+      notes: generalNotes || defectNotes || ''
+    });
+
     if (window.BalsonsStoreApi && typeof BalsonsStoreApi.call === 'function') {
       BalsonsStoreApi.call('loans.return', {
-        txId: tx.txId,
+        txId: txId,
         returnCondition: condition,
-        notes: notes
+        notes: generalNotes || defectNotes || ''
       }).catch(err => console.warn('Cloud sync error on tool return:', err));
     }
 
@@ -711,7 +772,9 @@ const BalsonsStoreApp = {
     const due = document.getElementById('add-tool-due').value;
 
     if (this.tools.some(t => t.id === id)) {
-      alert(`Tool ID ${id} already exists in master inventory!`);
+      if (window.BalsonsWorkspace) {
+        window.BalsonsWorkspace.showToast(`⚠️ Tool ID ${id} already exists in master inventory!`, 'warning');
+      }
       return;
     }
 
@@ -744,6 +807,7 @@ const BalsonsStoreApp = {
 
     this.tools.unshift(newTool);
     this.saveTools();
+    this.enqueueMutation('tools.add', id, newTool);
 
     this.renderRadarDashboard();
     this.renderToolMasterTable();
@@ -910,6 +974,7 @@ const BalsonsStoreApp = {
 
     this.receipts.unshift(newRc);
     this.saveReceipts();
+    this.enqueueMutation('grn.create', grnNo, newRc);
     this.renderReceiptsTable();
 
     document.getElementById('modal-new-grn').classList.remove('active');
@@ -997,6 +1062,7 @@ const BalsonsStoreApp = {
 
     this.quarantine.unshift(newQr);
     this.saveQuarantine();
+    this.enqueueMutation('quarantine.tag', tagId, newQr);
 
     this.renderRadarDashboard();
     this.renderToolMasterTable();
@@ -1027,48 +1093,65 @@ const BalsonsStoreApp = {
     const dest = document.getElementById('rgp-dest')?.value || 'Enerpac Service Center';
     const retDate = document.getElementById('rgp-return-date')?.value || '2026-11-28';
     const purpose = document.getElementById('rgp-purpose')?.value || 'Statutory calibration and proof load recertification';
-    const itemsRaw = document.getElementById('rgp-items')?.value || '1. Hydraulic Jack 500T';
+    const itemsRaw = document.getElementById('rgp-items')?.value || '1. Hydraulic Jack 500T (BAL-LF-HYJ-001)\n2. Torque Wrench 1200Nm (BAL-HT-TRQ-001)';
 
     const passNo = `GP-${type}-JTRWF-2026-088`;
     const issueDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    const qrUrl = window.BalsonsQrGenerator ? window.BalsonsQrGenerator.getToolQrDataUrl(passNo, 180) : '';
 
     const rows = itemsRaw.split('\n').filter(r => r.trim()).map((r, i) => `
       <tr>
-        <td style="padding: 6px; border: 1px solid #102D35; text-align: center;">${i+1}</td>
-        <td style="padding: 6px; border: 1px solid #102D35;">${r}</td>
-        <td style="padding: 6px; border: 1px solid #102D35; text-align: center;">1 No</td>
-        <td style="padding: 6px; border: 1px solid #102D35;">Service & Testing</td>
+        <td style="padding: 5px 8px; border: 1px solid #0F172A; text-align: center; font-weight: 700;">${i+1}</td>
+        <td style="padding: 5px 8px; border: 1px solid #0F172A; font-weight: 600;">${r}</td>
+        <td style="padding: 5px 8px; border: 1px solid #0F172A; text-align: center; font-weight: 700;">1 No</td>
+        <td style="padding: 5px 8px; border: 1px solid #0F172A;">Statutory Calibration / Testing</td>
       </tr>
     `).join('');
 
     container.innerHTML = `
-      <div style="background: #FFFFFF; color: #102D35; border: 2px solid #102D35; padding: 24px; border-radius: 6px; font-family: Inter, Arial, sans-serif; max-width: 850px; margin: 0 auto; box-shadow: 0 4px 14px rgba(0,0,0,0.08);">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0097B2; padding-bottom: 12px; margin-bottom: 14px;">
-          <div>
-            <div style="font-size: 18px; font-weight: 900; color: #0097B2;">BALSONS HEAVY LIFT & SHIFT</div>
-            <div style="font-size: 11px; font-weight: 700; color: #52636B;">Project: JTRWF Railwheel Factory, Khordha, Odisha</div>
+      <div class="calibrated-rgp-sheet" style="width: 190mm; max-height: 275mm; margin: 0 auto; box-sizing: border-box; background: #FFFFFF; color: #0F172A; border: 2px solid #0F172A; padding: 16px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <!-- Official Master Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0F172A; padding-bottom: 10px; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="assets/images/balsons-logo.png" alt="Logo" style="height: 38px; width: auto; object-fit: contain;">
+            <div>
+              <div style="font-size: 16px; font-weight: 900; color: #0F172A; letter-spacing: -0.2px;">BALSONS HEAVY LIFT &amp; SHIFT</div>
+              <div style="font-size: 10px; font-weight: 800; color: #0097B2; text-transform: uppercase;">
+                Project: Jupiter Tatravagonka Railwheel Factory (JTRWF), Khordha, Odisha
+              </div>
+              <div style="font-size: 8.5px; color: #64748B;">Central Logistics &amp; Rigging Tackle Governance System</div>
+            </div>
           </div>
-          <div style="text-align: right;">
-            <div style="font-size: 16px; font-weight: 900; color: #102D35;">${type === 'RGP' ? 'RETURNABLE GATE PASS (RGP)' : 'NON-RETURNABLE GATE PASS (NRGP)'}</div>
-            <div style="font-size: 11px; font-weight: 800; font-family: monospace; color: #0097B2;">Pass No: ${passNo}</div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="text-align: right;">
+              <div style="font-size: 13.5px; font-weight: 900; color: #0F172A;">${type === 'RGP' ? 'RETURNABLE GATE PASS (RGP)' : 'NON-RETURNABLE GATE PASS (NRGP)'}</div>
+              <div style="font-size: 11px; font-weight: 900; font-family: monospace; color: #0097B2;">PASS NO: ${passNo}</div>
+              <div style="font-size: 8.5px; color: #059669; font-weight: 800;">● GATE CLEARANCE VERIFIED</div>
+            </div>
+            <div style="text-align: center; border-left: 1px solid #E2E8F0; padding-left: 10px;">
+              <img src="${qrUrl}" alt="QR" style="width: 48px; height: 48px; border: 1px solid #0F172A; padding: 1.5px; border-radius: 3px; display: block;">
+              <div style="font-size: 5pt; font-weight: 800; color: #0F172A; text-transform: uppercase; margin-top: 1px;">SCAN TO VERIFY</div>
+            </div>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 11.5px; margin-bottom: 14px; background: #F8FAFC; padding: 10px; border: 1px solid #E2E8F0;">
-          <div><strong>Date of Dispatch:</strong> ${issueDate}</div>
-          <div><strong>Vehicle / Carrier No:</strong> ${vehicle}</div>
-          <div><strong>Consignee Destination:</strong> ${dest}</div>
-          <div><strong>Expected Return Date:</strong> <strong style="color: #0097B2;">${retDate}</strong></div>
-          <div style="grid-column: span 2;"><strong>Purpose / Reason:</strong> ${purpose}</div>
+        <!-- Meta Dispatch Parameters Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 10.5px; margin-bottom: 12px; background: #F8FAFC; padding: 10px 14px; border: 1px solid #CBD5E1; border-radius: 4px;">
+          <div><strong>Date of Dispatch:</strong> <span style="font-family: monospace; font-weight: 700;">${issueDate}</span></div>
+          <div><strong>Vehicle / Carrier No:</strong> <span style="font-weight: 800; color: #0F172A;">${vehicle}</span></div>
+          <div><strong>Consignee Destination:</strong> <span style="font-weight: 700;">${dest}</span></div>
+          <div><strong>Expected Return Date:</strong> <strong style="color: #0097B2; font-family: monospace;">${retDate}</strong></div>
+          <div style="grid-column: span 2;"><strong>Operational Purpose:</strong> ${purpose}</div>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 24px;">
+        <!-- Monochrome Table -->
+        <table style="width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 20px;">
           <thead>
-            <tr style="background: #102D35; color: #FFFFFF;">
-              <th style="padding: 6px; border: 1px solid #102D35; width: 40px;">S.No</th>
-              <th style="padding: 6px; border: 1px solid #102D35;">Description of Tools / Materials & Serial Numbers</th>
-              <th style="padding: 6px; border: 1px solid #102D35; width: 70px;">Quantity</th>
-              <th style="padding: 6px; border: 1px solid #102D35; width: 140px;">Remarks</th>
+            <tr style="background: #0F172A; color: #FFFFFF;">
+              <th style="padding: 6px; border: 1px solid #0F172A; width: 40px; text-align: center;">S.NO</th>
+              <th style="padding: 6px; border: 1px solid #0F172A; text-align: left;">DESCRIPTION OF RIGGING TOOLS / MATERIALS &amp; IDENTIFIERS</th>
+              <th style="padding: 6px; border: 1px solid #0F172A; width: 80px; text-align: center;">QUANTITY</th>
+              <th style="padding: 6px; border: 1px solid #0F172A; width: 170px; text-align: left;">REMARKS &amp; STATUS</th>
             </tr>
           </thead>
           <tbody>
@@ -1076,25 +1159,43 @@ const BalsonsStoreApp = {
           </tbody>
         </table>
 
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; font-size: 11px; text-align: center; margin-top: 36px; border-top: 1px dashed #CBD5E1; padding-top: 16px;">
+        <!-- Mandatory Security Notice -->
+        <div style="background: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 4px; padding: 6px 10px; font-size: 8.5px; color: #475569; margin-bottom: 26px; line-height: 1.4;">
+          <strong>SECURITY &amp; MATERIAL CONTROL NOTICE:</strong> This gate pass authorises outward movement of the listed plant assets solely for the stated purpose. The security in-charge at Main Gate 1 shall record outgoing vehicle timestamp, verify physical tackle markings against this pass, and log the gate clearance record. Returnable items must be returned on or before the specified date.
+        </div>
+
+        <!-- 3-Tier Signatures -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; font-size: 9.5px; text-align: center; border-top: 1px dashed #94A3B8; padding-top: 14px;">
           <div>
-            <div style="height: 35px;"></div>
-            <div style="font-weight: 800; border-top: 1px solid #102D35; padding-top: 4px;">Prepared By (Store In-Charge)</div>
-            <div>Gagan Bihari Das</div>
+            <div style="height: 32px;"></div>
+            <div style="font-weight: 800; border-top: 1px solid #0F172A; padding-top: 4px;">Prepared By (Store Lead)</div>
+            <div style="color: #475569;">Gagan Bihari Das</div>
           </div>
           <div>
-            <div style="height: 35px;"></div>
-            <div style="font-weight: 800; border-top: 1px solid #102D35; padding-top: 4px;">Authorized Signatory (Site Lead)</div>
-            <div>Pradeep Muley (Director)</div>
+            <div style="height: 32px;"></div>
+            <div style="font-weight: 800; border-top: 1px solid #0F172A; padding-top: 4px;">Authorized Signatory (Site Lead)</div>
+            <div style="color: #475569;">Pradeep Muley (Director)</div>
           </div>
           <div>
-            <div style="height: 35px;"></div>
-            <div style="font-weight: 800; border-top: 1px solid #102D35; padding-top: 4px;">Security Gate Out-Stamp</div>
-            <div>Security Officer / Main Gate 1</div>
+            <div style="height: 32px;"></div>
+            <div style="font-weight: 800; border-top: 1px solid #0F172A; padding-top: 4px;">Security Gate Out-Stamp</div>
+            <div style="color: #475569;">Main Gate 1 Security Officer</div>
           </div>
+        </div>
+
+        <!-- Corporate Motto Footer -->
+        <div style="text-align: center; margin-top: 18px; font-size: 8.5px; color: #0097B2; font-style: italic; font-weight: 700;">
+          &ldquo;Difficult We Do Easily, Impossible Takes Little Time...&rdquo;
         </div>
       </div>
     `;
+  },
+
+  printRgpChallan: function() {
+    this.renderRgpPrintableSheet();
+    const sheet = document.getElementById('rgp-printable-sheet');
+    if (!sheet) return;
+    this.activatePrintStage(sheet.innerHTML);
   },
 
   // -------------------------------------------------------------
@@ -1157,6 +1258,7 @@ const BalsonsStoreApp = {
 
     this.procurement.unshift(newPr);
     this.saveProcurement();
+    this.enqueueMutation('procurement.pr', id, newPr);
     this.renderProcurementTable();
 
     document.getElementById('modal-new-pr').classList.remove('active');
@@ -1223,6 +1325,7 @@ const BalsonsStoreApp = {
 
     this.vendors.unshift(newVn);
     this.saveVendors();
+    this.enqueueMutation('vendors.add', id, newVn);
     this.renderVendorsTable();
 
     document.getElementById('modal-add-vendor').classList.remove('active');
@@ -1305,7 +1408,9 @@ const BalsonsStoreApp = {
   },
 
   printForm11Certificate: function() {
-    window.print();
+    const cert = document.getElementById('form11-cert-content');
+    if (!cert) return;
+    this.activatePrintStage(cert.innerHTML);
   },
 
   // -------------------------------------------------------------
@@ -1321,27 +1426,20 @@ const BalsonsStoreApp = {
   },
 
   printQrTagSheet: function() {
-    window.print();
+    const sheet = document.getElementById('qr-sheet-container');
+    if (!sheet) return;
+    this.activatePrintStage(sheet.innerHTML);
   },
 
   printSingleTag: function(toolId) {
     const tool = this.tools.find(t => t.id === toolId);
     if (!tool) return;
-    const win = window.open('', '_blank', 'width=400,height=300');
-    win.document.write(`
-      <html>
-        <head>
-          <title>Print Asset Tag · ${tool.id}</title>
-          <style>
-            body { font-family: Inter, sans-serif; margin: 0; padding: 10px; }
-          </style>
-        </head>
-        <body onload="window.print(); window.close();">
-          ${BalsonsQrGenerator.renderTagCard(tool)}
-        </body>
-      </html>
-    `);
-    win.document.close();
+    const tagHtml = `
+      <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #FFFFFF;">
+        ${BalsonsQrGenerator.renderTagCard(tool)}
+      </div>
+    `;
+    this.activatePrintStage(tagHtml);
   },
 
   // -------------------------------------------------------------

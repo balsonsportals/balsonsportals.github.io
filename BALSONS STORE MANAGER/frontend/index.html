@@ -766,23 +766,55 @@
     @media print {
       @page {
         size: A4 portrait;
-        margin: 8mm 10mm;
+        margin: 8mm 8mm;
       }
-      body {
+      html, body {
         background: #FFFFFF !important;
         color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        font-size: 10pt;
       }
-      .beds-enterprise-topbar, header, nav, .beds-mobile-pill-bar, .quick-action-bar, .store-filter-bar, .beds-toast-container, .beds-btn {
+      /* Hide all UI elements, navigation, topbars, buttons, alerts */
+      .beds-enterprise-topbar, header, nav, .beds-mobile-pill-bar,
+      .quick-action-bar, .store-filter-bar, .radar-grid,
+      .beds-modal-overlay, .beds-toast-container, button, .beds-btn,
+      .rgp-controls-card, .qr-controls-card, .tool-detail-actions,
+      .no-print, input, select, textarea {
         display: none !important;
       }
-      #view-rgp, #view-qr-tags {
-        display: block !important;
-      }
-      .beds-view-panel {
+
+      /* When dedicated print stage is active */
+      body.beds-printing-mode header,
+      body.beds-printing-mode nav,
+      body.beds-printing-mode .beds-view-panel,
+      body.beds-printing-mode .beds-modal-overlay {
         display: none !important;
       }
-      .beds-view-panel.active {
+      body.beds-printing-mode #beds-store-print-stage {
         display: block !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+      }
+
+      /* Direct browser print fallback */
+      body:not(.beds-printing-mode) .beds-view-panel:not(.active) {
+        display: none !important;
+      }
+      body:not(.beds-printing-mode) #view-rgp.active #rgp-printable-sheet {
+        display: block !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        margin: 0 auto !important;
+      }
+      body:not(.beds-printing-mode) #view-qr-tags.active #qr-sheet-container {
+        display: block !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        margin: 0 auto !important;
       }
     }
   </style>
@@ -1253,12 +1285,12 @@
         </div>
         <div style="display: flex; gap: 8px;">
           <button class="beds-btn beds-btn-primary" onclick="BalsonsStoreApp.generateRgpChallan()">⚡ Generate Challan</button>
-          <button class="beds-btn beds-btn-secondary" onclick="window.print()">🖨️ Print Challan (A4)</button>
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsStoreApp.printRgpChallan()">🖨️ Print Challan (A4)</button>
         </div>
       </div>
 
       <!-- Generator Inputs Panel -->
-      <div style="background: var(--beds-bg-panel); border: 1px solid var(--beds-border); border-radius: var(--beds-radius-md); padding: 18px; margin-bottom: 20px;">
+      <div class="rgp-controls-card" style="background: var(--beds-bg-panel); border: 1px solid var(--beds-border); border-radius: var(--beds-radius-md); padding: 18px; margin-bottom: 20px;">
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 14px;">
           <div>
             <label class="beds-label" style="font-size: 12px; font-weight: 700;">Gate Pass Classification:</label>
@@ -2084,6 +2116,7 @@
   <script src="assets/js/balsons-docs-manager.js"></script>
   <script src="assets/js/beds-portal-login.js"></script>
   <script src="assets/js/beds-workspace.js"></script>
+  <script src="assets/js/qrcode.min.js"></script>
   <script src="assets/js/qr-generator.js"></script>
   <script src="assets/js/app.js"></script>
   <script>
@@ -2110,5 +2143,7 @@
     }
   }
 </script>
+  <!-- Dedicated Calibrated A4 Portrait Print Stage -->
+  <div id="beds-store-print-stage"></div>
 </body>
 </html>

@@ -724,6 +724,282 @@ const Balsons360Dossier = {
   closeModal: function() {
     const modal = document.getElementById('modal-dossier-360');
     if (modal) modal.style.display = 'none';
+  },
+
+  // =========================================================================
+  // 360° RIGGING TOOL & EQUIPMENT MASTER DOSSIER (ASSET PASSPORT)
+  // =========================================================================
+  getTool: function(toolId) {
+    if (window.BalsonsStoreApp && Array.isArray(window.BalsonsStoreApp.tools)) {
+      const found = window.BalsonsStoreApp.tools.find(t => t.id === toolId);
+      if (found) return found;
+    }
+    if (typeof BALSONS_STORE_DATA !== 'undefined' && Array.isArray(BALSONS_STORE_DATA.tools)) {
+      const found = BALSONS_STORE_DATA.tools.find(t => t.id === toolId);
+      if (found) return found;
+    }
+    return {
+      id: toolId || 'BAL-LF-HYJ-001',
+      section: 'LF',
+      sectionName: 'Lifting Equipment',
+      type: 'HYJ',
+      desc: 'Hydraulic Jack 100T (150mm stroke)',
+      spec: 'Enerpac CLRG-1006',
+      capacity: '100T WLL',
+      make: 'Enerpac',
+      model: 'CLRG-1006',
+      isLifting: true,
+      form11Cert: 'F11-JTRWF-2026-101',
+      lastInspection: '2026-08-15',
+      nextInspection: '2027-02-14',
+      status: 'ISSUED',
+      binLocation: 'YARD-LIFT-2',
+      issuedTo: 'EMP-2026-0001 (Ramesh Kumar)',
+      issuedDate: '2026-11-18',
+      condition: 'GOOD'
+    };
+  },
+
+  renderToolCard: function(toolId) {
+    const tool = this.getTool(toolId);
+    const qrUrl = window.BalsonsQrGenerator ? window.BalsonsQrGenerator.getToolQrDataUrl(tool.id, 200) : '';
+    const isLifting = !!tool.isLifting;
+    const isAvailable = tool.status === 'AVAILABLE';
+    const isIssued = tool.status === 'ISSUED';
+    const statusBg = isAvailable ? '#ECFDF5' : (isIssued ? '#EFF6FF' : '#FEF2F2');
+    const statusColor = isAvailable ? '#059669' : (isIssued ? '#2563EB' : '#DC2626');
+
+    return `
+      <div class="tool-dossier-360-sheet" style="background: #FFFFFF; color: #0F172A; padding: 20px 24px; border: 1.5px solid #CBD5E1; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
+        <!-- Official Master Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0F172A; padding-bottom: 12px; margin-bottom: 14px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="assets/images/balsons-logo.png" alt="Logo" style="height: 40px; width: auto; object-fit: contain;">
+            <div>
+              <div style="font-size: 17px; font-weight: 900; color: #0F172A; letter-spacing: -0.3px;">BALSONS HEAVY LIFT &amp; SHIFT</div>
+              <div style="font-size: 11px; color: #0097B2; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
+                360° RIGGING TOOL &amp; EQUIPMENT MASTER DOSSIER (ASSET PASSPORT)
+              </div>
+              <div style="font-size: 10px; color: #64748B;">Project: Jupiter Tatravagonka Railwheel Factory (JTRWF), Khordha, Odisha</div>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="display: inline-block; background: #0F172A; color: #FFFFFF; padding: 3px 9px; font-weight: 800; font-size: 10px; border-radius: 3px;">
+              SECTION ${tool.section} &bull; ${tool.sectionName || 'RIGGING'}
+            </div>
+            <div style="font-size: 9.5px; font-weight: 700; color: #059669; margin-top: 3px;">
+              ⚡ DUAL-SYNC VERIFIED &bull; 264 LOCKED REGISTER
+            </div>
+            <div style="font-size: 9px; font-family: monospace; color: #64748B;">TAG-REF: ${tool.id}</div>
+          </div>
+        </div>
+
+        <!-- Identity Banner -->
+        <div style="display: flex; gap: 16px; align-items: center; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 12px 18px; border-radius: 6px; margin-bottom: 16px; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="text-align: center; flex-shrink: 0;">
+              <img src="${qrUrl}" alt="QR" style="width: 76px; height: 76px; border: 1.5px solid #0097B2; padding: 2px; border-radius: 4px; display: block; image-rendering: -webkit-optimize-contrast;">
+              <div style="font-size: 7px; font-weight: 800; color: #0097B2; margin-top: 2px;">SCAN TO VERIFY</div>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 19px; font-weight: 900; font-family: monospace; color: #0F172A;">${tool.id}</span>
+                <span style="background: ${statusBg}; color: ${statusColor}; border: 1.5px solid ${statusColor}; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 12px;">
+                  &bull; ${tool.status}
+                </span>
+                <span style="background: #0097B2; color: #FFFFFF; font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 4px;">
+                  ${tool.type || 'TACKLE'}
+                </span>
+              </div>
+              <div style="font-size: 14px; font-weight: 800; color: #0F172A; margin-top: 3px;">${tool.desc}</div>
+              <div style="font-size: 11.5px; color: #475569; margin-top: 2px;">
+                Make: <strong>${tool.make}</strong> &bull; Model: <strong>${tool.model}</strong> &bull; Bin Location: <strong style="color: #0097B2;">${tool.binLocation || 'MAIN TOOL CRIB'}</strong>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: right; border-left: 1px solid #CBD5E1; padding-left: 16px;">
+            <div style="font-size: 10px; color: #64748B; font-weight: 700;">SAFE WORKING LOAD (SWL)</div>
+            <div style="font-size: 18px; font-weight: 900; color: #059669; font-family: monospace;">${tool.capacity || tool.spec || 'Standard'}</div>
+            <div style="font-size: 10px; color: #475569; margin-top: 2px;">Physical Condition: <strong style="color: #059669;">${tool.condition || 'GOOD'}</strong></div>
+          </div>
+        </div>
+
+        <!-- 3 Pillars Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 16px;">
+          <!-- Pillar 1: Technical & Rigging Specifications -->
+          <div style="border: 1px solid #CBD5E1; border-radius: 6px; overflow: hidden; background: #FFFFFF;">
+            <div style="background: #0F172A; color: #FFFFFF; padding: 7px 10px; font-size: 11.5px; font-weight: 800; display: flex; justify-content: space-between;">
+              <span>🔧 1. ASSET SPECIFICATIONS</span>
+              <span style="font-size: 9.5px; background: #0097B2; padding: 2px 6px; border-radius: 3px;">VERIFIED</span>
+            </div>
+            <div style="padding: 10px 12px; font-size: 10.5px; line-height: 1.6;">
+              <div><strong>Section Code:</strong> ${tool.section} (${tool.sectionName || 'Rigging Gear'})</div>
+              <div><strong>Asset Category:</strong> ${isLifting ? 'Statutory Lifting Tackle' : 'Heavy Mechanical & Rigging Tool'}</div>
+              <div><strong>Rated Specification:</strong> ${tool.spec || 'Heavy Industrial Grade'}</div>
+              <div><strong>Manufacturer:</strong> ${tool.make || 'BALSONS Standard'}</div>
+              <div><strong>Model / Part No:</strong> ${tool.model || 'Standard'}</div>
+              <div style="margin-top: 5px; padding-top: 5px; border-top: 1px dashed #E2E8F0;">
+                <div><strong>Crib Storage Bin:</strong> <span style="font-weight: 800; color: #0097B2;">${tool.binLocation || 'STORE MAIN CRIB'}</span></div>
+                <div><strong>Operational Custody:</strong> Store Lead (Gagan Bihari Das)</div>
+                <div><strong>Maintenance Interval:</strong> Bi-annual / 180 Days</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pillar 2: Statutory Form 11 & HSE Compliance -->
+          <div style="border: 1px solid #CBD5E1; border-radius: 6px; overflow: hidden; background: #FFFFFF;">
+            <div style="background: #0097B2; color: #FFFFFF; padding: 7px 10px; font-size: 11.5px; font-weight: 800; display: flex; justify-content: space-between;">
+              <span>📜 2. STATUTORY FORM 11 &amp; EHS</span>
+              <span style="font-size: 9.5px; background: #059669; padding: 2px 6px; border-radius: 3px;">
+                ${isLifting ? 'FACTORIES ACT' : 'CALIBRATED'}
+              </span>
+            </div>
+            <div style="padding: 10px 12px; font-size: 10.5px; line-height: 1.6;">
+              <div><strong>Statutory Certificate:</strong> <span style="font-family: monospace; font-weight: 800; color: #0097B2;">${tool.form11Cert || 'F11-JTRWF-2026-CERT'}</span></div>
+              <div><strong>Last Proof Load Test:</strong> ${tool.lastInspection || '2026-08-15'}</div>
+              <div><strong>Recertification Due:</strong> <span style="font-weight: 800; color: #DC2626;">${tool.nextInspection || '2027-02-14'}</span></div>
+              <div><strong>Test Protocol:</strong> Factories Act 1948 Proof Load @ 125% SWL</div>
+              <div><strong>Examination Result:</strong> <span style="font-weight: 800; color: #059669;">PASSED ZERO DEFECT &bull; FIT FOR USE</span></div>
+              <div style="margin-top: 5px; padding-top: 5px; border-top: 1px dashed #E2E8F0;">
+                <div><strong>Approved Competent Person:</strong> Er. N. K. Mohapatra</div>
+                <div><strong>Licence Number:</strong> CP/OD/2021/FACT-084 (Odisha Directorate)</div>
+                <div><strong>Certificate Seal:</strong> Cryptographically Verified Digital Seal</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pillar 3: Active Site Deployment & Custody -->
+          <div style="border: 1px solid #CBD5E1; border-radius: 6px; overflow: hidden; background: #FFFFFF;">
+            <div style="background: #102D35; color: #FFFFFF; padding: 7px 10px; font-size: 11.5px; font-weight: 800; display: flex; justify-content: space-between;">
+              <span>🏗️ 3. DEPLOYMENT &amp; CUSTODY</span>
+              <span style="font-size: 9.5px; background: ${isIssued ? '#2563EB' : '#059669'}; padding: 2px 6px; border-radius: 3px;">
+                ${isIssued ? 'DEPLOYED ON SITE' : 'IN TOOL CRIB'}
+              </span>
+            </div>
+            <div style="padding: 10px 12px; font-size: 10.5px; line-height: 1.6;">
+              <div><strong>Current Custody:</strong> <span style="font-weight: 800;">${tool.issuedTo || 'In Store Crib (Available)'}</span></div>
+              <div><strong>Checkout / Issue Date:</strong> ${tool.issuedDate || 'N/A (Ready for Checkout)'}</div>
+              <div><strong>Work Area:</strong> ${tool.issuedTo ? 'AREA-01 AXLE LINE (Schuler Erection)' : 'Store Holding Area'}</div>
+              <div><strong>Project Scope:</strong> PRJ-JTRWF Schuler 10,000T Erection Line 1</div>
+              <div><strong>Return Due Date:</strong> ${tool.issuedTo ? '2026-11-28 18:00 IST' : 'N/A'}</div>
+              <div style="margin-top: 5px; padding-top: 5px; border-top: 1px dashed #E2E8F0;">
+                <div><strong>Gate Movement Pass:</strong> ${tool.issuedTo ? 'GP-RGP-JTRWF-2026-088' : 'Not dispatched outside'}</div>
+                <div><strong>Inspection on Return:</strong> Mandatory Rigging Tackles Visual Check</div>
+                <div><strong>Service Status:</strong> Fully Operational &bull; Zero Open Defects</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Master Signatures & Governance Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #F1F5F9; border-radius: 6px; border: 1px solid #CBD5E1; font-size: 10px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <div><strong>Central Ecosystem Database:</strong> <span style="font-family: monospace; font-weight: 700;">1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ</span></div>
+            <div style="color: #64748B;">Statutory Rigging Tackle Register &bull; Calibrated for single-page A4 print</div>
+          </div>
+          <div style="display: flex; gap: 20px;">
+            <div style="text-align: center;">
+              <div style="font-weight: 800; border-bottom: 1px solid #94A3B8; padding-bottom: 2px;">Gagan Bihari Das</div>
+              <div style="font-size: 8.5px; color: #64748B;">Store Lead</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-weight: 800; border-bottom: 1px solid #94A3B8; padding-bottom: 2px;">Gajendra Rao</div>
+              <div style="font-size: 8.5px; color: #64748B;">Site Safety Manager</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-weight: 800; border-bottom: 1px solid #94A3B8; padding-bottom: 2px;">Pradeep Muley</div>
+              <div style="font-size: 8.5px; color: #64748B;">Director / Authorized Lead</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  openToolModal: function(toolId) {
+    this.injectToolModalIfMissing();
+    const modal = document.getElementById('modal-tool-dossier-360');
+    if (!modal) return;
+    
+    this.populateToolSelect('modalToolDossierSelect', toolId || 'BAL-LF-HYJ-001');
+    const container = document.getElementById('tool-dossier-modal-content');
+    if (container) {
+      container.innerHTML = this.renderToolCard(toolId || 'BAL-LF-HYJ-001');
+    }
+    modal.style.display = 'flex';
+  },
+
+  populateToolSelect: function(selectId, selectedToolId) {
+    const sel = document.getElementById(selectId);
+    if (!sel) return;
+    sel.innerHTML = '';
+    const tools = (window.BalsonsStoreApp && Array.isArray(window.BalsonsStoreApp.tools)) 
+      ? window.BalsonsStoreApp.tools 
+      : ((typeof BALSONS_STORE_DATA !== 'undefined' && Array.isArray(BALSONS_STORE_DATA.tools)) ? BALSONS_STORE_DATA.tools : []);
+    
+    tools.slice(0, 100).forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t.id;
+      opt.textContent = `${t.id} • ${t.desc} [${t.status}]`;
+      if (t.id === selectedToolId) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  },
+
+  injectToolModalIfMissing: function() {
+    if (document.getElementById('modal-tool-dossier-360')) return;
+
+    const modalHtml = `
+      <div id="modal-tool-dossier-360" class="beds-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.65); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
+        <div class="beds-modal-dialog" style="background: var(--beds-bg-panel, #FFFFFF); width: 940px; max-width: 95vw; max-height: 94vh; overflow-y: auto; border-radius: 8px; border: 1px solid var(--beds-border, #CBD5E1); box-shadow: 0 16px 36px rgba(0,0,0,0.3); padding: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0097B2; padding-bottom: 12px; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 22px;">🔧</span>
+              <div>
+                <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: var(--beds-charcoal-heading, #102D35);">
+                  360° Rigging Tackle &amp; Tool Asset Dossier (Equipment Passport)
+                </h3>
+                <div style="font-size: 11.5px; color: var(--beds-text-secondary, #64748B);">
+                  Factories Act Form 11 Proof Load &bull; Calibration Tracking &bull; Central Store Sync
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <select id="modalToolDossierSelect" class="beds-select" style="font-size: 12px; padding: 5px 8px; font-weight: 700;" onchange="Balsons360Dossier.onToolSelectChange(this.value)">
+              </select>
+              <button type="button" class="beds-btn beds-btn-sm beds-btn-primary" style="background: #0097B2; color: #FFFFFF; font-weight: 800; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer;" onclick="Balsons360Dossier.printToolDossier(document.getElementById('modalToolDossierSelect')?document.getElementById('modalToolDossierSelect').value:'BAL-LF-HYJ-001')">
+                🖨️ Print Tool Passport (A4)
+              </button>
+              <button type="button" class="beds-btn beds-btn-sm beds-btn-secondary" style="padding: 6px 10px; cursor: pointer;" onclick="document.getElementById('modal-tool-dossier-360').style.display = 'none'">
+                ✕ Close
+              </button>
+            </div>
+          </div>
+          <div id="tool-dossier-modal-content">
+          </div>
+        </div>
+      </div>
+    `;
+
+    const div = document.createElement('div');
+    div.innerHTML = modalHtml;
+    document.body.appendChild(div.firstElementChild);
+  },
+
+  onToolSelectChange: function(toolId) {
+    const container = document.getElementById('tool-dossier-modal-content');
+    if (container) {
+      container.innerHTML = this.renderToolCard(toolId);
+    }
+  },
+
+  printToolDossier: function(toolId) {
+    const cardHtml = this.renderToolCard(toolId);
+    if (window.BalsonsStoreApp && typeof window.BalsonsStoreApp.activatePrintStage === 'function') {
+      window.BalsonsStoreApp.activatePrintStage(cardHtml);
+    } else {
+      window.print();
+    }
   }
 };
 
