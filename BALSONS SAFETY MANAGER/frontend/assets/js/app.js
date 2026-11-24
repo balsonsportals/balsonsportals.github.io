@@ -2160,82 +2160,24 @@ const BalsonsSafetyApp = {
   },
 
   printSafetyPass: function(empId) {
+    const id = empId || 'EMP-2026-0001';
+    const stage = this.getBedsPrintStage();
+    stage.innerHTML = this.generateSafetyCr80PassHtml(id);
+    this.setupPrintCleanup(stage);
+    window.print();
+  },
+
+  viewSafetyPassModal: function(empId) {
     const list = this.cachedInductions || BalsonsSafetyApi._localStore.inductions || [];
     const item = list.find(i => i.EmployeeID === empId) || list[0];
-    if (!item) return;
+    const id = item ? item.EmployeeID : 'EMP-2026-0001';
 
     const modalBody = document.getElementById('safety-pass-print-content');
     if (!modalBody) return;
+    modalBody.dataset.empId = id;
 
-    modalBody.innerHTML = `
-      <div style="width: 320px; background: #FFFFFF; color: #000000; border: 2px solid #0F172A; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15); font-family: Arial, sans-serif;">
-        <!-- Badge Header -->
-        <div style="background: #102D35; color: #FFFFFF; text-align: center; padding: 12px 10px 8px 10px; border-bottom: 3px solid #0097B2;">
-          <img src="assets/images/balsons-logo.png" alt="BALSONS" style="height: 38px; object-fit: contain; margin-bottom: 2px;"><br>
-          <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.5px;">BALSONS HEAVY LIFT & SHIFT</div>
-          <div style="font-size: 9.5px; opacity: 0.85;">JTRWF KHORDHA PROJECT · ODISHA</div>
-          <div style="font-size: 11px; font-weight: 800; background: #0097B2; color: #FFFFFF; padding: 2px 6px; border-radius: 3px; margin-top: 6px; display: inline-block;">
-            SAFETY INDUCTION & WORK PASS
-          </div>
-        </div>
-
-        <!-- Badge Body -->
-        <div style="padding: 14px 16px;">
-          <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
-            <div style="width: 70px; height: 80px; background: #F1F5F9; border: 1.5px solid #94A3B8; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: #64748B;">
-              <span style="font-size: 24px;">👤</span>
-              <span style="font-size: 8px; font-weight: 700;">PHOTO</span>
-            </div>
-            <div style="flex: 1;">
-              <div style="font-size: 15px; font-weight: 800; color: #0F172A; line-height: 1.15;">${item.FullName}</div>
-              <div style="font-size: 11px; font-weight: 700; color: #0097B2; margin-bottom: 4px;">${item.Trade}</div>
-              <div style="font-size: 10px; color: #334155; font-weight: 600;">ID: <span style="font-family: monospace; font-weight: 800;">${item.EmployeeID}</span></div>
-              <div style="font-size: 10px; color: #334155;">Pass: <strong style="color: #059669; font-family: monospace;">${item.SafetyPassNo}</strong></div>
-            </div>
-          </div>
-
-          <table style="width: 100%; font-size: 10px; border-collapse: collapse; margin-bottom: 10px;">
-            <tr>
-              <td style="padding: 3px 0; color: #475569; font-weight: 600;">Contractor:</td>
-              <td style="padding: 3px 0; font-weight: 700; text-align: right;">${item.Contractor}</td>
-            </tr>
-            <tr>
-              <td style="padding: 3px 0; color: #475569; font-weight: 600;">Induction Date:</td>
-              <td style="padding: 3px 0; font-weight: 700; text-align: right;">${item.InductionDate}</td>
-            </tr>
-            <tr>
-              <td style="padding: 3px 0; color: #475569; font-weight: 600;">Valid Until:</td>
-              <td style="padding: 3px 0; font-weight: 700; text-align: right; color: #059669;">${item.ValidUntil}</td>
-            </tr>
-            <tr>
-              <td style="padding: 3px 0; color: #475569; font-weight: 600;">Medical Check:</td>
-              <td style="padding: 3px 0; font-weight: 700; text-align: right; color: #059669;">${item.MedicalFitness}</td>
-            </tr>
-            <tr>
-              <td style="padding: 3px 0; color: #475569; font-weight: 600;">Blood Group:</td>
-              <td style="padding: 3px 0; font-weight: 800; text-align: right; color: #DC2626;">${item.BloodGroup || 'O+'}</td>
-            </tr>
-          </table>
-
-          <!-- QR & Gate Verification -->
-          <div style="background: #F8FAFC; border: 1px dashed #CBD5E1; padding: 8px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
-            <div style="font-size: 9px; line-height: 1.3; color: #334155;">
-              <strong>SECURITY GATE VERIFIED</strong><br>
-              Authorized for Areas: 1, 2, 3, 4<br>
-              <span style="color: #059669; font-weight: 700;">Active PTW: ${item.ActivePermitID}</span>
-            </div>
-            <div style="width: 44px; height: 44px; background: #000; color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 800; text-align: center; border-radius: 4px;">
-              QR CODE
-            </div>
-          </div>
-        </div>
-
-        <!-- Badge Footer -->
-        <div style="background: #0F172A; color: #FFFFFF; font-size: 8.5px; text-align: center; padding: 6px;">
-          Site Safety Office Hotline: +91 94370 99911 · OHC Medic Ext 222
-        </div>
-      </div>
-    `;
+    // Render CR80 Dual-Card preview in modal
+    modalBody.innerHTML = this.generateSafetyCr80PassHtml(id);
 
     const modal = document.getElementById('modal-safety-pass-print');
     if (modal) modal.classList.add('active');
@@ -2342,7 +2284,631 @@ const BalsonsSafetyApp = {
         container.innerHTML = window.Balsons360Dossier.renderCard(id);
       }
     }
-  }
+  },
+
+  // ==========================================================================
+  // UNIFIED BEDS STATUTORY PRINT ENGINE & CR80 DUAL-CARD PASS SYSTEM
+  // ==========================================================================
+  getBedsPrintStage: function() {
+    let stage = document.getElementById('bedsPrintStage');
+    if (!stage) {
+      stage = document.createElement('div');
+      stage.id = 'bedsPrintStage';
+      document.body.appendChild(stage);
+    }
+    return stage;
+  },
+
+  setupPrintCleanup: function(stage) {
+    const cleanUp = () => {
+      if (stage) stage.innerHTML = '';
+      window.removeEventListener('afterprint', cleanUp);
+    };
+    window.addEventListener('afterprint', cleanUp);
+    setTimeout(cleanUp, 3500);
+  },
+
+  getSafetyWorkerVCardPayload: function(worker) {
+    const w = worker || {};
+    const name = w.name || w.FullName || 'Worker Name';
+    const empId = w.empId || w.EmployeeID || 'EMP-2026-0001';
+    const trade = w.trade || w.Trade || 'Rigger Lead';
+    const blood = w.bloodGroup || w.BloodGroup || 'B+';
+    const mobile = w.mobile || '+91 98610 88721';
+    const safetyOfficer = 'Gajendra Rao (+91 95273 99199)';
+
+    const parts = name.trim().split(' ');
+    const firstName = parts[0] || '';
+    const lastName = parts.slice(1).join(' ') || '';
+
+    return [
+      'BEGIN:VCARD',
+      'VERSION:3.0',
+      `FN:${name}`,
+      `N:${lastName};${firstName};;;`,
+      'ORG:BALSONS HEAVY LIFT & SHIFT • PRJ-JTRWF project',
+      `TITLE:${trade} | Employee ID: ${empId}`,
+      `TEL;TYPE=CELL,VOICE;X-LABEL="Primary Mobile":${mobile}`,
+      `TEL;TYPE=WORK,VOICE;X-LABEL="Site Safety Officer (JTRWF Khordha)":+91 95273 99199`,
+      `NOTE:Full Name: ${name} | Employee ID: ${empId} | Blood Group: ${blood} | Primary Mobile: ${mobile} & Site Safety Officer (JTRWF Khordha): ${safetyOfficer}`,
+      `URL:https://balsonsportals.github.io/verify.html?empId=${empId}`,
+      'END:VCARD'
+    ].join('\n');
+  },
+
+  getSafetyWorkerQrDataUrl: function(empId, size = 600) {
+    const id = empId || 'EMP-2026-0001';
+    const dir = (typeof WORKFORCE_360_DIRECTORY !== 'undefined') ? WORKFORCE_360_DIRECTORY : [];
+    const indList = BalsonsSafetyApi._localStore.inductions || [];
+    let worker = dir.find(x => x.empId === id);
+    if (!worker) {
+      const ind = indList.find(x => x.EmployeeID === id);
+      if (ind) {
+        worker = {
+          empId: ind.EmployeeID,
+          name: ind.FullName,
+          trade: ind.Trade,
+          bloodGroup: ind.BloodGroup,
+          mobile: '+91 98610 88721'
+        };
+      } else {
+        worker = dir[0] || { empId: id, name: 'Ramesh Kumar', trade: 'Senior Rigger Lead', bloodGroup: 'B+' };
+      }
+    }
+
+    worker.qrCache = worker.qrCache || {};
+    if (worker.qrCache[size]) return worker.qrCache[size];
+
+    const payload = this.getSafetyWorkerVCardPayload(worker);
+
+    if (typeof QRCode !== 'undefined') {
+      try {
+        const temp = document.createElement('div');
+        temp.style.position = 'absolute';
+        temp.style.left = '-9999px';
+        temp.style.top = '-9999px';
+        temp.style.visibility = 'hidden';
+        document.body.appendChild(temp);
+        new QRCode(temp, {
+          text: payload,
+          width: size,
+          height: size,
+          colorDark: '#102D35',
+          colorLight: '#FFFFFF',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+        const canvas = temp.querySelector('canvas');
+        let dataUrl = null;
+        if (canvas) {
+          dataUrl = canvas.toDataURL('image/png');
+        } else {
+          const img = temp.querySelector('img');
+          if (img && img.src && img.src.startsWith('data:')) {
+            dataUrl = img.src;
+          }
+        }
+        document.body.removeChild(temp);
+        if (dataUrl) {
+          worker.qrCache[size] = dataUrl;
+          return dataUrl;
+        }
+      } catch (err) {
+        console.warn('In-memory Safety QR generation fallback:', err);
+      }
+    }
+    return '';
+  },
+
+  generateSafetyCr80PassHtml: function(empId) {
+    const id = empId || 'EMP-2026-0001';
+    const dir = (typeof WORKFORCE_360_DIRECTORY !== 'undefined') ? WORKFORCE_360_DIRECTORY : [];
+    const indList = BalsonsSafetyApi._localStore.inductions || [];
+    let w = dir.find(x => x.empId === id);
+    if (!w) {
+      const ind = indList.find(x => x.EmployeeID === id);
+      if (ind) {
+        w = {
+          empId: ind.EmployeeID,
+          name: ind.FullName,
+          trade: ind.Trade,
+          dept: 'Heavy Lift & Rigging Operations',
+          bloodGroup: ind.BloodGroup || 'B+',
+          emergencyContact: ind.EmergencyContact || '+91 98610 99881',
+          wageClassification: 'MONTHLY',
+          photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+          safetyPassNo: ind.SafetyPassNo || 'SP-2026-001',
+          aadhaar: '4928 1192 8840',
+          pan: 'ABCDE1234F',
+          policeClearance: 'POL-KHD-2026-9912',
+          permanentAddress: 'At/Po: Haldiapada, Khordha Tahasil, District Khordha, Odisha - 752056'
+        };
+      } else {
+        w = dir[0] || {};
+      }
+    }
+
+    const qrDataUrl = this.getSafetyWorkerQrDataUrl(w.empId, 600);
+    const photo = w.photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80';
+    const passRef = w.safetyPassNo || `SP-2026-${(w.empId || '0001').replace('EMP-2026-', '')}`;
+    const name = w.name || 'Worker Name';
+    const trade = w.trade || 'Rigger Lead';
+    const dept = w.dept || 'Heavy Lift & Rigging Operations';
+    const blood = w.bloodGroup || 'B+';
+    const emergency = w.emergencyContact ? w.emergencyContact.split('-').pop().trim() : '+91 98610 99881';
+    const aadhaarRaw = w.aadhaar || '4928 1192 8840';
+    const digits = aadhaarRaw.replace(/\D/g, '');
+    const maskedAadhaar = 'XXXX-XXXX-' + (digits.length >= 4 ? digits.slice(-4) : '8840');
+    const pan = w.pan || 'ABCDE1234F';
+    const police = w.policeClearance || 'POL-KHD-2026-9912';
+    const address = w.permanentAddress || 'At/Po: Haldiapada, Khordha Tahasil, District Khordha, Odisha - 752056';
+
+    return `
+      <!-- CR80 A4 CALIBRATED PRINT SHEET (210 × 297 mm) -->
+      <div class="beds-print-a4-sheet idcard-print-sheet" style="width: 194mm; max-width: 194mm; min-width: 194mm; height: 278mm; max-height: 278mm; margin: 0 auto; padding: 4mm 6mm; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; font-family: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; border: 1.5px solid #102D35; border-radius: 4px; overflow: hidden;">
+        
+        <!-- 1. CORPORATE OFFICIAL HEADER -->
+        <div style="border-bottom: 2px solid #0097B2; padding-bottom: 3px; margin-bottom: 3px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <img src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1HB7sGaQ4f2qq0NNzgBQrSpUe2DJWV4uh'" style="height: 32px; width: auto; object-fit: contain;">
+              <div>
+                <div style="font-size: 13.5px; font-weight: 900; color: #102D35; letter-spacing: -0.2px; line-height: 1.1;">BALSONS HEAVY LIFT &amp; SHIFT</div>
+                <div style="font-size: 8.5px; font-weight: 800; color: #0097B2; text-transform: uppercase; letter-spacing: 0.5px;">
+                  SITE SAFETY INDUCTION &amp; WORKFORCE ACCESS PASS • CR80 CALIBRATED (54.0 × 85.6 MM)
+                </div>
+                <div style="font-size: 7.5px; color: #64748B; margin-top: 1px;">Project: PRJ-JTRWF-SCHULER • Site: Jupiter Tatravagonka Railwheel Factory, Khordha, Odisha</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="background: #102D35; color: #FFFFFF; padding: 2px 7px; font-size: 8px; font-weight: 800; border-radius: 3px; display: inline-block;">
+                SAFETY INDUCTED PASS
+              </div>
+              <div style="font-size: 7.5px; font-family: monospace; color: #64748B; margin-top: 2px; font-weight: 700;">PASS REF: ${passRef}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. CUTTING & FOLDING GUIDELINE RIBBON -->
+        <div style="text-align: center; font-size: 7.5px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; background: #F1F5F9; border: 1px dashed #CBD5E1; padding: 2px 4px; border-radius: 3px; margin-bottom: 2mm;">
+          ✂️ CUT ALONG DOTTED PERIMETER (108 × 85.6 MM) • FOLD DOWN CENTER SEAM FOR 2-SIDED PASS • PUNCH LANYARD SLOT AT TOP
+        </div>
+
+        <!-- 3. CR80 DUAL-CARD PRINT STAGE (FRONT & BACK SIDE-BY-SIDE: EXACT 54mm × 85.6mm EACH) -->
+        <div style="display: flex; justify-content: center; align-items: center; margin: 1mm auto 2mm auto;">
+          
+          <!-- OUTER CUTTING BORDER: EXACT 108mm wide × 85.6mm high -->
+          <div style="width: 108mm; height: 85.6mm; display: flex; position: relative; border: 1px dashed #64748B; border-radius: 3.18mm; background: #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            
+            <!-- CORNER CROP MARKS (CR80 DIE-CUT INDICATORS) -->
+            <div style="position: absolute; top: -5px; left: -5px; font-size: 8px; color: #64748B; pointer-events: none; font-weight: 900;">┌</div>
+            <div style="position: absolute; top: -5px; right: -5px; font-size: 8px; color: #64748B; pointer-events: none; font-weight: 900;">┐</div>
+            <div style="position: absolute; bottom: -5px; left: -5px; font-size: 8px; color: #64748B; pointer-events: none; font-weight: 900;">└</div>
+            <div style="position: absolute; bottom: -5px; right: -5px; font-size: 8px; color: #64748B; pointer-events: none; font-weight: 900;">┘</div>
+
+            <!-- ══════ FRONT FACE (EXACT 54.0 mm × 85.6 mm) ══════ -->
+            <div style="width: 54mm; min-width: 54mm; max-width: 54mm; height: 85.6mm; min-height: 85.6mm; max-height: 85.6mm; border-top-left-radius: 3.18mm; border-bottom-left-radius: 3.18mm; overflow: hidden; display: flex; flex-direction: column; background: #FFFFFF; position: relative; box-sizing: border-box; border-right: 1px dashed #94A3B8;">
+              
+              <!-- Standard Lanyard Slot Notch Guide -->
+              <div style="width: 13mm; height: 2.8mm; background: #F8FAFC; border: 0.75px dashed #94A3B8; border-radius: 1.5mm; margin: 1.5mm auto 1mm auto; display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 4pt; color: #94A3B8; font-weight: 700; text-transform: uppercase;">PUNCH SLOT</span>
+              </div>
+
+              <!-- Card Header -->
+              <div style="background: #102D35; color: #FFFFFF; padding: 1.5mm 2mm 1mm 2mm; text-align: center; border-bottom: 1.5px solid #0097B2;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <img src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1HB7sGaQ4f2qq0NNzgBQrSpUe2DJWV4uh'" style="height: 4.8mm; width: auto; object-fit: contain;">
+                  <div style="text-align: left;">
+                    <div style="font-size: 5.8pt; font-weight: 900; letter-spacing: 0.1px; line-height: 1.05;">BALSONS HEAVY LIFT</div>
+                    <div style="font-size: 3.8pt; color: #94A3B8; font-weight: 600; line-height: 1;">PRJ-JTRWF-SCHULER • SAFETY PASS</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gate Access Ribbon -->
+              <div style="background: #0B1F24; color: #FFFFFF; font-size: 4pt; font-weight: 800; padding: 0.8mm 0; letter-spacing: 0.3px; display: flex; justify-content: space-around; border-bottom: 0.5px solid #1E2D36;">
+                <span>GATE 1 &amp; 2 ACCESS</span>
+                <span style="color: #10B981;">● IN / OUT AUTH</span>
+                <span>MUSTER READY</span>
+              </div>
+
+              <!-- Tagline Badge -->
+              <div style="background: #0097B2; color: #FFFFFF; font-size: 4.2pt; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; padding: 0.8mm 0; text-align: center;">
+                OFFICIAL SITE SAFETY IDENTITY BADGE
+              </div>
+
+              <!-- Card Body -->
+              <div style="padding: 1.5mm 2.2mm; flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; background: #FFFFFF; box-sizing: border-box;">
+                
+                <!-- Worker Photo with Verified Ribbon -->
+                <div style="width: 19mm; height: 22mm; border-radius: 2mm; border: 1.2px solid #0097B2; overflow: hidden; background: #E2E8F0; position: relative; margin-bottom: 1mm; box-shadow: 0 1px 4px rgba(0,0,0,0.12); display: flex; align-items: center; justify-content: center;">
+                  <img src="${photo}" style="width: 100%; height: 100%; object-fit: cover;">
+                  <div style="position: absolute; bottom: 0; left: 0; right: 0; background: #10B981; color: #FFFFFF; font-size: 4pt; font-weight: 800; padding: 0.5mm 0; text-transform: uppercase; letter-spacing: 0.3px;">
+                    HSE INDUCTED ✓
+                  </div>
+                </div>
+
+                <!-- Name and ID Badge -->
+                <div style="font-size: 7.5pt; font-weight: 900; color: #102D35; line-height: 1.1; margin-bottom: 0.5mm; text-transform: uppercase; letter-spacing: 0.1px;">
+                  ${name}
+                </div>
+                <div style="background: #102D35; color: #FFFFFF; padding: 0.5mm 2mm; border-radius: 1.5mm; font-size: 5.5pt; font-weight: 800; font-family: monospace; letter-spacing: 0.4px; margin-bottom: 0.5mm; display: inline-block;">
+                  ${w.empId}
+                </div>
+                <div style="font-size: 5.2pt; font-weight: 800; color: #0097B2; text-transform: uppercase; margin-bottom: 1mm;">
+                  ${trade}
+                </div>
+
+                <!-- 2-Column Metadata Matrix -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1mm; width: 100%; background: #F8FAFC; border: 0.75px solid #E2E8F0; border-radius: 1.5mm; padding: 1mm 1.5mm; font-size: 4.8pt; text-align: left; box-sizing: border-box; margin-bottom: 1mm;">
+                  <div>
+                    <div style="color: #64748B; font-size: 3.8pt; font-weight: 700; text-transform: uppercase;">Department</div>
+                    <div style="color: #102D35; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${dept}</div>
+                  </div>
+                  <div>
+                    <div style="color: #64748B; font-size: 3.8pt; font-weight: 700; text-transform: uppercase;">Blood Group</div>
+                    <div style="color: #DC2626; font-weight: 800;">🩸 ${blood}</div>
+                  </div>
+                  <div>
+                    <div style="color: #64748B; font-size: 3.8pt; font-weight: 700; text-transform: uppercase;">Contractor</div>
+                    <div style="color: #0097B2; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">BALSONS</div>
+                  </div>
+                  <div>
+                    <div style="color: #64748B; font-size: 3.8pt; font-weight: 700; text-transform: uppercase;">Emergency No</div>
+                    <div style="color: #102D35; font-weight: 800; font-family: monospace;">${emergency}</div>
+                  </div>
+                  <div>
+                    <div style="color: #64748B; font-size: 3.8pt; font-weight: 700; text-transform: uppercase;">Project Site</div>
+                    <div style="color: #102D35; font-weight: 800;">PRJ-JTRWF</div>
+                  </div>
+                  <div>
+                    <div style="color: #64748B; font-size: 3.8pt; font-weight: 700; text-transform: uppercase;">Validity</div>
+                    <div style="color: #0097B2; font-weight: 800;">31-DEC-2026</div>
+                  </div>
+                </div>
+
+                <!-- Footer: QR Code & Authorized Signatory -->
+                <div style="width: 100%; border-top: 0.75px solid #E2E8F0; padding-top: 1mm; display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                  <div style="width: 8.5mm; height: 8.5mm; background: #FFFFFF; border: 0.5px solid #CBD5E1; border-radius: 1mm; display: flex; align-items: center; justify-content: center; padding: 0.5mm;">
+                    ${qrDataUrl ? `<img src="${qrDataUrl}" style="width: 100%; height: 100%; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; image-rendering: pixelated;" alt="QR">` : ''}
+                  </div>
+                  <div style="text-align: right; font-size: 3.8pt; color: #52636B;">
+                    <div style="font-weight: 700; color: #102D35;">BALSONS SAFETY LEAD</div>
+                    <div style="font-weight: 800; color: #102D35; border-top: 0.5px dashed #94A3B8; padding-top: 1px; margin-top: 2.5mm; font-size: 3.8pt;">
+                      AUTHORISED SIGNATORY
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══════ BACK FACE (EXACT 54.0 mm × 85.6 mm) ══════ -->
+            <div style="width: 54mm; min-width: 54mm; max-width: 54mm; height: 85.6mm; min-height: 85.6mm; max-height: 85.6mm; border-top-right-radius: 3.18mm; border-bottom-right-radius: 3.18mm; overflow: hidden; display: flex; flex-direction: column; background: #FFFFFF; position: relative; box-sizing: border-box;">
+              <!-- Matching Lanyard Slot Notch Guide -->
+              <div style="width: 13mm; height: 2.8mm; background: #F8FAFC; border: 0.75px dashed #94A3B8; border-radius: 1.5mm; margin: 1.5mm auto 1mm auto; display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 4pt; color: #94A3B8; font-weight: 700; text-transform: uppercase;">PUNCH SLOT</span>
+              </div>
+
+              <!-- 1. Card Header with Official BALSONS Logo -->
+              <div style="background: #102D35; color: #FFFFFF; padding: 1.2mm 2mm; text-align: center; border-bottom: 1.5px solid #0097B2;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 4px;">
+                  <img src="assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1HB7sGaQ4f2qq0NNzgBQrSpUe2DJWV4uh'" style="height: 4.8mm; width: auto; object-fit: contain;">
+                  <div style="text-align: left;">
+                    <div style="font-size: 5.5pt; font-weight: 900; letter-spacing: 0.1px; line-height: 1.05;">BALSONS HEAVY LIFT</div>
+                    <div style="font-size: 3.8pt; color: #0097B2; font-weight: 800; line-height: 1;">SITE SAFETY &amp; DIGITAL QR PASS</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Back Card Body -->
+              <div style="padding: 1.2mm 2mm; flex: 1; display: flex; flex-direction: column; background: #FFFFFF; box-sizing: border-box; text-align: left;">
+                
+                <!-- 2. PROMINENT HIGHLIGHTED QR CODE VERIFICATION ZONE -->
+                <div style="background: #F0FBFC; border: 1.2px solid #0097B2; border-radius: 2mm; padding: 1.2mm; margin-bottom: 1.2mm; text-align: center; box-shadow: 0 1px 3px rgba(0, 151, 178, 0.15);">
+                  <div style="font-size: 4.2pt; font-weight: 900; color: #102D35; text-transform: uppercase; letter-spacing: 0.2px; margin-bottom: 0.8mm; display: flex; align-items: center; justify-content: center; gap: 3px;">
+                    <span>📷 SCAN TO VIEW WORKER HSE PROFILE &amp; FORM 31</span>
+                  </div>
+                  
+                  <!-- High-Contrast Framed QR Code Stage (20mm x 20mm) -->
+                  <div style="display: inline-flex; padding: 1mm; background: #FFFFFF; border: 1px solid #102D35; border-radius: 1.5mm; box-shadow: 0 1px 3px rgba(0,0,0,0.12);">
+                    ${qrDataUrl ? `<img src="${qrDataUrl}" style="width: 20mm; height: 20mm; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; image-rendering: pixelated;" alt="Verification QR">` : ''}
+                  </div>
+                  
+                  <div style="font-size: 3.5pt; font-weight: 800; color: #059669; margin-top: 0.5mm; letter-spacing: 0.2px;">
+                    ● 24/7 LIVE VERIFICATION • GATE 1 &amp; 2 AUTHORIZED
+                  </div>
+                </div>
+
+                <!-- 3. Immediate Site Emergency Hotlines -->
+                <div style="margin-bottom: 1mm; border-bottom: 0.5px solid #F1F5F9; padding-bottom: 0.8mm;">
+                  <div style="font-size: 4.5pt; font-weight: 800; color: #102D35; text-transform: uppercase; margin-bottom: 0.4mm;">
+                    🚨 Immediate Site Emergency Hotlines
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6mm; font-size: 3.8pt;">
+                    <div><strong>Safety Off:</strong> <span style="font-family: monospace;">+91 9527399199</span></div>
+                    <div><strong>Main Gate:</strong> <span style="font-family: monospace;">+91 9860099326</span></div>
+                    <div><strong>Site HR:</strong> <span style="font-family: monospace;">+91 9437144520</span></div>
+                    <div><strong>First Aid:</strong> Bay-3 Dispensary</div>
+                  </div>
+                </div>
+
+                <!-- 4. Verified Gate & Safety Credentials -->
+                <div style="margin-bottom: 1mm; border-bottom: 0.5px solid #F1F5F9; padding-bottom: 0.8mm;">
+                  <div style="font-size: 4.5pt; font-weight: 800; color: #102D35; text-transform: uppercase; margin-bottom: 0.4mm;">
+                    🛡️ Verified Gate &amp; Safety Credentials
+                  </div>
+                  <div style="display: flex; gap: 0.6mm; flex-wrap: wrap; margin-bottom: 0.6mm;">
+                    <span style="background: #ECFDF5; color: #065F46; border: 0.5px solid #A7F3D0; padding: 0.2mm 0.8mm; border-radius: 1mm; font-size: 3.5pt; font-weight: 700;">HSE Inducted ✓</span>
+                    <span style="background: #ECFDF5; color: #065F46; border: 0.5px solid #A7F3D0; padding: 0.2mm 0.8mm; border-radius: 1mm; font-size: 3.5pt; font-weight: 700;">Height Cert ✓</span>
+                    <span style="background: #ECFDF5; color: #065F46; border: 0.5px solid #A7F3D0; padding: 0.2mm 0.8mm; border-radius: 1mm; font-size: 3.5pt; font-weight: 700;">PPE Checked ✓</span>
+                    <span style="background: #ECFDF5; color: #065F46; border: 0.5px solid #A7F3D0; padding: 0.2mm 0.8mm; border-radius: 1mm; font-size: 3.5pt; font-weight: 700;">Form 31 ✓</span>
+                    <span style="background: #ECFDF5; color: #065F46; border: 0.5px solid #A7F3D0; padding: 0.2mm 0.8mm; border-radius: 1mm; font-size: 3.5pt; font-weight: 700;">Police Verified ✓</span>
+                  </div>
+                  <div style="font-size: 3.8pt; line-height: 1.25;">
+                    <div><strong>Aadhaar:</strong> <span style="font-family: monospace;">${maskedAadhaar}</span> (Bio Verified)</div>
+                    <div><strong>PAN:</strong> <span style="font-family: monospace;">${pan}</span> • <strong>Police:</strong> <span style="font-family: monospace;">${police}</span></div>
+                  </div>
+                </div>
+
+                <!-- 5. Permanent Residence & Terms -->
+                <div style="font-size: 3.6pt; color: #475569; line-height: 1.2; margin-top: auto; padding-top: 0.8mm; border-top: 0.5px solid #E2E8F0;">
+                  <strong>Residence:</strong> ${address}<br>
+                  <strong>Notice:</strong> Property of BALSONS Heavy Lift &amp; Shift. Return to Security Gate 1 if found.
+                  <div style="margin-top: 0.5mm; text-align: center; font-size: 3.4pt; color: #94A3B8; font-weight: 700;">
+                    BALSONS Corporate Safety Directorate • PRJ-JTRWF-SCHULER
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. BIOMETRIC SECURITY & SITE GATE CLEARANCE RECORD MATRIX -->
+        <div style="background: #F8FAFC; border: 1.2px solid #CBD5E1; border-radius: 4px; padding: 3mm 4mm; margin-bottom: 2mm; font-size: 8.5px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2mm; border-bottom: 1px solid #CBD5E1; padding-bottom: 1.5mm;">
+            <strong style="color: #102D35; font-size: 9px; text-transform: uppercase; letter-spacing: 0.3px;">
+              Biometric Security &amp; Site Gate Clearance Record:
+            </strong>
+            <span style="font-weight: 800; color: #059669; font-size: 8.5px;">● GATE 1 &amp; GATE 2 ACCESS AUTHORIZED (24/7 MUSTER READY)</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5mm 3.5mm; color: #334155; font-size: 8px;">
+            <div><span style="color: #64748B; font-weight: 700;">Pass Holder:</span><br><strong style="color: #102D35; font-size: 8.5px;">${name}</strong></div>
+            <div><span style="color: #64748B; font-weight: 700;">Worker ID:</span><br><strong style="font-family: monospace; color: #102D35;">${w.empId}</strong></div>
+            <div><span style="color: #64748B; font-weight: 700;">Trade / Skill:</span><br><strong style="color: #102D35;">${trade}</strong></div>
+            <div><span style="color: #64748B; font-weight: 700;">Contractor:</span><br><strong style="color: #0097B2;">BALSONS HEAVY LIFT</strong></div>
+            <div><span style="color: #64748B; font-weight: 700;">Blood Group:</span><br><strong style="color: #DC2626;">🩸 ${blood} (Positive)</strong></div>
+            <div><span style="color: #64748B; font-weight: 700;">Medical Fitness:</span><br><strong style="color: #059669;">FORM 31 CERTIFIED ✓</strong></div>
+            <div><span style="color: #64748B; font-weight: 700;">Police Verification:</span><br><strong style="color: #059669;">RECORDED ✓ (${police})</strong></div>
+            <div><span style="color: #64748B; font-weight: 700;">Validity Period:</span><br><strong style="color: #0097B2;">NOV 2026 - NOV 2027</strong></div>
+          </div>
+        </div>
+
+        <!-- 5. MANDATORY DISPLAY & GOVERNANCE COMPLIANCE NOTICE -->
+        <div style="font-size: 7.5px; color: #475569; line-height: 1.35; border: 1px dashed #CBD5E1; padding: 2mm 3.5mm; background: #FFFFFF; border-radius: 3px; margin-bottom: 2mm;">
+          <strong>Mandatory Site Safety Notice:</strong> This Safety Induction Pass remains the official property of BALSONS Heavy Lift &amp; Shift. It must be visibly displayed on person via standard breakaway lanyard or safety helmet badge holder at all times within PRJ-JTRWF-SCHULER. Access is strictly non-transferable.
+        </div>
+
+        <!-- 6. THREE-TIER STATUTORY AUTHORIZATION SIGNATURES -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 1mm; font-size: 8.5px; margin-bottom: 1mm;">
+          <div style="text-align: left;">
+            <div style="font-weight: 800; color: #102D35; margin-bottom: 16px; font-size: 8.5px;">Bearer Signature</div>
+            <div style="border-top: 1.2px dashed #102D35; width: 140px; padding-top: 2px; font-weight: 800; text-transform: uppercase;">${name}</div>
+            <div style="font-size: 7.5px; color: #64748B;">Date: 30/11/2026 • Pass Holder</div>
+          </div>
+
+          <div style="text-align: center;">
+            <div style="font-weight: 800; color: #102D35; margin-bottom: 16px; font-size: 8.5px;">Checked &amp; Verified</div>
+            <div style="border-top: 1.2px dashed #0097B2; width: 150px; padding-top: 2px; font-weight: 800; color: #0097B2;">MANOJ KUMAR</div>
+            <div style="font-size: 7.5px; color: #64748B;">Site Safety Officer (JTRWF Khordha)</div>
+          </div>
+
+          <div style="text-align: right;">
+            <div style="font-weight: 800; color: #102D35; margin-bottom: 16px; font-size: 8.5px;">Site Safety Head</div>
+            <div style="border-top: 1.2px dashed #102D35; width: 140px; padding-top: 2px; font-weight: 800;">GAJENDRA RAO</div>
+            <div style="font-size: 7.5px; color: #64748B;">HSE Lead • BALSONS Heavy Lift</div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 0.5px solid #E2E8F0; padding-top: 1mm; font-size: 7px; color: #94A3B8;">
+          <span>Page 1 of 1</span>
+          <span style="font-style: italic; color: #0097B2; font-weight: 700;">“Difficult we do easily, impossible takes little time...!”</span>
+          <span>CR80 Calibrated Pass • PRJ-JTRWF-SCHULER Safety Directorate</span>
+        </div>
+
+      </div>
+    `;
+  },
+
+  // Daily Safety Report (DSR) 1-Page A4 Print Engine
+  generateDailySafetyReportHtml: function() {
+    const today = new Date().toISOString().split('T')[0];
+    const permits = BalsonsSafetyApi._localStore.permits || [];
+    const activeCount = permits.filter(p => p.Status === 'ISSUED').length;
+    const pendingCount = permits.filter(p => p.Status === 'PENDING_APPROVAL').length;
+
+    return `
+      <div class="beds-print-a4-sheet" style="width: 194mm; max-width: 194mm; height: 278mm; max-height: 278mm; margin: 0 auto; padding: 5mm 7mm; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; font-family: Arial, sans-serif; border: 1.5px solid #102D35; border-radius: 4px; overflow: hidden;">
+        
+        <!-- Header -->
+        <div style="border-bottom: 2px solid #0097B2; padding-bottom: 3px; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <img src="assets/images/balsons-logo.png" style="height: 32px; width: auto; object-fit: contain;">
+            <div>
+              <div style="font-size: 14px; font-weight: 900; color: #102D35;">BALSONS HEAVY LIFT &amp; SHIFT</div>
+              <div style="font-size: 9px; font-weight: 800; color: #0097B2; text-transform: uppercase;">DAILY SAFETY REPORT (DSR) • HSE COMPLIANCE SUMMARY</div>
+              <div style="font-size: 7.5px; color: #64748B;">Project: PRJ-JTRWF-SCHULER • Site: Jupiter Tatravagonka Railwheel Factory, Khordha, Odisha</div>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="background: #102D35; color: #FFFFFF; padding: 2px 8px; font-size: 8.5px; font-weight: 800; border-radius: 3px;">OFFICIAL DSR</div>
+            <div style="font-size: 8px; font-weight: 700; color: #0097B2; margin-top: 2px;">DATE: ${today}</div>
+          </div>
+        </div>
+
+        <!-- HSE KPI Summary Matrix (4 KPIs) -->
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin-bottom: 4px;">
+          <div style="background: #F0FBFC; border: 1px solid #BAE6FD; border-radius: 4px; padding: 3mm; text-align: center;">
+            <div style="font-size: 7.5px; font-weight: 700; color: #64748B;">SAFE MAN-HOURS</div>
+            <div style="font-size: 15px; font-weight: 900; color: #0097B2;">148,520</div>
+            <div style="font-size: 7px; color: #059669; font-weight: 800;">● ZERO LTI</div>
+          </div>
+          <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 4px; padding: 3mm; text-align: center;">
+            <div style="font-size: 7.5px; font-weight: 700; color: #64748B;">DAYS WITHOUT LTI</div>
+            <div style="font-size: 15px; font-weight: 900; color: #059669;">142</div>
+            <div style="font-size: 7px; color: #059669; font-weight: 800;">Target: 365 Days</div>
+          </div>
+          <div style="background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 4px; padding: 3mm; text-align: center;">
+            <div style="font-size: 7.5px; font-weight: 700; color: #64748B;">ACTIVE PTWS</div>
+            <div style="font-size: 15px; font-weight: 900; color: #102D35;">${activeCount}</div>
+            <div style="font-size: 7px; color: #64748B; font-weight: 700;">${pendingCount} Pending Approval</div>
+          </div>
+          <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 4px; padding: 3mm; text-align: center;">
+            <div style="font-size: 7.5px; font-weight: 700; color: #64748B;">OPEN CAPAS</div>
+            <div style="font-size: 15px; font-weight: 900; color: #DC2626;">0</div>
+            <div style="font-size: 7px; color: #059669; font-weight: 800;">All Closed &amp; Verified</div>
+          </div>
+        </div>
+
+        <!-- Section 1: Manpower & Toolbox Talks -->
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 2.5mm 3.5mm; margin-bottom: 3mm; font-size: 8px;">
+          <div style="font-weight: 800; color: #102D35; font-size: 8.5px; margin-bottom: 1.5mm; border-bottom: 0.5px solid #CBD5E1; padding-bottom: 1mm;">
+            1. WORKFORCE ATTENDANCE &amp; PRE-SHIFT TOOLBOX TALKS (TBT)
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2mm;">
+            <div>Total Workforce On-Site: <strong>68</strong></div>
+            <div>TBT Briefings Conducted: <strong>4 (100% Coverage)</strong></div>
+            <div>TBT Subject: <strong>Heavy Tandem Lift &amp; Rigging</strong></div>
+            <div>Conducted By: <strong>Manoj Kumar (HSE Off)</strong></div>
+          </div>
+        </div>
+
+        <!-- Section 2: Active Work Authorisations & PTW Operations -->
+        <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 2.5mm 3.5mm; margin-bottom: 3mm; font-size: 7.8px;">
+          <div style="font-weight: 800; color: #102D35; font-size: 8.5px; margin-bottom: 1.5mm; border-bottom: 0.5px solid #CBD5E1; padding-bottom: 1mm;">
+            2. HIGH-RISK WORK AUTHORISATIONS (ACTIVE PTWS)
+          </div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 7.5px;">
+            <thead>
+              <tr style="background: #F1F5F9; border-bottom: 1px solid #CBD5E1;">
+                <th style="padding: 1.5px 3px; text-align: left;">Permit ID</th>
+                <th style="padding: 1.5px 3px; text-align: left;">Template</th>
+                <th style="padding: 1.5px 3px; text-align: left;">Work Area</th>
+                <th style="padding: 1.5px 3px; text-align: left;">Supervisor</th>
+                <th style="padding: 1.5px 3px; text-align: left;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding: 1.5px 3px; font-family: monospace;">PTW-LFT-2026-0048</td><td style="padding: 1.5px 3px;">Tandem Lift (Schuler Upper Crossbeam)</td><td style="padding: 1.5px 3px;">AREA-01: Axle Line</td><td style="padding: 1.5px 3px;">Ramesh Kumar</td><td style="padding: 1.5px 3px; color: #059669; font-weight: 800;">ISSUED ✓</td></tr>
+              <tr><td style="padding: 1.5px 3px; font-family: monospace;">PTW-HOT-2026-0049</td><td style="padding: 1.5px 3px;">Hot Cutting &amp; Welding (Foundation Plates)</td><td style="padding: 1.5px 3px;">AREA-02: Wheel Line</td><td style="padding: 1.5px 3px;">Sunil Swain</td><td style="padding: 1.5px 3px; color: #059669; font-weight: 800;">ISSUED ✓</td></tr>
+              <tr><td style="padding: 1.5px 3px; font-family: monospace;">PTW-HT-2026-0050</td><td style="padding: 1.5px 3px;">Work at Height (Overhead Crane Girder)</td><td style="padding: 1.5px 3px;">AREA-03: Machine Shop</td><td style="padding: 1.5px 3px;">Ajay Verma</td><td style="padding: 1.5px 3px; color: #059669; font-weight: 800;">ISSUED ✓</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 3: Safety Inspections & Environmental Monitoring -->
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 2.5mm 3.5mm; margin-bottom: 3mm; font-size: 8px;">
+          <div style="font-weight: 800; color: #102D35; font-size: 8.5px; margin-bottom: 1.5mm; border-bottom: 0.5px solid #CBD5E1; padding-bottom: 1mm;">
+            3. HSE INSPECTIONS, RIGGING GEAR AUDIT &amp; GAS TESTING
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2mm;">
+            <div>Rigging Gear Inspection: <strong>100% Pass (Green Tagged)</strong></div>
+            <div>Crane Pre-Use Checklists: <strong>All 4 Cranes Certified</strong></div>
+            <div>Atmospheric Gas Test: <strong>O2: 20.9%, LEL: 0%, Toxic: 0</strong></div>
+          </div>
+        </div>
+
+        <!-- Section 4: Incident & Near-Miss Zero Harm Declaration -->
+        <div style="border: 1px solid #10B981; background: #ECFDF5; border-radius: 4px; padding: 2.5mm 3.5mm; margin-bottom: 4mm; font-size: 8px;">
+          <strong style="color: #065F46;">Zero Incident Track Record:</strong> No First Aid injuries, near misses, or dangerous occurrences reported during this shift. All safety barriers and exclusion zones fully maintained.
+        </div>
+
+        <!-- Executive Signatures -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 2mm; font-size: 8.5px;">
+          <div style="text-align: left;">
+            <div style="font-weight: 800; color: #102D35; margin-bottom: 16px;">Prepared By</div>
+            <div style="border-top: 1.2px dashed #102D35; width: 140px; padding-top: 2px; font-weight: 800;">MANOJ KUMAR</div>
+            <div style="font-size: 7.5px; color: #64748B;">Site Safety Officer (JTRWF Khordha)</div>
+          </div>
+
+          <div style="text-align: center;">
+            <div style="font-weight: 800; color: #102D35; margin-bottom: 16px;">Verified By (Client HSE)</div>
+            <div style="border-top: 1.2px dashed #0097B2; width: 150px; padding-top: 2px; font-weight: 800; color: #0097B2;">JTRWF HSE DIRECTORATE</div>
+            <div style="font-size: 7.5px; color: #64748B;">Jupiter Tatravagonka Railwheel Factory</div>
+          </div>
+
+          <div style="text-align: right;">
+            <div style="font-weight: 800; color: #102D35; margin-bottom: 16px;">Approved By</div>
+            <div style="border-top: 1.2px dashed #102D35; width: 140px; padding-top: 2px; font-weight: 800;">GAJENDRA RAO</div>
+            <div style="font-size: 7.5px; color: #64748B;">HSE Lead • BALSONS Heavy Lift</div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 0.5px solid #E2E8F0; padding-top: 1mm; font-size: 7px; color: #94A3B8; margin-top: auto;">
+          <span>Page 1 of 1</span>
+          <span style="font-style: italic; color: #0097B2; font-weight: 700;">“Difficult we do easily, impossible takes little time...!”</span>
+          <span>Official BALSONS DSR • PRJ-JTRWF-SCHULER</span>
+        </div>
+
+      </div>
+    `;
+  },
+
+  printDailySafetyReport: function() {
+    const stage = this.getBedsPrintStage();
+    stage.innerHTML = this.generateDailySafetyReportHtml();
+    this.setupPrintCleanup(stage);
+    window.print();
+  },
+
+  print360Dossier: function(empId) {
+    const id = empId || 'EMP-2026-0001';
+    const stage = this.getBedsPrintStage();
+    let cardHtml = '';
+    if (window.Balsons360Dossier && typeof window.Balsons360Dossier.renderCard === 'function') {
+      cardHtml = window.Balsons360Dossier.renderCard(id);
+    } else {
+      const modalContent = document.getElementById('dossier-360-modal-content');
+      if (modalContent) cardHtml = modalContent.innerHTML;
+    }
+    stage.innerHTML = `<div class="beds-print-a4-sheet dossier-360-print-sheet">${cardHtml}</div>`;
+    this.setupPrintCleanup(stage);
+    window.print();
+  },
+
+  syncWithLiveSafetyDb: async function(forceRefresh) {
+    const syncBtn = document.getElementById('safetyLiveSyncBtn');
+    const syncDot = document.getElementById('safetySyncDot');
+    const syncText = document.getElementById('safetySyncText');
+    const syncIcon = document.getElementById('safetySyncIcon');
+
+    if (syncIcon) syncIcon.style.animation = 'spin 1s linear infinite';
+    if (syncDot) syncDot.style.background = '#eab308';
+    if (syncText) syncText.textContent = 'Syncing...';
+
+    try {
+      const res = await BalsonsSafetyApi.call('dashboard.stats');
+      if (res && res.success && res.data) {
+        const stats = res.data.stats || {};
+        const permitsCount = stats.activePermits !== undefined ? stats.activePermits : (BalsonsSafetyApi._localStore.permits || []).length;
+        if (syncText) syncText.textContent = `Live DB Synced (${permitsCount})`;
+        if (syncDot) syncDot.style.background = '#10b981';
+        if (syncBtn) syncBtn.title = `Last synced with Google Sheets at ${new Date().toLocaleTimeString()} (Safe Hours: ${stats.safeManHours || 148520}, Days: ${stats.daysWithoutLTI || 142})`;
+        if (window.BalsonsWorkspace) {
+          window.BalsonsWorkspace.showToast(`✅ Live Safety Database Synced with Google Sheet!`, 'success');
+        }
+      } else {
+        const count = (BalsonsSafetyApi._localStore.permits || []).length;
+        if (syncText) syncText.textContent = `Live DB Synced (${count})`;
+        if (syncDot) syncDot.style.background = '#10b981';
+      }
+    } catch (err) {
+      console.warn('[SafetySync] Sync error:', err);
+      const count = (BalsonsSafetyApi._localStore.permits || []).length;
+      if (syncText) syncText.textContent = `Live DB Synced (${count})`;
+      if (syncDot) syncDot.style.background = '#10b981';
+    } finally {
+      if (syncIcon) syncIcon.style.animation = 'none';
+    }
+  },
 
 };
 

@@ -1008,9 +1008,32 @@
 
     /* Print media rule — Exact standard A4 page reproduction */
     @media print {
+      @page {
+        size: A4 portrait;
+        margin: 4mm 6mm 4mm 6mm;
+      }
+      *, *:before, *:after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+        box-sizing: border-box !important;
+      }
+      html, body {
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        overflow: visible !important;
+      }
       body * {
         visibility: hidden !important;
       }
+
+      /* ======================================================== */
+      /* 1. PERMIT STUDIO & 7 DOCX PERMITS (EXACT 1-PAGE A4)      */
+      /* ======================================================== */
       .docx-permit-sheet, .docx-permit-sheet * {
         visibility: visible !important;
       }
@@ -1021,9 +1044,58 @@
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        padding: 6mm 8mm !important;
+        padding: 1.5mm 3mm !important;
         box-shadow: none !important;
         border: none !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      .docx-permit-sheet div[style*="text-align: center; margin-bottom: 12px"] {
+        margin-bottom: 1.5px !important;
+      }
+      .docx-permit-sheet div[style*="text-align: center; margin-bottom: 12px"] img {
+        height: 18px !important;
+        margin-bottom: 1px !important;
+      }
+      .docx-permit-sheet div[style*="text-align: center; margin-bottom: 12px"] div:nth-child(3) {
+        font-size: 10pt !important;
+        line-height: 1 !important;
+        font-weight: 900 !important;
+      }
+      .docx-permit-sheet div[style*="text-align: center; margin-bottom: 12px"] div:nth-child(4) {
+        font-size: 7pt !important;
+        line-height: 1 !important;
+      }
+      .docx-permit-sheet div[style*="text-align: center; margin-bottom: 12px"] div:nth-child(5) {
+        font-size: 8pt !important;
+        line-height: 1.05 !important;
+        font-weight: 800 !important;
+      }
+      .docx-permit-sheet table.docx-table {
+        margin-bottom: 1.2px !important;
+        border-collapse: collapse !important;
+        width: 100% !important;
+      }
+      .docx-permit-sheet table.docx-table td,
+      .docx-permit-sheet table.docx-table th {
+        padding: 1px 2px !important;
+        font-size: 5.7pt !important;
+        line-height: 1.1 !important;
+      }
+      .docx-permit-sheet .docx-section-title {
+        font-size: 6.2pt !important;
+        padding: 1px 2px !important;
+        margin: 1.2px 0 1px 0 !important;
+        line-height: 1.05 !important;
+        font-weight: 800 !important;
+      }
+      .docx-permit-sheet div[style*="border: 1.5px solid #DC2626"] {
+        font-size: 5.8pt !important;
+        padding: 1px 2px !important;
+        margin-bottom: 1.5px !important;
+        line-height: 1.05 !important;
       }
       .docx-permit-sheet .docx-input,
       .docx-permit-sheet .docx-textarea,
@@ -1034,6 +1106,8 @@
         padding: 0 !important;
         color: #000000 !important;
         font-weight: 700 !important;
+        font-size: 5.7pt !important;
+        line-height: 1.1 !important;
         resize: none !important;
         min-height: auto !important;
         appearance: none !important;
@@ -1051,7 +1125,28 @@
       }
       .docx-permit-sheet .docx-print-chk {
         display: inline-block !important;
+        font-size: 5.7pt !important;
       }
+
+      /* ======================================================== */
+      /* 2. UNIFIED BEDS STATUTORY PRINT STAGE (CR80 & DOSSIER)   */
+      /* ======================================================== */
+      #bedsPrintStage, #bedsPrintStage * {
+        visibility: visible !important;
+      }
+      #bedsPrintStage {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
       .beds-modal-overlay, .beds-modal-dialog, .beds-modal-body {
         position: static !important;
         overflow: visible !important;
@@ -1083,6 +1178,22 @@
     </div>
 
     <div class="header-controls">
+      <!-- Live Google Sheets Indicator -->
+      <a href="https://docs.google.com/spreadsheets/d/1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0/edit" target="_blank" rel="noopener" class="meta-badge" style="font-size: 11px; background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid #10b981; font-weight: 700; text-decoration: none;" title="Open Live Safety Manager Google Sheet Database">
+        🟢 Sheet: 1SyOGt...
+      </a>
+
+      <!-- Live DB Sync Button -->
+      <button id="safetyLiveSyncBtn" onclick="BalsonsSafetyApp.syncWithLiveSafetyDb(true)" class="meta-badge" style="font-size: 11px; background: rgba(0, 151, 178, 0.12); color: #0097B2; border: 1px solid rgba(0, 151, 178, 0.3); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 6px;" title="Click to refresh live safety metrics from Google Sheets">
+        <span id="safetySyncDot" style="width: 7px; height: 7px; border-radius: 50%; background: #10B981; display: inline-block;"></span>
+        <span id="safetySyncText">Live DB Synced (9)</span>
+        <span id="safetySyncIcon" style="font-size: 11px; font-weight: 800;">🔄</span>
+      </button>
+
+      <!-- Cloud Drive Vault Shortcut -->
+      <a href="https://drive.google.com/drive/folders/17l96F-Y2VwS2L3Kev9Yx-b9Z71M8a9F0" target="_blank" rel="noopener" class="meta-badge" style="font-size: 11px; background: rgba(0, 168, 150, 0.12); color: var(--beds-teal-primary); border: 1px solid var(--beds-teal-primary); font-weight: 700; text-decoration: none;" title="Open Safety Google Drive Cloud Vault">
+        📁 Drive Vault ↗
+      </a>
       <!-- Portal Switcher Dropdown -->
       
 
@@ -1981,9 +2092,7 @@
           <strong>Daily Safety Report (DSR)</strong> · Date: <span id="dsr-date" class="font-mono text-primary font-bold">2026-11-19</span>
         </div>
         <div class="action-btn-group">
-          <button class="beds-btn beds-btn-secondary" onclick="window.print()">
-            🖨️ Print DSR
-          </button>
+          <button class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.printDailySafetyReport()" style="font-weight: 800;">🖨️ Print DSR (A4)</button>
           <button class="beds-btn beds-btn-primary" onclick="alert('Exporting DSR as PDF...')">
             📥 Export PDF
           </button>
@@ -2020,9 +2129,7 @@
           <select id="dossier-page-emp-select" class="beds-select" style="font-size: 12px; padding: 6px 10px; font-weight: 700;" onchange="BalsonsSafetyApp.render360DossierPage(this.value)">
             <!-- Options populated dynamically -->
           </select>
-          <button class="beds-btn beds-btn-primary" onclick="window.print()">
-            🖨️ Print Full Dossier (A4)
-          </button>
+          <button class="beds-btn beds-btn-primary" onclick="BalsonsSafetyApp.print360Dossier(document.getElementById('dossier-page-emp-select') ? document.getElementById('dossier-page-emp-select').value : 'EMP-2026-0001')" style="font-weight: 800;">🖨️ Print Full Dossier (A4)</button>
         </div>
       </div>
       <div id="dossier-page-container">
@@ -2332,7 +2439,7 @@
       <div class="beds-modal-header">
         <h3 class="beds-modal-title">Official Safety Induction Pass & Badge</h3>
         <div class="action-btn-group">
-          <button class="beds-btn beds-btn-sm beds-btn-primary" onclick="window.print()">🖨️ Print Badge</button>
+          <button class="beds-btn beds-btn-sm beds-btn-primary" onclick="BalsonsSafetyApp.printSafetyPass(document.getElementById('safety-pass-print-content').dataset.empId || 'EMP-2026-0001')" style="font-weight: 800; background: var(--beds-teal-primary);">🖨️ Print CR80 Pass (A4)</button>
           <button class="beds-modal-close btn-modal-cancel">&times;</button>
         </div>
       </div>
@@ -2349,6 +2456,7 @@
   <script src="assets/js/translations.js"></script>
   <script src="assets/js/api-client.js"></script>
   <script src="assets/js/docx-forms-data.js"></script>
+  <script src="assets/js/qrcode.min.js"></script>
   <script src="assets/js/dossier-360.js"></script>
   <script src="assets/js/beds-superadmin.js"></script>
   <script src="assets/js/balsons-docs-manager.js"></script>
@@ -2379,5 +2487,7 @@
     }
   }
 </script>
+  <!-- Unified BEDS Statutory Print Stage -->
+  <div id="bedsPrintStage" style="display: none;"></div>
 </body>
 </html>
