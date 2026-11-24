@@ -75,6 +75,34 @@ function doGet(e) {
         responseData = initOperationsDatabase(OPS_CONFIG.getSpreadsheetId());
         break;
 
+      // ─── GOOGLE DRIVE MASTER STORAGE (SAM-2026 TIER 4) ────────────────
+      case 'drive.get_map':
+        responseData = {
+          success: true,
+          rootFolderId: BALSONS_DRIVE_CONFIG.ROOT_FOLDER_ID,
+          portalCode: '03_OPERATIONS_AND_RIGGING_MANAGER',
+          folders: BALSONS_DRIVE_CONFIG.STRUCTURE['03_OPERATIONS_AND_RIGGING_MANAGER'] || {}
+        };
+        break;
+
+      case 'drive.upload_document':
+        if (!payload.fileBase64 || !payload.fileName) {
+          throw new Error('Mandatory: fileBase64 and fileName required for Drive storage.');
+        }
+        var blob = Utilities.newBlob(
+          Utilities.base64Decode(payload.fileBase64),
+          payload.mimeType || 'text/html',
+          payload.fileName
+        );
+        responseData = savePortalDocument(
+          '03_OPERATIONS_AND_RIGGING_MANAGER',
+          payload.categoryCode || '01_WORK_PACKAGE_DOSSIERS',
+          payload.subCategory || '360_COMPLETION_DOSSIERS',
+          blob,
+          payload.fileName
+        );
+        break;
+
       default:
         responseData = { 
           success: false, 

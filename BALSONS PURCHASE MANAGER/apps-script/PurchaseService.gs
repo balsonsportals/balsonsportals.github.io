@@ -102,6 +102,35 @@ function doPost(e) {
       return handleSyncBatch(payload.mutations, payload.actor, targetSsId);
     }
 
+    // ─── GOOGLE DRIVE MASTER STORAGE (SAM-2026 TIER 4) ────────────────
+    if (action === 'drive.get_map') {
+      return jsonResponse({
+        success: true,
+        rootFolderId: BALSONS_DRIVE_CONFIG.ROOT_FOLDER_ID,
+        portalCode: '04_PURCHASE_AND_COMMERCIAL_MANAGER',
+        folders: BALSONS_DRIVE_CONFIG.STRUCTURE['04_PURCHASE_AND_COMMERCIAL_MANAGER'] || {}
+      });
+    }
+
+    if (action === 'drive.upload_document') {
+      if (!payload.fileBase64 || !payload.fileName) {
+        return jsonResponse({ success: false, error: 'Mandatory: fileBase64 and fileName required for Drive storage.' });
+      }
+      var blob = Utilities.newBlob(
+        Utilities.base64Decode(payload.fileBase64),
+        payload.mimeType || 'text/html',
+        payload.fileName
+      );
+      var res = savePortalDocument(
+        '04_PURCHASE_AND_COMMERCIAL_MANAGER',
+        payload.categoryCode || '04_PURCHASE_ORDERS_PO',
+        payload.subCategory || 'FORMAL_SIGNED_POS',
+        blob,
+        payload.fileName
+      );
+      return jsonResponse(res);
+    }
+
     return jsonResponse({ success: false, error: 'Unknown POST action: ' + action });
   } catch (err) {
     return jsonResponse({ success: false, error: err.toString(), stack: err.stack });

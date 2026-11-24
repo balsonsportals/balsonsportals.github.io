@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BALSONS Heavy Lift & Shift — Official Workforce Credential Verification</title>
+  <meta name="theme-color" content="#102D35">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0B1F24;
+      color: #102D35;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 16px 12px 32px 12px;
+    }
+    .verify-wrapper {
+      width: 100%;
+      max-width: 440px;
+      background: #FFFFFF;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    /* Header */
+    .verify-header {
+      background: #102D35;
+      padding: 16px;
+      color: #FFFFFF;
+      text-align: center;
+      position: relative;
+      border-bottom: 3.5px solid #0097B2;
+    }
+    .verify-logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .verify-logo-row img {
+      height: 34px;
+      width: auto;
+      object-fit: contain;
+    }
+    .verify-comp-name {
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      color: #FFFFFF;
+    }
+    .verify-project-tag {
+      font-size: 10px;
+      color: #94A3B8;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+    /* Verified Status Banner */
+    .status-banner {
+      background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+      color: #FFFFFF;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .pulse-dot {
+      width: 10px;
+      height: 10px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+    }
+    /* Card Body */
+    .verify-body {
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #FFFFFF;
+    }
+    /* Photo Container */
+    .photo-container {
+      width: 120px;
+      height: 140px;
+      border-radius: 12px;
+      border: 3px solid #0097B2;
+      box-shadow: 0 8px 24px rgba(0, 151, 178, 0.25);
+      overflow: hidden;
+      position: relative;
+      background: #E2E8F0;
+      margin-bottom: 12px;
+    }
+    .photo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .photo-badge {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(16, 185, 129, 0.95);
+      color: #FFFFFF;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 3px 0;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    /* Employee Name & Titles */
+    .emp-name {
+      font-size: 19px;
+      font-weight: 900;
+      color: #102D35;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      text-align: center;
+      line-height: 1.15;
+    }
+    .emp-id-pill {
+      background: #102D35;
+      color: #FFFFFF;
+      padding: 3px 12px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      margin-bottom: 6px;
+      display: inline-block;
+    }
+    .emp-trade {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #0097B2;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+    }
+    /* Clearance Matrix */
+    .matrix-box {
+      width: 100%;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      font-size: 11px;
+    }
+    .matrix-item .lbl {
+      color: #64748B;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .matrix-item .val {
+      color: #102D35;
+      font-weight: 800;
+      font-size: 11px;
+    }
+    /* Verified Badges Row */
+    .credentials-wrap {
+      width: 100%;
+      margin-bottom: 14px;
+    }
+    .credentials-title {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #102D35;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .cred-badge {
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 9.5px;
+      font-weight: 700;
+    }
+    /* Hotlines Box */
+    .hotlines-card {
+      width: 100%;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+    .hotlines-card strong {
+      color: #92400E;
+      font-size: 11px;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .hotlines-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      font-size: 10.5px;
+    }
+    .hotline-link {
+      color: #B45309;
+      text-decoration: none;
+      font-weight: 700;
+      font-family: monospace;
+      display: block;
+    }
+    /* Actions */
+    .btn-action-row {
+      width: 100%;
+      display: flex;
+      gap: 8px;
+    }
+    .btn-action {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-primary {
+      background: #0097B2;
+      color: #FFFFFF;
+    }
+    .btn-secondary {
+      background: #F1F5F9;
+      color: #102D35;
+      border: 1px solid #CBD5E1;
+    }
+    /* Footer */
+    .verify-footer {
+      background: #F8FAFC;
+      border-top: 1px solid #E2E8F0;
+      padding: 12px 16px;
+      font-size: 9.5px;
+      color: #64748B;
+      text-align: center;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="verify-wrapper" id="credentialPassCard">
+    <!-- Corporate Header -->
+    <div class="verify-header">
+      <div class="verify-logo-row">
+        <img src="BALSONS HR MANAGER/frontend/assets/images/balsons-logo.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1HB7sGaQ4f2qq0NNzgBQrSpUe2DJWV4uh'" alt="BALSONS Logo">
+        <div>
+          <div class="verify-comp-name">BALSONS HEAVY LIFT &amp; SHIFT</div>
+          <div class="verify-project-tag">PRJ-JTRWF-SCHULER • JUPITER TATRAVAGONKA RAILWHEEL</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Banner -->
+    <div class="status-banner">
+      <span class="pulse-dot"></span>
+      <span>Official Security Credential Verified</span>
+    </div>
+
+    <!-- Main Card Body -->
+    <div class="verify-body">
+      <!-- Photo Container -->
+      <div class="photo-container">
+        <img id="vEmpPhoto" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Worker Photo">
+        <div class="photo-badge">VERIFIED WORKER</div>
+      </div>
+
+      <!-- Identity -->
+      <div class="emp-name" id="vEmpName">RAMESH KUMAR</div>
+      <div class="emp-id-pill" id="vEmpId">EMP-2026-0001</div>
+      <div class="emp-trade" id="vEmpTrade">RIGGER LEAD</div>
+
+      <!-- Access Badge -->
+      <div style="background: #102D35; color: #10B981; font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 4px; margin-bottom: 14px; letter-spacing: 0.5px;">
+        ● GATE 1 &amp; GATE 2 ACCESS AUTHORIZED (MUSTER READY)
+      </div>
+
+      <!-- Metadata Matrix -->
+      <div class="matrix-box">
+        <div class="matrix-item">
+          <div class="lbl">Department</div>
+          <div class="val" id="vEmpDept">Heavy Lift &amp; Rigging</div>
+        </div>
+        <div class="matrix-item">
+          <div class="lbl">Blood Group</div>
+          <div class="val" style="color: #DC2626;" id="vEmpBlood">🩸 B+ (Positive)</div>
+        </div>
+        <div class="matrix-item">
+          <div class="lbl">Wage Category</div>
+          <div class="val" id="vEmpCategory">Monthly Salaried Staff</div>
+        </div>
+        <div class="matrix-item">
+          <div class="lbl">Site Deployment</div>
+          <div class="val">PRJ-JTRWF Khordha</div>
+        </div>
+        <div class="matrix-item">
+          <div class="lbl">Emergency Contact</div>
+          <div class="val" id="vEmpEmergency">+91 98610 99881</div>
+        </div>
+        <div class="matrix-item">
+          <div class="lbl">Pass Validity</div>
+          <div class="val" style="color: #0097B2;">31-DEC-2026</div>
+        </div>
+      </div>
+
+      <!-- Verified Credentials Badges -->
+      <div class="credentials-wrap">
+        <div class="credentials-title">
+          <span>🛡️ Verified HSE &amp; Statutory Credentials:</span>
+        </div>
+        <div class="badges-row">
+          <span class="cred-badge">HSE Inducted ✓</span>
+          <span class="cred-badge">Height Certified ✓</span>
+          <span class="cred-badge">PPE Inspected ✓</span>
+          <span class="cred-badge">Medical Form 31 ✓</span>
+          <span class="cred-badge">Police Verified ✓</span>
+        </div>
+        <div style="margin-top: 6px; font-size: 10px; color: #475569; line-height: 1.35;">
+          <strong>Aadhaar UID:</strong> <span style="font-family: monospace;" id="vEmpAadhaar">XXXX-XXXX-8840</span> • 
+          <strong>PAN:</strong> <span style="font-family: monospace;" id="vEmpPan">ABCDE1234F</span> • 
+          <strong>Police:</strong> <span style="font-family: monospace;" id="vEmpPolice">POL-KHD-2026-9912</span>
+        </div>
+      </div>
+
+      <!-- Emergency Hotlines -->
+      <div class="hotlines-card">
+        <strong>🚨 Immediate Site Emergency Hotlines:</strong>
+        <div class="hotlines-grid">
+          <div>Safety Off: <a class="hotline-link" href="tel:+919527399199">+91 9527399199</a></div>
+          <div>Main Gate: <a class="hotline-link" href="tel:+919860099326">+91 9860099326</a></div>
+          <div>Site HR: <a class="hotline-link" href="tel:+919437144520">+91 9437144520</a></div>
+          <div>First Aid: <span style="font-weight: 700;">Bay-3 Dispensary</span></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="btn-action-row">
+        <button type="button" class="btn-action btn-primary" onclick="downloadDigitalPass()">
+          📥 Save Credential Card
+        </button>
+        <a href="tel:+919860099326" class="btn-action btn-secondary">
+          📞 Call Site Security
+        </a>
+      </div>
+    </div>
+
+    <!-- Official Corporate Footer -->
+    <div class="verify-footer">
+      <div><strong>BALSONS HEAVY LIFT &amp; SHIFT CORPORATE GOVERNANCE</strong></div>
+      <div>ISO 9001:2015 &amp; ISO 45001:2018 Certified • Statutory Safety Registry</div>
+      <div style="font-family: 'Brush Script MT', cursive; font-size: 13px; color: #00769E; margin-top: 4px; font-style: italic;">
+        Difficult we do easily impossible takes little time…!
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const workforce = {
+      'EMP-2026-0001': {
+        name: 'RAMESH KUMAR',
+        trade: 'RIGGER LEAD',
+        dept: 'Heavy Lift & Rigging Operations',
+        blood: 'B+',
+        cat: 'Monthly Salaried Staff',
+        emergency: '+91 98610 99881',
+        aadhaar: 'XXXX-XXXX-8840',
+        pan: 'ABCDE1234F',
+        police: 'POL-KHD-2026-9912',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'
+      },
+      'EMP-2026-0002': {
+        name: 'SUNIL SWAIN',
+        trade: 'HYDRAULIC TECH / OPERATOR',
+        dept: 'Hydraulic & Heavy Erection',
+        blood: 'O+',
+        cat: 'Monthly Salaried Staff',
+        emergency: '+91 94371 44520',
+        aadhaar: 'XXXX-XXXX-3341',
+        pan: 'BCDEF2345G',
+        police: 'POL-KHD-2026-9913',
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80'
+      },
+      'EMP-2026-0003': {
+        name: 'AJAY VERMA',
+        trade: 'HEAVY LIFT SPECIALIST',
+        dept: 'Heavy Rigging Operations',
+        blood: 'A+',
+        cat: 'Daily Pay Workforce (Casual / Daily Rated)',
+        emergency: '+91 98612 33410',
+        aadhaar: 'XXXX-XXXX-7729',
+        pan: 'CDEFG3456H',
+        police: 'POL-KHD-2026-9914',
+        photo: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=200&q=80'
+      },
+      'EMP-2026-0004': {
+        name: 'DHARMENDRA PRADHAN',
+        trade: 'CRANE SPECIALIST',
+        dept: 'Crane Operations',
+        blood: 'B+',
+        cat: 'Daily Pay Workforce (Casual / Daily Rated)',
+        emergency: '+91 98614 77219',
+        aadhaar: 'XXXX-XXXX-5519',
+        pan: 'DEFGH4567I',
+        police: 'POL-KHD-2026-9915',
+        photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80'
+      },
+      'EMP-2026-0005': {
+        name: 'BIKASH JENA',
+        trade: 'RIGGING HELPER',
+        dept: 'Site Logistics',
+        blood: 'AB+',
+        cat: 'Daily Pay Workforce (Casual / Daily Rated)',
+        emergency: '+91 98619 11024',
+        aadhaar: 'XXXX-XXXX-6640',
+        pan: 'EFGHI5678J',
+        police: 'POL-KHD-2026-9916',
+        photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80'
+      }
+    };
+
+    
+    const permitsRegistry = {
+      'PTW-JTRWF-2026-9901': {
+        permitId: 'PTW-JTRWF-2026-9901',
+        title: 'GENERAL WORK PERMIT',
+        templateCode: 'PTW-GEN',
+        category: 'GENERAL',
+        color: '#059669',
+        area: 'AREA-01 AXLE FORGING LINE',
+        description: 'Schuler 10,000T Erection Line 1 - Foundation Sole Plate Leveling',
+        contractor: 'BALSONS HEAVY LIFT & SHIFT',
+        supervisor: 'Ramesh Kumar (Senior Rigger Lead)',
+        safetyOfficer: 'Gajendra Rao (Safety Manager)',
+        plannedStart: '2026-11-24 08:00 AM',
+        plannedEnd: '2026-11-24 06:00 PM',
+        riskLevel: 'LOW / CONTROLLED',
+        status: 'ISSUED / ACTIVE ON SITE',
+        statusColor: '#059669',
+        precautions: 'Foundation anchors torqued; laser alignment level verified; 100% PPE compliant.'
+      },
+      'PTW-JTRWF-2026-2978': {
+        permitId: 'PTW-JTRWF-2026-2978',
+        title: 'HOT WORK PERMIT',
+        templateCode: 'PTW-HOT',
+        category: 'HOT WORK',
+        color: '#DC2626',
+        area: 'AREA-02 CROWN ASSEMBLY',
+        description: 'Crown Beam structural welding and gusset plate SMAW welding',
+        contractor: 'Schuler Pressen Site Services',
+        supervisor: 'Sunil Swain (Mechanical Assembly Lead)',
+        safetyOfficer: 'Bikram Patra (Site HSE Lead)',
+        plannedStart: '2026-11-24 08:30 AM',
+        plannedEnd: '2026-11-24 05:30 PM',
+        riskLevel: 'HIGH / CONTINUOUS FIRE WATCH',
+        status: 'ISSUED / ACTIVE ON SITE',
+        statusColor: '#059669',
+        precautions: 'Multi-gas test verified (LEL 0%, O2 20.9%); spark barriers in place; 10kg DCP extinguisher on standby.'
+      },
+      'PTW-JTRWF-2026-4006': {
+        permitId: 'PTW-JTRWF-2026-4006',
+        title: 'SPECIAL / HIGH-RISK PERMIT',
+        templateCode: 'PTW-SPEC',
+        category: 'SPECIAL / HIGH-RISK',
+        color: '#7C3AED',
+        area: 'AREA-03 DIE CUSHION PIT',
+        description: 'Die Cushion Pit Excavation & Pre-load Rigging with Demag 250T',
+        contractor: 'BALSONS HEAVY LIFT & SHIFT',
+        supervisor: 'Ajay Verma (Heavy Rigging Supervisor)',
+        safetyOfficer: 'Gajendra Rao (Safety Manager)',
+        plannedStart: '2026-11-24 09:00 AM',
+        plannedEnd: '2026-11-24 05:00 PM',
+        riskLevel: 'CRITICAL / SPECIAL METHOD STATEMENT MANDATORY',
+        status: 'VERIFIED_BY_SAFETY / READY FOR EXECUTION',
+        statusColor: '#2563EB',
+        precautions: 'Critical tandem lift plan approved; ground compaction test certified; 100% dual harness tie-off enforced.'
+      },
+      'PTW-JTRWF-2026-5092': {
+        permitId: 'PTW-JTRWF-2026-5092',
+        title: 'GENERAL WORK PERMIT',
+        templateCode: 'PTW-GEN',
+        category: 'GENERAL',
+        color: '#059669',
+        area: 'AREA-01 AXLE FORGING LINE',
+        description: 'Hydraulic Power Unit Skid Installation and pipe spool fitting',
+        contractor: 'Larsen & Toubro MHI',
+        supervisor: 'Dharmendra Pradhan (Hydraulic Lead)',
+        safetyOfficer: 'Bikram Patra (Site HSE Lead)',
+        plannedStart: '2026-11-24 09:30 AM',
+        plannedEnd: '2026-11-24 06:00 PM',
+        riskLevel: 'MEDIUM',
+        status: 'ISSUED / ACTIVE ON SITE',
+        statusColor: '#059669',
+        precautions: 'LOTO Lockout #4 applied; hydraulic pressure dumped; spill containment tray placed.'
+      },
+      'PTW-JTRWF-2026-2491': {
+        permitId: 'PTW-JTRWF-2026-2491',
+        title: 'HOT WORK PERMIT',
+        templateCode: 'PTW-HOT',
+        category: 'HOT WORK',
+        color: '#DC2626',
+        area: 'AREA-02 CROWN ASSEMBLY',
+        description: 'Structural Roof Truss Bracing Strengthening - Gas Cutting & MMA Weld',
+        contractor: 'Eastern Structural Works',
+        supervisor: 'Bikash Jena',
+        safetyOfficer: 'Gajendra Rao (Safety Manager)',
+        plannedStart: '2026-11-24 10:00 AM',
+        plannedEnd: '2026-11-24 04:00 PM',
+        riskLevel: 'HIGH',
+        status: 'VERIFIED_BY_SAFETY',
+        statusColor: '#2563EB',
+        precautions: 'Flashback arrestors tested; fire blanket deployed on crane rails; 60 min post-fire watch assigned.'
+      }
+    };
+
+    
+        const poRegistry = {
+      'PO-2026-001': {
+        id: 'PO-2026-001',
+        displayNo: 'BAL/JTRWF/PO/2026/001',
+        rev: 0,
+        supplier: 'Tufropes Heavy Tackles Pvt Ltd',
+        gstin: '21AABCT8821M1Z5',
+        date: '2026-11-20',
+        deliveryDate: '2026-12-04',
+        grandTotal: 388338.00,
+        taxableBase: 328300.00,
+        gstAmount: 59238.00,
+        status: 'DISPATCHED_IN_TRANSIT',
+        items: 'Matched Pair 60T Wire Rope Slings 12M (2 Pairs) + 85T Bow Shackles (4 Nos)',
+        terms: 'DAP Site Store Khordha • 30 Days Net from Store GRN',
+        tpi: 'Lloyd\'s Register Form 11 Proof Load Test Verified ✓',
+        buyer: 'Rohan Sharma (Head of Procurement)'
+      }
+    };
+
+    const wpRegistry = {
+      'WP-AXLE-PRS-001': {
+        id: 'WP-AXLE-PRS-001',
+        area: 'Area 1: Line Axle • Schuler Axle Press Pit',
+        workstream: 'Bay 1 & Bay 2 (Axle Press Pit Zone)',
+        title: 'Schuler Axle Forging Press Crown, Uprights & Tie-Rods Mechanical Erection',
+        tonnage: '845.5 MT',
+        cranes: 'Demag CC2500 250T (Main, 58%) + Sany SCC1500 150T (Tail, 42%)',
+        groundPressure: '35 t/m² on dual-layer steel distribution mats',
+        leadSupervisor: 'Dilip Rout (Area Mgr) & Manoj Das (Lead Lifting Sup)',
+        status: 'IN PROGRESS',
+        progress: '75%',
+        targetCompletion: '2026-12-10',
+        ptw: 'PTW-AXLE-049 & PTW-AXLE-052 Active ✓',
+        tackleRef: 'TKL-F11-2026-089 (Slings 50T x 4, Shackles 55T x 4)',
+        holdCheck: 'C3 Core Anchor Pockets Cleared & Soleplate Contact >85% Verified ✓'
+      }
+    };
+
+    const toolsRegistry = {
+      'BAL-LF-HYJ-001': {
+        toolId: 'BAL-LF-HYJ-001',
+        desc: 'Hydraulic Jack 100T (150mm stroke)',
+        section: 'LF',
+        sectionName: 'Lifting Equipment',
+        type: 'HYJ',
+        capacity: '100T WLL',
+        make: 'Enerpac',
+        model: 'CLRG-1006',
+        isLifting: true,
+        form11Cert: 'F11-JTRWF-2026-101',
+        lastInspection: '2026-08-15',
+        nextInspection: '2027-02-14',
+        status: 'ISSUED',
+        binLocation: 'YARD-LIFT-2',
+        issuedTo: 'EMP-2026-0001 (Ramesh Kumar)',
+        workArea: 'AREA-01 AXLE LINE'
+      },
+      'BAL-LF-HYJ-002': {
+        toolId: 'BAL-LF-HYJ-002',
+        desc: 'Hydraulic Jack 200T High Tonnage',
+        section: 'LF',
+        sectionName: 'Lifting Equipment',
+        type: 'HYJ',
+        capacity: '200T WLL',
+        make: 'Power Team',
+        model: 'RD2006',
+        isLifting: true,
+        form11Cert: 'F11-JTRWF-2026-102',
+        lastInspection: '2026-08-15',
+        nextInspection: '2027-02-14',
+        status: 'ISSUED',
+        binLocation: 'YARD-LIFT-3',
+        issuedTo: 'EMP-2026-0001 (Ramesh Kumar)',
+        workArea: 'AREA-01 AXLE LINE'
+      },
+      'BAL-LF-WBS-001': {
+        toolId: 'BAL-LF-WBS-001',
+        desc: 'Polyester Webbing Sling 50T x 10m',
+        section: 'LF',
+        sectionName: 'Lifting Equipment',
+        type: 'WBS',
+        capacity: '50T SWL (Safety Factor 7:1)',
+        make: 'Spanset',
+        model: 'MAGNUM-X 50T',
+        isLifting: true,
+        form11Cert: 'F11-JTRWF-2026-114',
+        lastInspection: '2026-09-10',
+        nextInspection: '2027-03-09',
+        status: 'AVAILABLE',
+        binLocation: 'RACK-SLING-4',
+        issuedTo: 'In Store Crib (Ready for Checkout)',
+        workArea: 'MAIN TOOL CRIB'
+      },
+      'BAL-PT-MAG-001': {
+        toolId: 'BAL-PT-MAG-001',
+        desc: 'Magnetic Base Core Drill Machine 50mm',
+        section: 'PT',
+        sectionName: 'Power Tools',
+        type: 'MAG',
+        capacity: '50mm Core Hole Cap / 230V',
+        make: 'BDS Maschinen',
+        model: 'MAB-485',
+        isLifting: false,
+        form11Cert: 'CAL-JTRWF-2026-PT01',
+        lastInspection: '2026-10-01',
+        nextInspection: '2027-04-01',
+        status: 'AVAILABLE',
+        binLocation: 'BIN-DRILL-1',
+        issuedTo: 'In Store Crib (Ready for Checkout)',
+        workArea: 'MAIN TOOL CRIB'
+      },
+      'BAL-HF-SHK-001': {
+        toolId: 'BAL-HF-SHK-001',
+        desc: 'Green Pin Bow Shackle 55T Grade 8',
+        section: 'HF',
+        sectionName: 'Hand Tools & Rigging Hardware',
+        type: 'SHK',
+        capacity: '55T WLL (Safety Factor 6:1)',
+        make: 'Van Beest / Green Pin',
+        model: 'G-4163 55T',
+        isLifting: true,
+        form11Cert: 'F11-JTRWF-2026-148',
+        lastInspection: '2026-08-20',
+        nextInspection: '2027-02-19',
+        status: 'AVAILABLE',
+        binLocation: 'BIN-SHK-02',
+        issuedTo: 'In Store Crib (Ready for Checkout)',
+        workArea: 'MAIN TOOL CRIB'
+      },
+      'BAL-HT-TRQ-001': {
+        toolId: 'BAL-HT-TRQ-001',
+        desc: 'Heavy Industrial Torque Wrench 1200Nm',
+        section: 'HT',
+        sectionName: 'Heavy Tooling',
+        type: 'TRQ',
+        capacity: '300 - 1200 Nm',
+        make: 'Norbar',
+        model: 'Industrial 1200',
+        isLifting: false,
+        form11Cert: 'CAL-JTRWF-2026-HT04',
+        lastInspection: '2026-09-15',
+        nextInspection: '2027-03-14',
+        status: 'AVAILABLE',
+        binLocation: 'CABINET-TORQ-1',
+        issuedTo: 'In Store Crib (Ready for Checkout)',
+        workArea: 'MAIN TOOL CRIB'
+      }
+    };
+
+    function renderToolVerification(t) {
+      const container = document.getElementById('verificationContainer') || document.querySelector('.pass-container') || document.body;
+      const secColor = '#0097B2';
+      const isLifting = !!t.isLifting;
+      const isAvailable = t.status === 'AVAILABLE';
+      const isIssued = t.status === 'ISSUED';
+      const statusBg = isAvailable ? '#ECFDF5' : (isIssued ? '#EFF6FF' : '#FEF2F2');
+      const statusColor = isAvailable ? '#059669' : (isIssued ? '#2563EB' : '#DC2626');
+
+      container.innerHTML = `
+        <div style="max-width: 540px; margin: 30px auto; background: #FFFFFF; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 2px solid ${secColor}; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <!-- Top Header -->
+          <div style="background: ${secColor}; color: #FFFFFF; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 11px; font-weight: 800; letter-spacing: 1px; opacity: 0.9; text-transform: uppercase;">OFFICIAL ASSET PASSPORT VERIFICATION</div>
+              <div style="font-size: 20px; font-weight: 900; margin-top: 2px; letter-spacing: 0.5px;">RIGGING GEAR CERTIFICATE</div>
+              <div style="font-size: 11px; opacity: 0.85; margin-top: 2px;">BALSONS HEAVY LIFT & SHIFT &bull; PRJ-JTRWF KHORDHA</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 6px; text-align: center; border: 1px solid rgba(255,255,255,0.3);">
+              <div style="font-size: 9px; font-weight: 700; text-transform: uppercase;">SECTION</div>
+              <div style="font-size: 13px; font-weight: 900;">${t.section}</div>
+            </div>
+          </div>
+
+          <!-- Status Banner -->
+          <div style="background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span style="font-size: 11px; color: #64748B; font-weight: 700;">ASSET IDENTIFIER:</span>
+              <div style="font-size: 18px; font-weight: 900; color: #0F172A; font-family: monospace;">${t.toolId}</div>
+            </div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: ${statusBg}; border: 1.5px solid ${statusColor}; padding: 4px 12px; border-radius: 20px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: ${statusColor}; display: inline-block;"></span>
+              <span style="font-size: 12px; font-weight: 800; color: ${statusColor};">&bull; ${t.status}</span>
+            </div>
+          </div>
+
+          <!-- Body Fields -->
+          <div style="padding: 20px 24px;">
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Description of Tackle / Equipment</div>
+              <div style="font-size: 15px; font-weight: 800; color: #0F172A; margin-top: 2px; line-height: 1.3;">${t.desc}</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; border-top: 1px solid #F1F5F9; padding-top: 14px;">
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">SAFE WORKING LOAD (SWL)</div>
+                <div style="font-size: 13.5px; font-weight: 900; color: #059669; font-family: monospace; margin-top: 1px;">${t.capacity}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">MAKE / MODEL</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">${t.make} (${t.model})</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">CRIB BIN LOCATION</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">${t.binLocation || 'MAIN TOOL CRIB'}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">CURRENT CUSTODY</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">${t.issuedTo}</div>
+              </div>
+            </div>
+
+            <!-- Statutory Form 11 Compliance Box -->
+            <div style="background: #F8FAFC; border: 1.5px solid #CBD5E1; border-radius: 6px; padding: 12px 16px; margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; padding-bottom: 6px; margin-bottom: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: #0F172A;">📜 STATUTORY FACTORIES ACT FORM 11 TEST</span>
+                <span style="background: #ECFDF5; color: #059669; font-size: 9.5px; font-weight: 800; padding: 2px 6px; border-radius: 4px;">CERTIFIED PASSED</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px;">
+                <div>Certificate No: <strong style="font-family: monospace; color: #0097B2;">${t.form11Cert}</strong></div>
+                <div>Last Proof Test: <strong>${t.lastInspection}</strong></div>
+                <div>Proof Load Applied: <strong>125% SWL Verified</strong></div>
+                <div>Recertification Due: <strong style="color: #DC2626;">${t.nextInspection}</strong></div>
+                <div style="grid-column: span 2; font-size: 10px; color: #475569; margin-top: 4px;">
+                  Competent Person: <strong>Er. N. K. Mohapatra (CP/OD/2021/FACT-084)</strong> &bull; Free from patent defects.
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button onclick="window.print()" style="flex: 1; padding: 10px; background: #0F172A; color: #FFFFFF; border: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; cursor: pointer;">
+                🖨️ Print Digital Certificate
+              </button>
+              <a href="BALSONS STORE MANAGER/frontend/index.html" style="flex: 1; padding: 10px; background: #0097B2; color: #FFFFFF; text-decoration: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; text-align: center; display: inline-block;">
+                📦 Open Store Portal
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer Verification Stamp -->
+          <div style="background: #F1F5F9; border-top: 1px solid #E2E8F0; padding: 10px 24px; text-align: center; font-size: 10px; color: #64748B; font-weight: 600;">
+            🔒 Cryptographically Verified Equipment Digital Passport &bull; BALSONS Heavy Lift & Shift Rigging Governance
+          </div>
+        </div>
+      `;
+    }
+
+    function renderRgpVerification(passNo) {
+      const container = document.getElementById('verificationContainer') || document.querySelector('.pass-container') || document.body;
+      const type = passNo.includes('NRGP') ? 'NRGP' : 'RGP';
+
+      container.innerHTML = `
+        <div style="max-width: 540px; margin: 30px auto; background: #FFFFFF; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 2px solid #0F172A; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <!-- Top Header -->
+          <div style="background: #0F172A; color: #FFFFFF; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 11px; font-weight: 800; letter-spacing: 1px; opacity: 0.9; text-transform: uppercase;">OFFICIAL GATE CLEARANCE VERIFICATION</div>
+              <div style="font-size: 18px; font-weight: 900; margin-top: 2px; letter-spacing: 0.5px;">${type === 'RGP' ? 'RETURNABLE GATE PASS' : 'NON-RETURNABLE GATE PASS'}</div>
+              <div style="font-size: 11px; opacity: 0.85; margin-top: 2px;">BALSONS HEAVY LIFT & SHIFT &bull; PRJ-JTRWF KHORDHA</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 6px; text-align: center; border: 1px solid rgba(255,255,255,0.25);">
+              <div style="font-size: 9px; font-weight: 700; text-transform: uppercase;">PASS TYPE</div>
+              <div style="font-size: 13px; font-weight: 900; color: #0097B2;">${type}</div>
+            </div>
+          </div>
+
+          <!-- Status Banner -->
+          <div style="background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span style="font-size: 11px; color: #64748B; font-weight: 700;">PASS NUMBER:</span>
+              <div style="font-size: 17px; font-weight: 900; color: #0F172A; font-family: monospace;">${passNo}</div>
+            </div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: #ECFDF5; border: 1.5px solid #059669; padding: 4px 12px; border-radius: 20px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #059669; display: inline-block;"></span>
+              <span style="font-size: 12px; font-weight: 800; color: #059669;">● GATE CLEARANCE VERIFIED</span>
+            </div>
+          </div>
+
+          <!-- Body Fields -->
+          <div style="padding: 20px 24px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">CARRIER VEHICLE NO</div>
+                <div style="font-size: 13px; font-weight: 900; color: #0F172A; margin-top: 1px;">OD-02-AK-4412 (Pickup)</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">CONSIGNEE DESTINATION</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">Enerpac Authorized Calibration Center</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">DATE OF DISPATCH</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #059669; font-family: monospace; margin-top: 1px;">2026-11-24</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">EXPECTED RETURN</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0097B2; font-family: monospace; margin-top: 1px;">2026-11-28</div>
+              </div>
+            </div>
+
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px;">
+              <div style="font-size: 10.5px; font-weight: 700; color: #475569;">AUTHORIZED CONSIGNMENT ITEMS:</div>
+              <div style="font-size: 12px; color: #1E293B; font-weight: 600; margin-top: 2px;">
+                1. Hydraulic Jack 500T (BAL-LF-HYJ-001) &bull; Qty: 1 No<br>
+                2. Heavy Industrial Torque Wrench 1200Nm (BAL-HT-TRQ-001) &bull; Qty: 1 No
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button onclick="window.print()" style="flex: 1; padding: 10px; background: #0F172A; color: #FFFFFF; border: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; cursor: pointer;">
+                🖨️ Print Digital Clearance
+              </button>
+              <a href="BALSONS STORE MANAGER/frontend/index.html" style="flex: 1; padding: 10px; background: #0097B2; color: #FFFFFF; text-decoration: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; text-align: center; display: inline-block;">
+                📦 Open Store Portal
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer Verification Stamp -->
+          <div style="background: #F1F5F9; border-top: 1px solid #E2E8F0; padding: 10px 24px; text-align: center; font-size: 10px; color: #64748B; font-weight: 600;">
+            🔒 Cryptographically Verified Material Movement Gate Pass &bull; BALSONS Perimeter Security & Stores
+          </div>
+        </div>
+      `;
+    }
+
+        function renderPOVerification(p) {
+      const container = document.getElementById('verificationContainer') || document.querySelector('.pass-container') || document.body;
+      container.innerHTML = `
+        <div style="max-width: 540px; margin: 30px auto; background: #FFFFFF; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); border: 2px solid #0097B2; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <!-- Top Header -->
+          <div style="background: #0097B2; color: #FFFFFF; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 11px; font-weight: 800; letter-spacing: 1px; opacity: 0.9; text-transform: uppercase;">OFFICIAL COMMERCIAL PROCUREMENT VERIFICATION</div>
+              <div style="font-size: 20px; font-weight: 900; margin-top: 2px;">PURCHASE ORDER</div>
+              <div style="font-size: 11px; opacity: 0.85; margin-top: 2px;">BALSONS HEAVY LIFT & SHIFT • PRJ-JTRWF KHORDHA</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 6px; text-align: center; border: 1px solid rgba(255,255,255,0.3);">
+              <div style="font-size: 9px; font-weight: 700; text-transform: uppercase;">STATUS</div>
+              <div style="font-size: 12px; font-weight: 900;">IN-TRANSIT</div>
+            </div>
+          </div>
+
+          <!-- Status Banner -->
+          <div style="background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span style="font-size: 11px; color: #64748B; font-weight: 700;">PO NUMBER & REVISION:</span>
+              <div style="font-size: 17px; font-weight: 900; color: #0F172A; font-family: monospace;">${p.id} (REV-${p.rev})</div>
+              <div style="font-size: 11px; color: #0097B2; font-family: monospace;">${p.displayNo}</div>
+            </div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: #ECFDF5; border: 1.5px solid #059669; padding: 4px 12px; border-radius: 20px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #059669; display: inline-block;"></span>
+              <span style="font-size: 12px; font-weight: 800; color: #059669;">● CLOUD DB SYNCED</span>
+            </div>
+          </div>
+
+          <!-- Body Fields -->
+          <div style="padding: 20px 24px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">SUPPLIER / VENDOR</div>
+                <div style="font-size: 13px; font-weight: 900; color: #0F172A; margin-top: 1px;">${p.supplier}</div>
+                <div style="font-size: 10.5px; color: #64748B; font-family: monospace;">GSTIN: ${p.gstin}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">TOTAL CONTRACT VALUE</div>
+                <div style="font-size: 15px; font-weight: 900; color: #059669; font-family: monospace; margin-top: 1px;">₹${p.grandTotal.toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                <div style="font-size: 10.5px; color: #64748B;">Taxable: ₹${p.taxableBase.toLocaleString('en-IN')} + 18% GST</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">ISSUE DATE</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; font-family: monospace; margin-top: 1px;">${p.date}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">COMMITTED DELIVERY</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0097B2; font-family: monospace; margin-top: 1px;">${p.deliveryDate}</div>
+              </div>
+            </div>
+
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 10px 14px; margin-bottom: 14px;">
+              <div style="font-size: 10.5px; font-weight: 700; color: #475569;">COMMISSIONED LINE ITEMS:</div>
+              <div style="font-size: 12px; color: #1E293B; font-weight: 700; margin-top: 2px;">${p.items}</div>
+            </div>
+
+            <div style="background: #ECFDF5; border: 1px solid #059669; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px;">
+              <div style="font-size: 10.5px; font-weight: 700; color: #065F46;">MANDATORY QUALITY & STATUTORY STATUS:</div>
+              <div style="font-size: 12px; color: #065F46; font-weight: 800; margin-top: 2px;">${p.tpi}</div>
+              <div style="font-size: 10.5px; color: #047857; margin-top: 2px;">Terms: ${p.terms}</div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button onclick="window.print()" style="flex: 1; padding: 10px; background: #0F172A; color: #FFFFFF; border: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; cursor: pointer;">
+                🖨️ Print Digital PO
+              </button>
+              <a href="BALSONS PURCHASE MANAGER/index.html" style="flex: 1; padding: 10px; background: #0097B2; color: #FFFFFF; text-decoration: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; text-align: center; display: inline-block;">
+                🛒 Open Purchase Portal
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer Verification Stamp -->
+          <div style="background: #F1F5F9; border-top: 1px solid #E2E8F0; padding: 10px 24px; text-align: center; font-size: 10px; color: #64748B; font-weight: 600;">
+            🔒 Cryptographically Verified Purchase Order &bull; BALSONS Heavy Lift & Shift Commercial Directorate
+          </div>
+        </div>
+      `;
+    }
+
+    function renderWPVerification(w) {
+      const container = document.getElementById('verificationContainer') || document.querySelector('.pass-container') || document.body;
+      container.innerHTML = `
+        <div style="max-width: 540px; margin: 30px auto; background: #FFFFFF; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); border: 2px solid #102D35; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <!-- Top Header -->
+          <div style="background: #102D35; color: #FFFFFF; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 11px; font-weight: 800; letter-spacing: 1px; opacity: 0.9; text-transform: uppercase;">OFFICIAL OPERATIONS & RIGGING VERIFICATION</div>
+              <div style="font-size: 20px; font-weight: 900; margin-top: 2px;">WORK PACKAGE</div>
+              <div style="font-size: 11px; opacity: 0.85; margin-top: 2px;">BALSONS HEAVY LIFT & SHIFT • PRJ-JTRWF KHORDHA</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 6px; text-align: center; border: 1px solid rgba(255,255,255,0.3);">
+              <div style="font-size: 9px; font-weight: 700; text-transform: uppercase;">PROGRESS</div>
+              <div style="font-size: 13px; font-weight: 900;">${w.progress}</div>
+            </div>
+          </div>
+
+          <!-- Status Banner -->
+          <div style="background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span style="font-size: 11px; color: #64748B; font-weight: 700;">PACKAGE IDENTIFIER:</span>
+              <div style="font-size: 17px; font-weight: 900; color: #0F172A; font-family: monospace;">${w.id}</div>
+              <div style="font-size: 11px; color: #0097B2; font-weight: 700;">${w.area}</div>
+            </div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: #ECFDF5; border: 1.5px solid #059669; padding: 4px 12px; border-radius: 20px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #059669; display: inline-block;"></span>
+              <span style="font-size: 12px; font-weight: 800; color: #059669;">● ${w.status}</span>
+            </div>
+          </div>
+
+          <!-- Body Fields -->
+          <div style="padding: 20px 24px;">
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Title & Scope Summary</div>
+              <div style="font-size: 13.5px; font-weight: 800; color: #0F172A; margin-top: 2px; line-height: 1.35;">${w.title}</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; border-top: 1px solid #F1F5F9; padding-top: 14px;">
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">CRITICAL COMPONENT TONNAGE</div>
+                <div style="font-size: 13px; font-weight: 900; color: #0F172A; margin-top: 1px;">${w.tonnage}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">TARGET COMMISSIONING</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #059669; font-family: monospace; margin-top: 1px;">${w.targetCompletion}</div>
+              </div>
+              <div style="grid-column: span 2;">
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">RIGGING FLEET & CRANES</div>
+                <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-top: 1px;">${w.cranes}</div>
+                <div style="font-size: 11px; color: #64748B; margin-top: 2px;">Ground Bearing: ${w.groundPressure}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">EXECUTION LEADERSHIP</div>
+                <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-top: 1px;">${w.leadSupervisor}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">SAFETY PERMITS & TPI</div>
+                <div style="font-size: 12px; font-weight: 800; color: #059669; margin-top: 1px;">${w.ptw}</div>
+              </div>
+            </div>
+
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px;">
+              <div style="font-size: 10.5px; font-weight: 700; color: #475569;">QUALITY HOLD POINTS & FOUNDATION STATUS:</div>
+              <div style="font-size: 12px; color: #1E293B; font-weight: 700; margin-top: 2px;">${w.holdCheck}</div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button onclick="window.print()" style="flex: 1; padding: 10px; background: #0F172A; color: #FFFFFF; border: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; cursor: pointer;">
+                🖨️ Print Digital Authorisation
+              </button>
+              <a href="BALSONS OPERATIONS MANAGER/index.html" style="flex: 1; padding: 10px; background: #0097B2; color: #FFFFFF; text-decoration: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; text-align: center; display: inline-block;">
+                🏗️ Open Operations Portal
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer Verification Stamp -->
+          <div style="background: #F1F5F9; border-top: 1px solid #E2E8F0; padding: 10px 24px; text-align: center; font-size: 10px; color: #64748B; font-weight: 600;">
+            🔒 Cryptographically Verified Erection Work Package &bull; BALSONS Heavy Lift & Shift Operations
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPermitVerification(p) {
+      const container = document.getElementById('verificationContainer') || document.querySelector('.pass-container') || document.body;
+      container.innerHTML = `
+        <div style="max-width: 540px; margin: 30px auto; background: #FFFFFF; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 2px solid ${p.color}; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <!-- Top Header -->
+          <div style="background: ${p.color}; color: #FFFFFF; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 11px; font-weight: 800; letter-spacing: 1px; opacity: 0.9; text-transform: uppercase;">OFFICIAL WORK AUTHORISATION VERIFICATION</div>
+              <div style="font-size: 20px; font-weight: 900; margin-top: 2px; letter-spacing: 0.5px;">${p.title}</div>
+              <div style="font-size: 11px; opacity: 0.85; margin-top: 2px;">BALSONS HEAVY LIFT & SHIFT • PRJ-JTRWF KHORDHA</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 6px; text-align: center; border: 1px solid rgba(255,255,255,0.3);">
+              <div style="font-size: 9px; font-weight: 700; text-transform: uppercase;">CATEGORY</div>
+              <div style="font-size: 13px; font-weight: 900;">${p.category}</div>
+            </div>
+          </div>
+
+          <!-- Status Banner -->
+          <div style="background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span style="font-size: 11px; color: #64748B; font-weight: 700;">PERMIT IDENTIFIER:</span>
+              <div style="font-size: 17px; font-weight: 900; color: #0F172A; font-family: monospace;">${p.permitId}</div>
+            </div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: ${p.statusColor === '#059669' ? '#ECFDF5' : '#EFF6FF'}; border: 1.5px solid ${p.statusColor}; padding: 4px 12px; border-radius: 20px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: ${p.statusColor}; display: inline-block;"></span>
+              <span style="font-size: 12px; font-weight: 800; color: ${p.statusColor};">${p.status}</span>
+            </div>
+          </div>
+
+          <!-- Body Fields -->
+          <div style="padding: 20px 24px;">
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Scope & Work Description</div>
+              <div style="font-size: 14px; font-weight: 800; color: #0F172A; margin-top: 2px; line-height: 1.35;">${p.description}</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; border-top: 1px solid #F1F5F9; padding-top: 14px;">
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">LOCATION / AREA</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">${p.area}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">CONTRACTOR / AGENCY</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">${p.contractor}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">WORK SUPERVISOR</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">${p.supervisor}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">SITE HSE AUTHORITY</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">${p.safetyOfficer}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">VALID FROM</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #059669; font-family: monospace; margin-top: 1px;">${p.plannedStart}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">VALID UNTIL</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #DC2626; font-family: monospace; margin-top: 1px;">${p.plannedEnd}</div>
+              </div>
+            </div>
+
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px;">
+              <div style="font-size: 10.5px; font-weight: 700; color: #475569;">EHS CONTROL & MANDATORY PRECAUTIONS:</div>
+              <div style="font-size: 12px; color: #1E293B; font-weight: 600; margin-top: 2px;">${p.precautions}</div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button onclick="window.print()" style="flex: 1; padding: 10px; background: #0F172A; color: #FFFFFF; border: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; cursor: pointer;">
+                🖨️ Print Digital Certificate
+              </button>
+              <a href="BALSONS SAFETY MANAGER/frontend/index.html" style="flex: 1; padding: 10px; background: #0097B2; color: #FFFFFF; text-decoration: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; text-align: center; display: inline-block;">
+                🛡️ Open Safety Portal
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer Verification Stamp -->
+          <div style="background: #F1F5F9; border-top: 1px solid #E2E8F0; padding: 10px 24px; text-align: center; font-size: 10px; color: #64748B; font-weight: 600;">
+            🔒 Cryptographically Verified Digital Work Authorisation &bull; BALSONS Heavy Lift & Shift EHS Control
+          </div>
+        </div>
+      `;
+    }
+
+    function initVerification() {
+      const params = new URLSearchParams(window.location.search);
+      const toolId = params.get('toolId') || params.get('tool') || params.get('tag');
+      if (toolId) {
+        const secCode = toolId.split('-')[1] || 'LF';
+        const secNames = {
+          'LF': 'Lifting Equipment', 'PT': 'Power Tools', 'MT': 'Measuring Tools',
+          'HF': 'Hand Tools', 'CC': 'Chemicals', 'ELE': 'Electrical',
+          'SF': 'Safety Gear', 'HT': 'Heavy Tooling'
+        };
+        const tool = toolsRegistry[toolId] || {
+          toolId: toolId,
+          desc: 'Heavy Rigging Plant Tackle / Certified Rigging Tool',
+          section: secCode,
+          sectionName: secNames[secCode] || 'Rigging Gear',
+          type: toolId.split('-')[2] || 'RIG',
+          capacity: 'Heavy Rigging Duty',
+          make: 'BALSONS Approved OEM',
+          model: 'Standard',
+          isLifting: secCode === 'LF',
+          form11Cert: 'F11-JTRWF-2026-STAT',
+          lastInspection: '2026-08-15',
+          nextInspection: '2027-02-14',
+          status: 'AVAILABLE',
+          binLocation: 'MAIN TOOL CRIB',
+          issuedTo: 'In Store Crib (Ready for Checkout)',
+          workArea: 'MAIN TOOL CRIB'
+        };
+        renderToolVerification(tool);
+        return;
+      }
+
+      const rgpId = params.get('rgp') || params.get('passNo') || params.get('gatepass') || params.get('challan');
+      if (rgpId) {
+        renderRgpVerification(rgpId);
+        return;
+      }
+
+      const poId = params.get('poId') || params.get('po') || params.get('poid');
+      if (poId) {
+        const po = poRegistry[poId] || {
+          id: poId,
+          displayNo: 'BAL/JTRWF/PO/2026/001',
+          rev: 0,
+          supplier: 'Tufropes Heavy Tackles Pvt Ltd',
+          gstin: '21AABCT8821M1Z5',
+          date: '2026-11-20',
+          deliveryDate: '2026-12-04',
+          grandTotal: 388338.00,
+          taxableBase: 328300.00,
+          gstAmount: 59238.00,
+          status: 'DISPATCHED_IN_TRANSIT',
+          items: 'Matched Pair 60T Wire Rope Slings 12M + 85T Bow Shackles',
+          terms: 'DAP Site Store Khordha • 30 Days Net from Store GRN',
+          tpi: 'Lloyd\'s Register Form 11 Proof Load Test Verified ✓',
+          buyer: 'Rohan Sharma (Head of Procurement)'
+        };
+        renderPOVerification(po);
+        return;
+      }
+
+      const wpId = params.get('wpId') || params.get('wp') || params.get('wpid');
+      if (wpId) {
+        const wp = wpRegistry[wpId] || {
+          id: wpId,
+          area: 'Area 1: Line Axle • Schuler Axle Press Pit',
+          workstream: 'Bay 1 & Bay 2 (Axle Press Pit Zone)',
+          title: 'Schuler Axle Forging Press Crown, Uprights & Tie-Rods Mechanical Erection',
+          tonnage: '845.5 MT',
+          cranes: 'Demag CC2500 250T (Main, 58%) + Sany SCC1500 150T (Tail, 42%)',
+          groundPressure: '35 t/m² on dual-layer steel distribution mats',
+          leadSupervisor: 'Dilip Rout (Area Mgr) & Manoj Das (Lead Lifting Sup)',
+          status: 'IN PROGRESS',
+          progress: '75%',
+          targetCompletion: '2026-12-10',
+          ptw: 'PTW-AXLE-049 & PTW-AXLE-052 Active ✓',
+          tackleRef: 'TKL-F11-2026-089 (Slings 50T x 4, Shackles 55T x 4)',
+          holdCheck: 'C3 Core Anchor Pockets Cleared & Soleplate Contact >85% Verified ✓'
+        };
+        renderWPVerification(wp);
+        return;
+      }
+
+      const permitId = params.get('permitId') || params.get('ptw') || params.get('permit');
+      if (permitId) {
+        const permit = permitsRegistry[permitId] || {
+          permitId: permitId,
+          title: 'OFFICIAL WORK PERMIT',
+          templateCode: 'PTW-GEN',
+          category: 'GENERAL WORK',
+          color: '#059669',
+          area: 'MAIN PRESS BAY LINE 1',
+          description: 'Erection & Commissioning Work under Active Authorisation',
+          contractor: 'BALSONS HEAVY LIFT & SHIFT',
+          supervisor: 'Ramesh Kumar',
+          safetyOfficer: 'Gajendra Rao (Safety Manager)',
+          plannedStart: '2026-11-24 08:00 AM',
+          plannedEnd: '2026-11-24 06:00 PM',
+          riskLevel: 'CONTROLLED',
+          status: 'ISSUED / ACTIVE ON SITE',
+          statusColor: '#059669',
+          precautions: 'Safe work procedures verified and complied with on site.'
+        };
+        renderPermitVerification(permit);
+        return;
+      }
+      const empId = params.get('empId') || params.get('id') || 'EMP-2026-0001';
+      const data = workforce[empId] || workforce['EMP-2026-0001'];
+
+      document.getElementById('vEmpId').textContent = empId;
+      document.getElementById('vEmpName').textContent = data.name;
+      document.getElementById('vEmpTrade').textContent = data.trade;
+      document.getElementById('vEmpDept').textContent = data.dept;
+      document.getElementById('vEmpBlood').textContent = `🩸 ${data.blood} (Positive)`;
+      document.getElementById('vEmpCategory').textContent = data.cat;
+      document.getElementById('vEmpEmergency').textContent = data.emergency;
+      document.getElementById('vEmpAadhaar').textContent = data.aadhaar;
+      document.getElementById('vEmpPan').textContent = data.pan;
+      document.getElementById('vEmpPolice').textContent = data.police;
+      document.getElementById('vEmpPhoto').src = data.photo;
+    }
+
+    function downloadDigitalPass() {
+      window.print();
+    }
+
+    window.addEventListener('DOMContentLoaded', initVerification);
+  </script>
+</body>
+</html>

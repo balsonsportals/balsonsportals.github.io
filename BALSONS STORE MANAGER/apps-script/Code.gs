@@ -89,6 +89,35 @@ function doGet(e) {
         };
         break;
 
+      // ─── GOOGLE DRIVE MASTER STORAGE (SAM-2026 TIER 4) ────────────────
+      case 'drive.get_map':
+        responseData = {
+          success: true,
+          rootFolderId: BALSONS_DRIVE_CONFIG.ROOT_FOLDER_ID,
+          portalCode: '06_STORE_AND_TACKLE_MANAGER',
+          folders: BALSONS_DRIVE_CONFIG.STRUCTURE['06_STORE_AND_TACKLE_MANAGER'] || {}
+        };
+        break;
+
+      case 'drive.upload_document':
+        if (!payload.fileBase64 || !payload.fileName) {
+          responseData = { success: false, error: 'MISSING_FIELDS', message: 'fileBase64 and fileName required.' };
+        } else {
+          var blob = Utilities.newBlob(
+            Utilities.base64Decode(payload.fileBase64),
+            payload.mimeType || 'text/html',
+            payload.fileName
+          );
+          responseData = savePortalDocument(
+            '06_STORE_AND_TACKLE_MANAGER',
+            payload.categoryCode || '01_FORM11_STATUTORY_CERTIFICATES',
+            payload.subCategory || 'CRANE_TACKLE_FORM11_REPORTS',
+            blob,
+            payload.fileName
+          );
+        }
+        break;
+
       default:
         responseData = {
           success: false,

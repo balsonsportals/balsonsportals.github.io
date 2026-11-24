@@ -1247,6 +1247,7 @@
       <button class="nav-tab-btn" onclick="switchTab('tab-holds', this)">
         ⚠️ Site Holds & Bottlenecks (4 Active)
       </button>
+      <button class="nav-tab-btn" id="tab-btn-dossier" onclick="Balsons360Dossier.openModal()" style="font-weight: 800; color: #0097B2;" title="Open 360° Workforce Dossiers">🌐 360° Dossiers</button>
       <button class="nav-tab-btn" id="tab-btn-documents" onclick="switchTab('tab-documents', this)">
         📁 Documents &amp; Drive Vault
       </button>
@@ -2392,6 +2393,7 @@
   </footer>
 
   <!-- Application Scripts -->
+  <script src="assets/js/dossier-360.js"></script>
   <script src="assets/js/balsons-sam-auth.js"></script>
   <script src="assets/js/beds-superadmin.js"></script>
   <script src="assets/js/balsons-docs-manager.js"></script>
@@ -2452,5 +2454,7 @@
     }
   }
 </script>
+  <!-- Unified BEDS Statutory Print Stage -->
+  <div id="bedsPrintStage" style="display: none;"></div>
 </body>
 </html>

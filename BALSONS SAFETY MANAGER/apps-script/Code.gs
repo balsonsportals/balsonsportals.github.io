@@ -172,6 +172,33 @@ function doPost(e) {
         responseData = { auditLogs: AuditService.getAuditLogs(payload.limit || 50) };
         break;
 
+      // ─── GOOGLE DRIVE MASTER STORAGE (SAM-2026 TIER 4) ────────────────
+      case 'drive.get_map':
+        responseData = {
+          rootFolderId: BALSONS_DRIVE_CONFIG.ROOT_FOLDER_ID,
+          portalCode: '05_SAFETY_AND_RISK_MANAGER',
+          folders: BALSONS_DRIVE_CONFIG.STRUCTURE['05_SAFETY_AND_RISK_MANAGER'] || {}
+        };
+        break;
+
+      case 'drive.upload_document':
+        if (!payload.fileBase64 || !payload.fileName) {
+          throw new Error('Mandatory: fileBase64 and fileName required for Drive storage.');
+        }
+        var blob = Utilities.newBlob(
+          Utilities.base64Decode(payload.fileBase64),
+          payload.mimeType || 'text/html',
+          payload.fileName
+        );
+        responseData = savePortalDocument(
+          '05_SAFETY_AND_RISK_MANAGER',
+          payload.categoryCode || '01_PERMIT_TO_WORK_PTW',
+          payload.subCategory || 'HOT_WORK_PERMITS',
+          blob,
+          payload.fileName
+        );
+        break;
+
       default:
         return createJsonResponse({
           success: false,

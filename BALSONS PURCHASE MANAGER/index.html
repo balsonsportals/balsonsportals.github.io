@@ -884,6 +884,7 @@
       <button class="purch-tab-btn" id="tab-btn-vendors" onclick="BalsonsPurchaseApp.switchTab('vendors')">
         <span>🏢</span> Supplier Master <span class="tab-count" id="badgeCountVendors">5</span>
       </button>
+      <button class="purch-tab-btn" id="tab-btn-dossier" onclick="Balsons360Dossier.openModal()" style="font-weight: 800; color: #0097B2;" title="Open 360° Workforce Dossiers"><span>🌐</span> 360° Dossiers</button>
       <button class="purch-tab-btn" id="tab-btn-docs" onclick="BalsonsPurchaseApp.switchTab('docs')">
         <span>📁</span> Documents &amp; Drive Vault <span class="tab-count" id="badgeCountDocs">Drive</span>
       </button>
@@ -1384,6 +1385,8 @@
     </div>
   </footer>
 
+  <script src="assets/js/balsons-sam-auth.js"></script>
+  <script src="assets/js/dossier-360.js"></script>
   <script src="assets/js/beds-superadmin.js"></script>
   <script src="assets/js/beds-portal-login.js"></script>
   <script src="assets/js/balsons-docs-manager.js"></script>
@@ -1399,5 +1402,7 @@
       }
     });
   </script>
+  <!-- Unified BEDS Statutory Print Stage -->
+  <div id="bedsPrintStage" style="display: none;"></div>
 </body>
 </html>

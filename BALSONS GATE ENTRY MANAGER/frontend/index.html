@@ -3236,6 +3236,7 @@
 <script src="assets/js/api-client.js"></script>
 <script src="assets/js/balsons-sam-auth.js"></script>
 <script src="assets/js/auth.js"></script>
+<script src="assets/js/qrcode.min.js"></script>
 <script src="assets/js/dossier-360.js"></script>
 <script src="assets/js/beds-superadmin.js"></script>
   <script src="assets/js/beds-portal-login.js"></script>
@@ -5064,6 +5065,7 @@ Bay: ${item.targetArea}`);
 
   let currentGpFilter = 'ALL';
 
+  function renderInwardView() { if (typeof renderChallanItems === "function") renderChallanItems(); }
   function initGateTransactions() {
     renderInwardView();
     renderGatePassView();
@@ -5953,11 +5955,29 @@ Bay: ${item.targetArea}`);
           </div>
         </div>
 
+        <!-- STATUTORY DIGITAL VERIFICATION & QR BLOCK -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding:8px 12px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:4px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div id="gatePassQrContainer" style="width:56px; height:56px; background:#FFFFFF; border:1px solid #CBD5E1; display:flex; align-items:center; justify-content:center; border-radius:3px;">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=56x56&data=${encodeURIComponent('https://balsonsportals.github.io/verify.html?rgp=' + p.passId)}" alt="QR Verification" style="width:52px; height:52px;" onerror="this.onerror=null; this.src='https://quickchart.io/qr?size=56&text=' + encodeURIComponent('https://balsonsportals.github.io/verify.html?rgp=' + '${p.passId}');">
+            </div>
+            <div>
+              <div style="font-size:10.5px; font-weight:800; color:#102D35;">STATUTORY DIGITAL CLEARANCE VERIFICATION</div>
+              <div style="font-size:9px; color:#64748B;">Scan to verify JTRWF Gate Movement Authorization on live registry</div>
+              <div style="font-size:8.5px; font-family:monospace; color:#0097B2; margin-top:1px;">verify.html?rgp=${p.passId}</div>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span style="display:inline-block; padding:3px 8px; background:#10B981; color:#FFFFFF; font-size:9px; font-weight:800; border-radius:3px; letter-spacing:0.5px;">SEC-AUTHENTICATED</span>
+            <div style="font-size:8.5px; color:#64748B; margin-top:2px;">Digital Audit Trail &bull; JGE-SEC-2026</div>
+          </div>
+        </div>
+
         <!-- FOOTER BAR -->
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:6px; border-top:1px solid #E2E8F0; font-size:9px; color:#94A3B8;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:6px; border-top:1px solid #E2E8F0; font-size:9px; color:#94A3B8;">
           <div>System Reference: SAM-2026 &bull; Form Standard: BEDS V1.0</div>
           <div>Page 1 of 1 (Strict A4 Single Sheet Guarantee)</div>
-          <div>Cloud Vault: 1Q6UA4DOPPKJ-QydctzYktNK0A9xUQ-Pa</div>
+          <div>Cloud Vault: 1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde</div>
         </div>
 
       </div>
@@ -6415,5 +6435,7 @@ window.BalsonsPortalSync = {
 };
 
 </script>
+  <!-- Unified BEDS Statutory Print Stage -->
+  <div id="bedsPrintStage" style="display: none;"></div>
 </body>
 </html>
