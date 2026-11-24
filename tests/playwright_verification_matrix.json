@@ -1,0 +1,293 @@
+{
+  "suite_name": "BALSONS Enterprise-Wide Automated Playwright Verification Suite",
+  "timestamp": "2026-11-24T16:26:44.973550",
+  "environment": "Windows 11 x64 \u00b7 Microsoft Edge / Chromium Headless \u00b7 SAM-2026 / BEDS V2.0",
+  "summary": {
+    "total_tests": 35,
+    "passed": 33,
+    "failed": 2,
+    "blocked": 0,
+    "untested": 0
+  },
+  "components": {
+    "Enterprise Launcher": [
+      {
+        "test_id": "LAUNCH-01",
+        "description": "Application launch and page title",
+        "status": "PASSED",
+        "details": "Title: BALSONS Central Portal \u2014 Super Administrator Control Center",
+        "timestamp": "2026-11-24T16:26:51.378180"
+      },
+      {
+        "test_id": "LAUNCH-02",
+        "description": "All 6 operational portals referenced in directory",
+        "status": "PASSED",
+        "details": "Found references to all 6 domain portals",
+        "timestamp": "2026-11-24T16:26:51.515949"
+      },
+      {
+        "test_id": "LAUNCH-03",
+        "description": "Mobile viewport rendering (375x812)",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\launcher_mobile_375.png",
+        "timestamp": "2026-11-24T16:26:52.764413"
+      },
+      {
+        "test_id": "LAUNCH-04",
+        "description": "Desktop viewport rendering (1440x900)",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\launcher_desktop_1440.png",
+        "timestamp": "2026-11-24T16:26:54.276279"
+      }
+    ],
+    "HR Manager": [
+      {
+        "test_id": "HR-01",
+        "description": "HR Manager launch & BEDS title",
+        "status": "PASSED",
+        "details": "Title: BALSONS HR & Payroll Manager \u2022 Enterprise Platform",
+        "timestamp": "2026-11-24T16:27:00.788104"
+      },
+      {
+        "test_id": "HR-02",
+        "description": "Dedicated HR database pointer reconciliation (1so_aH05...)",
+        "status": "PASSED",
+        "details": "Pill Text: HR DB Sync: SYNCING 1so_aH05... Auto: 26s",
+        "timestamp": "2026-11-24T16:27:01.657361"
+      },
+      {
+        "test_id": "HR-03",
+        "description": "Employee Master table data rendering",
+        "status": "PASSED",
+        "details": "Employee records verified in DOM",
+        "timestamp": "2026-11-24T16:27:01.955674"
+      },
+      {
+        "test_id": "HR-04",
+        "description": "Bidirectional Dual-Sync trigger execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:27:01.974066"
+      },
+      {
+        "test_id": "HR-05",
+        "description": "Offline Outbox Mutation Queuing (localStorage)",
+        "status": "PASSED",
+        "details": "Queue state: {'success': True, 'queueLength': 1}",
+        "timestamp": "2026-11-24T16:27:01.998521"
+      },
+      {
+        "test_id": "HR-06",
+        "description": "Mobile hamburger and off-canvas drawer opening",
+        "status": "PASSED",
+        "details": "Drawer result: {'hasBtn': True, 'isOpen': True}",
+        "timestamp": "2026-11-24T16:27:03.548017"
+      },
+      {
+        "test_id": "HR-07",
+        "description": "Candidate 6-step registration onboarding wizard rendering",
+        "status": "PASSED",
+        "details": "Wizard loaded: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\hr_registration_wizard.png",
+        "timestamp": "2026-11-24T16:27:08.530433"
+      }
+    ],
+    "Gate Entry Manager": [
+      {
+        "test_id": "GATE-01",
+        "description": "Gate Entry launch & BEDS title",
+        "status": "PASSED",
+        "details": "Title: BALSONS Gate Entry & Site Access Portal",
+        "timestamp": "2026-11-24T16:27:11.892424"
+      },
+      {
+        "test_id": "GATE-02",
+        "description": "Gate database pointer reconciliation (1yAuZOXc... vs clasp scriptId)",
+        "status": "PASSED",
+        "details": "Pill Text: Gate DB Sync: SYNCING 1yAuZOXc... Auto: 29s",
+        "timestamp": "2026-11-24T16:27:12.207161"
+      },
+      {
+        "test_id": "GATE-03",
+        "description": "Gate transactions & clearance records rendering in DOM",
+        "status": "PASSED",
+        "details": "Gate records found",
+        "timestamp": "2026-11-24T16:27:12.383473"
+      },
+      {
+        "test_id": "GATE-04",
+        "description": "Gate bidirectional Dual-Sync execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:27:12.400005"
+      },
+      {
+        "test_id": "GATE-05",
+        "description": "Emergency Evacuation Muster & Headcount Radar presence",
+        "status": "PASSED",
+        "details": "Emergency muster controls verified",
+        "timestamp": "2026-11-24T16:27:12.400138"
+      },
+      {
+        "test_id": "GATE-06",
+        "description": "Desktop and Mobile visual screenshot capture",
+        "status": "PASSED",
+        "details": "Screenshots: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\gate_desktop_1440.png, D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\gate_mobile_375.png",
+        "timestamp": "2026-11-24T16:27:16.333764"
+      }
+    ],
+    "Safety Manager": [
+      {
+        "test_id": "SAFETY-01",
+        "description": "Safety database pointer reconciliation (1SyOGt6H...)",
+        "status": "PASSED",
+        "details": "Pill: Safety DB Sync: SYNCING 1SyOGt6H... Auto: 25s",
+        "timestamp": "2026-11-24T16:27:24.606233"
+      },
+      {
+        "test_id": "SAFETY-02",
+        "description": "Sample PTW-JTRWF-2026-9901 record parity check",
+        "status": "FAILED",
+        "details": "Sample PTW-9901 not found in default DOM view (Live database or filter active)",
+        "timestamp": "2026-11-24T16:27:24.690645"
+      },
+      {
+        "test_id": "SAFETY-03",
+        "description": "Safety bi-directional Dual-Sync trigger execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:27:24.711381"
+      },
+      {
+        "test_id": "SAFETY-04",
+        "description": "Safety desktop UI rendering screenshot",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\safety_desktop_1440.png",
+        "timestamp": "2026-11-24T16:27:26.654719"
+      }
+    ],
+    "Store Manager": [
+      {
+        "test_id": "STORE-01",
+        "description": "264-Tool Rigging Tackle Master dataset loaded (BAL-LF-HYJ-001)",
+        "status": "PASSED",
+        "details": "Found master lifting jack BAL-LF-HYJ-001",
+        "timestamp": "2026-11-24T16:27:34.819876"
+      },
+      {
+        "test_id": "STORE-02",
+        "description": "Mobile Viewport Pinch-to-Zoom accessibility check (UI-01)",
+        "status": "FAILED",
+        "details": "Viewport content: width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
+        "timestamp": "2026-11-24T16:27:34.848326"
+      },
+      {
+        "test_id": "STORE-03",
+        "description": "Store Dual-Sync trigger execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:27:34.869778"
+      },
+      {
+        "test_id": "STORE-04",
+        "description": "Store desktop UI rendering screenshot",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\store_desktop_1440.png",
+        "timestamp": "2026-11-24T16:27:36.694655"
+      }
+    ],
+    "Purchase Manager": [
+      {
+        "test_id": "PURCH-01",
+        "description": "Purchase dedicated DB pointer reconciliation (1ANnu4X2...)",
+        "status": "PASSED",
+        "details": "Pill: Purchase DB Sync: LIVE 1ANnu4X2... Auto: 27s",
+        "timestamp": "2026-11-24T16:27:42.296233"
+      },
+      {
+        "test_id": "PURCH-02",
+        "description": "Purchase requisition data table rendering",
+        "status": "PASSED",
+        "details": "Found PR records",
+        "timestamp": "2026-11-24T16:27:42.485760"
+      },
+      {
+        "test_id": "PURCH-03",
+        "description": "Purchase Dual-Sync trigger execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:27:43.427378"
+      },
+      {
+        "test_id": "PURCH-04",
+        "description": "Purchase desktop UI rendering screenshot",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\purchase_desktop_1440.png",
+        "timestamp": "2026-11-24T16:27:48.952943"
+      }
+    ],
+    "Operations Manager": [
+      {
+        "test_id": "OPS-01",
+        "description": "Operations dedicated DB pointer reconciliation (1GeqDDmB...)",
+        "status": "PASSED",
+        "details": "Pill: Operations DB Sync: LIVE 1GeqDDmB... Auto: 10s",
+        "timestamp": "2026-11-24T16:28:13.879210"
+      },
+      {
+        "test_id": "OPS-02",
+        "description": "Operations heavy erection work package table rendering",
+        "status": "PASSED",
+        "details": "Found WP records",
+        "timestamp": "2026-11-24T16:28:17.068106"
+      },
+      {
+        "test_id": "OPS-03",
+        "description": "Operations Dual-Sync trigger execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:28:19.741447"
+      },
+      {
+        "test_id": "OPS-04",
+        "description": "Operations desktop UI rendering screenshot",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\operations_desktop_1440.png",
+        "timestamp": "2026-11-24T16:28:26.914186"
+      }
+    ],
+    "Central Sync Hub": [
+      {
+        "test_id": "SYNC-01",
+        "description": "Scheduled 30-Second Auto-Reload countdown ticker (decrements every 1s)",
+        "status": "PASSED",
+        "details": "Initial: Auto: 16s -> After 2s: Auto: 11s",
+        "timestamp": "2026-11-24T16:28:37.725654"
+      },
+      {
+        "test_id": "SYNC-02",
+        "description": "Global department switcher dropdown contains all portals",
+        "status": "PASSED",
+        "details": "Found 8 department links in topbar",
+        "timestamp": "2026-11-24T16:28:38.834931"
+      }
+    ]
+  },
+  "defect_register": [
+    {
+      "test_id": "SAFETY-02",
+      "component": "Safety Manager",
+      "description": "Sample PTW-JTRWF-2026-9901 record parity check",
+      "severity": "P2",
+      "mechanism": "PTW-JTRWF-2026-9901 sample permit not loaded in default table DOM without query filter",
+      "remediation": "Standardize default sample PTW pre-fetch in BalsonsSafetyApp initialization."
+    },
+    {
+      "test_id": "STORE-02",
+      "component": "Store Manager",
+      "description": "Mobile Viewport Pinch-to-Zoom accessibility check (UI-01)",
+      "severity": "P2",
+      "mechanism": "maximum-scale=1.0 user-scalable=no still present in Store Manager index.html",
+      "remediation": "Update viewport meta tag to width=device-width, initial-scale=1.0"
+    }
+  ]
+}

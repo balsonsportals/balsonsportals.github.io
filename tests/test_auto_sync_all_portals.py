@@ -91,7 +91,8 @@ async def verify_all_portals_sync():
             print(f"  ✓ [BalsonsPortalSync Hook Registered]: {has_sync_hook}")
 
             # Screenshot verification
-            screenshot_path = f"test_sync_{portal['name'].lower().replace(' ', '_')}.png"
+            os.makedirs("tests/playwright_screenshots", exist_ok=True)
+            screenshot_path = os.path.join("tests", "playwright_screenshots", f"test_sync_{portal['name'].lower().replace(' ', '_')}.png")
             await page.screenshot(path=screenshot_path)
             print(f"  ✓ [Saved Verification Screenshot]: {screenshot_path}")
 
