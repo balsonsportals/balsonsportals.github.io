@@ -81,8 +81,9 @@ files_to_mirror = [
     ("assets/js/beds-workspace.js", "docs/assets/js/beds-workspace.js"),
     ("docs/specifications/balsons_drive_folder_map.json", "BALSONS ENTERPRISE LAUNCHER/docs/specifications/balsons_drive_folder_map.json"),
 
-    # Verification Portal Root
-    ("verify.html", "BALSONS ENTERPRISE LAUNCHER/verify.html")
+    # Verification Portal Root & UAT Certificate
+    ("verify.html", "BALSONS ENTERPRISE LAUNCHER/verify.html"),
+    ("uat_signoff_certificate.html", "BALSONS ENTERPRISE LAUNCHER/uat_signoff_certificate.html")
 ]
 
 for src, dst in files_to_mirror:
