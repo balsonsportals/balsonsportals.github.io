@@ -5,6 +5,54 @@
  */
 
 const BalsonsSafetyApi = {
+  // Action name normalizer & aliases bridge
+  ACTION_ALIASES: {
+    'permits.list': 'ptw.list',
+    'permits.create': 'ptw.create',
+    'permits.verify': 'ptw.verify',
+    'permits.approve': 'ptw.approve',
+    'permits.close': 'ptw.close',
+    'tbts.list': 'tbt.list',
+    'tbts.create': 'tbt.create',
+    'inspections.list': 'inspection.list',
+    'inspections.create': 'inspection.create',
+    'liftingPlans.list': 'lifting.list',
+    'liftingPlans.create': 'lifting.create',
+    'hazards.list': 'hazard.list',
+    'hazards.create': 'hazard.create',
+    'incidents.list': 'incident.list',
+    'incidents.create': 'incident.create',
+    'capas.list': 'capa.list',
+    'capas.update': 'capa.update',
+    'inductions.list': 'induction.list',
+    'inductions.create': 'induction.create'
+  },
+
+  _syncToLocalStore: function(action, data, payload) {
+    if (!data) return;
+    if ((action === 'ptw.list' || action === 'permits.list') && Array.isArray(data.permits)) {
+      this._localStore.permits = data.permits;
+    } else if ((action === 'ptw.create' || action === 'permits.create') && data.permit) {
+      if (!this._localStore.permits.some(p => p.PermitID === data.permit.PermitID)) {
+        this._localStore.permits.unshift(data.permit);
+      }
+    } else if ((action === 'ptw.verify' || action === 'permits.verify' || action === 'ptw.approve' || action === 'permits.approve' || action === 'ptw.close' || action === 'permits.close') && data.permit) {
+      const idx = this._localStore.permits.findIndex(p => p.PermitID === data.permit.PermitID);
+      if (idx !== -1) this._localStore.permits[idx] = data.permit;
+    } else if ((action === 'tbt.list' || action === 'tbts.list') && Array.isArray(data.tbts)) {
+      this._localStore.tbts = data.tbts;
+    } else if ((action === 'inspection.list' || action === 'inspections.list') && Array.isArray(data.inspections)) {
+      this._localStore.inspections = data.inspections;
+    } else if ((action === 'lifting.list' || action === 'liftingPlans.list') && Array.isArray(data.liftingPlans)) {
+      this._localStore.liftingPlans = data.liftingPlans;
+    } else if ((action === 'hazard.list' || action === 'hazards.list') && Array.isArray(data.hazards)) {
+      this._localStore.hazards = data.hazards;
+    } else if ((action === 'incident.list' || action === 'incidents.list') && Array.isArray(data.incidents)) {
+      this._localStore.incidents = data.incidents;
+    } else if ((action === 'capa.list' || action === 'capas.list') && Array.isArray(data.capas)) {
+      this._localStore.capas = data.capas;
+    }
+  },
   // Local fallback state store
   _localStore: {
     permits: [
@@ -337,6 +385,7 @@ const BalsonsSafetyApi = {
    * Universal Dispatch Call (V5.0 Hardened: AbortController 10s timeout & deduplication)
    */
   call: async function(action, payload = {}, timeoutMs = 10000) {
+    const resolvedAction = (this.ACTION_ALIASES && this.ACTION_ALIASES[action]) ? this.ACTION_ALIASES[action] : action;
     const actor = (typeof BalsonsSafetyAuth !== 'undefined' && BalsonsSafetyAuth.getUser) ? BalsonsSafetyAuth.getUser() : null;
     const dedupeKey = `${action}:${JSON.stringify(payload)}`;
 
@@ -354,14 +403,14 @@ const BalsonsSafetyApi = {
           const response = await fetch(BALSONS_SAFETY_CONFIG.APPS_SCRIPT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: action, payload: payload, actor: actor }),
+            body: JSON.stringify({ action: resolvedAction, payload: payload, actor: actor }),
             signal: controller.signal,
             redirect: 'follow'
           });
           clearTimeout(timeoutId);
           if (response.ok) {
             const res = await response.json();
-            if (res.success) return res;
+            if (res.success) { this._syncToLocalStore(resolvedAction, res.data, payload); return res; }
           }
         } catch (e) {
           clearTimeout(timeoutId);
@@ -370,7 +419,7 @@ const BalsonsSafetyApi = {
       }
 
       // Local Fallback Handler
-      return this._localDispatch(action, payload, actor);
+      return this._localDispatch(resolvedAction, payload, actor);
     })();
 
     this._inFlight.set(dedupeKey, requestPromise);

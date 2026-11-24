@@ -21,7 +21,7 @@ const BalsonsSafetyApp = {
     this.initNavigation();
     this.initLanguage();
     this.initModals();
-    await this.loadDashboardData();
+    await this.syncWithLiveSafetyDb(false);
     this.renderAreaOptions();
     this.renderTemplateOptions();
   },
@@ -573,8 +573,8 @@ const BalsonsSafetyApp = {
       if (printSpan) {
         if (checkedRadio) {
           const val = checkedRadio.value;
-          if (val === 'Y') printSpan.innerHTML = '<strong style="color: #059669;">[☑] Y</strong> &nbsp; [ ] N &nbsp; [ ] N/A';
-          else if (val === 'N') printSpan.innerHTML = '[ ] Y &nbsp; <strong style="color: #DC2626;">[☑] N</strong> &nbsp; [ ] N/A';
+          if (val === 'Y') printSpan.innerHTML = '<strong>[☑] Y</strong> &nbsp; [ ] N &nbsp; [ ] N/A';
+          else if (val === 'N') printSpan.innerHTML = '[ ] Y &nbsp; <strong>[☑] N</strong> &nbsp; [ ] N/A';
           else if (val === 'NA') printSpan.innerHTML = '[ ] Y &nbsp; [ ] N &nbsp; <strong>[☑] N/A</strong>';
         } else {
           printSpan.innerHTML = '[ ] Y &nbsp; [ ] N &nbsp; [ ] N/A';
@@ -793,11 +793,21 @@ const BalsonsSafetyApp = {
     };
 
     if (window.BalsonsSafetyApi && BalsonsSafetyApi._localStore && BalsonsSafetyApi._localStore.permits) {
-      BalsonsSafetyApi._localStore.permits.unshift(newPermit);
+      if (!BalsonsSafetyApi._localStore.permits.some(p => p.PermitID === newPermit.PermitID)) {
+        BalsonsSafetyApi._localStore.permits.unshift(newPermit);
+      }
+    }
+    if (!this.cachedPermits.some(p => p.PermitID === newPermit.PermitID)) {
+      this.cachedPermits.unshift(newPermit);
     }
 
     try {
-      await BalsonsSafetyApi.call('permits.create', newPermit);
+      const createRes = await BalsonsSafetyApi.call('ptw.create', newPermit);
+      if (createRes && createRes.success && createRes.data && createRes.data.permit) {
+        const savedPermit = createRes.data.permit;
+        const idx = this.cachedPermits.findIndex(p => p.PermitID === newPermit.PermitID);
+        if (idx !== -1) this.cachedPermits[idx] = savedPermit;
+      }
     } catch(err) {
       console.warn('[PermitStudio] Online sync queued:', err);
     }
@@ -827,21 +837,15 @@ const BalsonsSafetyApp = {
       sheet.classList.add('preview-mode');
     }
     
-    // Setup dynamic orientation
-    const isLand = this.printOrientation === 'landscape';
+    // Strict A4 Portrait Calibration
     let dynamicStyle = document.getElementById('beds-dynamic-print-orientation');
     if (!dynamicStyle) {
       dynamicStyle = document.createElement('style');
       dynamicStyle.id = 'beds-dynamic-print-orientation';
       document.head.appendChild(dynamicStyle);
     }
-    if (isLand) {
-      dynamicStyle.innerHTML = `@media print { @page { size: A4 landscape !important; margin: 4mm 4mm !important; } }`;
-      document.body.classList.add('print-landscape');
-    } else {
-      dynamicStyle.innerHTML = `@media print { @page { size: A4 portrait !important; margin: 4mm 6mm !important; } }`;
-      document.body.classList.remove('print-landscape');
-    }
+    dynamicStyle.innerHTML = `@media print { @page { size: A4 portrait !important; margin: 4mm 6mm !important; } }`;
+    document.body.classList.remove('print-landscape');
 
     window.print();
   },
@@ -876,6 +880,13 @@ const BalsonsSafetyApp = {
   // EXACT REPRODUCTION OF BALSONS_JTRWF_GENERAL_WORK_PERMIT_GREEN_V2.0.pdf
   // SECTIONS A THROUGH G • SUPPORTS PORTRAIT & LANDSCAPE • 1-PAGE A4 ZERO SPILL
   // ==========================================================================
+    // ==========================================================================
+  // EXACT REPRODUCTION OF BALSONS_JTRWF_THREE_TYPE_PERMIT_TO_WORK_SET_V2.0.pdf
+  // SECTIONS A THROUGH G • STRICTLY A4 PORTRAIT ONLY • 1-PAGE ZERO SPILL
+  // MANDATORY COLOR RULE:
+  // Colors are permitted ONLY in the header/footer color-code badges.
+  // Permit tables, section headers, and checklist cells use clean corporate monochrome.
+  // ==========================================================================
   buildOfficialA4PermitHtml: function(item, isBlank, isEditable, isPreview) {
     let formCode = 'PTW-GEN';
     let permit = null;
@@ -888,6 +899,7 @@ const BalsonsSafetyApp = {
 
     const exactForms = (typeof BALSONS_EXACT_PTW_FORMS !== 'undefined') ? BALSONS_EXACT_PTW_FORMS : [];
     const formSpec = exactForms.find(f => f.code === formCode) || exactForms[0] || {};
+    const sampleData = (typeof BALSONS_PTW_SAMPLE_DATA !== 'undefined') ? BALSONS_PTW_SAMPLE_DATA[formCode] : null;
 
     const color = formSpec.colorKey || '#059669';
     const typeNum = formSpec.typeNum || 1;
@@ -896,458 +908,489 @@ const BalsonsSafetyApp = {
     const category = formSpec.category || 'GENERAL';
     const secC = formSpec.sections || {};
 
-    const permitNo = (!isBlank && permit) ? (permit.PermitID || permit.permitId) : 'PTW-JTRWF-2026-0041';
-    const isLand = this.printOrientation === 'landscape';
+    const permitNo = (!isBlank && permit) ? (permit.PermitID || permit.permitId) : (sampleData ? sampleData.permitNo : 'PTW-JTRWF-2026-0041');
 
     const html = [];
-    html.push(`<div class="docx-permit-sheet ${isPreview ? 'preview-mode' : ''} ${isLand ? 'landscape-mode' : ''}" id="active-permit-sheet">`);
+    html.push(`<div class="docx-permit-sheet ${isPreview ? 'preview-mode' : ''}" id="active-permit-sheet">`);
 
     // 1. Top Header
     html.push(`
-      <div class="docx-header-wrap" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid ${color}; padding-bottom: 2px; margin-bottom: 3px;">
+      <div class="docx-header-wrap" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #0F172A; padding-bottom: 2px; margin-bottom: 3px;">
         <div style="display: flex; align-items: center; gap: 6px;">
           <img src="assets/images/balsons-logo.png" alt="BALSONS" style="height: 24px; object-fit: contain;">
           <div>
             <div style="font-size: 8.5pt; font-weight: 900; letter-spacing: 0.5px; color: #000000; line-height: 1.1;">BALSONS HEAVY LIFT & SHIFT</div>
-            <div style="font-size: 9.5pt; font-weight: 900; color: ${color}; line-height: 1.15; text-transform: uppercase;">${title}</div>
+            <div style="font-size: 9.5pt; font-weight: 900; color: #0F172A; line-height: 1.15; text-transform: uppercase;">${title}</div>
             <div style="font-size: 6pt; color: #475569; font-weight: 700; line-height: 1;">JTRWF PROJECT | KHORDHA, ODISHA</div>
           </div>
         </div>
 
         <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
           <div style="display: flex; gap: 4px; align-items: center;">
-            <span style="background: ${color}; color: #FFFFFF; font-weight: 900; padding: 1.5px 6px; border-radius: 3px; font-size: 6.8pt; letter-spacing: 0.5px;">
+            <span style="display: inline-block; background: ${color} !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color: #FFFFFF !important; font-weight: 900; padding: 1.5px 7px; border-radius: 3px; font-size: 6.8pt; letter-spacing: 0.5px;">
               TYPE ${typeNum} OF 3
             </span>
             <span style="border: 1px solid #94A3B8; color: #334155; font-weight: 800; padding: 1px 5px; border-radius: 3px; font-size: 6.2pt; background: #F8FAFC;">
-              A4 ${isLand ? 'LANDSCAPE' : 'PORTRAIT'} | REV. V2.0
+              A4 PORTRAIT | REV. V2.0
             </span>
           </div>
 
-          <!-- Color Key Bar -->
+          <!-- Color Key Bar (Header Color Badge) -->
           <div style="display: flex; gap: 3px; align-items: center; font-size: 5.5pt; font-weight: 800; margin-top: 1px;">
-            <span style="color: #64748B; font-size: 5.5pt;">COLOUR KEY:</span>
-            <span style="padding: 0.5px 4px; border-radius: 2px; ${typeNum === 1 ? 'background: #059669; color: #FFFFFF;' : 'border: 1px solid #059669; color: #059669;'}">GENERAL</span>
-            <span style="padding: 0.5px 4px; border-radius: 2px; ${typeNum === 2 ? 'background: #DC2626; color: #FFFFFF;' : 'border: 1px solid #DC2626; color: #DC2626;'}">HOT WORK</span>
-            <span style="padding: 0.5px 4px; border-radius: 2px; ${typeNum === 3 ? 'background: #D97706; color: #FFFFFF;' : 'border: 1px solid #D97706; color: #D97706;'}">SPECIAL / HIGH-RISK</span>
+            <span style="color: #64748B; font-size: 5.5pt;">PERMIT COLOUR KEY:</span>
+            <span style="padding: 0.5px 5px; border-radius: 2px; ${typeNum === 1 ? 'background: #059669; color: #FFFFFF; font-weight: 900;' : 'background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;'}">GENERAL</span>
+            <span style="padding: 0.5px 5px; border-radius: 2px; ${typeNum === 2 ? 'background: #DC2626; color: #FFFFFF; font-weight: 900;' : 'background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;'}">HOT WORK</span>
+            <span style="padding: 0.5px 5px; border-radius: 2px; ${typeNum === 3 ? 'background: #D97706; color: #FFFFFF; font-weight: 900;' : 'background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;'}">SPECIAL / HIGH-RISK</span>
           </div>
         </div>
       </div>
     `);
 
-    // Helper: start landscape grid if landscape
-    if (isLand) {
-      html.push('<div class="docx-landscape-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; align-items: start;">');
-      html.push('<div class="docx-land-col-1">');
-    }
-
-    // 2. Section A: PERMIT & JOB DETAILS
+    // 2. Section A: PERMIT & JOB DETAILS (Monochrome)
     html.push(`
-      <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2.5px; background: #FFFFFF;">
-        <div style="background: ${color}; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1px 4px; letter-spacing: 0.3px;">
+      <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2px; background: #FFFFFF;">
+        <div style="background: #1E293B; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1.5px 4px; letter-spacing: 0.3px;">
           A. PERMIT & JOB DETAILS
         </div>
-        <table class="docx-table" style="width: 100%; border-collapse: collapse; font-size: 5.8pt;">
+        <table class="docx-table" style="width: 100%; border-collapse: collapse; font-size: 5.6pt;">
           <tr>
-            <td style="width: 16%; font-weight: 800; background: #F8FAFC; padding: 1px 3px;">PERMIT NO.:</td>
-            <td style="width: 34%; padding: 1px 3px;">
-              <input type="text" id="studio-permit-id" class="docx-input" style="width: 100%; font-family: monospace; font-weight: 800; color: ${color};" value="${permitNo}">
+            <td style="width: 16%; font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">PERMIT NO.:</td>
+            <td style="width: 34%; padding: 1px 3px; border: 1px solid #CBD5E1;">
+              <input type="text" id="studio-permit-id" class="docx-input" style="width: 100%; font-family: monospace; font-weight: 800; color: #000000;" value="${permitNo}">
             </td>
-            <td style="width: 14%; font-weight: 800; background: #F8FAFC; padding: 1px 3px;">DATE:</td>
-            <td style="width: 18%; padding: 1px 3px;">
+            <td style="width: 14%; font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">DATE:</td>
+            <td style="width: 18%; padding: 1px 3px; border: 1px solid #CBD5E1;">
               <input type="date" id="studio-permit-date" class="docx-input" value="${new Date().toISOString().split('T')[0]}">
             </td>
-            <td style="width: 10%; font-weight: 800; background: #F8FAFC; padding: 1px 3px;">VALID FROM:</td>
-            <td style="width: 8%; padding: 1px 3px;">
-              <input type="text" id="studio-valid-from" class="docx-input" value="08:00 AM">
+            <td style="width: 10%; font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">VALID FROM:</td>
+            <td style="width: 8%; padding: 1px 3px; border: 1px solid #CBD5E1;">
+              <input type="text" id="studio-valid-from" class="docx-input" value="${sampleData && sampleData.validFrom ? sampleData.validFrom : '08:00 AM'}">
             </td>
           </tr>
           <tr>
-            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px;">WORK AREA:</td>
-            <td colspan="5" style="padding: 1px 3px;">
-              <label style="margin-right: 8px;"><input type="checkbox" id="studio-area-axle" checked> AXLE FORGING</label>
-              <label style="margin-right: 8px;"><input type="checkbox" id="studio-area-wheel"> WHEEL FORGING</label>
-              <label style="margin-right: 8px;"><input type="checkbox" id="studio-area-mach"> MACHINE SHOP</label>
-              <label><input type="checkbox" id="studio-area-die"> DIE SHOP</label>
+            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">WORK AREA:</td>
+            <td colspan="5" style="padding: 1px 3px; border: 1px solid #CBD5E1;">
+              <label style="margin-right: 8px;"><input type="checkbox" id="studio-area-axle" ${sampleData && sampleData.workArea && sampleData.workArea.includes('AXLE') ? 'checked' : ''}> [ ] AXLE FORGING</label>
+              <label style="margin-right: 8px;"><input type="checkbox" id="studio-area-wheel" ${sampleData && sampleData.workArea && sampleData.workArea.includes('WHEEL') ? 'checked' : ''}> [ ] WHEEL FORGING</label>
+              <label style="margin-right: 8px;"><input type="checkbox" id="studio-area-mach" ${sampleData && sampleData.workArea && sampleData.workArea.includes('MACHINE') ? 'checked' : ''}> [ ] MACHINE SHOP</label>
+              <label><input type="checkbox" id="studio-area-die" ${sampleData && sampleData.workArea && sampleData.workArea.includes('DIE') ? 'checked' : ''}> [ ] DIE SHOP</label>
             </td>
           </tr>
           <tr>
-            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px;">EXACT LOCATION:</td>
-            <td colspan="2" style="padding: 1px 3px;">
-              <input type="text" id="studio-location" class="docx-input" style="width: 100%;" value="Axle Forging Line, Finishing Bay, Roller Table RT-04">
+            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">EXACT LOCATION:</td>
+            <td colspan="2" style="padding: 1px 3px; border: 1px solid #CBD5E1;">
+              <input type="text" id="studio-location" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.location ? sampleData.location : 'Axle Forging Line, Finishing Bay, Roller Table RT-04'}">
             </td>
-            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px;">SHIFT / CREW:</td>
-            <td colspan="2" style="padding: 1px 3px;">
-              <input type="text" id="studio-shift" class="docx-input" style="width: 45%;" value="Shift A"> / 
-              <input type="text" id="studio-crew-size" class="docx-input" style="width: 45%;" value="6 Persons">
+            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">SHIFT / CREW:</td>
+            <td colspan="2" style="padding: 1px 3px; border: 1px solid #CBD5E1;">
+              <input type="text" id="studio-shift" class="docx-input" style="width: 45%;" value="${sampleData && sampleData.shift ? sampleData.shift : 'Shift A'}"> /
+              <input type="text" id="studio-crew-size" class="docx-input" style="width: 45%;" value="${sampleData && sampleData.crewSize ? sampleData.crewSize : '6 Persons'}">
             </td>
           </tr>
           <tr>
-            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px;">SUPERVISOR:</td>
-            <td colspan="2" style="padding: 1px 3px;">
-              <input type="text" id="studio-supervisor" class="docx-input" style="width: 100%; font-weight: 700;" value="Rajesh K. Sharma">
+            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">SUPERVISOR:</td>
+            <td colspan="2" style="padding: 1px 3px; border: 1px solid #CBD5E1;">
+              <input type="text" id="studio-supervisor" class="docx-input" style="width: 100%; font-weight: 700;" value="${sampleData && sampleData.supervisor ? sampleData.supervisor : 'Rajesh K. Sharma'}">
             </td>
-            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px;">CONTRACTOR:</td>
-            <td colspan="2" style="padding: 1px 3px;">
-              <input type="text" id="studio-contractor" class="docx-input" style="width: 100%; font-weight: 700;" value="BALSONS HEAVY LIFT & SHIFT">
+            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">CONTRACTOR:</td>
+            <td colspan="2" style="padding: 1px 3px; border: 1px solid #CBD5E1;">
+              <input type="text" id="studio-contractor" class="docx-input" style="width: 100%; font-weight: 700;" value="${sampleData && sampleData.contractor ? sampleData.contractor : 'BALSONS HEAVY LIFT & SHIFT'}">
             </td>
           </tr>
         </table>
       </div>
     `);
 
-    // 3. Section B: WORK DESCRIPTION & CLASSIFICATION
+    // 3. Section B: WORK DESCRIPTION & CLASSIFICATION (Monochrome)
     html.push(`
-      <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2.5px; background: #FFFFFF;">
-        <div style="background: ${color}; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1px 4px; letter-spacing: 0.3px;">
+      <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2px; background: #FFFFFF;">
+        <div style="background: #1E293B; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1.5px 4px; letter-spacing: 0.3px;">
           B. WORK DESCRIPTION & PERMIT CLASSIFICATION
         </div>
-        <div style="padding: 1.5px 3px; font-size: 5.8pt;">
+        <div style="padding: 1.5px 3px; font-size: 5.6pt;">
           <div style="margin-bottom: 1.5px;">
             <strong style="color: #334155;">Task / equipment / work boundary:</strong>
-            <textarea id="studio-work-desc" class="docx-textarea" rows="2" style="width: 100%; font-size: 5.7pt; line-height: 1.1; margin-top: 1px;">Routine preventive maintenance, mechanical guide roller alignment, sensor cleaning and bolting torque check on Roller Table RT-04.</textarea>
+            <textarea id="studio-work-desc" class="docx-textarea" rows="2" style="width: 100%; font-size: 5.6pt; line-height: 1.1; margin-top: 1px;">${sampleData && sampleData.workDescription ? sampleData.workDescription : 'Routine preventive maintenance and inspection.'}</textarea>
           </div>
-          <div style="background: #F8FAFC; border: 1px dashed #CBD5E1; padding: 1.5px 4px; border-radius: 2px;">
+          <div style="background: #F8FAFC; border: 1px solid #CBD5E1; padding: 1.5px 4px; border-radius: 2px;">
             <strong>Permit category:</strong> &nbsp;
-            <label style="margin-right: 6px;"><input type="checkbox" ${typeNum === 1 ? 'checked' : ''}> GENERAL WORK</label>
-            <label style="margin-right: 6px;"><input type="checkbox" ${typeNum === 2 ? 'checked' : ''}> HOT WORK</label>
-            <label><input type="checkbox" ${typeNum === 3 ? 'checked' : ''}> SPECIAL / HIGH-RISK</label>
-            <span style="color: #64748B; font-style: italic; margin-left: 6px;">${formSpec.categoryNote || ''}</span>
+            <label style="margin-right: 6px;"><input type="checkbox" ${typeNum === 1 ? 'checked' : ''}> [${typeNum === 1 ? 'X' : ' '}] GENERAL WORK</label>
+            <label style="margin-right: 6px;"><input type="checkbox" ${typeNum === 2 ? 'checked' : ''}> [${typeNum === 2 ? 'X' : ' '}] HOT WORK</label>
+            <label><input type="checkbox" ${typeNum === 3 ? 'checked' : ''}> [${typeNum === 3 ? 'X' : ' '}] SPECIAL / HIGH-RISK</label>
+            <span style="color: #64748B; font-style: italic; margin-left: 6px;">- ${formSpec.categoryNote || ''}</span>
           </div>
         </div>
       </div>
     `);
 
-    // 4. Section C: KEY HAZARD & CONTROL CHECKLIST (4 Blocks)
+    // 4. Section C: KEY HAZARD & CONTROL CHECKLIST (Monochrome)
     html.push(`
-      <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2.5px; background: #FFFFFF;">
-        <div style="background: ${color}; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1px 4px; letter-spacing: 0.3px; display: flex; justify-content: space-between;">
+      <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2px; background: #FFFFFF;">
+        <div style="background: #1E293B; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1.5px 4px; letter-spacing: 0.3px; display: flex; justify-content: space-between;">
           <span>C. KEY HAZARD & CONTROL CHECKLIST</span>
           <span style="font-weight: 600; opacity: 0.9;">TICK APPLICABLE ITEMS; MARK N/A WHERE NOT APPLICABLE</span>
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 2px; background: #F1F5F9;">
-          <!-- Block 1 -->
-          <div style="background: #FFFFFF; border: 1px solid #E2E8F0; padding: 2px; border-radius: 2px;">
-            <div style="font-weight: 800; font-size: 5.8pt; color: ${color}; border-bottom: 1px solid #E2E8F0; padding-bottom: 1px; margin-bottom: 1px;">
-              ${secC.secC_block1_title || 'BASIC WORK CONTROLS'}
-            </div>
-            ${(secC.secC_block1 || []).map((item, idx) => `
-              <div class="docx-chk-container" style="font-size: 5.5pt; line-height: 1.1; margin-bottom: 1px; display: flex; justify-content: space-between; align-items: flex-start;">
-                <span style="flex: 1; padding-right: 2px;">[ ] ${item}</span>
-                <span class="docx-print-chk" style="display: none;">[ ] Y &nbsp; [ ] N &nbsp; [ ] N/A</span>
-                <span class="docx-radio-group" style="display: inline-flex; gap: 2px; font-size: 5.2pt;">
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b1_${idx}" value="Y" onchange="BalsonsSafetyApp.onChecklistChange(this)">Y</label>
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b1_${idx}" value="N" onchange="BalsonsSafetyApp.onChecklistChange(this)">N</label>
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b1_${idx}" value="NA" onchange="BalsonsSafetyApp.onChecklistChange(this)">NA</label>
-                </span>
-              </div>
-            `).join('')}
-          </div>
-
-          <!-- Block 2 -->
-          <div style="background: #FFFFFF; border: 1px solid #E2E8F0; padding: 2px; border-radius: 2px;">
-            <div style="font-weight: 800; font-size: 5.8pt; color: ${color}; border-bottom: 1px solid #E2E8F0; padding-bottom: 1px; margin-bottom: 1px;">
-              ${secC.secC_block2_title || 'TASK SPECIFIC LIMIT / CONTROLS'}
-            </div>
-            ${(secC.secC_block2 || []).map((item, idx) => `
-              <div class="docx-chk-container" style="font-size: 5.5pt; line-height: 1.1; margin-bottom: 1px; display: flex; justify-content: space-between; align-items: flex-start;">
-                <span style="flex: 1; padding-right: 2px;">[ ] ${item}</span>
-                <span class="docx-print-chk" style="display: none;">[ ] Y &nbsp; [ ] N &nbsp; [ ] N/A</span>
-                <span class="docx-radio-group" style="display: inline-flex; gap: 2px; font-size: 5.2pt;">
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b2_${idx}" value="Y" onchange="BalsonsSafetyApp.onChecklistChange(this)">Y</label>
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b2_${idx}" value="N" onchange="BalsonsSafetyApp.onChecklistChange(this)">N</label>
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b2_${idx}" value="NA" onchange="BalsonsSafetyApp.onChecklistChange(this)">NA</label>
-                </span>
-              </div>
-            `).join('')}
-          </div>
-
-          <!-- Block 3 -->
-          <div style="background: #FFFFFF; border: 1px solid #E2E8F0; padding: 2px; border-radius: 2px;">
-            <div style="font-weight: 800; font-size: 5.8pt; color: ${color}; border-bottom: 1px solid #E2E8F0; padding-bottom: 1px; margin-bottom: 1px;">
-              ${secC.secC_block3_title || 'ENERGY & EQUIPMENT'}
-            </div>
-            ${(secC.secC_block3 || []).map((item, idx) => `
-              <div class="docx-chk-container" style="font-size: 5.5pt; line-height: 1.1; margin-bottom: 1px; display: flex; justify-content: space-between; align-items: flex-start;">
-                <span style="flex: 1; padding-right: 2px;">[ ] ${item}</span>
-                <span class="docx-print-chk" style="display: none;">[ ] Y &nbsp; [ ] N &nbsp; [ ] N/A</span>
-                <span class="docx-radio-group" style="display: inline-flex; gap: 2px; font-size: 5.2pt;">
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b3_${idx}" value="Y" onchange="BalsonsSafetyApp.onChecklistChange(this)">Y</label>
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b3_${idx}" value="N" onchange="BalsonsSafetyApp.onChecklistChange(this)">N</label>
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b3_${idx}" value="NA" onchange="BalsonsSafetyApp.onChecklistChange(this)">NA</label>
-                </span>
-              </div>
-            `).join('')}
-          </div>
-
-          <!-- Block 4 -->
-          <div style="background: #FFFFFF; border: 1px solid #E2E8F0; padding: 2px; border-radius: 2px;">
-            <div style="font-weight: 800; font-size: 5.8pt; color: ${color}; border-bottom: 1px solid #E2E8F0; padding-bottom: 1px; margin-bottom: 1px;">
-              ${secC.secC_block4_title || 'ENVIRONMENT & SITE INTERFACE'}
-            </div>
-            ${(secC.secC_block4 || []).map((item, idx) => `
-              <div class="docx-chk-container" style="font-size: 5.5pt; line-height: 1.1; margin-bottom: 1px; display: flex; justify-content: space-between; align-items: flex-start;">
-                <span style="flex: 1; padding-right: 2px;">[ ] ${item}</span>
-                <span class="docx-print-chk" style="display: none;">[ ] Y &nbsp; [ ] N &nbsp; [ ] N/A</span>
-                <span class="docx-radio-group" style="display: inline-flex; gap: 2px; font-size: 5.2pt;">
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b4_${idx}" value="Y" onchange="BalsonsSafetyApp.onChecklistChange(this)">Y</label>
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b4_${idx}" value="N" onchange="BalsonsSafetyApp.onChecklistChange(this)">N</label>
-                  <label class="docx-radio-btn"><input type="radio" name="chk_b4_${idx}" value="NA" onchange="BalsonsSafetyApp.onChecklistChange(this)">NA</label>
-                </span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </div>
     `);
 
-    // Helper: switch column if landscape
-    if (isLand) {
-      html.push('</div>'); // End col 1
-      html.push('<div class="docx-land-col-2">');
+    if (typeNum === 3) {
+      // 7 Specialized Hazard Blocks for Special / High-Risk in a clean 2-column layout
+      const blocksCol1 = [
+        { title: secC.secC_block1_title, items: secC.secC_block1 },
+        { title: secC.secC_block3_title, items: secC.secC_block3 },
+        { title: secC.secC_block5_title, items: secC.secC_block5 },
+        { title: secC.secC_block7_title, items: secC.secC_block7 }
+      ];
+      const blocksCol2 = [
+        { title: secC.secC_block2_title, items: secC.secC_block2 },
+        { title: secC.secC_block4_title, items: secC.secC_block4 },
+        { title: secC.secC_block6_title, items: secC.secC_block6 }
+      ];
+
+      const renderBlock = (b, bIdx) => `
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; padding: 1.5px 2px; border-radius: 2px; margin-bottom: 1.5px;">
+          <div style="font-weight: 800; font-size: 5.5pt; color: #1E293B; border-bottom: 1px solid #E2E8F0; padding-bottom: 1px; margin-bottom: 1px; text-transform: uppercase;">
+            ${b.title}
+          </div>
+          ${(b.items || []).map((item, idx) => `
+            <div class="docx-chk-container" style="font-size: 5.2pt; line-height: 1.1; margin-bottom: 1px; display: flex; justify-content: space-between; align-items: flex-start;">
+              <span style="flex: 1; padding-right: 2px;">[ ] ${item}</span>
+              <span class="docx-print-chk" style="display: none;">[ ] Y &nbsp; [ ] N &nbsp; [ ] N/A</span>
+              <span class="docx-radio-group" style="display: inline-flex; gap: 2px; font-size: 5.0pt;">
+                <label class="docx-radio-btn"><input type="radio" name="chk_${bIdx}_${idx}" value="Y" onchange="BalsonsSafetyApp.onChecklistChange(this)">Y</label>
+                <label class="docx-radio-btn"><input type="radio" name="chk_${bIdx}_${idx}" value="N" onchange="BalsonsSafetyApp.onChecklistChange(this)">N</label>
+                <label class="docx-radio-btn"><input type="radio" name="chk_${bIdx}_${idx}" value="NA" onchange="BalsonsSafetyApp.onChecklistChange(this)">NA</label>
+              </span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      html.push(`
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 2px; background: #F8FAFC;">
+          <div>${blocksCol1.map((b, idx) => renderBlock(b, 'c1_' + idx)).join('')}</div>
+          <div>${blocksCol2.map((b, idx) => renderBlock(b, 'c2_' + idx)).join('')}</div>
+        </div>
+      `);
+    } else {
+      // 4 Blocks for General and Hot Work
+      const blocks = [
+        { title: secC.secC_block1_title, items: secC.secC_block1 },
+        { title: secC.secC_block2_title, items: secC.secC_block2 },
+        { title: secC.secC_block3_title, items: secC.secC_block3 },
+        { title: secC.secC_block4_title, items: secC.secC_block4 }
+      ];
+
+      html.push(`
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 2px; background: #F8FAFC;">
+          ${blocks.map((b, bIdx) => `
+            <div style="background: #FFFFFF; border: 1px solid #E2E8F0; padding: 1.5px 2px; border-radius: 2px;">
+              <div style="font-weight: 800; font-size: 5.5pt; color: #1E293B; border-bottom: 1px solid #E2E8F0; padding-bottom: 1px; margin-bottom: 1px; text-transform: uppercase;">
+                ${b.title}
+              </div>
+              ${(b.items || []).map((item, idx) => `
+                <div class="docx-chk-container" style="font-size: 5.2pt; line-height: 1.1; margin-bottom: 1px; display: flex; justify-content: space-between; align-items: flex-start;">
+                  <span style="flex: 1; padding-right: 2px;">[ ] ${item}</span>
+                  <span class="docx-print-chk" style="display: none;">[ ] Y &nbsp; [ ] N &nbsp; [ ] N/A</span>
+                  <span class="docx-radio-group" style="display: inline-flex; gap: 2px; font-size: 5.0pt;">
+                    <label class="docx-radio-btn"><input type="radio" name="chk_b${bIdx}_${idx}" value="Y" onchange="BalsonsSafetyApp.onChecklistChange(this)">Y</label>
+                    <label class="docx-radio-btn"><input type="radio" name="chk_b${bIdx}_${idx}" value="N" onchange="BalsonsSafetyApp.onChecklistChange(this)">N</label>
+                    <label class="docx-radio-btn"><input type="radio" name="chk_b${bIdx}_${idx}" value="NA" onchange="BalsonsSafetyApp.onChecklistChange(this)">NA</label>
+                  </span>
+                </div>
+              `).join('')}
+            </div>
+          `).join('')}
+        </div>
+      `);
+    }
+    html.push(`</div>`);
+
+    // 5. Section D: Tailored to Permit Type (Monochrome)
+    if (typeNum === 1) {
+      html.push(`
+        <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2px; background: #FFFFFF;">
+          <div style="background: #1E293B; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1.5px 4px; letter-spacing: 0.3px;">
+            D. EQUIPMENT / ISOLATION REFERENCE (IF APPLICABLE)
+          </div>
+          <table class="docx-table" style="width: 100%; border-collapse: collapse; font-size: 5.6pt;">
+            <tr>
+              <td style="width: 18%; font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Equipment / asset:</td>
+              <td style="width: 32%; padding: 1px 3px; border: 1px solid #CBD5E1;"><input type="text" id="studio-equipment" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.equipmentAsset ? sampleData.equipmentAsset : 'Roller Conveyor RT-04 / Hydraulic Drive HD-02'}"></td>
+              <td style="width: 18%; font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">JSA / method ref.:</td>
+              <td style="width: 32%; padding: 1px 3px; border: 1px solid #CBD5E1;"><input type="text" id="studio-jsa-ref" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.jsaRef ? sampleData.jsaRef : 'JSA-JTRWF-MNT-2026-018'}"></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Isolation / lock numbers:</td>
+              <td style="padding: 1px 3px; border: 1px solid #CBD5E1;"><input type="text" id="studio-isolation-nos" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.isolationNos ? sampleData.isolationNos : 'LOTO-MCH-2026-0044 (Local Lockbox #3)'}"></td>
+              <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Verified by:</td>
+              <td style="padding: 1px 3px; border: 1px solid #CBD5E1;"><input type="text" id="studio-verified-by" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.verifiedBy ? sampleData.verifiedBy : 'Sanjay Mohanty (Mech Lead)'}"></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Additional precautions:</td>
+              <td colspan="3" style="padding: 1px 3px; border: 1px solid #CBD5E1;"><input type="text" id="studio-precautions" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.precautions ? sampleData.precautions : 'Area barricaded with yellow-black tape; pedestrian crossover walkway kept clear.'}"></td>
+            </tr>
+          </table>
+        </div>
+      `);
+    } else if (typeNum === 2) {
+      html.push(`
+        <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2px; background: #FFFFFF;">
+          <div style="background: #1E293B; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1.5px 4px; letter-spacing: 0.3px;">
+            D. HOT WORK / GAS TEST / FIRE WATCH RECORD
+          </div>
+          <table class="docx-table" style="width: 100%; border-collapse: collapse; font-size: 5.6pt;">
+            <tr>
+              <td style="width: 18%; font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Hot work location:</td>
+              <td style="width: 32%; padding: 1px 3px; border: 1px solid #CBD5E1;"><input type="text" id="studio-hot-loc" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.location ? sampleData.location : 'Wheel Bay North, Quenching Tank Grid B-7'}"></td>
+              <td style="width: 18%; font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Gas test time:</td>
+              <td style="width: 32%; padding: 1px 3px; border: 1px solid #CBD5E1;"><input type="text" id="studio-gas-time" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.gasTestTime ? sampleData.gasTestTime : '08:15 AM'}"></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Atmospheric readings:</td>
+              <td colspan="3" style="padding: 1px 3px; border: 1px solid #CBD5E1;">
+                O2: <input type="text" id="studio-gas-o2" class="docx-input" style="width: 42px; font-weight: 700;" value="${sampleData && sampleData.gasO2 ? sampleData.gasO2 : '20.9%'}"> &nbsp;
+                LEL: <input type="text" id="studio-gas-lel" class="docx-input" style="width: 42px; font-weight: 700;" value="${sampleData && sampleData.gasLEL ? sampleData.gasLEL : '0.0%'}"> &nbsp;
+                H2S: <input type="text" id="studio-gas-h2s" class="docx-input" style="width: 42px;" value="${sampleData && sampleData.gasH2S ? sampleData.gasH2S : '0 ppm'}"> &nbsp;
+                CO: <input type="text" id="studio-gas-co" class="docx-input" style="width: 42px;" value="${sampleData && sampleData.gasCO ? sampleData.gasCO : '0 ppm'}"> &nbsp;
+                Tested by: <input type="text" id="studio-gas-by" class="docx-input" style="width: 125px;" value="${sampleData && sampleData.gasTestedBy ? sampleData.gasTestedBy : 'Bikram Patra (Safety Officer)'}">
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Fire watch record:</td>
+              <td colspan="3" style="padding: 1px 3px; border: 1px solid #CBD5E1;">
+                Name: <input type="text" id="studio-firewatch-name" class="docx-input" style="width: 120px; font-weight: 700;" value="${sampleData && sampleData.fireWatchName ? sampleData.fireWatchName : 'Kailash Sahoo (Certified Watcher)'}"> &nbsp;
+                Start: <input type="text" id="studio-firewatch-start" class="docx-input" style="width: 55px;" value="${sampleData && sampleData.fireWatchStart ? sampleData.fireWatchStart : '08:30 AM'}"> &nbsp;
+                Post-watch until: <input type="text" id="studio-firewatch-until" class="docx-input" style="width: 135px; font-weight: 700;" value="${sampleData && sampleData.fireWatchUntil ? sampleData.fireWatchUntil : '05:30 PM (60 min post-watch)'}">
+              </td>
+            </tr>
+          </table>
+        </div>
+      `);
+    } else {
+      html.push(`
+        <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2px; background: #FFFFFF;">
+          <div style="background: #1E293B; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1.5px 4px; letter-spacing: 0.3px;">
+            D. HIGH-RISK TASK / ISOLATION / TEST RECORD
+          </div>
+          <table class="docx-table" style="width: 100%; border-collapse: collapse; font-size: 5.6pt;">
+            <tr>
+              <td style="width: 18%; font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Selected tasks:</td>
+              <td colspan="3" style="padding: 1px 3px; border: 1px solid #CBD5E1;">
+                <label style="margin-right: 8px;"><input type="checkbox" id="studio-spec-height" checked> [X] Height</label>
+                <label style="margin-right: 8px;"><input type="checkbox" id="studio-spec-confined"> [ ] Confined space</label>
+                <label style="margin-right: 8px;"><input type="checkbox" id="studio-spec-lifting" checked> [X] Lifting</label>
+                <label style="margin-right: 8px;"><input type="checkbox" id="studio-spec-elec" checked> [X] Electrical / LOTO</label>
+                <label style="margin-right: 8px;"><input type="checkbox" id="studio-spec-mech" checked> [X] Mech. isolation</label>
+                <label><input type="checkbox" id="studio-spec-hot"> [ ] Hot work</label>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Equipment / locks:</td>
+              <td style="padding: 1px 3px; border: 1px solid #CBD5E1;"><input type="text" id="studio-isolation-nos" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.isolationNos ? sampleData.isolationNos : 'LOTO-ELEC-415V-0082 & LOTO-HYD-0012'}"></td>
+              <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Zero-energy verified:</td>
+              <td style="padding: 1px 3px; border: 1px solid #CBD5E1;"><input type="text" id="studio-zero-energy-by" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.zeroEnergyVerifiedBy ? sampleData.zeroEnergyVerifiedBy : 'Bikram Jena (Chief Electrical HT)'}"></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Gas test ref / readings:</td>
+              <td style="padding: 1px 3px; border: 1px solid #CBD5E1;"><input type="text" id="studio-gas-ref" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.gasTestRef ? sampleData.gasTestRef : 'GAS-CALIB-2026-102 (O2: 20.9%, LEL: 0%)'}"></td>
+              <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px; border: 1px solid #CBD5E1;">Lift / rescue plan ref:</td>
+              <td style="padding: 1px 3px; border: 1px solid #CBD5E1;"><input type="text" id="studio-lift-plan-ref" class="docx-input" style="width: 100%;" value="${sampleData && sampleData.liftPlanRef ? sampleData.liftPlanRef : 'LIFT-PLAN-SCHULER-TANDEM-REV04'}"></td>
+            </tr>
+          </table>
+        </div>
+      `);
     }
 
-    // 5. Section D: EQUIPMENT / ISOLATION REFERENCE
+    // 6. Section E: PPE & EMERGENCY READINESS (Monochrome)
     html.push(`
-      <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2.5px; background: #FFFFFF;">
-        <div style="background: ${color}; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1px 4px; letter-spacing: 0.3px;">
-          D. EQUIPMENT / ISOLATION REFERENCE (IF APPLICABLE)
-        </div>
-        <table class="docx-table" style="width: 100%; border-collapse: collapse; font-size: 5.8pt;">
-          <tr>
-            <td style="width: 22%; font-weight: 800; background: #F8FAFC; padding: 1px 3px;">Equipment / asset:</td>
-            <td style="width: 28%; padding: 1px 3px;"><input type="text" id="studio-equipment" class="docx-input" value="Roller Conveyor RT-04 / Hydraulic Drive HD-02"></td>
-            <td style="width: 22%; font-weight: 800; background: #F8FAFC; padding: 1px 3px;">JSA / method ref.:</td>
-            <td style="width: 28%; padding: 1px 3px;"><input type="text" id="studio-jsa-ref" class="docx-input" value="JSA-JTRWF-MNT-2026-018"></td>
-          </tr>
-          <tr>
-            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px;">Isolation / lock nos:</td>
-            <td style="padding: 1px 3px;"><input type="text" id="studio-isolation-nos" class="docx-input" value="LOTO-MCH-2026-0044 (Local Lockbox #3)"></td>
-            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px;">Verified by:</td>
-            <td style="padding: 1px 3px;"><input type="text" id="studio-verified-by" class="docx-input" value="Sanjay Mohanty (Mech Lead)"></td>
-          </tr>
-          <tr>
-            <td style="font-weight: 800; background: #F8FAFC; padding: 1px 3px;">Precautions / notes:</td>
-            <td colspan="3" style="padding: 1px 3px;"><input type="text" id="studio-precautions" class="docx-input" style="width: 100%;" value="Area barricaded with yellow-black tape; pedestrian crossover walkway kept clear."></td>
-          </tr>
-        </table>
-      </div>
-    `);
-
-    // 6. Section E: PPE & EMERGENCY READINESS
-    html.push(`
-      <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2.5px; background: #FFFFFF;">
-        <div style="background: ${color}; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1px 4px; letter-spacing: 0.3px;">
+      <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2px; background: #FFFFFF;">
+        <div style="background: #1E293B; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1.5px 4px; letter-spacing: 0.3px;">
           E. PPE & EMERGENCY READINESS
         </div>
-        <div style="padding: 1.5px 3px; font-size: 5.8pt;">
+        <div style="padding: 1.5px 3px; font-size: 5.6pt;">
           <div style="margin-bottom: 1.5px;">
             <strong>PPE:</strong> &nbsp;
-            <label style="margin-right: 4px;"><input type="checkbox" checked> Helmet</label>
-            <label style="margin-right: 4px;"><input type="checkbox" checked> Shoes</label>
-            <label style="margin-right: 4px;"><input type="checkbox" checked> Gloves</label>
-            <label style="margin-right: 4px;"><input type="checkbox" checked> Eye/Face</label>
-            <label style="margin-right: 4px;"><input type="checkbox"> Hearing</label>
-            <label style="margin-right: 4px;"><input type="checkbox" ${typeNum === 3 ? 'checked' : ''}> Harness</label>
-            <label><input type="checkbox"> Respiratory</label>
+            <label style="margin-right: 4px;"><input type="checkbox" checked> [X] Helmet</label>
+            <label style="margin-right: 4px;"><input type="checkbox" checked> [X] Shoes</label>
+            <label style="margin-right: 4px;"><input type="checkbox" checked> [X] Gloves</label>
+            <label style="margin-right: 4px;"><input type="checkbox" checked> [X] Eye/Face</label>
+            <label style="margin-right: 4px;"><input type="checkbox" ${typeNum >= 2 ? 'checked' : ''}> [${typeNum >= 2 ? 'X' : ' '}] Hearing</label>
+            <label style="margin-right: 4px;"><input type="checkbox" ${typeNum === 3 ? 'checked' : ''}> [${typeNum === 3 ? 'X' : ' '}] Harness</label>
+            <label><input type="checkbox" ${typeNum >= 2 ? 'checked' : ''}> [${typeNum >= 2 ? 'X' : ' '}] Respiratory</label>
           </div>
-          <div style="display: flex; gap: 10px; align-items: center; background: #F8FAFC; padding: 1px 3px; border-radius: 2px;">
-            <div>Emergency contact: <input type="text" id="studio-emergency-contact" class="docx-input" style="width: 130px; font-weight: 700;" value="+91 94370 12345 (HSE)"></div>
-            <div>Muster point: <input type="text" id="studio-muster-point" class="docx-input" style="width: 110px; font-weight: 700;" value="Muster Point #2"></div>
-            <div>Emergency briefed: <label><input type="checkbox" checked> <strong>YES</strong></label></div>
+          <div style="display: flex; gap: 8px; align-items: center; background: #F8FAFC; padding: 1px 3px; border-radius: 2px; border: 1px solid #E2E8F0;">
+            <div>Emergency contact: <input type="text" id="studio-emergency-contact" class="docx-input" style="width: 130px; font-weight: 700;" value="${sampleData && sampleData.emergencyContact ? sampleData.emergencyContact : '+91 94370 12345 (Site HSE Control Room)'}"></div>
+            <div>Muster point: <input type="text" id="studio-muster-point" class="docx-input" style="width: 110px; font-weight: 700;" value="${sampleData && sampleData.musterPoint ? sampleData.musterPoint : 'Muster Point #2'}"></div>
+            <div>Emergency briefed: <label><input type="checkbox" checked> <strong>[X] YES</strong></label></div>
           </div>
         </div>
       </div>
     `);
 
-    // 7. Section F: TOOLBOX TALK & EMPLOYEE ACKNOWLEDGEMENT (6 Rows)
+    // 7. Section F: TOOLBOX TALK & EMPLOYEE ACKNOWLEDGEMENT (Monochrome Table)
     html.push(`
-      <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2.5px; background: #FFFFFF;">
-        <div style="background: ${color}; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1px 4px; letter-spacing: 0.3px; display: flex; justify-content: space-between;">
+      <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2px; background: #FFFFFF;">
+        <div style="background: #1E293B; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1.5px 4px; letter-spacing: 0.3px; display: flex; justify-content: space-between;">
           <span>F. TOOLBOX TALK & EMPLOYEE ACKNOWLEDGEMENT</span>
           <span style="font-weight: 600;">SAME PERMIT NUMBER</span>
         </div>
-        <div style="padding: 1.5px 3px; font-size: 5.8pt;">
+        <div style="padding: 1.5px 3px; font-size: 5.6pt;">
           <div style="display: flex; gap: 8px; margin-bottom: 1.5px; flex-wrap: wrap;">
-            <div>Date: <input type="date" id="studio-tbt-date" class="docx-input" value="${new Date().toISOString().split('T')[0]}"></div>
-            <div>Start: <input type="text" id="studio-tbt-start" class="docx-input" style="width: 55px;" value="07:30 AM"></div>
-            <div>End: <input type="text" id="studio-tbt-end" class="docx-input" style="width: 55px;" value="07:50 AM"></div>
-            <div>Location: <input type="text" id="studio-tbt-location" class="docx-input" style="width: 110px;" value="Axle Briefing Room"></div>
-            <div>Conducted by: <input type="text" id="studio-tbt-by" class="docx-input" style="width: 120px;" value="Rajesh K. Sharma"></div>
+            <div>Date: <input type="date" id="studio-tbt-date" class="docx-input" value="${sampleData && sampleData.tbtDate ? sampleData.tbtDate : new Date().toISOString().split('T')[0]}"></div>
+            <div>Start: <input type="text" id="studio-tbt-start" class="docx-input" style="width: 55px;" value="${sampleData && sampleData.tStart ? sampleData.tStart : '07:30 AM'}"></div>
+            <div>End: <input type="text" id="studio-tbt-end" class="docx-input" style="width: 55px;" value="${sampleData && sampleData.tEnd ? sampleData.tEnd : '07:50 AM'}"></div>
+            <div>Location: <input type="text" id="studio-tbt-location" class="docx-input" style="width: 110px;" value="${sampleData && sampleData.tLocation ? sampleData.tLocation : 'Axle Briefing Room'}"></div>
+            <div>Conducted by: <input type="text" id="studio-tbt-by" class="docx-input" style="width: 120px;" value="${sampleData && sampleData.tConductedBy ? sampleData.tConductedBy : 'Rajesh K. Sharma'}"></div>
           </div>
-          <div style="margin-bottom: 2px; font-size: 5.4pt; color: #475569;">
-            <strong>Briefed:</strong> 
+          <div style="margin-bottom: 1.5px; font-size: 5.3pt; color: #475569;">
+            <strong>Briefed:</strong>
             [X] Scope & Sequence &nbsp; [X] Hazards & Controls &nbsp; [X] PPE &nbsp; [X] Isolation &nbsp; [X] Fire/Rescue &nbsp; [X] SIMOPS &nbsp; [X] Emergency/Muster &nbsp; [X] Stop-Work Authority
           </div>
 
           <!-- 6-Row Employee Table -->
-          <table class="docx-table" style="width: 100%; border-collapse: collapse; font-size: 5.5pt; text-align: left;">
+          <table class="docx-table" style="width: 100%; border-collapse: collapse; font-size: 5.4pt; text-align: left;">
             <thead>
               <tr style="background: #F1F5F9; border-bottom: 1px solid #CBD5E1;">
-                <th style="padding: 1px 2px; width: 4%;">NO.</th>
-                <th style="padding: 1px 2px; width: 28%;">EMPLOYEE NAME</th>
-                <th style="padding: 1px 2px; width: 18%;">ID</th>
-                <th style="padding: 1px 2px; width: 25%;">EMPLOYER / TRADE</th>
-                <th style="padding: 1px 2px; width: 14%;">SIGNATURE</th>
-                <th style="padding: 1px 2px; width: 11%;">TIME</th>
+                <th style="padding: 1px 2px; width: 4%; border: 1px solid #CBD5E1;">NO.</th>
+                <th style="padding: 1px 2px; width: 28%; border: 1px solid #CBD5E1;">EMPLOYEE NAME</th>
+                <th style="padding: 1px 2px; width: 18%; border: 1px solid #CBD5E1;">ID</th>
+                <th style="padding: 1px 2px; width: 25%; border: 1px solid #CBD5E1;">EMPLOYER / TRADE</th>
+                <th style="padding: 1px 2px; width: 14%; border: 1px solid #CBD5E1;">SIGNATURE / THUMB</th>
+                <th style="padding: 1px 2px; width: 11%; border: 1px solid #CBD5E1;">TIME</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td style="padding: 1px 2px; font-weight: 700;">1</td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-name-0" class="docx-input" value="Ramesh Kumar"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-id-0" class="docx-input" style="font-family: monospace;" value="EMP-2026-0001"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-trade-0" class="docx-input" value="Senior Rigger Lead"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-sig-0" class="docx-input" style="color: #059669; font-weight: 700;" value="Ramesh.K"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-time-0" class="docx-input" value="07:35 AM"></td>
-              </tr>
-              <tr>
-                <td style="padding: 1px 2px; font-weight: 700;">2</td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-name-1" class="docx-input" value="Sunil Swain"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-id-1" class="docx-input" style="font-family: monospace;" value="EMP-2026-0002"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-trade-1" class="docx-input" value="Hydraulic Specialist"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-sig-1" class="docx-input" style="color: #059669; font-weight: 700;" value="S.Swain"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-time-1" class="docx-input" value="07:36 AM"></td>
-              </tr>
-              <tr>
-                <td style="padding: 1px 2px; font-weight: 700;">3</td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-name-2" class="docx-input" value="Dillip Biswal"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-id-2" class="docx-input" style="font-family: monospace;" value="EMP-2026-0003"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-trade-2" class="docx-input" value="Mechanical Fitter"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-sig-2" class="docx-input" style="color: #059669; font-weight: 700;" value="D.Biswal"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-time-2" class="docx-input" value="07:37 AM"></td>
-              </tr>
-              <tr>
-                <td style="padding: 1px 2px; font-weight: 700;">4</td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-name-3" class="docx-input" value="Pradeep Rout"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-id-3" class="docx-input" style="font-family: monospace;" value="EMP-2026-0004"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-trade-3" class="docx-input" value="Mechanical Fitter"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-sig-3" class="docx-input" style="color: #059669; font-weight: 700;" value="P.Rout"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-time-3" class="docx-input" value="07:38 AM"></td>
-              </tr>
-              <tr>
-                <td style="padding: 1px 2px; font-weight: 700;">5</td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-name-4" class="docx-input" value="Ashok Mohanty"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-id-4" class="docx-input" style="font-family: monospace;" value="EMP-2026-0005"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-trade-4" class="docx-input" value="Rigging Helper"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-sig-4" class="docx-input" style="color: #059669; font-weight: 700;" value="Ashok.M"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-time-4" class="docx-input" value="07:40 AM"></td>
-              </tr>
-              <tr>
-                <td style="padding: 1px 2px; font-weight: 700;">6</td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-name-5" class="docx-input" value="Kailash Sahoo"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-id-5" class="docx-input" style="font-family: monospace;" value="EMP-2026-0006"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-trade-5" class="docx-input" value="Safety Attendant"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-sig-5" class="docx-input" style="color: #059669; font-weight: 700;" value="K.Sahoo"></td>
-                <td style="padding: 1px 2px;"><input type="text" id="crew-time-5" class="docx-input" value="07:42 AM"></td>
-              </tr>
+              ${(sampleData && sampleData.crew ? sampleData.crew : [
+                { no: 1, name: 'Ramesh Kumar', id: 'EMP-2026-0001', trade: 'Senior Rigger Lead', sig: 'Ramesh.K', time: '07:35 AM' },
+                { no: 2, name: 'Sunil Swain', id: 'EMP-2026-0002', trade: 'Hydraulic Specialist', sig: 'S.Swain', time: '07:36 AM' },
+                { no: 3, name: 'Dillip Biswal', id: 'EMP-2026-0003', trade: 'Mechanical Fitter', sig: 'D.Biswal', time: '07:37 AM' },
+                { no: 4, name: 'Pradeep Rout', id: 'EMP-2026-0004', trade: 'Mechanical Fitter', sig: 'P.Rout', time: '07:38 AM' },
+                { no: 5, name: 'Ashok Mohanty', id: 'EMP-2026-0005', trade: 'Rigging Helper', sig: 'Ashok.M', time: '07:40 AM' },
+                { no: 6, name: 'Kailash Sahoo', id: 'EMP-2026-0006', trade: 'Safety Attendant', sig: 'K.Sahoo', time: '07:42 AM' }
+              ]).map((c, idx) => `
+                <tr>
+                  <td style="padding: 1px 2px; font-weight: 700; border: 1px solid #CBD5E1;">${c.no}</td>
+                  <td style="padding: 1px 2px; border: 1px solid #CBD5E1;"><input type="text" id="crew-name-${idx}" class="docx-input" value="${c.name}"></td>
+                  <td style="padding: 1px 2px; border: 1px solid #CBD5E1;"><input type="text" id="crew-id-${idx}" class="docx-input" style="font-family: monospace;" value="${c.id}"></td>
+                  <td style="padding: 1px 2px; border: 1px solid #CBD5E1;"><input type="text" id="crew-trade-${idx}" class="docx-input" value="${c.trade}"></td>
+                  <td style="padding: 1px 2px; border: 1px solid #CBD5E1;"><input type="text" id="crew-sig-${idx}" class="docx-input" style="color: #0F172A; font-weight: 700;" value="${c.sig}"></td>
+                  <td style="padding: 1px 2px; border: 1px solid #CBD5E1;"><input type="text" id="crew-time-${idx}" class="docx-input" value="${c.time}"></td>
+                </tr>
+              `).join('')}
             </tbody>
           </table>
 
-          <div style="font-size: 5.2pt; color: #64748B; margin-top: 1px;">
+          <div style="font-size: 5.0pt; color: #64748B; margin-top: 1px;">
             Each person confirms attendance, understanding of hazards / controls and emergency / stop-work arrangements by signing personally.
           </div>
-          <div style="display: flex; gap: 10px; margin-top: 1px; font-size: 5.5pt;">
-            <div>Toolbox leader: <input type="text" id="studio-tbt-leader" class="docx-input" style="width: 100px; font-weight: 700;" value="Rajesh K. Sharma"></div>
-            <div>Signature: <input type="text" id="studio-tbt-sig" class="docx-input" style="width: 80px; color: #059669;" value="Rajesh.K"></div>
-            <div>Date / time: <input type="text" id="studio-tbt-dt" class="docx-input" style="width: 110px;" value="2026-11-24 07:50 AM"></div>
+          <div style="display: flex; gap: 10px; margin-top: 1px; font-size: 5.4pt;">
+            <div>Toolbox leader: <input type="text" id="studio-tbt-leader" class="docx-input" style="width: 100px; font-weight: 700;" value="${sampleData && sampleData.tLeader ? sampleData.tLeader : 'Rajesh K. Sharma'}"></div>
+            <div>Signature: <input type="text" id="studio-tbt-sig" class="docx-input" style="width: 80px; color: #1E3A8A;" value="${sampleData && sampleData.tLeader ? sampleData.tLeader.split(' ')[0] : 'Rajesh'}"></div>
+            <div>Date / time: <input type="text" id="studio-tbt-dt" class="docx-input" style="width: 110px;" value="${sampleData && sampleData.date ? sampleData.date : '2026-11-24'} 07:50 AM"></div>
           </div>
         </div>
       </div>
     `);
 
-    // 8. Section G: APPROVAL, REVALIDATION / SUSPENSION & PERMIT CLOSURE
+    // 8. Section G: APPROVAL, REVALIDATION & CLOSURE (Monochrome Table)
     html.push(`
       <div class="docx-sec-box" style="border: 1px solid #CBD5E1; border-radius: 3px; margin-bottom: 2px; background: #FFFFFF;">
-        <div style="background: ${color}; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1px 4px; letter-spacing: 0.3px;">
+        <div style="background: #1E293B; color: #FFFFFF; font-size: 6.2pt; font-weight: 800; padding: 1.5px 4px; letter-spacing: 0.3px;">
           G. APPROVAL, REVALIDATION / SUSPENSION & PERMIT CLOSURE
         </div>
-        <div style="padding: 1.5px 3px; font-size: 5.6pt;">
-          <!-- 4-Column Approvals -->
-          <table class="docx-table" style="width: 100%; border-collapse: collapse; font-size: 5.5pt; text-align: left; margin-bottom: 1.5px;">
+        <div style="padding: 1.5px 3px; font-size: 5.5pt;">
+          <!-- 4-Column Approvals Table -->
+          <table class="docx-table" style="width: 100%; border-collapse: collapse; font-size: 5.4pt; text-align: left; margin-bottom: 1.5px;">
             <thead>
               <tr style="background: #F1F5F9; border-bottom: 1px solid #CBD5E1;">
-                <th style="padding: 1px 2px; width: 25%;">1. WORK SUPERVISOR</th>
-                <th style="padding: 1px 2px; width: 25%;">2. SAFETY OFFICER</th>
-                <th style="padding: 1px 2px; width: 25%;">3. SITE MANAGER</th>
-                <th style="padding: 1px 2px; width: 25%;">4. PERMIT ISSUER</th>
+                <th style="padding: 1px 2px; width: 25%; border: 1px solid #CBD5E1;">1. WORK SUPERVISOR</th>
+                <th style="padding: 1px 2px; width: 25%; border: 1px solid #CBD5E1;">2. SAFETY OFFICER</th>
+                <th style="padding: 1px 2px; width: 25%; border: 1px solid #CBD5E1;">3. SITE MANAGER / APPROVER</th>
+                <th style="padding: 1px 2px; width: 25%; border: 1px solid #CBD5E1;">4. PERMIT ISSUER</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style="padding: 1px 2px;">
-                  Name: <input type="text" id="studio-appr-sup-name" class="docx-input" style="width: 75%;" value="Rajesh K. Sharma"><br>
-                  Sig/Dt: <input type="text" id="studio-appr-sup-dt" class="docx-input" style="width: 75%; color: #059669;" value="✓ 07:55 AM">
+                <td style="padding: 1.5px 2px; border: 1px solid #CBD5E1;">
+                  Name: <input type="text" id="studio-appr-sup-name" class="docx-input" style="width: 80%; font-weight: 700;" value="${sampleData && sampleData.supName ? sampleData.supName : 'Rajesh K. Sharma'}"><br>
+                  Sig: <input type="text" class="docx-input" style="width: 50%; color: #1E3A8A;" value="Signed"> &nbsp;
+                  Dt: <input type="text" id="studio-appr-sup-dt" class="docx-input" style="width: 35%;" value="07:55 AM">
                 </td>
-                <td style="padding: 1px 2px;">
-                  Name: <input type="text" id="studio-appr-so-name" class="docx-input" style="width: 75%;" value="Bikram Patra"><br>
-                  Sig/Dt: <input type="text" id="studio-appr-so-dt" class="docx-input" style="width: 75%; color: #059669;" value="✓ 07:58 AM">
+                <td style="padding: 1.5px 2px; border: 1px solid #CBD5E1;">
+                  Name: <input type="text" id="studio-appr-so-name" class="docx-input" style="width: 80%; font-weight: 700;" value="${sampleData && sampleData.soName ? sampleData.soName : 'Bikram Patra (Site HSE)'}"><br>
+                  Sig: <input type="text" class="docx-input" style="width: 50%; color: #1E3A8A;" value="Verified"> &nbsp;
+                  Dt: <input type="text" id="studio-appr-so-dt" class="docx-input" style="width: 35%;" value="07:58 AM">
                 </td>
-                <td style="padding: 1px 2px;">
-                  Name: <input type="text" id="studio-appr-sm-name" class="docx-input" style="width: 75%;" value="Gajendra Rao"><br>
-                  Sig/Dt: <input type="text" id="studio-appr-sm-dt" class="docx-input" style="width: 75%; color: #059669;" value="✓ 08:00 AM">
+                <td style="padding: 1.5px 2px; border: 1px solid #CBD5E1;">
+                  Name: <input type="text" id="studio-appr-sm-name" class="docx-input" style="width: 80%; font-weight: 700;" value="${sampleData && sampleData.smName ? sampleData.smName : 'Gajendra Rao (Site Manager)'}"><br>
+                  Sig: <input type="text" class="docx-input" style="width: 50%; color: #1E3A8A;" value="Approved"> &nbsp;
+                  Dt: <input type="text" id="studio-appr-sm-dt" class="docx-input" style="width: 35%;" value="08:00 AM">
                 </td>
-                <td style="padding: 1px 2px;">
-                  Name: <input type="text" id="studio-appr-iss-name" class="docx-input" style="width: 75%;" value="Gajendra Rao"><br>
-                  Sig/Dt: <input type="text" id="studio-appr-iss-dt" class="docx-input" style="width: 75%; color: #059669;" value="✓ 08:00 AM">
+                <td style="padding: 1.5px 2px; border: 1px solid #CBD5E1;">
+                  Name: <input type="text" id="studio-appr-iss-name" class="docx-input" style="width: 80%; font-weight: 700;" value="${sampleData && sampleData.issuerName ? sampleData.issuerName : 'Gajendra Rao'}"><br>
+                  Sig: <input type="text" class="docx-input" style="width: 50%; color: #1E3A8A;" value="Issued"> &nbsp;
+                  Dt: <input type="text" id="studio-appr-iss-dt" class="docx-input" style="width: 35%;" value="08:00 AM">
                 </td>
               </tr>
             </tbody>
           </table>
 
-          <!-- Decision & Validity -->
-          <div style="background: #F8FAFC; border: 1px dashed #CBD5E1; padding: 1.5px 3px; border-radius: 2px; margin-bottom: 1.5px;">
-            <strong>DECISION:</strong> <label style="margin-right: 6px;"><input type="checkbox" checked> <strong>APPROVED</strong></label>
-            <label style="margin-right: 10px;"><input type="checkbox"> HOLD / REJECTED</label>
-            VALID FROM: <input type="text" id="studio-valid-from-g" class="docx-input" style="width: 65px; font-weight: 700;" value="08:00 AM"> &nbsp;
-            VALID UNTIL: <input type="text" id="studio-valid-until-g" class="docx-input" style="width: 65px; font-weight: 700;" value="08:00 PM">
+          <!-- Decision Bar -->
+          <div style="background: #F8FAFC; border: 1px solid #CBD5E1; padding: 1.5px 3px; border-radius: 2px; margin-bottom: 1.5px;">
+            <strong>DECISION:</strong> &nbsp;
+            <label style="margin-right: 10px;"><input type="checkbox" checked> <strong>[X] APPROVED</strong></label>
+            <label style="margin-right: 10px;"><input type="checkbox"> [ ] HOLD / REJECTED</label>
+            VALID FROM: <input type="text" id="studio-valid-from-g" class="docx-input" style="width: 65px; font-weight: 700;" value="${sampleData && sampleData.validFrom ? sampleData.validFrom : '08:00 AM'}"> &nbsp;
+            VALID UNTIL: <input type="text" id="studio-valid-until-g" class="docx-input" style="width: 65px; font-weight: 700;" value="${sampleData && sampleData.validUntil ? sampleData.validUntil : '08:00 PM'}">
           </div>
 
           <!-- Special conditions -->
           <div style="margin-bottom: 1.5px;">
-            Special conditions: <input type="text" id="studio-conditions" class="docx-input" style="width: calc(100% - 100px);" value="Maintain safe distance from overhead cranes; ensure goggles worn during cleaning.">
+            Special conditions: <input type="text" id="studio-conditions" class="docx-input" style="width: calc(100% - 100px);" value="${sampleData && sampleData.conditions ? sampleData.conditions : 'Maintain safe distance from overhead cranes; ensure full PPE worn.'}">
           </div>
 
           <!-- Revalidation / Suspension -->
           <div style="margin-bottom: 1.5px; color: #475569;">
             <strong>REVALIDATION / SUSPENSION:</strong> &nbsp;
-            <label style="margin-right: 6px;"><input type="checkbox" checked> Not required</label>
-            <label style="margin-right: 6px;"><input type="checkbox"> Revalidated</label>
-            <label><input type="checkbox"> Suspended / work stopped</label>
+            <label style="margin-right: 6px;"><input type="checkbox" checked> [X] Not required</label>
+            <label style="margin-right: 6px;"><input type="checkbox"> [ ] Revalidated</label>
+            <label><input type="checkbox"> [ ] Suspended / work stopped</label>
           </div>
 
           <!-- Permit Closure / Handback -->
-          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1.5px 3px; border-radius: 2px;">
+          <div style="background: #F8FAFC; border: 1px solid #CBD5E1; padding: 1.5px 3px; border-radius: 2px;">
             <div style="font-weight: 800; color: #334155; margin-bottom: 1px;">
               PERMIT CLOSURE / HAND-BACK: &nbsp;
-              <label style="margin-right: 4px;"><input type="checkbox" checked> Work completed</label>
-              <label style="margin-right: 4px;"><input type="checkbox" checked> Personnel accounted</label>
-              <label style="margin-right: 4px;"><input type="checkbox" checked> Tools removed</label>
-              <label style="margin-right: 4px;"><input type="checkbox" checked> Guards restored</label>
-              <label><input type="checkbox" checked> Worksite inspected</label>
+              <label style="margin-right: 4px;"><input type="checkbox" checked> [X] Work completed</label>
+              <label style="margin-right: 4px;"><input type="checkbox" checked> [X] Personnel accounted</label>
+              <label style="margin-right: 4px;"><input type="checkbox" checked> [X] Tools removed</label>
+              <label style="margin-right: 4px;"><input type="checkbox" checked> [X] Guards restored</label>
+              <label><input type="checkbox" checked> [X] Worksite inspected</label>
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1px;">
-              <div>Closed by: <input type="text" id="studio-close-by" class="docx-input" style="width: 100px; font-weight: 700;" value="Rajesh K. Sharma"></div>
-              <div>Time: <input type="text" id="studio-close-dt" class="docx-input" style="width: 90px;" value="07:30 PM"></div>
-              <div>De-isolation authorized by: <input type="text" id="studio-iso-reinstated-by" class="docx-input" style="width: 90px;" value="Sanjay Mohanty"></div>
+              <div>Closed by: <input type="text" id="studio-close-by" class="docx-input" style="width: 100px; font-weight: 700;" value="${sampleData && sampleData.closedBy ? sampleData.closedBy : 'Rajesh K. Sharma'}"></div>
+              <div>Time: <input type="text" id="studio-close-dt" class="docx-input" style="width: 80px;" value="${sampleData && sampleData.closureTime ? sampleData.closureTime : '07:30 PM'}"></div>
+              <div>De-isolation authorized: <input type="text" id="studio-iso-reinstated-by" class="docx-input" style="width: 90px;" value="${sampleData && sampleData.isoReinstatedBy ? sampleData.isoReinstatedBy : 'Sanjay Mohanty'}"></div>
             </div>
             <div style="margin-top: 1px;">
-              Hand-back remarks: <input type="text" id="studio-close-remarks" class="docx-input" style="width: calc(100% - 105px);" value="All tools retrieved, guards refitted, worksite cleaned and handed back safe.">
+              Hand-back remarks: <input type="text" id="studio-close-remarks" class="docx-input" style="width: calc(100% - 105px);" value="${sampleData && sampleData.closureRemarks ? sampleData.closureRemarks : 'All tools retrieved, guards refitted, worksite cleaned and handed back safe.'}">
             </div>
           </div>
         </div>
       </div>
     `);
 
-    // Close landscape grid if landscape
-    if (isLand) {
-      html.push('</div>'); // End col 2
-      html.push('</div>'); // End landscape grid
-    }
-
-    // 9. Controlled Footer Note
+    // 9. Controlled Footer Note with Official Color Badge (Footer Color Badge)
     html.push(`
-      <div style="font-size: 5pt; color: #64748B; text-align: justify; line-height: 1.1; margin-top: 1.5px; border-top: 1px solid #CBD5E1; padding-top: 1px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2px; border-top: 1px solid #000000; padding-top: 1.5px;">
+        <span style="display: inline-block; background: ${color} !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color: #FFFFFF !important; font-weight: 900; font-size: 6.2pt; padding: 1.5px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px;">
+          ${category === 'GENERAL' ? 'GENERAL WORK PERMIT' : (category === 'HOT WORK' ? 'HOT WORK PERMIT' : 'SPECIAL / HIGH-RISK WORK PERMIT')}
+        </span>
+        <span style="font-size: 5.0pt; color: #64748B; font-weight: 700;">
+          A4 PORTRAIT | STRICT 1-PAGE ZERO SPILL | JTRWF SITE HSE VALIDATION
+        </span>
+      </div>
+      <div style="font-size: 4.8pt; color: #64748B; text-align: justify; line-height: 1.1; margin-top: 1px;">
         <strong>CONTROLLED DRAFT:</strong> JTRWF Site HSE / client validation required before operational use. Apply approved site limits, rescue procedures, competency rules and statutory requirements. Select the permit type matching the highest applicable hazard; for combined high-risk tasks, use the Special / High-Risk form and complete every applicable control block.
       </div>
     `);
@@ -2714,35 +2757,104 @@ const BalsonsSafetyApp = {
     const syncIcon = document.getElementById('safetySyncIcon');
 
     if (syncIcon) syncIcon.style.animation = 'spin 1s linear infinite';
-    if (syncDot) syncDot.style.background = '#eab308';
-    if (syncText) syncText.textContent = 'Syncing...';
+    if (syncDot) syncDot.style.background = '#F59E0B';
+    if (syncText) syncText.textContent = 'Syncing DB...';
 
     try {
-      const res = await BalsonsSafetyApi.call('dashboard.stats');
-      if (res && res.success && res.data) {
-        const stats = res.data.stats || {};
-        const permitsCount = stats.activePermits !== undefined ? stats.activePermits : (BalsonsSafetyApi._localStore.permits || []).length;
-        if (syncText) syncText.textContent = `Live DB Synced (${permitsCount})`;
-        if (syncDot) syncDot.style.background = '#10b981';
-        if (syncBtn) syncBtn.title = `Last synced with Google Sheets at ${new Date().toLocaleTimeString()} (Safe Hours: ${stats.safeManHours || 148520}, Days: ${stats.daysWithoutLTI || 142})`;
-        if (window.BalsonsWorkspace) {
-          window.BalsonsWorkspace.showToast(`✅ Live Safety Database Synced with Google Sheet!`, 'success');
+      // Query all live safety data in parallel from Google Apps Script / Google Sheets
+      const [statsRes, ptwRes, tbtRes, inspRes, liftRes, hazRes, incRes, capaRes] = await Promise.allSettled([
+        BalsonsSafetyApi.call('dashboard.stats'),
+        BalsonsSafetyApi.call('ptw.list', { filter: 'ALL' }),
+        BalsonsSafetyApi.call('tbt.list'),
+        BalsonsSafetyApi.call('inspection.list'),
+        BalsonsSafetyApi.call('lifting.list'),
+        BalsonsSafetyApi.call('hazard.list'),
+        BalsonsSafetyApi.call('incident.list'),
+        BalsonsSafetyApi.call('capa.list')
+      ]);
+
+      // 1. Process Permits
+      let livePermits = [];
+      if (ptwRes.status === 'fulfilled' && ptwRes.value && ptwRes.value.success && ptwRes.value.data) {
+        livePermits = Array.isArray(ptwRes.value.data.permits) ? ptwRes.value.data.permits : [];
+        if (livePermits.length > 0) {
+          BalsonsSafetyApi._localStore.permits = livePermits;
+          this.cachedPermits = livePermits;
         }
-      } else {
-        const count = (BalsonsSafetyApi._localStore.permits || []).length;
-        if (syncText) syncText.textContent = `Live DB Synced (${count})`;
-        if (syncDot) syncDot.style.background = '#10b981';
+      }
+
+      // 2. Process Dashboard Stats
+      if (statsRes.status === 'fulfilled' && statsRes.value && statsRes.value.success && statsRes.value.data) {
+        const d = statsRes.value.data;
+        const activeCount = d.activePermits !== undefined ? d.activePermits : livePermits.filter(p => p.Status === 'ISSUED').length;
+        const pendingCount = d.pendingPermits !== undefined ? d.pendingPermits : livePermits.filter(p => p.Status === 'SUBMITTED' || p.Status === 'VERIFIED_BY_SAFETY').length;
+        this.setText('kpi-safe-hours', d.safeManHours ? d.safeManHours.toLocaleString() : '148,520');
+        this.setText('kpi-days-lti', d.daysWithoutLTI !== undefined ? String(d.daysWithoutLTI) : '142');
+        this.setText('kpi-active-permits', String(activeCount));
+        this.setText('kpi-pending-permits', String(pendingCount));
+        this.setText('kpi-tbts-today', d.tbtsConductedToday !== undefined ? String(d.tbtsConductedToday) : '2');
+        this.setText('kpi-open-capas', d.openCapas !== undefined ? String(d.openCapas) : '1');
+        this.setText('kpi-compliance-rate', (d.complianceScore !== undefined ? d.complianceScore : '98.4') + '%');
+      }
+
+      // 3. Process TBTs
+      if (tbtRes.status === 'fulfilled' && tbtRes.value && tbtRes.value.success && tbtRes.value.data && tbtRes.value.data.tbts) {
+        BalsonsSafetyApi._localStore.tbts = tbtRes.value.data.tbts;
+        this.cachedTbts = tbtRes.value.data.tbts;
+      }
+
+      // 4. Process Inspections
+      if (inspRes.status === 'fulfilled' && inspRes.value && inspRes.value.success && inspRes.value.data && inspRes.value.data.inspections) {
+        BalsonsSafetyApi._localStore.inspections = inspRes.value.data.inspections;
+        this.cachedInspections = inspRes.value.data.inspections;
+      }
+
+      // 5. Process Lifting Plans
+      if (liftRes.status === 'fulfilled' && liftRes.value && liftRes.value.success && liftRes.value.data && liftRes.value.data.liftingPlans) {
+        BalsonsSafetyApi._localStore.liftingPlans = liftRes.value.data.liftingPlans;
+      }
+
+      // 6. Process Hazards
+      if (hazRes.status === 'fulfilled' && hazRes.value && hazRes.value.success && hazRes.value.data && hazRes.value.data.hazards) {
+        BalsonsSafetyApi._localStore.hazards = hazRes.value.data.hazards;
+      }
+
+      // 7. Process Incidents
+      if (incRes.status === 'fulfilled' && incRes.value && incRes.value.success && incRes.value.data && incRes.value.data.incidents) {
+        BalsonsSafetyApi._localStore.incidents = incRes.value.data.incidents;
+      }
+
+      // 8. Process CAPAs
+      if (capaRes.status === 'fulfilled' && capaRes.value && capaRes.value.success && capaRes.value.data && capaRes.value.data.capas) {
+        BalsonsSafetyApi._localStore.capas = capaRes.value.data.capas;
+        this.cachedCapas = capaRes.value.data.capas;
+      }
+
+      // Update Live DB Status Pill
+      const totalPermits = (BalsonsSafetyApi._localStore.permits || []).length;
+      if (syncText) syncText.textContent = `Live DB Synced (${totalPermits})`;
+      if (syncDot) syncDot.style.background = '#10B981';
+      if (syncBtn) syncBtn.title = `Last synced with Google Sheets (1SyOGt...) at ${new Date().toLocaleTimeString()} • ${totalPermits} Permits Active`;
+
+      // Re-render Active Views
+      if (this.currentView === 'view-permits') {
+        this.renderPermitRows(BalsonsSafetyApi._localStore.permits, 'ptw-table-body');
+      } else if (this.currentView === 'view-dashboard') {
+        this.renderPermitRows(BalsonsSafetyApi._localStore.permits, 'dash-active-permits-body');
+      }
+
+      if (forceRefresh && window.BalsonsWorkspace) {
+        window.BalsonsWorkspace.showToast(`✅ Live Safety Database Synced (${totalPermits} Permits, Google Sheets 1SyOGt...)`, 'success');
       }
     } catch (err) {
-      console.warn('[SafetySync] Sync error:', err);
+      console.warn('[SafetyDualSync] Live sync fallback:', err);
       const count = (BalsonsSafetyApi._localStore.permits || []).length;
       if (syncText) syncText.textContent = `Live DB Synced (${count})`;
-      if (syncDot) syncDot.style.background = '#10b981';
+      if (syncDot) syncDot.style.background = '#10B981';
     } finally {
       if (syncIcon) syncIcon.style.animation = 'none';
     }
-  },
-
+  }
 };
 
 window.BalsonsSafetyApp = BalsonsSafetyApp;

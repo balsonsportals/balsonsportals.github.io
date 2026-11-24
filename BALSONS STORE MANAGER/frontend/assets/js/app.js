@@ -518,6 +518,16 @@ const BalsonsStoreApp = {
       tool.issuedTo = `${empId} (${empName.split('-')[0].trim()})`;
       tool.issuedDate = new Date().toISOString().split('T')[0];
       this.saveTools();
+      if (window.BalsonsStoreApi && typeof BalsonsStoreApi.call === 'function') {
+        BalsonsStoreApi.call('loans.issue', {
+          toolId: toolId,
+          empId: empId,
+          empName: empName.split('-')[0].trim(),
+          workArea: area,
+          purpose: purpose,
+          expectedReturn: expectedReturn
+        }).catch(err => console.warn('Cloud sync error on tool issue:', err));
+      }
     }
 
     const rnd = Math.floor(100 + Math.random() * 900);
@@ -647,6 +657,14 @@ const BalsonsStoreApp = {
     this.renderToolMasterTable();
     this.renderTransactionsTable();
     this.renderQuarantineTable();
+
+    if (window.BalsonsStoreApi && typeof BalsonsStoreApi.call === 'function') {
+      BalsonsStoreApi.call('loans.return', {
+        txId: tx.txId,
+        returnCondition: condition,
+        notes: notes
+      }).catch(err => console.warn('Cloud sync error on tool return:', err));
+    }
 
     document.getElementById('modal-return-tool').classList.remove('active');
 

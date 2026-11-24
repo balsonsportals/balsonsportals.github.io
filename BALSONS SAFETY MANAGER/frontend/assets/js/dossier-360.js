@@ -617,21 +617,15 @@ const Balsons360Dossier = {
   printOrientation: 'portrait',
 
   setPrintOrientation: function(orientation) {
-    this.printOrientation = orientation || 'portrait';
+    this.printOrientation = 'portrait'; // Strictly locked to A4 portrait
     const btnP = document.getElementById('modal-dossier-orient-p');
     const btnL = document.getElementById('modal-dossier-orient-l');
-    if (btnP && btnL) {
-      if (this.printOrientation === 'landscape') {
-        btnL.style.background = '#0097B2';
-        btnL.style.color = '#FFFFFF';
-        btnP.style.background = 'transparent';
-        btnP.style.color = '#1E293B';
-      } else {
-        btnP.style.background = '#0097B2';
-        btnP.style.color = '#FFFFFF';
-        btnL.style.background = 'transparent';
-        btnL.style.color = '#1E293B';
-      }
+    if (btnP) {
+      btnP.style.background = '#059669';
+      btnP.style.color = '#FFFFFF';
+    }
+    if (btnL) {
+      btnL.style.display = 'none';
     }
     this.refreshModalContent();
   },
@@ -798,13 +792,8 @@ const Balsons360Dossier = {
       dynamicStyle.id = 'beds-dynamic-print-orientation';
       document.head.appendChild(dynamicStyle);
     }
-    if (orientation === 'landscape') {
-      dynamicStyle.innerHTML = `@media print { @page { size: A4 landscape !important; margin: 5mm 5mm !important; } }`;
-      document.body.classList.add('print-landscape');
-    } else {
-      dynamicStyle.innerHTML = `@media print { @page { size: A4 portrait !important; margin: 4mm 6mm !important; } }`;
-      document.body.classList.remove('print-landscape');
-    }
+    dynamicStyle.innerHTML = `@media print { @page { size: A4 portrait !important; margin: 4mm 6mm !important; } }`;
+    document.body.classList.remove('print-landscape');
 
     let stage = document.getElementById('bedsPrintStage');
     if (!stage) {
@@ -1453,14 +1442,9 @@ const Balsons360Dossier = {
 
             <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
               <!-- Orientation Toggle in Modal -->
-              <div style="display: inline-flex; align-items: center; background: #E2E8F0; border-radius: 4px; padding: 2px;">
-                <button type="button" id="modal-dossier-orient-p" onclick="Balsons360Dossier.setPrintOrientation('portrait')" style="font-size: 11px; padding: 4px 8px; border: none; border-radius: 3px; font-weight: 700; cursor: pointer; background: #0097B2; color: #FFFFFF;" title="Portrait A4">
-                  📄 Portrait
-                </button>
-                <button type="button" id="modal-dossier-orient-l" onclick="Balsons360Dossier.setPrintOrientation('landscape')" style="font-size: 11px; padding: 4px 8px; border: none; border-radius: 3px; font-weight: 700; cursor: pointer; background: transparent; color: #1E293B;" title="Landscape A4">
-                  🔄 Landscape
-                </button>
-              </div>
+              <span class="meta-badge" id="modal-dossier-orient-p" style="font-size: 11px; background: rgba(5, 150, 105, 0.12); color: #059669; border: 1px solid rgba(5, 150, 105, 0.3); font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
+                📄 A4 Portrait (Calibrated 100% Scale)
+              </span>
 
               <!-- Entity Select Dropdown -->
               <select id="modalDossierEntitySelect" class="beds-select" style="font-size: 11.5px; padding: 4px 8px; font-weight: 700; max-width: 200px;" onchange="Balsons360Dossier.onSelectChange(this.value)">

@@ -1012,6 +1012,9 @@
         size: A4 portrait;
         margin: 4mm 6mm 4mm 6mm;
       }
+      input[type="checkbox"], input[type="radio"] {
+        accent-color: #000000 !important;
+      }
       *, *:before, *:after {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
@@ -1545,14 +1548,9 @@
         </div>
         <div class="action-btn-group" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
           <!-- Orientation Selector: Portrait / Landscape -->
-          <div class="beds-orientation-group" style="display: inline-flex; align-items: center; background: rgba(0,0,0,0.06); border-radius: 6px; padding: 2px; border: 1px solid var(--beds-border, #CBD5E1);">
-            <button type="button" id="btn-studio-orient-portrait" class="orient-toggle-btn active" onclick="BalsonsSafetyApp.setPrintOrientation('portrait')" style="font-size: 11px; padding: 5px 10px; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; background: #0097B2; color: #FFFFFF;" title="Print in A4 Portrait orientation">
-              📄 Portrait
-            </button>
-            <button type="button" id="btn-studio-orient-landscape" class="orient-toggle-btn" onclick="BalsonsSafetyApp.setPrintOrientation('landscape')" style="font-size: 11px; padding: 5px 10px; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; background: transparent; color: var(--beds-charcoal-heading, #1E293B);" title="Print in A4 Landscape orientation">
-              🔄 Landscape
-            </button>
-          </div>
+          <span class="meta-badge" id="btn-studio-orient-portrait" style="font-size: 11px; background: rgba(5, 150, 105, 0.12); color: #059669; border: 1px solid rgba(5, 150, 105, 0.3); font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
+            📄 A4 Portrait (Calibrated 100% Scale)
+          </span>
           <button id="btn-studio-mode-toggle" class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.toggleStudioPreviewMode()" style="font-weight: 700;">
             👁️ Preview Print
           </button>
@@ -2225,14 +2223,9 @@
         <h3 class="beds-modal-title">Official Permit Authorisation Certificate</h3>
         <div class="action-btn-group" style="display: flex; gap: 8px; align-items: center;">
           <!-- Modal Orientation Selector -->
-          <div class="beds-orientation-group" style="display: inline-flex; align-items: center; background: rgba(0,0,0,0.06); border-radius: 6px; padding: 2px; border: 1px solid var(--beds-border, #CBD5E1);">
-            <button type="button" id="btn-modal-orient-portrait" class="orient-toggle-btn active" onclick="BalsonsSafetyApp.setPrintOrientation('portrait')" style="font-size: 11px; padding: 4px 8px; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; background: #0097B2; color: #FFFFFF;" title="A4 Portrait">
-              📄 Portrait
-            </button>
-            <button type="button" id="btn-modal-orient-landscape" class="orient-toggle-btn" onclick="BalsonsSafetyApp.setPrintOrientation('landscape')" style="font-size: 11px; padding: 4px 8px; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; background: transparent; color: var(--beds-charcoal-heading, #1E293B);" title="A4 Landscape">
-              🔄 Landscape
-            </button>
-          </div>
+          <span class="meta-badge" id="btn-modal-orient-portrait" style="font-size: 11px; background: rgba(5, 150, 105, 0.12); color: #059669; border: 1px solid rgba(5, 150, 105, 0.3); font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
+            📄 A4 Portrait (Calibrated 100% Scale)
+          </span>
           <button class="beds-btn beds-btn-sm beds-btn-primary" onclick="window.print()">🖨️ Print Certificate (A4)</button>
           <button class="beds-modal-close btn-modal-cancel">&times;</button>
         </div>

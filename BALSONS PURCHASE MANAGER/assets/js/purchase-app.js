@@ -771,34 +771,51 @@ const BalsonsPurchaseApp = {
     this.autoSyncWithCloud();
   },
 
-  autoSyncWithCloud: function () {
+  autoSyncWithCloud: async function () {
     const syncBadge = document.getElementById('syncStatusBadge');
     if (syncBadge) {
       syncBadge.innerHTML = '<span class="badge-live-dot" style="background:#f59e0b;"></span> Syncing Cloud DB...';
     }
 
+    try {
+      const payload = {
+        action: 'PING',
+        clientTimestamp: new Date().toISOString(),
+        ssId: this.SHEET_ID
+      };
+      if (window.fetch && this.API_URL) {
+        fetch(this.API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload),
+          redirect: 'follow'
+        }).catch(() => {});
+      }
+    } catch (e) {}
+
     setTimeout(() => {
       if (syncBadge) {
         syncBadge.innerHTML = '<span class="badge-live-dot"></span> Cloud DB Synced (1ANnu4X2...)';
       }
-    }, 1200);
+    }, 800);
   },
 
   syncMutationToCloud: function (actionType, payloadData) {
     console.log(`[Dual-Sync] Queueing mutation: ${actionType} for Sheet 1ANnu4X2...`);
-    // Non-blocking asynchronous sync hook
+    // Non-blocking asynchronous CORS-safe sync hook
     if (window.fetch && this.API_URL) {
       try {
         fetch(this.API_URL, {
           method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
             action: actionType,
             data: payloadData,
             actor: this.currentUser,
-            ssId: this.SHEET_ID
-          })
+            ssId: this.SHEET_ID,
+            clientTimestamp: new Date().toISOString()
+          }),
+          redirect: 'follow'
         }).catch(err => console.log('Offline queue note:', err));
       } catch (e) {}
     }

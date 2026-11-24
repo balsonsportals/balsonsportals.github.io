@@ -801,6 +801,12 @@
     </div>
 
     <div class="header-controls">
+      <!-- Live Google Sheets Dual-Sync Badge & Action -->
+      <button type="button" id="storeSheetSyncPill" class="meta-badge" onclick="BalsonsStoreApi.syncWithLiveDb()" style="cursor: pointer; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #10B981; font-weight: 700; font-size: 11px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 4px;" title="Click to sync with Dedicated Google Sheet: 1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ">
+        <span class="pulse-dot"></span>
+        <span class="sync-text">Live DB Synced (264)</span>
+        <span class="sheet-id-chip" style="font-family: monospace; font-size: 9.5px; opacity: 0.85;">1u_ZKvv...</span>
+      </button>
       <!-- Portal Switcher Dropdown -->
       
 
@@ -2068,6 +2074,7 @@
 
   <!-- Application Scripts -->
   <script src="assets/js/config.js"></script>
+  <script src="assets/js/api-client.js"></script>
   <script src="assets/js/balsons-sam-auth.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/translations.js"></script>
