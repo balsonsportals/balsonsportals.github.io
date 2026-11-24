@@ -469,8 +469,211 @@
       }
     };
 
+    
+    const permitsRegistry = {
+      'PTW-JTRWF-2026-9901': {
+        permitId: 'PTW-JTRWF-2026-9901',
+        title: 'GENERAL WORK PERMIT',
+        templateCode: 'PTW-GEN',
+        category: 'GENERAL',
+        color: '#059669',
+        area: 'AREA-01 AXLE FORGING LINE',
+        description: 'Schuler 10,000T Erection Line 1 - Foundation Sole Plate Leveling',
+        contractor: 'BALSONS HEAVY LIFT & SHIFT',
+        supervisor: 'Ramesh Kumar (Senior Rigger Lead)',
+        safetyOfficer: 'Gajendra Rao (Safety Manager)',
+        plannedStart: '2026-11-24 08:00 AM',
+        plannedEnd: '2026-11-24 06:00 PM',
+        riskLevel: 'LOW / CONTROLLED',
+        status: 'ISSUED / ACTIVE ON SITE',
+        statusColor: '#059669',
+        precautions: 'Foundation anchors torqued; laser alignment level verified; 100% PPE compliant.'
+      },
+      'PTW-JTRWF-2026-2978': {
+        permitId: 'PTW-JTRWF-2026-2978',
+        title: 'HOT WORK PERMIT',
+        templateCode: 'PTW-HOT',
+        category: 'HOT WORK',
+        color: '#DC2626',
+        area: 'AREA-02 CROWN ASSEMBLY',
+        description: 'Crown Beam structural welding and gusset plate SMAW welding',
+        contractor: 'Schuler Pressen Site Services',
+        supervisor: 'Sunil Swain (Mechanical Assembly Lead)',
+        safetyOfficer: 'Bikram Patra (Site HSE Lead)',
+        plannedStart: '2026-11-24 08:30 AM',
+        plannedEnd: '2026-11-24 05:30 PM',
+        riskLevel: 'HIGH / CONTINUOUS FIRE WATCH',
+        status: 'ISSUED / ACTIVE ON SITE',
+        statusColor: '#059669',
+        precautions: 'Multi-gas test verified (LEL 0%, O2 20.9%); spark barriers in place; 10kg DCP extinguisher on standby.'
+      },
+      'PTW-JTRWF-2026-4006': {
+        permitId: 'PTW-JTRWF-2026-4006',
+        title: 'SPECIAL / HIGH-RISK PERMIT',
+        templateCode: 'PTW-SPEC',
+        category: 'SPECIAL / HIGH-RISK',
+        color: '#7C3AED',
+        area: 'AREA-03 DIE CUSHION PIT',
+        description: 'Die Cushion Pit Excavation & Pre-load Rigging with Demag 250T',
+        contractor: 'BALSONS HEAVY LIFT & SHIFT',
+        supervisor: 'Ajay Verma (Heavy Rigging Supervisor)',
+        safetyOfficer: 'Gajendra Rao (Safety Manager)',
+        plannedStart: '2026-11-24 09:00 AM',
+        plannedEnd: '2026-11-24 05:00 PM',
+        riskLevel: 'CRITICAL / SPECIAL METHOD STATEMENT MANDATORY',
+        status: 'VERIFIED_BY_SAFETY / READY FOR EXECUTION',
+        statusColor: '#2563EB',
+        precautions: 'Critical tandem lift plan approved; ground compaction test certified; 100% dual harness tie-off enforced.'
+      },
+      'PTW-JTRWF-2026-5092': {
+        permitId: 'PTW-JTRWF-2026-5092',
+        title: 'GENERAL WORK PERMIT',
+        templateCode: 'PTW-GEN',
+        category: 'GENERAL',
+        color: '#059669',
+        area: 'AREA-01 AXLE FORGING LINE',
+        description: 'Hydraulic Power Unit Skid Installation and pipe spool fitting',
+        contractor: 'Larsen & Toubro MHI',
+        supervisor: 'Dharmendra Pradhan (Hydraulic Lead)',
+        safetyOfficer: 'Bikram Patra (Site HSE Lead)',
+        plannedStart: '2026-11-24 09:30 AM',
+        plannedEnd: '2026-11-24 06:00 PM',
+        riskLevel: 'MEDIUM',
+        status: 'ISSUED / ACTIVE ON SITE',
+        statusColor: '#059669',
+        precautions: 'LOTO Lockout #4 applied; hydraulic pressure dumped; spill containment tray placed.'
+      },
+      'PTW-JTRWF-2026-2491': {
+        permitId: 'PTW-JTRWF-2026-2491',
+        title: 'HOT WORK PERMIT',
+        templateCode: 'PTW-HOT',
+        category: 'HOT WORK',
+        color: '#DC2626',
+        area: 'AREA-02 CROWN ASSEMBLY',
+        description: 'Structural Roof Truss Bracing Strengthening - Gas Cutting & MMA Weld',
+        contractor: 'Eastern Structural Works',
+        supervisor: 'Bikash Jena',
+        safetyOfficer: 'Gajendra Rao (Safety Manager)',
+        plannedStart: '2026-11-24 10:00 AM',
+        plannedEnd: '2026-11-24 04:00 PM',
+        riskLevel: 'HIGH',
+        status: 'VERIFIED_BY_SAFETY',
+        statusColor: '#2563EB',
+        precautions: 'Flashback arrestors tested; fire blanket deployed on crane rails; 60 min post-fire watch assigned.'
+      }
+    };
+
+    function renderPermitVerification(p) {
+      const container = document.getElementById('verificationContainer') || document.querySelector('.pass-container') || document.body;
+      container.innerHTML = `
+        <div style="max-width: 540px; margin: 30px auto; background: #FFFFFF; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 2px solid ${p.color}; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <!-- Top Header -->
+          <div style="background: ${p.color}; color: #FFFFFF; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 11px; font-weight: 800; letter-spacing: 1px; opacity: 0.9; text-transform: uppercase;">OFFICIAL WORK AUTHORISATION VERIFICATION</div>
+              <div style="font-size: 20px; font-weight: 900; margin-top: 2px; letter-spacing: 0.5px;">${p.title}</div>
+              <div style="font-size: 11px; opacity: 0.85; margin-top: 2px;">BALSONS HEAVY LIFT & SHIFT • PRJ-JTRWF KHORDHA</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 6px; text-align: center; border: 1px solid rgba(255,255,255,0.3);">
+              <div style="font-size: 9px; font-weight: 700; text-transform: uppercase;">CATEGORY</div>
+              <div style="font-size: 13px; font-weight: 900;">${p.category}</div>
+            </div>
+          </div>
+
+          <!-- Status Banner -->
+          <div style="background: #F8FAFC; border-bottom: 1.5px solid #E2E8F0; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span style="font-size: 11px; color: #64748B; font-weight: 700;">PERMIT IDENTIFIER:</span>
+              <div style="font-size: 17px; font-weight: 900; color: #0F172A; font-family: monospace;">${p.permitId}</div>
+            </div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: ${p.statusColor === '#059669' ? '#ECFDF5' : '#EFF6FF'}; border: 1.5px solid ${p.statusColor}; padding: 4px 12px; border-radius: 20px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: ${p.statusColor}; display: inline-block;"></span>
+              <span style="font-size: 12px; font-weight: 800; color: ${p.statusColor};">${p.status}</span>
+            </div>
+          </div>
+
+          <!-- Body Fields -->
+          <div style="padding: 20px 24px;">
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Scope & Work Description</div>
+              <div style="font-size: 14px; font-weight: 800; color: #0F172A; margin-top: 2px; line-height: 1.35;">${p.description}</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; border-top: 1px solid #F1F5F9; padding-top: 14px;">
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">LOCATION / AREA</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">${p.area}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">CONTRACTOR / AGENCY</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">${p.contractor}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">WORK SUPERVISOR</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">${p.supervisor}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">SITE HSE AUTHORITY</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0F172A; margin-top: 1px;">${p.safetyOfficer}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">VALID FROM</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #059669; font-family: monospace; margin-top: 1px;">${p.plannedStart}</div>
+              </div>
+              <div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">VALID UNTIL</div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #DC2626; font-family: monospace; margin-top: 1px;">${p.plannedEnd}</div>
+              </div>
+            </div>
+
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px;">
+              <div style="font-size: 10.5px; font-weight: 700; color: #475569;">EHS CONTROL & MANDATORY PRECAUTIONS:</div>
+              <div style="font-size: 12px; color: #1E293B; font-weight: 600; margin-top: 2px;">${p.precautions}</div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button onclick="window.print()" style="flex: 1; padding: 10px; background: #0F172A; color: #FFFFFF; border: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; cursor: pointer;">
+                🖨️ Print Digital Certificate
+              </button>
+              <a href="BALSONS SAFETY MANAGER/frontend/index.html" style="flex: 1; padding: 10px; background: #0097B2; color: #FFFFFF; text-decoration: none; border-radius: 6px; font-weight: 800; font-size: 12.5px; text-align: center; display: inline-block;">
+                🛡️ Open Safety Portal
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer Verification Stamp -->
+          <div style="background: #F1F5F9; border-top: 1px solid #E2E8F0; padding: 10px 24px; text-align: center; font-size: 10px; color: #64748B; font-weight: 600;">
+            🔒 Cryptographically Verified Digital Work Authorisation &bull; BALSONS Heavy Lift & Shift EHS Control
+          </div>
+        </div>
+      `;
+    }
+
     function initVerification() {
       const params = new URLSearchParams(window.location.search);
+      const permitId = params.get('permitId') || params.get('ptw') || params.get('permit');
+      if (permitId) {
+        const permit = permitsRegistry[permitId] || {
+          permitId: permitId,
+          title: 'OFFICIAL WORK PERMIT',
+          templateCode: 'PTW-GEN',
+          category: 'GENERAL WORK',
+          color: '#059669',
+          area: 'MAIN PRESS BAY LINE 1',
+          description: 'Erection & Commissioning Work under Active Authorisation',
+          contractor: 'BALSONS HEAVY LIFT & SHIFT',
+          supervisor: 'Ramesh Kumar',
+          safetyOfficer: 'Gajendra Rao (Safety Manager)',
+          plannedStart: '2026-11-24 08:00 AM',
+          plannedEnd: '2026-11-24 06:00 PM',
+          riskLevel: 'CONTROLLED',
+          status: 'ISSUED / ACTIVE ON SITE',
+          statusColor: '#059669',
+          precautions: 'Safe work procedures verified and complied with on site.'
+        };
+        renderPermitVerification(permit);
+        return;
+      }
       const empId = params.get('empId') || params.get('id') || 'EMP-2026-0001';
       const data = workforce[empId] || workforce['EMP-2026-0001'];
 

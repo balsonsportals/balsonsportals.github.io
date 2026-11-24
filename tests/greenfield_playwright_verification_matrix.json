@@ -1,0 +1,255 @@
+{
+  "suite_name": "BALSONS Greenfield Enterprise Automated Playwright Verification Suite",
+  "timestamp": "2026-11-24T16:42:55.050122",
+  "mandate": "100% Greenfield Architecture & Fresh System Setup",
+  "environment": "Windows 11 x64 \u00b7 Microsoft Edge / Chromium Headless \u00b7 SAM-2026 / BEDS V2.0",
+  "summary": {
+    "total_tests": 32,
+    "passed": 32,
+    "failed": 0,
+    "observations": 0
+  },
+  "components": {
+    "Enterprise Launcher": [
+      {
+        "test_id": "GF-LAUNCH-01",
+        "description": "Launch & Title Check",
+        "status": "PASSED",
+        "details": "Title: BALSONS Central Portal \u2014 Super Administrator Control Center",
+        "timestamp": "2026-11-24T16:43:04.158445"
+      },
+      {
+        "test_id": "GF-LAUNCH-02",
+        "description": "Directory links all 6 operational portals",
+        "status": "PASSED",
+        "details": "All 6 portals integrated",
+        "timestamp": "2026-11-24T16:43:04.311924"
+      },
+      {
+        "test_id": "GF-LAUNCH-03",
+        "description": "Responsive Desktop & Mobile rendering",
+        "status": "PASSED",
+        "details": "Screenshots saved",
+        "timestamp": "2026-11-24T16:43:10.312526"
+      }
+    ],
+    "HR Manager": [
+      {
+        "test_id": "GF-HR-01",
+        "description": "HR Manager launch & BEDS title",
+        "status": "PASSED",
+        "details": "Title: BALSONS HR & Payroll Manager \u2022 Enterprise Platform",
+        "timestamp": "2026-11-24T16:43:16.290313"
+      },
+      {
+        "test_id": "GF-HR-02",
+        "description": "HR Database Sync Pill presence & Live State",
+        "status": "PASSED",
+        "details": "Pill: HR DB Sync: SYNCING 1so_aH05... Auto: 28s",
+        "timestamp": "2026-11-24T16:43:16.707773"
+      },
+      {
+        "test_id": "GF-HR-03",
+        "description": "Employee Master Data Table rendering",
+        "status": "PASSED",
+        "details": "Employee records verified",
+        "timestamp": "2026-11-24T16:43:16.928216"
+      },
+      {
+        "test_id": "GF-HR-04",
+        "description": "Bi-directional Dual-Sync trigger execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:43:16.947599"
+      },
+      {
+        "test_id": "GF-HR-05",
+        "description": "Offline Outbox Mutation Queue (beds_pending_mutations_queue)",
+        "status": "PASSED",
+        "details": "Queue: {'success': True, 'count': 1}",
+        "timestamp": "2026-11-24T16:43:16.971836"
+      },
+      {
+        "test_id": "GF-HR-06",
+        "description": "Candidate 6-Step Registration Wizard rendering",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\gf_hr_registration_wizard.png",
+        "timestamp": "2026-11-24T16:43:19.573518"
+      }
+    ],
+    "Gate Entry Manager": [
+      {
+        "test_id": "GF-GATE-01",
+        "description": "Gate Entry launch & BEDS title",
+        "status": "PASSED",
+        "details": "Title: BALSONS Gate Entry & Site Access Portal",
+        "timestamp": "2026-11-24T16:43:22.763091"
+      },
+      {
+        "test_id": "GF-GATE-02",
+        "description": "Gate Database Sync Pill presence & Live State",
+        "status": "PASSED",
+        "details": "Pill: Gate DB Sync: SYNCING 1yAuZOXc... Auto: 28s",
+        "timestamp": "2026-11-24T16:43:23.739524"
+      },
+      {
+        "test_id": "GF-GATE-03",
+        "description": "Gate transactions & clearance records in DOM",
+        "status": "PASSED",
+        "details": "Gate records verified",
+        "timestamp": "2026-11-24T16:43:23.920993"
+      },
+      {
+        "test_id": "GF-GATE-04",
+        "description": "Gate Bi-directional Dual-Sync trigger execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:43:23.949375"
+      },
+      {
+        "test_id": "GF-GATE-05",
+        "description": "Emergency Muster & Headcount Radar presence",
+        "status": "PASSED",
+        "details": "Emergency muster controls verified",
+        "timestamp": "2026-11-24T16:43:23.949539"
+      },
+      {
+        "test_id": "GF-GATE-06",
+        "description": "Gate Entry desktop UI rendering screenshot",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\gf_gate_desktop.png",
+        "timestamp": "2026-11-24T16:43:26.495210"
+      }
+    ],
+    "Safety Manager": [
+      {
+        "test_id": "GF-SAFE-01",
+        "description": "Safety Manager launch & BEDS title",
+        "status": "PASSED",
+        "details": "Title: BALSONS Safety Portal \u00b7 JTRWF Khordha",
+        "timestamp": "2026-11-24T16:43:31.990339"
+      },
+      {
+        "test_id": "GF-SAFE-02",
+        "description": "Safety Database Sync Pill presence",
+        "status": "PASSED",
+        "details": "Pill: Safety DB Sync: LIVE 1SyOGt6H... Auto: 27s",
+        "timestamp": "2026-11-24T16:43:32.929467"
+      },
+      {
+        "test_id": "GF-SAFE-03",
+        "description": "Safety Bi-directional Dual-Sync execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:43:40.032757"
+      },
+      {
+        "test_id": "GF-SAFE-04",
+        "description": "Safety desktop UI rendering screenshot",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\gf_safety_desktop.png",
+        "timestamp": "2026-11-24T16:43:43.298721"
+      }
+    ],
+    "Store Manager": [
+      {
+        "test_id": "GF-STORE-01",
+        "description": "Store Manager Rigging Tackles dataset verification",
+        "status": "PASSED",
+        "details": "Tool inventory verified",
+        "timestamp": "2026-11-24T16:43:49.496961"
+      },
+      {
+        "test_id": "GF-STORE-02",
+        "description": "Store Dual-Sync trigger execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:43:49.845755"
+      },
+      {
+        "test_id": "GF-STORE-03",
+        "description": "Store desktop UI rendering screenshot",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\gf_store_desktop.png",
+        "timestamp": "2026-11-24T16:43:52.389907"
+      }
+    ],
+    "Purchase Manager": [
+      {
+        "test_id": "GF-PURCH-01",
+        "description": "Purchase Manager launch & BEDS title",
+        "status": "PASSED",
+        "details": "Title: BALSONS Purchase Manager \u2022 Commercial Procurement & Vendor Control | JTRWF",
+        "timestamp": "2026-11-24T16:44:00.497777"
+      },
+      {
+        "test_id": "GF-PURCH-02",
+        "description": "Purchase requisition data table rendering",
+        "status": "PASSED",
+        "details": "PR records verified",
+        "timestamp": "2026-11-24T16:44:02.460242"
+      },
+      {
+        "test_id": "GF-PURCH-03",
+        "description": "Purchase Dual-Sync trigger execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:44:06.775252"
+      },
+      {
+        "test_id": "GF-PURCH-04",
+        "description": "Purchase desktop UI rendering screenshot",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\gf_purchase_desktop.png",
+        "timestamp": "2026-11-24T16:44:11.597377"
+      }
+    ],
+    "Operations Manager": [
+      {
+        "test_id": "GF-OPS-01",
+        "description": "Operations Manager launch & BEDS title",
+        "status": "PASSED",
+        "details": "Title: BALSONS Operations Manager \u2022 Heavy Erection & Lift Execution (V7.2)",
+        "timestamp": "2026-11-24T16:44:20.703239"
+      },
+      {
+        "test_id": "GF-OPS-02",
+        "description": "Operations work package table rendering",
+        "status": "PASSED",
+        "details": "Work packages verified",
+        "timestamp": "2026-11-24T16:44:22.281815"
+      },
+      {
+        "test_id": "GF-OPS-03",
+        "description": "Operations Dual-Sync trigger execution",
+        "status": "PASSED",
+        "details": "{'success': True}",
+        "timestamp": "2026-11-24T16:44:26.506147"
+      },
+      {
+        "test_id": "GF-OPS-04",
+        "description": "Operations desktop UI rendering screenshot",
+        "status": "PASSED",
+        "details": "Screenshot: D:\\BALSONS JUPITER PROJECT\\OTHER\\balsons portals\\tests\\playwright_screenshots\\gf_operations_desktop.png",
+        "timestamp": "2026-11-24T16:44:34.215678"
+      }
+    ],
+    "Central Sync Hub": [
+      {
+        "test_id": "GF-SYNC-01",
+        "description": "30-Second Auto-Reload countdown ticker (decrements every 1s)",
+        "status": "PASSED",
+        "details": "Tick verified: Auto: 13s -> Auto: 9s",
+        "timestamp": "2026-11-24T16:44:43.720288"
+      },
+      {
+        "test_id": "GF-SYNC-02",
+        "description": "Global department switcher connects all 7 portals",
+        "status": "PASSED",
+        "details": "Connected 8 department links",
+        "timestamp": "2026-11-24T16:44:43.926995"
+      }
+    ]
+  },
+  "observations_register": []
+}

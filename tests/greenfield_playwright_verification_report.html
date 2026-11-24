@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BALSONS Greenfield Enterprise Playwright Verification Report</title>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F3F6F8; color: #1E293B; margin: 0; padding: 24px; }
+    .container { max-width: 1200px; margin: 0 auto; background: #FFFFFF; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(16,45,53,0.08); padding: 32px; border: 1px solid #E2E8F0; }
+    .header { border-bottom: 2px solid #0097B2; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { color: #102D35; margin: 0; font-size: 24px; font-weight: 800; }
+    .meta { font-size: 12px; color: #64748B; margin-top: 6px; }
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .kpi-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 16px; text-align: center; }
+    .kpi-val { font-size: 28px; font-weight: 800; color: #102D35; }
+    .kpi-label { font-size: 11px; text-transform: uppercase; font-weight: 700; color: #64748B; margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12.5px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #E2E8F0; }
+    th { background: #102D35; color: #FFFFFF; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+    tr:nth-child(even) { background: #F8FAFC; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; }
+    .badge.pass { background: #ECFDF5; color: #10B981; border: 1px solid #A7F3D0; }
+    .badge.fail { background: #FEF2F2; color: #E64646; border: 1px solid #FECACA; }
+    .details { font-family: monospace; font-size: 11px; color: #475569; }
+    .section-title { font-size: 16px; font-weight: 700; color: #102D35; margin-top: 28px; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>🛡️ BALSONS GREENFIELD ENTERPRISE PLAYWRIGHT REPORT</h1>
+        <div class="meta">Standard: SAM-2026 / BEDS V2.0 · Executed: 2026-11-24T16:42:55.050122 · Mandate: 100% Greenfield Architecture & Fresh System Setup</div>
+      </div>
+      <div>
+        <span class="badge pass" style="font-size: 14px; padding: 8px 16px;">100.0% SUCCESS RATE</span>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-val">32</div>
+        <div class="kpi-label">Total Greenfield Tests</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color: #10B981;">32</div>
+        <div class="kpi-label">Passed Tests</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color: #E64646;">0</div>
+        <div class="kpi-label">Failures</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color: #0097B2;">7</div>
+        <div class="kpi-label">Components Verified</div>
+      </div>
+    </div>
+
+    <div class="section-title">📊 Greenfield Component Verification Matrix</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Test ID</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Execution Evidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+            <tr>
+              <td><strong>Enterprise Launcher</strong></td>
+              <td><code>GF-LAUNCH-01</code></td>
+              <td>Launch & Title Check</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Title: BALSONS Central Portal — Super Administrator Control Center</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Enterprise Launcher</strong></td>
+              <td><code>GF-LAUNCH-02</code></td>
+              <td>Directory links all 6 operational portals</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">All 6 portals integrated</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Enterprise Launcher</strong></td>
+              <td><code>GF-LAUNCH-03</code></td>
+              <td>Responsive Desktop & Mobile rendering</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshots saved</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>GF-HR-01</code></td>
+              <td>HR Manager launch & BEDS title</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Title: BALSONS HR & Payroll Manager • Enterprise Platform</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>GF-HR-02</code></td>
+              <td>HR Database Sync Pill presence & Live State</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Pill: HR DB Sync: SYNCING 1so_aH05... Auto: 28s</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>GF-HR-03</code></td>
+              <td>Employee Master Data Table rendering</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Employee records verified</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>GF-HR-04</code></td>
+              <td>Bi-directional Dual-Sync trigger execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>GF-HR-05</code></td>
+              <td>Offline Outbox Mutation Queue (beds_pending_mutations_queue)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Queue: {'success': True, 'count': 1}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>HR Manager</strong></td>
+              <td><code>GF-HR-06</code></td>
+              <td>Candidate 6-Step Registration Wizard rendering</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\gf_hr_registration_wizard.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GF-GATE-01</code></td>
+              <td>Gate Entry launch & BEDS title</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Title: BALSONS Gate Entry & Site Access Portal</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GF-GATE-02</code></td>
+              <td>Gate Database Sync Pill presence & Live State</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Pill: Gate DB Sync: SYNCING 1yAuZOXc... Auto: 28s</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GF-GATE-03</code></td>
+              <td>Gate transactions & clearance records in DOM</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Gate records verified</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GF-GATE-04</code></td>
+              <td>Gate Bi-directional Dual-Sync trigger execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GF-GATE-05</code></td>
+              <td>Emergency Muster & Headcount Radar presence</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Emergency muster controls verified</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Gate Entry Manager</strong></td>
+              <td><code>GF-GATE-06</code></td>
+              <td>Gate Entry desktop UI rendering screenshot</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\gf_gate_desktop.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Safety Manager</strong></td>
+              <td><code>GF-SAFE-01</code></td>
+              <td>Safety Manager launch & BEDS title</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Title: BALSONS Safety Portal · JTRWF Khordha</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Safety Manager</strong></td>
+              <td><code>GF-SAFE-02</code></td>
+              <td>Safety Database Sync Pill presence</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Pill: Safety DB Sync: LIVE 1SyOGt6H... Auto: 27s</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Safety Manager</strong></td>
+              <td><code>GF-SAFE-03</code></td>
+              <td>Safety Bi-directional Dual-Sync execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Safety Manager</strong></td>
+              <td><code>GF-SAFE-04</code></td>
+              <td>Safety desktop UI rendering screenshot</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\gf_safety_desktop.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Store Manager</strong></td>
+              <td><code>GF-STORE-01</code></td>
+              <td>Store Manager Rigging Tackles dataset verification</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Tool inventory verified</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Store Manager</strong></td>
+              <td><code>GF-STORE-02</code></td>
+              <td>Store Dual-Sync trigger execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Store Manager</strong></td>
+              <td><code>GF-STORE-03</code></td>
+              <td>Store desktop UI rendering screenshot</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\gf_store_desktop.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Purchase Manager</strong></td>
+              <td><code>GF-PURCH-01</code></td>
+              <td>Purchase Manager launch & BEDS title</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Title: BALSONS Purchase Manager • Commercial Procurement & Vendor Control | JTRWF</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Purchase Manager</strong></td>
+              <td><code>GF-PURCH-02</code></td>
+              <td>Purchase requisition data table rendering</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">PR records verified</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Purchase Manager</strong></td>
+              <td><code>GF-PURCH-03</code></td>
+              <td>Purchase Dual-Sync trigger execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Purchase Manager</strong></td>
+              <td><code>GF-PURCH-04</code></td>
+              <td>Purchase desktop UI rendering screenshot</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\gf_purchase_desktop.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Operations Manager</strong></td>
+              <td><code>GF-OPS-01</code></td>
+              <td>Operations Manager launch & BEDS title</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Title: BALSONS Operations Manager • Heavy Erection & Lift Execution (V7.2)</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Operations Manager</strong></td>
+              <td><code>GF-OPS-02</code></td>
+              <td>Operations work package table rendering</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Work packages verified</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Operations Manager</strong></td>
+              <td><code>GF-OPS-03</code></td>
+              <td>Operations Dual-Sync trigger execution</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">{'success': True}</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Operations Manager</strong></td>
+              <td><code>GF-OPS-04</code></td>
+              <td>Operations desktop UI rendering screenshot</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Screenshot: D:\BALSONS JUPITER PROJECT\OTHER\balsons portals\tests\playwright_screenshots\gf_operations_desktop.png</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Central Sync Hub</strong></td>
+              <td><code>GF-SYNC-01</code></td>
+              <td>30-Second Auto-Reload countdown ticker (decrements every 1s)</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Tick verified: Auto: 13s -> Auto: 9s</td>
+            </tr>
+            
+            <tr>
+              <td><strong>Central Sync Hub</strong></td>
+              <td><code>GF-SYNC-02</code></td>
+              <td>Global department switcher connects all 7 portals</td>
+              <td><span class="badge pass">PASSED</span></td>
+              <td class="details">Connected 8 department links</td>
+            </tr>
+            
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

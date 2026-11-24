@@ -38,7 +38,12 @@ files_to_mirror = [
 
     # Central beds-workspace
     ("assets/js/beds-workspace.js", "BALSONS ENTERPRISE LAUNCHER/assets/js/beds-workspace.js"),
-    ("assets/js/beds-workspace.js", "docs/assets/js/beds-workspace.js")
+    ("assets/js/beds-workspace.js", "docs/assets/js/beds-workspace.js"),
+
+    # Verification Portal
+    ("verify.html", "BALSONS ENTERPRISE LAUNCHER/verify.html"),
+    ("verify.html", "BALSONS HR MANAGER/frontend/verify.html"),
+    ("verify.html", "BALSONS ENTERPRISE LAUNCHER/BALSONS HR MANAGER/frontend/verify.html")
 ]
 
 for src, dst in files_to_mirror:

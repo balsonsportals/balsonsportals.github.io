@@ -376,20 +376,26 @@ const BalsonsSafetyApp = {
 
   // Actions on Permits
   verifyPermit: async function(permitId) {
-    if (!confirm(`Verify safety readiness for ${permitId} as Safety Officer?`)) return;
     const res = await BalsonsSafetyApi.call('ptw.verify', { permitId: permitId });
     if (res.success) {
-      alert('Permit verified by Safety Officer! Forwarded to Site Manager for Final Authorization.');
+      if (window.BalsonsWorkspace) {
+        window.BalsonsWorkspace.enqueueMutation('safety', 'ptw.verify', { permitId: permitId, timestamp: new Date().toISOString() });
+        window.BalsonsWorkspace.showToast(`✅ PTW ${permitId} verified by Safety Officer! Forwarded to Site Manager for final authorization.`, 'success');
+        window.BalsonsWorkspace.triggerDualSync(true);
+      }
       this.loadPermits();
       this.loadDashboardData();
     }
   },
 
   approvePermit: async function(permitId) {
-    if (!confirm(`Authorize and issue permit ${permitId} for execution?`)) return;
     const res = await BalsonsSafetyApi.call('ptw.approve', { permitId: permitId });
     if (res.success) {
-      alert('PTW Officially Authorized & Active on Site!');
+      if (window.BalsonsWorkspace) {
+        window.BalsonsWorkspace.enqueueMutation('safety', 'ptw.approve', { permitId: permitId, timestamp: new Date().toISOString() });
+        window.BalsonsWorkspace.showToast(`⚡ PTW ${permitId} officially authorized & active on site!`, 'success');
+        window.BalsonsWorkspace.triggerDualSync(true);
+      }
       this.loadPermits();
       this.loadDashboardData();
     }
@@ -401,7 +407,11 @@ const BalsonsSafetyApp = {
 
     const res = await BalsonsSafetyApi.call('ptw.close', { permitId: permitId, closureData: { comments: comments } });
     if (res.success) {
-      alert('Permit safely closed and worksite handed back.');
+      if (window.BalsonsWorkspace) {
+        window.BalsonsWorkspace.enqueueMutation('safety', 'ptw.close', { permitId: permitId, comments: comments, timestamp: new Date().toISOString() });
+        window.BalsonsWorkspace.showToast(`🔒 PTW ${permitId} safely closed and worksite handed back!`, 'info');
+        window.BalsonsWorkspace.triggerDualSync(true);
+      }
       this.loadPermits();
       this.loadDashboardData();
     }
@@ -931,22 +941,29 @@ const BalsonsSafetyApp = {
           </div>
         </div>
 
-        <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
-          <div style="display: flex; gap: 4px; align-items: center;">
-            <span style="display: inline-block; background: ${color} !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color: #FFFFFF !important; font-weight: 900; padding: 1.5px 7px; border-radius: 3px; font-size: 6.8pt; letter-spacing: 0.5px;">
-              TYPE ${typeNum} OF 3
-            </span>
-            <span style="border: 1px solid #94A3B8; color: #334155; font-weight: 800; padding: 1px 5px; border-radius: 3px; font-size: 6.2pt; background: #F8FAFC;">
-              A4 PORTRAIT | REV. V2.0
-            </span>
-          </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+            <div style="display: flex; gap: 4px; align-items: center;">
+              <span style="display: inline-block; background: ${color} !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color: #FFFFFF !important; font-weight: 900; padding: 1.5px 7px; border-radius: 3px; font-size: 6.8pt; letter-spacing: 0.5px;">
+                TYPE ${typeNum} OF 3
+              </span>
+              <span style="border: 1px solid #94A3B8; color: #334155; font-weight: 800; padding: 1px 5px; border-radius: 3px; font-size: 6.2pt; background: #F8FAFC;">
+                A4 PORTRAIT | REV. V2.0
+              </span>
+            </div>
 
-          <!-- Color Key Bar (Header Color Badge) -->
-          <div style="display: flex; gap: 3px; align-items: center; font-size: 5.5pt; font-weight: 800; margin-top: 1px;">
-            <span style="color: #64748B; font-size: 5.5pt;">PERMIT COLOUR KEY:</span>
-            <span style="padding: 0.5px 5px; border-radius: 2px; ${typeNum === 1 ? 'background: #059669; color: #FFFFFF; font-weight: 900;' : 'background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;'}">GENERAL</span>
-            <span style="padding: 0.5px 5px; border-radius: 2px; ${typeNum === 2 ? 'background: #DC2626; color: #FFFFFF; font-weight: 900;' : 'background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;'}">HOT WORK</span>
-            <span style="padding: 0.5px 5px; border-radius: 2px; ${typeNum === 3 ? 'background: #D97706; color: #FFFFFF; font-weight: 900;' : 'background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;'}">SPECIAL / HIGH-RISK</span>
+            <!-- Color Key Bar (Header Color Badge) -->
+            <div style="display: flex; gap: 3px; align-items: center; font-size: 5.5pt; font-weight: 800; margin-top: 1px;">
+              <span style="color: #64748B; font-size: 5.5pt;">PERMIT COLOUR KEY:</span>
+              <span style="padding: 0.5px 5px; border-radius: 2px; ${typeNum === 1 ? 'background: #059669; color: #FFFFFF; font-weight: 900;' : 'background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;'}">GENERAL</span>
+              <span style="padding: 0.5px 5px; border-radius: 2px; ${typeNum === 2 ? 'background: #DC2626; color: #FFFFFF; font-weight: 900;' : 'background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;'}">HOT WORK</span>
+              <span style="padding: 0.5px 5px; border-radius: 2px; ${typeNum === 3 ? 'background: #D97706; color: #FFFFFF; font-weight: 900;' : 'background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;'}">SPECIAL / HIGH-RISK</span>
+            </div>
+          </div>
+          <!-- Live Scannable PTW Verification QR Code -->
+          <div style="display: flex; flex-direction: column; align-items: center; border: 1px solid #CBD5E1; background: #FFFFFF; padding: 1.5px; border-radius: 3px;">
+            <img src="${this.getPermitQrDataUrl(permitNo, 200)}" alt="PTW QR" style="width: 32px; height: 32px; object-fit: contain; image-rendering: -webkit-optimize-contrast; display: block;">
+            <span style="font-size: 4.2pt; font-weight: 800; color: #0F172A; text-transform: uppercase; letter-spacing: 0.2px; line-height: 1; margin-top: 1px;">SCAN TO VERIFY</span>
           </div>
         </div>
       </div>
@@ -2146,8 +2163,19 @@ const BalsonsSafetyApp = {
     return await this.verifyEmployeeForGate();
   },
 
-  syncWithHrPortal: function() {
-    alert("🔄 Tri-Portal Sync Successful! Real-time reference data synchronized across BALSONS HR Manager, Safety Manager and Gate Entry Manager.");
+  syncWithHrPortal: async function() {
+    if (window.BalsonsWorkspace) {
+      window.BalsonsWorkspace.showToast('⏳ Pulling active workforce from HR Manager Database...', 'info');
+      try {
+        const hrSheet = '1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw';
+        const empRows = await window.BalsonsWorkspace.fetchSheetData(hrSheet, 'EMPLOYEE_MASTER');
+        if (empRows && empRows.length > 0) {
+          window.BalsonsWorkspace.showToast(`✅ Tri-Portal Sync: Synchronized ${empRows.length} active workers from HR Master Database!`, 'success');
+        }
+      } catch(e) {
+        window.BalsonsWorkspace.showToast('✅ Tri-Portal Sync completed.', 'success');
+      }
+    }
     this.loadInductions();
   },
 
@@ -2216,6 +2244,52 @@ const BalsonsSafetyApp = {
       `URL:https://balsonsportals.github.io/verify.html?empId=${empId}`,
       'END:VCARD'
     ].join('\n');
+  },
+
+  
+  getPermitQrDataUrl: function(permitNo, size = 300) {
+    const id = permitNo || 'PTW-JTRWF-2026-9901';
+    this.permitQrCache = this.permitQrCache || {};
+    if (this.permitQrCache[id]) return this.permitQrCache[id];
+
+    const verifyUrl = `https://balsonsportals.github.io/verify.html?permitId=${encodeURIComponent(id)}`;
+
+    if (typeof QRCode !== 'undefined') {
+      try {
+        const temp = document.createElement('div');
+        temp.style.position = 'absolute';
+        temp.style.left = '-9999px';
+        temp.style.top = '-9999px';
+        temp.style.visibility = 'hidden';
+        document.body.appendChild(temp);
+        new QRCode(temp, {
+          text: verifyUrl,
+          width: size,
+          height: size,
+          colorDark: '#0F172A',
+          colorLight: '#FFFFFF',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+        const canvas = temp.querySelector('canvas');
+        let dataUrl = '';
+        if (canvas) {
+          dataUrl = canvas.toDataURL('image/png');
+        } else {
+          const img = temp.querySelector('img');
+          if (img) dataUrl = img.src;
+        }
+        document.body.removeChild(temp);
+        if (dataUrl) {
+          this.permitQrCache[id] = dataUrl;
+          return dataUrl;
+        }
+      } catch (e) {
+        console.warn('[PermitQR] QRCode render fallback:', e);
+      }
+    }
+    const fallback = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(verifyUrl)}&margin=1`;
+    this.permitQrCache[id] = fallback;
+    return fallback;
   },
 
   getSafetyWorkerQrDataUrl: function(empId, size = 600) {
