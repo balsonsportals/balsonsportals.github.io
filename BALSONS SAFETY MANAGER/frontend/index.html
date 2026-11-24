@@ -1032,7 +1032,7 @@
       }
 
       /* ======================================================== */
-      /* 1. PERMIT STUDIO & 7 DOCX PERMITS (EXACT 1-PAGE A4)      */
+      /* 1. PERMIT STUDIO & 3 V2.0 DOCX PERMITS (EXACT 1-PAGE A4) */
       /* ======================================================== */
       .docx-permit-sheet, .docx-permit-sheet * {
         visibility: visible !important;
@@ -1044,7 +1044,7 @@
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        padding: 1.5mm 3mm !important;
+        padding: 1mm 2.5mm !important;
         box-shadow: none !important;
         border: none !important;
         page-break-inside: avoid !important;
@@ -1052,50 +1052,40 @@
         page-break-after: avoid !important;
         break-after: avoid !important;
       }
-      .docx-permit-sheet div[style*="text-align: center; margin-bottom: 12px"] {
-        margin-bottom: 1.5px !important;
+      .docx-permit-sheet.landscape-mode,
+      body.print-landscape .docx-permit-sheet {
+        padding: 1mm 2mm !important;
       }
-      .docx-permit-sheet div[style*="text-align: center; margin-bottom: 12px"] img {
-        height: 18px !important;
-        margin-bottom: 1px !important;
+      .docx-permit-sheet.landscape-mode .docx-landscape-grid,
+      body.print-landscape .docx-landscape-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 3mm !important;
+        align-items: start !important;
       }
-      .docx-permit-sheet div[style*="text-align: center; margin-bottom: 12px"] div:nth-child(3) {
-        font-size: 10pt !important;
-        line-height: 1 !important;
-        font-weight: 900 !important;
-      }
-      .docx-permit-sheet div[style*="text-align: center; margin-bottom: 12px"] div:nth-child(4) {
-        font-size: 7pt !important;
-        line-height: 1 !important;
-      }
-      .docx-permit-sheet div[style*="text-align: center; margin-bottom: 12px"] div:nth-child(5) {
-        font-size: 8pt !important;
-        line-height: 1.05 !important;
-        font-weight: 800 !important;
+      .docx-permit-sheet.landscape-mode .docx-land-col-1,
+      .docx-permit-sheet.landscape-mode .docx-land-col-2,
+      body.print-landscape .docx-land-col-1,
+      body.print-landscape .docx-land-col-2 {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
       }
       .docx-permit-sheet table.docx-table {
-        margin-bottom: 1.2px !important;
+        margin-bottom: 1px !important;
         border-collapse: collapse !important;
         width: 100% !important;
       }
       .docx-permit-sheet table.docx-table td,
       .docx-permit-sheet table.docx-table th {
-        padding: 1px 2px !important;
-        font-size: 5.7pt !important;
-        line-height: 1.1 !important;
-      }
-      .docx-permit-sheet .docx-section-title {
-        font-size: 6.2pt !important;
-        padding: 1px 2px !important;
-        margin: 1.2px 0 1px 0 !important;
+        padding: 0.8px 2px !important;
+        font-size: 5.5pt !important;
         line-height: 1.05 !important;
-        font-weight: 800 !important;
       }
-      .docx-permit-sheet div[style*="border: 1.5px solid #DC2626"] {
-        font-size: 5.8pt !important;
-        padding: 1px 2px !important;
+      .docx-permit-sheet .docx-sec-box {
         margin-bottom: 1.5px !important;
-        line-height: 1.05 !important;
+        border: 1px solid #CBD5E1 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
       }
       .docx-permit-sheet .docx-input,
       .docx-permit-sheet .docx-textarea,
@@ -1106,30 +1096,30 @@
         padding: 0 !important;
         color: #000000 !important;
         font-weight: 700 !important;
-        font-size: 5.7pt !important;
-        line-height: 1.1 !important;
+        font-size: 5.5pt !important;
+        line-height: 1.05 !important;
         resize: none !important;
         min-height: auto !important;
         appearance: none !important;
         -webkit-appearance: none !important;
       }
-      .docx-permit-sheet .docx-chk-toolbar,
-      .docx-permit-sheet .sec04-helper-btn,
       .docx-permit-sheet .docx-radio-group,
       .quick-action-bar,
       #permit-studio-selector,
       #top-nav-bar,
       #beds-app-header,
-      #beds-app-footer {
+      #beds-app-footer,
+      .beds-orientation-selector,
+      .beds-orientation-group {
         display: none !important;
       }
       .docx-permit-sheet .docx-print-chk {
         display: inline-block !important;
-        font-size: 5.7pt !important;
+        font-size: 5.3pt !important;
       }
 
       /* ======================================================== */
-      /* 2. UNIFIED BEDS STATUTORY PRINT STAGE (CR80 & DOSSIER)   */
+      /* 2. UNIFIED BEDS STATUTORY PRINT STAGE (DOSSIERS & CR80)  */
       /* ======================================================== */
       #bedsPrintStage, #bedsPrintStage * {
         visibility: visible !important;
@@ -1145,6 +1135,18 @@
         background: #FFFFFF !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
+      }
+      #bedsPrintStage .beds-print-a4-sheet {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 1.5mm 3mm !important;
+        box-sizing: border-box !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      #bedsPrintStage .beds-print-a4-sheet.landscape-mode {
+        padding: 1mm 2mm !important;
       }
 
       .beds-modal-overlay, .beds-modal-dialog, .beds-modal-body {
@@ -1375,6 +1377,10 @@
         </a>
       </div>
     </div>
+      <!-- Direct 360° Safety Dossiers Hub Button -->
+    <button class="beds-nav-tab" onclick="Balsons360Dossier.openModal()" style="font-weight: 800; color: #0097B2; background: rgba(0, 151, 178, 0.08); border-left: 2px solid #0097B2;" title="Open 360° Safety Dossiers for Workforce, Permits, Equipment, Areas, Incidents & TBTs">
+      🌐 360° Safety Dossiers
+    </button>
   </nav>
 
   <!-- Mobile Swipeable Quick-Pill Bar (Smartphone & Tablet Optimized) -->
@@ -1538,6 +1544,15 @@
           </div>
         </div>
         <div class="action-btn-group" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+          <!-- Orientation Selector: Portrait / Landscape -->
+          <div class="beds-orientation-group" style="display: inline-flex; align-items: center; background: rgba(0,0,0,0.06); border-radius: 6px; padding: 2px; border: 1px solid var(--beds-border, #CBD5E1);">
+            <button type="button" id="btn-studio-orient-portrait" class="orient-toggle-btn active" onclick="BalsonsSafetyApp.setPrintOrientation('portrait')" style="font-size: 11px; padding: 5px 10px; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; background: #0097B2; color: #FFFFFF;" title="Print in A4 Portrait orientation">
+              📄 Portrait
+            </button>
+            <button type="button" id="btn-studio-orient-landscape" class="orient-toggle-btn" onclick="BalsonsSafetyApp.setPrintOrientation('landscape')" style="font-size: 11px; padding: 5px 10px; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; background: transparent; color: var(--beds-charcoal-heading, #1E293B);" title="Print in A4 Landscape orientation">
+              🔄 Landscape
+            </button>
+          </div>
           <button id="btn-studio-mode-toggle" class="beds-btn beds-btn-secondary" onclick="BalsonsSafetyApp.toggleStudioPreviewMode()" style="font-weight: 700;">
             👁️ Preview Print
           </button>
@@ -2208,8 +2223,17 @@
     <div class="beds-modal-dialog" style="max-width: 900px;">
       <div class="beds-modal-header">
         <h3 class="beds-modal-title">Official Permit Authorisation Certificate</h3>
-        <div class="action-btn-group">
-          <button class="beds-btn beds-btn-sm beds-btn-primary" onclick="window.print()">🖨️ Print Certificate</button>
+        <div class="action-btn-group" style="display: flex; gap: 8px; align-items: center;">
+          <!-- Modal Orientation Selector -->
+          <div class="beds-orientation-group" style="display: inline-flex; align-items: center; background: rgba(0,0,0,0.06); border-radius: 6px; padding: 2px; border: 1px solid var(--beds-border, #CBD5E1);">
+            <button type="button" id="btn-modal-orient-portrait" class="orient-toggle-btn active" onclick="BalsonsSafetyApp.setPrintOrientation('portrait')" style="font-size: 11px; padding: 4px 8px; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; background: #0097B2; color: #FFFFFF;" title="A4 Portrait">
+              📄 Portrait
+            </button>
+            <button type="button" id="btn-modal-orient-landscape" class="orient-toggle-btn" onclick="BalsonsSafetyApp.setPrintOrientation('landscape')" style="font-size: 11px; padding: 4px 8px; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; background: transparent; color: var(--beds-charcoal-heading, #1E293B);" title="A4 Landscape">
+              🔄 Landscape
+            </button>
+          </div>
+          <button class="beds-btn beds-btn-sm beds-btn-primary" onclick="window.print()">🖨️ Print Certificate (A4)</button>
           <button class="beds-modal-close btn-modal-cancel">&times;</button>
         </div>
       </div>
