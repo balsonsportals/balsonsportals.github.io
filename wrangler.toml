@@ -1,0 +1,7 @@
+# Cloudflare Pages Configuration
+name = "balsons-enterprise-portals"
+compatibility_date = "2026-11-25"
+pages_build_output_dir = "."
+
+[env.production]
+vars = { ENVIRONMENT = "production", ARCHITECTURE = "SAM-2026-CLOUDFLARE" }

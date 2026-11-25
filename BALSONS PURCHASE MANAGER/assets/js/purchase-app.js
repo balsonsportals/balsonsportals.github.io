@@ -802,6 +802,16 @@ const BalsonsPurchaseApp = {
       syncBadge.innerHTML = '<span class="badge-live-dot" style="background:#f59e0b;"></span> Syncing Cloud DB...';
     }
 
+    // Local preview mode: avoid cross-origin network preflight errors from file://
+    if (window.location.protocol === 'file:') {
+      setTimeout(() => {
+        if (syncBadge) {
+          syncBadge.innerHTML = '<span class="badge-live-dot"></span> Local DB Ready (1ANnu4X2...)';
+        }
+      }, 400);
+      return;
+    }
+
     try {
       const payload = {
         action: 'PING',
@@ -855,6 +865,10 @@ const BalsonsPurchaseApp = {
 
   syncMutationToCloud: function (actionType, payloadData) {
     console.log(`[Dual-Sync] Queueing mutation: ${actionType} for Sheet 1ANnu4X2...`);
+    if (window.location.protocol === 'file:') {
+      console.log(`[Dual-Sync] Local preview mode: mutation recorded in local storage.`);
+      return;
+    }
     // Non-blocking asynchronous CORS-safe sync hook
     if (window.fetch && this.API_URL) {
       try {

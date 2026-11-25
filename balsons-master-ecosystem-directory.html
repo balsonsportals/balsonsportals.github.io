@@ -2166,6 +2166,46 @@
          ========================================================================= -->
     <div id="tab-pane-architecture" class="master-tab-pane">
 
+      <!-- SELECTED MASTER ARCHITECTURE BASELINE (LOCKED) -->
+      <div class="matrix-panel" style="border: 2px solid #0097a7; background: rgba(0, 151, 167, 0.03); margin-bottom: 24px;">
+        <div class="matrix-panel-header">
+          <h3><span>⚡</span> Formally Selected Master Architecture Baseline (Locked)</h3>
+          <span class="tag-chip tag-green">Cloudflare Pages &bull; Private GitHub Active</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 14px;">
+          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; border-left:4px solid #102D35;">
+            <div style="font-size:11px; font-weight:800; color:#102D35; text-transform:uppercase;">1. Frontend Source Control</div>
+            <div style="font-size:13px; font-weight:700; color:#0f172a; margin-top:3px;">Private GitHub Repository</div>
+            <div style="font-size:11.5px; color:#64748b; margin-top:2px;">Mandatory source control, branch protection, commit history &amp; release tracking.</div>
+          </div>
+          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; border-left:4px solid #f97316;">
+            <div style="font-size:11px; font-weight:800; color:#f97316; text-transform:uppercase;">2. Frontend Edge Hosting</div>
+            <div style="font-size:13px; font-weight:700; color:#0f172a; margin-top:3px;">Cloudflare Pages</div>
+            <div style="font-size:11.5px; color:#64748b; margin-top:2px;">Connected to private GitHub repo for continuous edge deployment &amp; Anycast CDN.</div>
+          </div>
+          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; border-left:4px solid #0097a7;">
+            <div style="font-size:11px; font-weight:800; color:#0097a7; text-transform:uppercase;">3. Backend &amp; Logic Engine</div>
+            <div style="font-size:13px; font-weight:700; color:#0f172a; margin-top:3px;">Google Apps Script (V8)</div>
+            <div style="font-size:11.5px; color:#64748b; margin-top:2px;">Serverless REST APIs, business validation rules, LockService mutex &amp; approvals.</div>
+          </div>
+          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; border-left:4px solid #10b981;">
+            <div style="font-size:11px; font-weight:800; color:#10b981; text-transform:uppercase;">4. Operational Databases</div>
+            <div style="font-size:13px; font-weight:700; color:#0f172a; margin-top:3px;">Google Sheets (Relational)</div>
+            <div style="font-size:11.5px; color:#64748b; margin-top:2px;">Separate data authority for each portal (22–24 tabs) + SHA-256 audit ledger.</div>
+          </div>
+          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; border-left:4px solid #38bdf8;">
+            <div style="font-size:11px; font-weight:800; color:#0284c7; text-transform:uppercase;">5. Document &amp; Evidence Storage</div>
+            <div style="font-size:13px; font-weight:700; color:#0f172a; margin-top:3px;">Google Drive Enterprise Vault</div>
+            <div style="font-size:11.5px; color:#64748b; margin-top:2px;">Controlled vault ID <code>1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde</code> (87 subfolders).</div>
+          </div>
+          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; border-left:4px solid #8b5cf6;">
+            <div style="font-size:11px; font-weight:800; color:#7c3aed; text-transform:uppercase;">6. Synchronization &amp; Offline Store</div>
+            <div style="font-size:13px; font-weight:700; color:#0f172a; margin-top:3px;">Central Sync Hub + IndexedDB</div>
+            <div style="font-size:11.5px; color:#64748b; margin-top:2px;">Bi-directional cross-portal sync (30s) + local IndexedDB object store for offline tools.</div>
+          </div>
+        </div>
+      </div>
+
       <!-- MASTER RELATIONAL ARCHITECTURE TABLE -->
       <div class="matrix-panel">
         <div class="matrix-panel-header">
