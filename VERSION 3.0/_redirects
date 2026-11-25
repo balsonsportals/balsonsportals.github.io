@@ -1,0 +1,7 @@
+# Cloudflare Pages Redirects & Clean Routes
+# BALSONS Enterprise Multi-Portal Ecosystem V3.0
+
+/verify    /verify.html    200
+/uat       /uat_signoff_certificate.html    200
+/directory /balsons-master-ecosystem-directory.html    200
+/launcher  /index.html    200

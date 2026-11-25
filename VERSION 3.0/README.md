@@ -1,67 +1,84 @@
 # BALSONS Heavy Lift & Shift • Enterprise Multi-Portal Ecosystem
-## Standard Architecture Model (SAM-2026) & BEDS V1.0 Master Workspace
+## Selected Master Architecture (SAM-2026) & BEDS V3.0 Master Workspace
 
 **Anchor Project Base:** Jupiter Tatravagonka Railwheel Factory (JTRWF), Khordha, Odisha  
 **Core Client / Scope:** JTRWF Heavy Forging Press & Heat Treatment Plant (Schuler Line)  
 **Access Governance:** Global Super Administrator Policy V1.0 ("One Super Administrator • All Portals • Complete Control")  
-**Design Baseline:** BALSONS Enterprise Design System (BEDS V1.0)  
+**Design Baseline:** BALSONS Enterprise Design System (BEDS V3.0)  
+**Selected Master Architecture:**
+- **Private GitHub repository:** Mandatory frontend source control, version history and release management.
+- **Cloudflare Pages:** High-speed edge frontend hosting, connected to the private GitHub repository for controlled deployment.
+- **Google Apps Script:** Backend, APIs, business rules, approvals, automation and integration engine.
+- **Google Sheets:** Operational databases, with separate data authority for each portal and the Central Sync Hub.
+- **Google Drive:** Controlled document and evidence storage (Master Root Vault ID: `1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde`).
+- **Synchronization:** BALSONS Central Sync Hub (`beds-workspace.js` with 30s auto-sync and outbox mutation queue).
+- **Offline Storage:** IndexedDB (`BALSONS_STORE_DB` local object store).
 
 ---
 
-## 1. Workspace Directory Map
+## 1. Selected Master Architecture Summary
+
+| Architectural Layer | Selected Platform | Technical Scope & Implementation |
+| :--- | :--- | :--- |
+| **Frontend Source** | **Private GitHub Repository** | Mandatory source control, version tagging, branch protection, and release tracking. |
+| **Frontend Hosting** | **Cloudflare Pages** | Connected to private GitHub repo; high-availability Anycast edge CDN, automated SSL/TLS, custom domain routing. |
+| **Backend Engine** | **Google Apps Script (V8)** | Serverless `doPost` action routers, `LockService` 10s mutex concurrency, `CacheService` 6h session security. |
+| **Operational Database** | **Google Sheets (Relational)** | Dedicated relational workbooks per portal (22–24 tabs each) + SHA-256 tamper-evident cryptographic audit chain. |
+| **Document & Evidence Vault** | **Google Drive Enterprise Vault** | Master Root Vault ID `1p56Z_7_yHC5St8jsoadJnW7DJqJTIjde` across 7 departmental trees and 87 provisioned subcategories. |
+| **Synchronization** | **BALSONS Central Sync Hub** | Automated bi-directional cross-portal sync with dynamic outbox queue (`beds_pending_mutations_queue`). |
+| **Offline Storage** | **Browser IndexedDB** | `BALSONS_STORE_DB` client-side object stores for zero-latency rigging tool checkout and field offline resilience. |
+| **Edge Hardware Scanning** | **Field Optical Scanners** | 100% In-memory QR generator (`qrcode.min.js`), ISO/IEC 18004 Level Q, 12.83:1 contrast ratio for rugged Zebra/Honeywell units. |
+| **Print Output Standard** | **Calibrated Single-Sheet A4 Stage** | `#bedsPrintStage` zero-spill print engine at 100% scale (passes, challans, PTWs, payslips, Form 11, UAT certificates). |
+
+---
+
+## 2. Workspace Directory Map
 
 ```
-balsons portals/
-├── BALSONS ENTERPRISE LAUNCHER/    # Central Executive Multi-Portal Launcher Hub
-├── BALSONS GATE ENTRY MANAGER/     # Personnel & Vehicle Turnstiles, Pre-Clearance, RGP/NRGP
-├── BALSONS HR MANAGER/             # Dual-Wage Payroll (Staff + Daily Crew), Attendance & Biometrics
-├── BALSONS OPERATIONS MANAGER/     # Crane Logistics, SPMT Heavy Haulage, Rigging & Erection
-├── BALSONS PURCHASE MANAGER/       # Commercial RFQ, Purchase Orders, Vendor Sourcing & GRN
-├── BALSONS REPOTS PORTAL/          # Central Sync Hub & Cross-Portal Audit Analytics
-├── BALSONS SAFETY MANAGER/         # HSE Permits-to-Work (7 PTW Forms), JSA & Safety Compliance
-├── BALSONS STORE MANAGER/          # Rigging Tool Master, Form 11 Lifting Tackles, Issue & Loans
-├── assets/                         # Shared Logos, Favicons, Brand Typography & BEDS UI Assets
-├── docs/                           # Master Specifications, Architecture Baselines & Audits
-│   ├── specifications/             # BEDS V1.0, SAM-2026, Access Governance & Credentials
-│   └── audits/                     # Governing V5.3 Master Baseline & Verification Registers
-├── tests/                          # Test Fixtures & Quality Inspection Resources
-├── beds.css                        # Master BEDS Design System Stylesheet
-├── index.html                      # Root Central Enterprise Launcher Entry Point
-└── README.md                       # Master Workspace Directory Catalog (This File)
+VERSION 3.0/
+├── _headers                         # Cloudflare Pages security & caching headers
+├── _redirects                       # Cloudflare Pages clean routing rules
+├── wrangler.toml                    # Cloudflare Pages project configuration
+├── index.html                       # Central Multi-Portal Enterprise Launcher
+├── verify.html                      # Universal Digital Verification Gateway (6 Domains)
+├── uat_signoff_certificate.html     # Formal Directorate UAT Sign-Off Certificate
+├── balsons-master-ecosystem-directory.html # Ecosystem Master Data & Architecture Directory
+├── beds.css                         # BEDS V3.0 Master Design System & Color Tokens
+├── BALSONS GATE ENTRY MANAGER/      # Gate Turnstiles, Pre-Clearance, RGP/NRGP Material Movements
+├── BALSONS HR MANAGER/              # Dual-Wage Payroll (Staff + Daily Crew), Attendance & Biometrics
+├── BALSONS SAFETY MANAGER/          # HSE Permits-to-Work (PTW Studio), HIRA, TBT & Safety Compliance
+├── BALSONS STORE MANAGER/           # Rigging Tool Master (264 Items), Form 11 Lifting Tackles & Loans
+├── BALSONS PURCHASE MANAGER/        # Commercial RFQ, Purchase Orders, Vendor Comparative Statements
+├── BALSONS OPERATIONS MANAGER/      # Heavy Crane Logistics, Schuler Press Line Erection & Work Packages
+├── BALSONS REPOTS PORTAL/           # Central Sync Hub Telemetry, Cross-Portal Audits & Analytics
+├── assets/                          # Shared Logos, Covers, Brand Typography & BEDS UI Libraries
+│   ├── css/beds.css
+│   ├── images/ (balsons-logo.png, login-*.jpg)
+│   └── js/ (balsons-docs-manager.js, beds-workspace.js, beds-superadmin.js, dossier-360.js, qrcode.min.js)
+├── docs/                            # Master Specifications & UAT Handover Packages
+│   ├── specifications/              # SELECTED_MASTER_ARCHITECTURE_BASELINE.md, balsons_drive_folder_map.json
+│   └── certificates/                # BALSONS_ENTERPRISE_UAT_SIGNOFF_CERTIFICATE_LOCKED.pdf
+├── tests/                           # Automated E2E Playwright Verification Suites & Reports
+└── README.md                        # Master Architecture & Ecosystem Catalog (This File)
 ```
 
 ---
 
-## 2. Live Operational Portal Directory
+## 3. Operational Portals & Live Endpoints
 
-| Portal Module | Live Link (GitHub Pages) | Local Path | Dedicated Google Sheet Database |
-| :--- | :--- | :--- | :--- |
-| 🚀 **Central Launcher** | [Launcher Portal](https://balsonsportals.github.io/index.html) | `BALSONS ENTERPRISE LAUNCHER/index.html` | Cross-Portal Coordination Hub |
-| 🚧 **Gate Entry Manager** | [Gate Entry Portal](https://balsonsportals.github.io/BALSONS_GATE_ENTRY_PORTAL/frontend/index.html) | `BALSONS GATE ENTRY MANAGER/frontend/index.html` | [`1v_0Xo44...`](https://docs.google.com/spreadsheets/d/1v_0Xo44U_zU_7B8uU_mX2xV8Xo44U_zU/edit) |
-| 📦 **Store Manager** | [Store Portal](https://balsonsportals.github.io/BALSONS_STORE_MANAGER/frontend/index.html) | `BALSONS STORE MANAGER/frontend/index.html` | [`1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ`](https://docs.google.com/spreadsheets/d/1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ/edit) |
-| 🦺 **Safety Manager** | [Safety Portal](https://balsonsportals.github.io/BALSONS_SAFETY_PORTAL/frontend/index.html) | `BALSONS SAFETY MANAGER/frontend/index.html` | [`1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0`](https://docs.google.com/spreadsheets/d/1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0/edit) |
-| 👥 **HR & Payroll** | [HR Portal](https://balsonsportals.github.io/BALSONS_HR_PORTAL/frontend/index.html) | `BALSONS HR MANAGER/frontend/index.html` | [`1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw`](https://docs.google.com/spreadsheets/d/1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw/edit) |
-| 📝 **Employee Self-Reg** | [Self-Registration](https://balsonsportals.github.io/BALSONS_HR_PORTAL/frontend/register.html) | `BALSONS HR MANAGER/frontend/register.html` | Integrated HR Pipeline |
-| 🏗️ **Operations Manager** | [Operations Portal](https://balsonsportals.github.io/BALSONS%20OPERATIONS%20MANAGER/index.html) ([Repo](https://github.com/balsonsportals/BALSONS_OPERATIONS_PORTAL)) | `BALSONS OPERATIONS MANAGER/index.html` | [`1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E`](https://docs.google.com/spreadsheets/d/1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E/edit) |
-| 🛒 **Purchase Manager** | Internal Deployment / Local | `BALSONS PURCHASE MANAGER/index.html` | Commercial Procurement Master |
-| 📊 **Sync & Reports Hub** | Internal Deployment / Local | `BALSONS REPOTS PORTAL/index.html` | Executive Reporting Master |
-
----
-
-## 3. Personnel Matrix Governance (1 Admin · 1 Area Mgr · Max 3 Supervisors)
-
-Every operational domain enforces a strict supervisory hierarchy:
-
-| Domain | 👑 Admin | 🏛️ Area Manager | 👷 Shift Supervisors (Max 3) |
-| :--- | :--- | :--- | :--- |
-| **Gate Entry & Security** | Bikash Mohapatra *(Gate In-Charge)* | Satish Chandra *(Directorate)* | 1. Pradeep Nayak<br>2. Manoj Das<br>3. Subhashree Jena |
-| **Store & Rigging Tools** | Gagan Bihari Das *(Store In-Charge)* | Satish Chandra *(Directorate)* | 1. Ashok Mohanty<br>2. Kailash Sahu<br>3. Bijay Barik |
-| **Safety & HSE Compliance** | Gajendra Rao *(HSE Lead)* | Satish Chandra *(Directorate)* | 1. Dilip Rout<br>2. Niranjan Sahu<br>3. Rakesh Panda |
-| **HR & Payroll** | Priyanka Senapati *(HR Manager)* | Satish Chandra *(Directorate)* | 1. Rashmi Ranjan<br>2. Alok Patra<br>3. Snehalata Mishra |
-| **Heavy Operations** | Satish Chandra *(Management Director)* | Ashok Mohanty *(HOD Rigging)* | 1. Dilip Rout<br>2. Suresh Behera<br>3. Kartik Nayak |
-| **Procurement & Commercial** | Gagan Bihari Das *(Commercial Lead)* | Satish Chandra *(Directorate)* | 1. Sanjay Verma<br>2. Amit Pradhan<br>3. Pravat Rout |
-| **Central Sync Hub** | Prashant Mohanty *(Super Admin)* | Satish Chandra *(Directorate)* | 1. Gajendra Rao<br>2. Priyanka Senapati<br>3. Gagan Bihari Das |
-| **Site Accounts & Imprest** | Bikash Mohapatra *(Accounts)* | Satish Chandra *(Directorate)* | 1. Dilip Rout<br>2. Kailash Sahu<br>3. Rashmi Ranjan |
+| Portal Module | Local Path | Dedicated Operational Database |
+| :--- | :--- | :--- |
+| 🚀 **Central Launcher** | `index.html` | Cross-Portal Coordination Hub & Telemetry |
+| 🚧 **Gate Entry Manager** | `BALSONS GATE ENTRY MANAGER/frontend/index.html` | `1v_0Xo44...` (22 relational tabs) |
+| 📦 **Store Manager** | `BALSONS STORE MANAGER/frontend/index.html` | `1u_ZKvvCVfEQDAtkoMR68q2d2hEK-eWBnvsS3AGfP6yQ` (264 items + IndexedDB) |
+| 🦺 **Safety Manager** | `BALSONS SAFETY MANAGER/frontend/index.html` | `1SyOGt6HEu6HJCufAbB2_P6BgF6pEppt28J_8cARaOP0` (10 PTW registers) |
+| 👥 **HR & Payroll** | `BALSONS HR MANAGER/frontend/index.html` | `1so_aH05vVxiUJsIK6VS-n7BpGrHWNgn_5EK7RuA3cuw` (24 relational tabs) |
+| 📝 **Employee Self-Reg** | `BALSONS HR MANAGER/frontend/register.html` | Integrated HR Pipeline & Onboarding Wizard |
+| 🏗️ **Operations Manager** | `BALSONS OPERATIONS MANAGER/index.html` | `1GeqDDmBgdVm3ZUp4c9iB36__iLJ9wADQQRhEIwVxa-E` (Schuler press line) |
+| 🛒 **Purchase Manager** | `BALSONS PURCHASE MANAGER/index.html` | Commercial Procurement Master & PO Ledger |
+| 📊 **Sync & Reports Hub** | `BALSONS REPOTS PORTAL/index.html` | Executive Reporting & Cross-Portal Sync Hub |
+| 🔒 **Universal Verify** | `verify.html` | Digital Verification Gateway across all 6 domains |
+| 📜 **UAT Certificate** | `uat_signoff_certificate.html` | Formal Directorate System Handover Certificate |
 
 ---
 
